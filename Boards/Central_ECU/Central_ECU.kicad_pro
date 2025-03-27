@@ -611,6 +611,18 @@
     [
       "24ed8402-c9e1-4a61-8a56-11abd1b07d91",
       "Root"
+    ],
+    [
+      "2e6b12ab-ed95-45d4-9da7-c2098bba7a10",
+      "Interlocked"
+    ],
+    [
+      "643d687a-943d-4705-82bf-eed53f48fae4",
+      "Pyro Low Side1"
+    ],
+    [
+      "fc6867a4-106d-4cbd-bbd7-95d649ae44c2",
+      "Pyro Low Side"
     ]
   ],
   "text_variables": {}
