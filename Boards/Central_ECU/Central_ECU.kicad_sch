@@ -8968,7 +8968,7 @@
 		)
 	)
 	(sheet
-		(at 437.515 117.475)
+		(at 313.055 194.945)
 		(size 85.09 51.435)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -8984,7 +8984,7 @@
 		)
 		(uuid "2e6b12ab-ed95-45d4-9da7-c2098bba7a10")
 		(property "Sheetname" "Interlocked"
-			(at 437.515 116.7634 0)
+			(at 313.055 194.2334 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8993,7 +8993,7 @@
 			)
 		)
 		(property "Sheetfile" "ign+nc_valve.kicad_sch"
-			(at 437.515 169.4946 0)
+			(at 313.055 246.9646 0)
 			(effects
 				(font
 					(size 1.27 1.27)
