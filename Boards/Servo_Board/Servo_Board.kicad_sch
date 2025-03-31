@@ -5942,16 +5942,6 @@
 	)
 	(wire
 		(pts
-			(xy 261.62 58.42) (xy 269.24 58.42)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5fd39657-b781-4b81-949a-9b52e252962f")
-	)
-	(wire
-		(pts
 			(xy 127 128.27) (xy 127 125.73)
 		)
 		(stroke
@@ -6472,6 +6462,16 @@
 	)
 	(wire
 		(pts
+			(xy 269.24 63.5) (xy 275.59 63.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b28c8169-d539-42ca-bc67-cd98e420bd6a")
+	)
+	(wire
+		(pts
 			(xy 128.27 114.3) (xy 135.89 114.3)
 		)
 		(stroke
@@ -6509,6 +6509,16 @@
 			(type default)
 		)
 		(uuid "bb8e225b-2c5c-48da-b650-24569919a8fd")
+	)
+	(wire
+		(pts
+			(xy 269.24 58.42) (xy 275.59 58.42)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c0416278-5da4-4647-9d52-75cac9499249")
 	)
 	(wire
 		(pts
@@ -6599,16 +6609,6 @@
 			(type default)
 		)
 		(uuid "cd16b11f-4c8a-4b38-a81e-2f6b1c6917da")
-	)
-	(wire
-		(pts
-			(xy 261.62 63.5) (xy 269.24 63.5)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ce1bdba9-3384-4b9b-9996-814b60d4768d")
 	)
 	(wire
 		(pts
@@ -7151,7 +7151,7 @@
 		(uuid "3cfd9bc0-d3f6-4eef-b17a-79d063d3625c")
 	)
 	(label "D_P"
-		(at 262.89 63.5 0)
+		(at 269.24 63.5 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7391,7 +7391,7 @@
 		(uuid "80d50505-2e0f-42da-811c-c61599227a8a")
 	)
 	(label "D_N"
-		(at 262.89 58.42 0)
+		(at 269.24 58.42 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -9009,6 +9009,73 @@
 			(project "Servo_Board"
 				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
 					(reference "#PWR029")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 265.43 58.42 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "2a327b7b-1433-4b64-8f12-1bdc304838ce")
+		(property "Reference" "R5"
+			(at 267.462 56.388 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "27R"
+			(at 263.906 56.388 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 265.43 60.198 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 265.43 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 265.43 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "97d9f1a6-00d7-4230-bab4-87afb2506584")
+		)
+		(pin "1"
+			(uuid "62fed009-c44e-491b-93bb-10e4adea9cfa")
+		)
+		(instances
+			(project ""
+				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
+					(reference "R5")
 					(unit 1)
 				)
 			)
@@ -11039,6 +11106,73 @@
 			(project "Servo_Board"
 				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
 					(reference "#PWR027")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 265.43 63.5 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "89721520-0ceb-4e81-8990-1d852d7b0218")
+		(property "Reference" "R6"
+			(at 267.462 61.468 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "27R"
+			(at 263.906 61.468 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 265.43 65.278 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 265.43 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 265.43 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "226729c1-bbd7-4080-8dac-0c64c800fbd4")
+		)
+		(pin "1"
+			(uuid "999cb81a-f29a-4dcd-b472-249b6125c66e")
+		)
+		(instances
+			(project "Servo_Board"
+				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
+					(reference "R6")
 					(unit 1)
 				)
 			)
