@@ -623,6 +623,10 @@
     [
       "fc6867a4-106d-4cbd-bbd7-95d649ae44c2",
       "Pyro Low Side"
+    ],
+    [
+      "11639c01-8282-4891-a201-9121a32f140b",
+      "Connectors"
     ]
   ],
   "text_variables": {}

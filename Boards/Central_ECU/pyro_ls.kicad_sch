@@ -2014,7 +2014,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "TVS 36V"
+		(property "Value" "TVS 30V"
 			(at 259.08 143.51 90)
 			(effects
 				(font
@@ -2023,7 +2023,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Diode_SMD:D_SOD-523"
+		(property "Footprint" "Diode_SMD:D_SOD-882"
 			(at 256.54 142.24 0)
 			(effects
 				(font
@@ -2032,7 +2032,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://www.digikey.co.nz/en/products/detail/panjit-international-inc/PJSD36TS-R1-00001/14660198"
+		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/PESD1CANFD30LS-Q.pdf"
 			(at 256.54 142.24 0)
 			(effects
 				(font
@@ -2050,7 +2050,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "PJSD36TS_R1_00001"
+		(property "MPN" "PESD1CANFD30LS-QYL"
 			(at 256.54 142.24 90)
 			(effects
 				(font
