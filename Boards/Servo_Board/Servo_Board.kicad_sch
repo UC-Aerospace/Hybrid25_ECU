@@ -5248,16 +5248,6 @@
 		)
 		(uuid "33b7cbca-0abe-4e0e-b43c-eac2a4462d8e")
 	)
-	(text "Connect to GPIO later:"
-		(exclude_from_sim no)
-		(at 270.764 141.986 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "9144765f-e9da-4bb3-8b4c-5e73e4388b24")
-	)
 	(junction
 		(at 121.92 144.78)
 		(diameter 0)
@@ -5402,6 +5392,16 @@
 	)
 	(wire
 		(pts
+			(xy 261.62 106.68) (xy 271.78 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "093f6e1f-8d0d-4246-9f6a-5343ec1d6100")
+	)
+	(wire
+		(pts
 			(xy 33.02 62.23) (xy 30.48 62.23)
 		)
 		(stroke
@@ -5409,16 +5409,6 @@
 			(type default)
 		)
 		(uuid "0b757260-5949-4c77-a919-b3fe0813738a")
-	)
-	(wire
-		(pts
-			(xy 266.7 147.32) (xy 275.59 147.32)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0bda3c49-61c9-41d0-8d3a-1d9129bb815d")
 	)
 	(wire
 		(pts
@@ -5772,6 +5762,16 @@
 	)
 	(wire
 		(pts
+			(xy 261.62 109.22) (xy 271.78 109.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4341b4ff-c151-487b-94e4-577797a7140a")
+	)
+	(wire
+		(pts
 			(xy 233.68 19.05) (xy 233.68 27.94)
 		)
 		(stroke
@@ -5989,16 +5989,6 @@
 			(type default)
 		)
 		(uuid "687d5f13-0a22-4d0b-b3ea-49cbdc440e97")
-	)
-	(wire
-		(pts
-			(xy 266.7 144.78) (xy 275.59 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6a1a7c90-df24-41fa-bbd7-0c2b7356468c")
 	)
 	(wire
 		(pts
@@ -7141,7 +7131,7 @@
 		(uuid "3b5c3ab8-9711-495d-946a-27b3d7650d06")
 	)
 	(label "CANSTB2"
-		(at 266.7 144.78 0)
+		(at 262.89 106.68 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7541,7 +7531,7 @@
 		(uuid "cd49fddb-e20e-414d-bafd-2d596834a388")
 	)
 	(label "CANSTB1"
-		(at 266.7 147.32 0)
+		(at 262.89 109.22 0)
 		(effects
 			(font
 				(size 1.27 1.27)
