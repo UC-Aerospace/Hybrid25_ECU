@@ -4,6 +4,14 @@
 	(generator_version "9.0")
 	(uuid "e6e3c2c3-16f8-4529-9f8f-a3331e8ecc64")
 	(paper "A3")
+	(title_block
+		(title "Interlocked Components")
+		(date "2025-04-02")
+		(rev "A")
+		(company "Hybrid Test Stand 2025")
+		(comment 1 "Drawn: Brad Redpath")
+		(comment 2 "Checked: ")
+	)
 	(lib_symbols
 		(symbol "Comparator:LM339"
 			(pin_names
@@ -437,6 +445,113 @@
 						)
 					)
 					(number "12"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Connector:TestPoint_Small"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.762)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "TP"
+				(at 0 3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "TestPoint_Small"
+				(at 0 2.032 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 5.08 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 5.08 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "test point"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "test point tp"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "Pin* Test*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "TestPoint_Small_0_1"
+				(circle
+					(center 0 0)
+					(radius 0.508)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "TestPoint_Small_1_1"
+				(pin passive line
+					(at 0 0 90)
+					(length 0)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1741,36 +1856,28 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Simulation_SPICE:NMOS"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-			)
+		(symbol "TS_Symbols:DMT12H060LFDF"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(property "Reference" "Q1"
-				(at 6.35 1.2701 0)
+			(property "Reference" "Q"
+				(at 2.54 3.048 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
-					(justify left)
 				)
 			)
-			(property "Value" "DMT12H060LFDF-7"
-				(at 6.35 -1.27 0)
+			(property "Value" "DMT12H060LFDF"
+				(at 9.906 1.016 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
-					(justify left)
 				)
 			)
 			(property "Footprint" "Package_DFN_QFN:Diodes_UDFN2020-6_Type-F"
-				(at 5.08 2.54 0)
+				(at -0.254 -14.986 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -1779,15 +1886,6 @@
 				)
 			)
 			(property "Datasheet" "https://www.diodes.com/assets/Datasheets/DMT12H060LFDF.pdf"
-				(at 0 -12.7 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "N-MOSFET transistor, drain/source/gate"
 				(at 0 0 0)
 				(effects
 					(font
@@ -1796,34 +1894,7 @@
 					(hide yes)
 				)
 			)
-			(property "Sim.Device" "NMOS"
-				(at 0 -17.145 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Sim.Type" "VDMOS"
-				(at 0 -19.05 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Sim.Pins" "1=D 2=G 3=S"
-				(at 0 -15.24 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "transistor NMOS N-MOS N-MOSFET simulation"
+			(property "Description" "N-Channel 115 V 4.4A (Ta) 1.1W (Ta) Surface Mount U-DFN2020-6 (Type F)"
 				(at 0 0 0)
 				(effects
 					(font
@@ -1832,10 +1903,19 @@
 					(hide yes)
 				)
 			)
-			(symbol "NMOS_0_1"
+			(property "MPN" "DMT12H060LFDF-7"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "DMT12H060LFDF_0_1"
 				(polyline
 					(pts
-						(xy 0.254 1.905) (xy 0.254 -1.905)
+						(xy -2.286 1.905) (xy -2.286 -1.905)
 					)
 					(stroke
 						(width 0.254)
@@ -1847,7 +1927,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0.254 0) (xy -2.54 0)
+						(xy -2.286 0) (xy -5.08 0)
 					)
 					(stroke
 						(width 0)
@@ -1859,7 +1939,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0.762 2.286) (xy 0.762 1.27)
+						(xy -1.778 2.286) (xy -1.778 1.27)
 					)
 					(stroke
 						(width 0.254)
@@ -1871,7 +1951,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0.762 0.508) (xy 0.762 -0.508)
+						(xy -1.778 0.508) (xy -1.778 -0.508)
 					)
 					(stroke
 						(width 0.254)
@@ -1883,7 +1963,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0.762 -1.27) (xy 0.762 -2.286)
+						(xy -1.778 -1.27) (xy -1.778 -2.286)
 					)
 					(stroke
 						(width 0.254)
@@ -1895,7 +1975,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0.762 -1.778) (xy 3.302 -1.778) (xy 3.302 1.778) (xy 0.762 1.778)
+						(xy -1.778 -1.778) (xy 0.762 -1.778) (xy 0.762 1.778) (xy -1.778 1.778)
 					)
 					(stroke
 						(width 0)
@@ -1907,7 +1987,7 @@
 				)
 				(polyline
 					(pts
-						(xy 1.016 0) (xy 2.032 0.381) (xy 2.032 -0.381) (xy 1.016 0)
+						(xy -1.524 0) (xy -0.508 0.381) (xy -0.508 -0.381) (xy -1.524 0)
 					)
 					(stroke
 						(width 0)
@@ -1918,7 +1998,7 @@
 					)
 				)
 				(circle
-					(center 1.651 0)
+					(center -0.889 0)
 					(radius 2.794)
 					(stroke
 						(width 0.254)
@@ -1930,7 +2010,7 @@
 				)
 				(polyline
 					(pts
-						(xy 2.54 2.54) (xy 2.54 1.778)
+						(xy 0 2.54) (xy 0 1.778)
 					)
 					(stroke
 						(width 0)
@@ -1941,7 +2021,7 @@
 					)
 				)
 				(circle
-					(center 2.54 1.778)
+					(center 0 1.778)
 					(radius 0.254)
 					(stroke
 						(width 0)
@@ -1952,7 +2032,7 @@
 					)
 				)
 				(circle
-					(center 2.54 -1.778)
+					(center 0 -1.778)
 					(radius 0.254)
 					(stroke
 						(width 0)
@@ -1964,7 +2044,7 @@
 				)
 				(polyline
 					(pts
-						(xy 2.54 -2.54) (xy 2.54 0) (xy 0.762 0)
+						(xy 0 -2.54) (xy 0 0) (xy -1.778 0)
 					)
 					(stroke
 						(width 0)
@@ -1976,7 +2056,7 @@
 				)
 				(polyline
 					(pts
-						(xy 2.794 0.508) (xy 2.921 0.381) (xy 3.683 0.381) (xy 3.81 0.254)
+						(xy 0.254 0.508) (xy 0.381 0.381) (xy 1.143 0.381) (xy 1.27 0.254)
 					)
 					(stroke
 						(width 0)
@@ -1988,7 +2068,7 @@
 				)
 				(polyline
 					(pts
-						(xy 3.302 0.381) (xy 2.921 -0.254) (xy 3.683 -0.254) (xy 3.302 0.381)
+						(xy 0.762 0.381) (xy 0.381 -0.254) (xy 1.143 -0.254) (xy 0.762 0.381)
 					)
 					(stroke
 						(width 0)
@@ -1999,18 +2079,18 @@
 					)
 				)
 			)
-			(symbol "NMOS_1_1"
-				(pin input line
-					(at -5.08 0 0)
+			(symbol "DMT12H060LFDF_1_1"
+				(pin passive line
+					(at -7.62 0 0)
 					(length 2.54)
-					(name "G"
+					(name "~"
 						(effects
 							(font
 								(size 1.27 1.27)
 							)
 						)
 					)
-					(number "4"
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2019,9 +2099,9 @@
 					)
 				)
 				(pin passive line
-					(at 2.54 5.08 270)
+					(at 0 5.08 270)
 					(length 2.54)
-					(name "D"
+					(name "~"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2037,7 +2117,7 @@
 					)
 				)
 				(pin passive line
-					(at 2.54 5.08 270)
+					(at 0 5.08 270)
 					(length 2.54)
 					(hide yes)
 					(name "D"
@@ -2056,7 +2136,7 @@
 					)
 				)
 				(pin passive line
-					(at 2.54 5.08 270)
+					(at 0 5.08 270)
 					(length 2.54)
 					(hide yes)
 					(name "D"
@@ -2075,7 +2155,7 @@
 					)
 				)
 				(pin passive line
-					(at 2.54 5.08 270)
+					(at 0 5.08 270)
 					(length 2.54)
 					(hide yes)
 					(name "D"
@@ -2094,7 +2174,7 @@
 					)
 				)
 				(pin passive line
-					(at 2.54 5.08 270)
+					(at 0 5.08 270)
 					(length 2.54)
 					(hide yes)
 					(name "D"
@@ -2113,16 +2193,16 @@
 					)
 				)
 				(pin passive line
-					(at 2.54 -5.08 90)
+					(at 0 -5.08 90)
 					(length 2.54)
-					(name "S"
+					(name "~"
 						(effects
 							(font
 								(size 1.27 1.27)
 							)
 						)
 					)
-					(number "3"
+					(number "4"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2131,8 +2211,9 @@
 					)
 				)
 				(pin passive line
-					(at 2.54 -5.08 90)
+					(at 0 -5.08 90)
 					(length 2.54)
+					(hide yes)
 					(name "S"
 						(effects
 							(font
@@ -2561,6 +2642,12 @@
 		(uuid "b217cf30-875f-4e67-aa87-6cbc6f012f39")
 	)
 	(junction
+		(at 138.43 101.6)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "b341e929-1e8c-43cb-8ced-a90bf34caf1c")
+	)
+	(junction
 		(at 289.56 53.34)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2602,6 +2689,16 @@
 		(color 0 0 0 0)
 		(uuid "dd069b86-35bc-4211-8b0d-31da1ff3b59b")
 	)
+	(junction
+		(at 177.8 173.99)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "ea04f6d7-3f9b-4ffb-b043-80223a68f607")
+	)
+	(no_connect
+		(at 138.43 191.77)
+		(uuid "00966a5d-ea31-456f-b669-2c6c7f5ba940")
+	)
 	(no_connect
 		(at 138.43 186.69)
 		(uuid "10378b0a-6369-41d0-bef8-1249d0d1595a")
@@ -2616,7 +2713,7 @@
 	)
 	(wire
 		(pts
-			(xy 43.18 101.6) (xy 177.8 101.6)
+			(xy 43.18 101.6) (xy 138.43 101.6)
 		)
 		(stroke
 			(width 0)
@@ -2633,6 +2730,16 @@
 			(type default)
 		)
 		(uuid "023fd2d3-44a4-4dad-bc93-56b94de251c9")
+	)
+	(wire
+		(pts
+			(xy 138.43 101.6) (xy 177.8 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "026adef7-621e-4f8e-a89d-da754782a1c6")
 	)
 	(wire
 		(pts
@@ -3386,6 +3493,16 @@
 	)
 	(wire
 		(pts
+			(xy 177.8 173.99) (xy 229.87 173.99)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8ef5cb38-e1f9-48b6-82a1-f3fbb7d7712c")
+	)
+	(wire
+		(pts
 			(xy 288.29 95.25) (xy 288.29 100.33)
 		)
 		(stroke
@@ -3506,7 +3623,7 @@
 	)
 	(wire
 		(pts
-			(xy 151.13 173.99) (xy 229.87 173.99)
+			(xy 151.13 173.99) (xy 177.8 173.99)
 		)
 		(stroke
 			(width 0)
@@ -4102,7 +4219,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "06eb4987-7356-4302-87d1-46d1b07a4c90")
-		(property "Reference" "C17"
+		(property "Reference" "C25"
 			(at 66.04 176.5299 0)
 			(effects
 				(font
@@ -4156,7 +4273,7 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "C17")
+					(reference "C25")
 					(unit 1)
 				)
 			)
@@ -4173,7 +4290,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "0d734c42-b686-4fcb-a61d-0334dcb97e3c")
-		(property "Reference" "R13"
+		(property "Reference" "R30"
 			(at 83.82 210.8199 0)
 			(effects
 				(font
@@ -4227,7 +4344,7 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "R13")
+					(reference "R30")
 					(unit 1)
 				)
 			)
@@ -4243,7 +4360,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "0f573c68-2751-499e-ad19-ff2fb5fe1aae")
-		(property "Reference" "R16"
+		(property "Reference" "R21"
 			(at 44.45 57.15 90)
 			(effects
 				(font
@@ -4259,7 +4376,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 44.45 65.278 90)
 			(effects
 				(font
@@ -4295,7 +4412,7 @@
 		(instances
 			(project ""
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "R16")
+					(reference "R21")
 					(unit 1)
 				)
 			)
@@ -4319,7 +4436,7 @@
 				)
 			)
 		)
-		(property "Value" "LM339"
+		(property "Value" "LM339B"
 			(at 350.52 60.96 0)
 			(effects
 				(font
@@ -4327,7 +4444,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Package_SO:TSSOP-14_4.4x5mm_P0.65mm"
 			(at 349.25 66.04 0)
 			(effects
 				(font
@@ -4336,7 +4453,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://www.st.com/resource/en/datasheet/lm139.pdf"
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/lm2901b.pdf?ts=1695229373008&ref_url=https%253A%252F%252Fwww.ti.com%252Fsitesearch%252Fen-us%252Fdocs%252Funiversalsearch.tsp%253FlangPref%253Den-US%2526searchTerm%253DLM2901BIDR%2526nr%253D12"
 			(at 351.79 63.5 0)
 			(effects
 				(font
@@ -4346,6 +4463,15 @@
 			)
 		)
 		(property "Description" "Quad Differential Comparators, SOIC-14/TSSOP-14"
+			(at 350.52 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "LM339BIPWR"
 			(at 350.52 68.58 0)
 			(effects
 				(font
@@ -4415,7 +4541,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "188bf089-de22-4f45-b099-cf68bd2d7454")
-		(property "Reference" "R29"
+		(property "Reference" "R26"
 			(at 290.83 102.8699 0)
 			(effects
 				(font
@@ -4469,7 +4595,7 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "R29")
+					(reference "R26")
 					(unit 1)
 				)
 			)
@@ -4483,9 +4609,8 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "1f98be7e-b0d5-4491-af6d-49cb0108a260")
-		(property "Reference" "D2"
+		(property "Reference" "D5"
 			(at 281.6225 46.99 0)
 			(effects
 				(font
@@ -4501,7 +4626,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Diode_SMD:D_SOD-882"
 			(at 281.94 53.34 0)
 			(effects
 				(font
@@ -4510,7 +4635,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "~"
+		(property "Datasheet" "https://toshiba.semicon-storage.com/info/docget.jsp?did=14192&prodName=CTS05S40"
 			(at 281.94 53.34 0)
 			(effects
 				(font
@@ -4528,6 +4653,14 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "CTS05S40,L3F"
+			(at 281.94 56.388 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "7da27c1b-4699-4a5f-8c55-2e13c69fd52d")
 		)
@@ -4537,7 +4670,7 @@
 		(instances
 			(project ""
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "D2")
+					(reference "D5")
 					(unit 1)
 				)
 			)
@@ -4553,7 +4686,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "2249c545-8de5-4acc-8533-761148022d53")
-		(property "Reference" "#PWR022"
+		(property "Reference" "#PWR052"
 			(at 73.66 90.17 0)
 			(effects
 				(font
@@ -4603,121 +4736,7 @@
 		(instances
 			(project ""
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "#PWR022")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Simulation_SPICE:NMOS")
-		(at 321.31 95.25 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "2ea77aa6-e54b-4e32-8334-a0b476ec0986")
-		(property "Reference" "Q3"
-			(at 327.66 93.9799 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "DMT12H060LFDF-7"
-			(at 327.66 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Package_DFN_QFN:Diodes_UDFN2020-6_Type-F"
-			(at 326.39 92.71 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.diodes.com/assets/Datasheets/DMT12H060LFDF.pdf"
-			(at 321.31 107.95 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "N-MOSFET transistor, drain/source/gate"
-			(at 321.31 95.25 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Device" "NMOS"
-			(at 321.31 112.395 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Type" "VDMOS"
-			(at 321.31 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Pins" "1=D 2=G 3=S"
-			(at 321.31 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "3"
-			(uuid "06572551-1987-4e93-8117-17e460a8a9fc")
-		)
-		(pin "2"
-			(uuid "b1fd9e06-dfee-4e6c-ab86-204b935794ec")
-		)
-		(pin "1"
-			(uuid "65029de2-c970-4fb7-8f09-a13bd0397c92")
-		)
-		(pin "4"
-			(uuid "6516fb63-5e9b-4804-bf05-2726d7509ffe")
-		)
-		(pin "6"
-			(uuid "20a804bd-c701-4edb-bbbb-7a4a58ee07fe")
-		)
-		(pin "5"
-			(uuid "9dfaf97f-eacb-44ad-b990-4310b3b15916")
-		)
-		(pin "7"
-			(uuid "eb1afca6-b3b0-4944-887e-d1a2492de46c")
-		)
-		(pin "8"
-			(uuid "943df4a5-6d35-4679-a67b-f759238a235e")
-		)
-		(instances
-			(project "Central_ECU"
-				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "Q3")
+					(reference "#PWR052")
 					(unit 1)
 				)
 			)
@@ -4733,7 +4752,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3075798f-b456-499d-8f75-9f743381df95")
-		(property "Reference" "C20"
+		(property "Reference" "C26"
 			(at 77.47 176.5299 0)
 			(effects
 				(font
@@ -4787,7 +4806,7 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "C20")
+					(reference "C26")
 					(unit 1)
 				)
 			)
@@ -4803,7 +4822,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "32aea0aa-2404-43c7-8d09-30f41a3f5b14")
-		(property "Reference" "R9"
+		(property "Reference" "R24"
 			(at 76.2 78.7399 0)
 			(effects
 				(font
@@ -4821,7 +4840,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 71.882 80.01 90)
 			(effects
 				(font
@@ -4857,7 +4876,7 @@
 		(instances
 			(project ""
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "R9")
+					(reference "R24")
 					(unit 1)
 				)
 			)
@@ -4873,7 +4892,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "34ead206-8d19-4e8e-bb98-bd4defc018c4")
-		(property "Reference" "#PWR050"
+		(property "Reference" "#PWR053"
 			(at 288.29 119.38 0)
 			(effects
 				(font
@@ -4923,7 +4942,7 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "#PWR050")
+					(reference "#PWR053")
 					(unit 1)
 				)
 			)
@@ -4939,7 +4958,7 @@
 		(dnp yes)
 		(fields_autoplaced yes)
 		(uuid "35b779a4-118c-4b01-9e09-dd78e2378a39")
-		(property "Reference" "R17"
+		(property "Reference" "R20"
 			(at 38.1 55.8799 0)
 			(effects
 				(font
@@ -4957,7 +4976,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 33.782 57.15 90)
 			(effects
 				(font
@@ -4993,7 +5012,7 @@
 		(instances
 			(project ""
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "R17")
+					(reference "R20")
 					(unit 1)
 				)
 			)
@@ -5009,7 +5028,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "35fc95f6-44b4-4377-8e5c-df46114f1ec1")
-		(property "Reference" "R7"
+		(property "Reference" "R23"
 			(at 90.17 66.0399 0)
 			(effects
 				(font
@@ -5027,7 +5046,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 85.852 67.31 90)
 			(effects
 				(font
@@ -5063,7 +5082,7 @@
 		(instances
 			(project ""
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "R7")
+					(reference "R23")
 					(unit 1)
 				)
 			)
@@ -5079,7 +5098,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3bd72e79-6b0d-4487-ae61-30b38621c5b4")
-		(property "Reference" "R14"
+		(property "Reference" "R31"
 			(at 148.59 214.6299 0)
 			(effects
 				(font
@@ -5133,7 +5152,7 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "R14")
+					(reference "R31")
 					(unit 1)
 				)
 			)
@@ -5149,7 +5168,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3e644a70-2e45-4bb1-8dd5-61ce2968d6db")
-		(property "Reference" "#PWR026"
+		(property "Reference" "#PWR048"
 			(at 53.34 77.47 0)
 			(effects
 				(font
@@ -5199,7 +5218,104 @@
 		(instances
 			(project ""
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "#PWR026")
+					(reference "#PWR048")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "TS_Symbols:DMT12H060LFDF")
+		(at 323.85 95.25 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "48811cbf-f02a-4cb8-93e6-669c8c40c9de")
+		(property "Reference" "Q1"
+			(at 327.66 93.9799 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "DMT12H060LFDF"
+			(at 327.66 96.5199 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_DFN_QFN:Diodes_UDFN2020-6_Type-F"
+			(at 323.596 110.236 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.diodes.com/assets/Datasheets/DMT12H060LFDF.pdf"
+			(at 323.85 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "N-Channel 115 V 4.4A (Ta) 1.1W (Ta) Surface Mount U-DFN2020-6 (Type F)"
+			(at 323.85 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "DMT12H060LFDF-7"
+			(at 323.85 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "4"
+			(uuid "acb9f79b-ea50-4099-9cc0-51cc7f936ad9")
+		)
+		(pin "7"
+			(uuid "2986ad00-1a8d-43df-b509-196240b7be9d")
+		)
+		(pin "8"
+			(uuid "6143d870-5e35-46c0-bc83-718fdeb98da5")
+		)
+		(pin "1"
+			(uuid "13de44f4-028f-4d45-a73d-93edc0dd12d3")
+		)
+		(pin "2"
+			(uuid "6d4a45e1-2c41-4b53-b868-73e04651f29a")
+		)
+		(pin "5"
+			(uuid "7ffd5cab-c39f-49c8-aa40-f781898607fa")
+		)
+		(pin "3"
+			(uuid "b44e8b02-6db4-4c2d-bcc6-a5b222fbbf79")
+		)
+		(pin "6"
+			(uuid "ef2367ec-10b3-441a-a403-ded62b6585f9")
+		)
+		(instances
+			(project ""
+				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
+					(reference "Q1")
 					(unit 1)
 				)
 			)
@@ -5215,7 +5331,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "4a2961b6-e676-442b-b26d-56dda98b0897")
-		(property "Reference" "#PWR032"
+		(property "Reference" "#PWR062"
 			(at 146.05 226.06 0)
 			(effects
 				(font
@@ -5265,7 +5381,7 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "#PWR032")
+					(reference "#PWR062")
 					(unit 1)
 				)
 			)
@@ -5281,7 +5397,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "4cd85f5c-df41-4957-a1fb-75a830f295d1")
-		(property "Reference" "C21"
+		(property "Reference" "C27"
 			(at 154.94 176.5299 0)
 			(effects
 				(font
@@ -5335,7 +5451,7 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "C21")
+					(reference "C27")
 					(unit 1)
 				)
 			)
@@ -5351,7 +5467,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "4ebf7bf4-6d9b-495f-941e-66804b505b1c")
-		(property "Reference" "R8"
+		(property "Reference" "R27"
 			(at 115.57 152.4 90)
 			(effects
 				(font
@@ -5403,7 +5519,7 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "R8")
+					(reference "R27")
 					(unit 1)
 				)
 			)
@@ -5420,7 +5536,7 @@
 		(dnp yes)
 		(fields_autoplaced yes)
 		(uuid "548d79bc-869e-4ef0-8972-348e05272d48")
-		(property "Reference" "C19"
+		(property "Reference" "C28"
 			(at 45.72 195.5799 0)
 			(effects
 				(font
@@ -5474,7 +5590,74 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "C19")
+					(reference "C28")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint_Small")
+		(at 177.8 173.99 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "6a161aed-6478-463f-b673-bfe13d81a6cf")
+		(property "Reference" "TP30"
+			(at 179.07 172.7199 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "ARMED"
+			(at 179.07 175.2599 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Keystone_5005-5009_Compact"
+			(at 182.88 173.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 182.88 173.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 177.8 173.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "c8c90832-41e5-4497-a7ab-c2011a3a90cd")
+		)
+		(instances
+			(project "Central_ECU"
+				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
+					(reference "TP30")
 					(unit 1)
 				)
 			)
@@ -5491,7 +5674,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "6ce42c00-4af6-441c-9615-dca0e5150912")
-		(property "Reference" "#PWR030"
+		(property "Reference" "#PWR060"
 			(at 81.28 226.06 0)
 			(effects
 				(font
@@ -5541,7 +5724,7 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "#PWR030")
+					(reference "#PWR060")
 					(unit 1)
 				)
 			)
@@ -5623,7 +5806,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "6f857c3e-d86f-4140-86e4-cd4fe3e711cb")
-		(property "Reference" "#PWR027"
+		(property "Reference" "#PWR049"
 			(at 99.06 77.47 0)
 			(effects
 				(font
@@ -5673,7 +5856,7 @@
 		(instances
 			(project ""
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "#PWR027")
+					(reference "#PWR049")
 					(unit 1)
 				)
 			)
@@ -5689,7 +5872,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "709bb158-f3ba-4d00-9dbc-6dd830bd894c")
-		(property "Reference" "C29"
+		(property "Reference" "C22"
 			(at 102.87 65.1509 0)
 			(effects
 				(font
@@ -5707,7 +5890,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:CP_Elec_6.3x9.9"
 			(at 100.0252 71.12 0)
 			(effects
 				(font
@@ -5716,7 +5899,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "~"
+		(property "Datasheet" "https://www.we-online.com/components/products/datasheet/865080645012.pdf"
 			(at 99.06 67.31 0)
 			(effects
 				(font
@@ -5734,6 +5917,15 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "865080645012"
+			(at 99.06 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "9402ba40-ba2d-46bc-9610-4c9d177257b0")
 		)
@@ -5743,7 +5935,7 @@
 		(instances
 			(project ""
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "C29")
+					(reference "C22")
 					(unit 1)
 				)
 			)
@@ -5767,7 +5959,7 @@
 				)
 			)
 		)
-		(property "Value" "LM339"
+		(property "Value" "LM339B"
 			(at 292.1 215.9 0)
 			(effects
 				(font
@@ -5775,7 +5967,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Package_SO:TSSOP-14_4.4x5mm_P0.65mm"
 			(at 293.37 226.06 0)
 			(effects
 				(font
@@ -5784,7 +5976,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://www.st.com/resource/en/datasheet/lm139.pdf"
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/lm2901b.pdf?ts=1695229373008&ref_url=https%253A%252F%252Fwww.ti.com%252Fsitesearch%252Fen-us%252Fdocs%252Funiversalsearch.tsp%253FlangPref%253Den-US%2526searchTerm%253DLM2901BIDR%2526nr%253D12"
 			(at 290.83 228.6 0)
 			(effects
 				(font
@@ -5794,6 +5986,15 @@
 			)
 		)
 		(property "Description" "Quad Differential Comparators, SOIC-14/TSSOP-14"
+			(at 292.1 223.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "LM339BIPWR"
 			(at 292.1 223.52 0)
 			(effects
 				(font
@@ -5863,7 +6064,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "7f45e34f-4435-4037-8089-5e5ebddac79a")
-		(property "Reference" "C31"
+		(property "Reference" "C24"
 			(at 278.13 66.0399 0)
 			(effects
 				(font
@@ -5935,7 +6136,7 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "C31")
+					(reference "C24")
 					(unit 1)
 				)
 			)
@@ -5951,7 +6152,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "821c92dc-3666-4553-9ae0-b5785b11486c")
-		(property "Reference" "#PWR024"
+		(property "Reference" "#PWR056"
 			(at 73.66 187.96 0)
 			(effects
 				(font
@@ -6001,7 +6202,7 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "#PWR024")
+					(reference "#PWR056")
 					(unit 1)
 				)
 			)
@@ -6017,7 +6218,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "98dee8dc-2aa8-42cc-af93-d86e7b16900c")
-		(property "Reference" "#PWR031"
+		(property "Reference" "#PWR061"
 			(at 115.57 226.06 0)
 			(effects
 				(font
@@ -6067,7 +6268,7 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "#PWR031")
+					(reference "#PWR061")
 					(unit 1)
 				)
 			)
@@ -6083,7 +6284,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "9f9bd2df-9a10-4103-95fe-ba618f19d673")
-		(property "Reference" "U3"
+		(property "Reference" "U6"
 			(at 115.57 165.354 0)
 			(effects
 				(font
@@ -6118,6 +6319,15 @@
 			)
 		)
 		(property "Description" ""
+			(at 115.57 193.04 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "TPS16630PWPR"
 			(at 115.57 193.04 0)
 			(effects
 				(font
@@ -6192,7 +6402,7 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "U3")
+					(reference "U6")
 					(unit 1)
 				)
 			)
@@ -6208,7 +6418,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "9fb9bb45-bde6-403f-98c0-4d405fa9afa2")
-		(property "Reference" "R18"
+		(property "Reference" "R22"
 			(at 125.73 57.15 90)
 			(effects
 				(font
@@ -6224,7 +6434,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
 			(at 125.73 65.278 90)
 			(effects
 				(font
@@ -6260,7 +6470,7 @@
 		(instances
 			(project ""
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "R18")
+					(reference "R22")
 					(unit 1)
 				)
 			)
@@ -6284,7 +6494,7 @@
 				)
 			)
 		)
-		(property "Value" "LM339"
+		(property "Value" "LM339B"
 			(at 193.04 35.56 0)
 			(effects
 				(font
@@ -6292,7 +6502,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Package_SO:TSSOP-14_4.4x5mm_P0.65mm"
 			(at 191.77 40.64 0)
 			(effects
 				(font
@@ -6301,7 +6511,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://www.st.com/resource/en/datasheet/lm139.pdf"
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/lm2901b.pdf?ts=1695229373008&ref_url=https%253A%252F%252Fwww.ti.com%252Fsitesearch%252Fen-us%252Fdocs%252Funiversalsearch.tsp%253FlangPref%253Den-US%2526searchTerm%253DLM2901BIDR%2526nr%253D12"
 			(at 194.31 38.1 0)
 			(effects
 				(font
@@ -6311,6 +6521,15 @@
 			)
 		)
 		(property "Description" "Quad Differential Comparators, SOIC-14/TSSOP-14"
+			(at 193.04 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "LM339BIPWR"
 			(at 193.04 43.18 0)
 			(effects
 				(font
@@ -6380,7 +6599,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a80a0af6-0fde-413e-9c96-b89999328660")
-		(property "Reference" "#PWR025"
+		(property "Reference" "#PWR057"
 			(at 151.13 187.96 0)
 			(effects
 				(font
@@ -6430,7 +6649,7 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "#PWR025")
+					(reference "#PWR057")
 					(unit 1)
 				)
 			)
@@ -6446,7 +6665,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ac903713-6dd7-47bc-9644-f80def5a001f")
-		(property "Reference" "#PWR052"
+		(property "Reference" "#PWR054"
 			(at 323.85 119.38 0)
 			(effects
 				(font
@@ -6496,7 +6715,74 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "#PWR052")
+					(reference "#PWR054")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint_Small")
+		(at 138.43 101.6 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "acb7d55d-8f7a-4086-afad-2a921bd89be9")
+		(property "Reference" "TP29"
+			(at 139.7 100.3299 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "12V"
+			(at 139.7 102.8699 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Keystone_5005-5009_Compact"
+			(at 143.51 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 143.51 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 138.43 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "72cfedcc-1a35-4f65-b468-64956933ac12")
+		)
+		(instances
+			(project ""
+				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
+					(reference "TP29")
 					(unit 1)
 				)
 			)
@@ -6513,7 +6799,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "affc6f68-0242-4ad3-8bc6-a7446ac1bd30")
-		(property "Reference" "C18"
+		(property "Reference" "C29"
 			(at 67.31 210.8199 0)
 			(effects
 				(font
@@ -6567,7 +6853,7 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "C18")
+					(reference "C29")
 					(unit 1)
 				)
 			)
@@ -6583,7 +6869,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "b07710b4-3ce1-4638-8d35-3dcd3d99810f")
-		(property "Reference" "#PWR028"
+		(property "Reference" "#PWR059"
 			(at 157.48 219.71 0)
 			(effects
 				(font
@@ -6633,7 +6919,7 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "#PWR028")
+					(reference "#PWR059")
 					(unit 1)
 				)
 			)
@@ -6649,7 +6935,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "baac17e1-09bb-464e-a51d-7d82cf373dd7")
-		(property "Reference" "R30"
+		(property "Reference" "R25"
 			(at 304.8 88.9 90)
 			(effects
 				(font
@@ -6701,7 +6987,7 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "R30")
+					(reference "R25")
 					(unit 1)
 				)
 			)
@@ -6735,7 +7021,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Fuse:Fuse_1206_3216Metric"
 			(at 231.648 135.89 90)
 			(effects
 				(font
@@ -6787,7 +7073,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "bc60f1fa-5523-4daa-a0ec-b8467cc8bdf8")
-		(property "Reference" "#PWR023"
+		(property "Reference" "#PWR055"
 			(at 62.23 187.96 0)
 			(effects
 				(font
@@ -6837,7 +7123,7 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "#PWR023")
+					(reference "#PWR055")
 					(unit 1)
 				)
 			)
@@ -6862,7 +7148,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "LM339"
+		(property "Value" "LM339B"
 			(at 153.67 46.9899 0)
 			(effects
 				(font
@@ -6871,7 +7157,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Package_SO:TSSOP-14_4.4x5mm_P0.65mm"
 			(at 153.67 43.18 0)
 			(effects
 				(font
@@ -6880,7 +7166,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://www.st.com/resource/en/datasheet/lm139.pdf"
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/lm2901b.pdf?ts=1695229373008&ref_url=https%253A%252F%252Fwww.ti.com%252Fsitesearch%252Fen-us%252Fdocs%252Funiversalsearch.tsp%253FlangPref%253Den-US%2526searchTerm%253DLM2901BIDR%2526nr%253D12"
 			(at 156.21 40.64 0)
 			(effects
 				(font
@@ -6890,6 +7176,15 @@
 			)
 		)
 		(property "Description" "Quad Differential Comparators, SOIC-14/TSSOP-14"
+			(at 154.94 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "LM339BIPWR"
 			(at 154.94 45.72 0)
 			(effects
 				(font
@@ -6959,7 +7254,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "c04bc012-fa5d-4074-9c14-590da1a31ef1")
-		(property "Reference" "R12"
+		(property "Reference" "R29"
 			(at 160.02 207.0099 0)
 			(effects
 				(font
@@ -7013,7 +7308,7 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "R12")
+					(reference "R29")
 					(unit 1)
 				)
 			)
@@ -7045,7 +7340,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Package_TO_SOT_SMD:TO-263-3_TabPin2"
 			(at 73.66 57.15 0)
 			(effects
 				(font
@@ -7065,6 +7360,15 @@
 			)
 		)
 		(property "Description" "5A 29V Adjustable Linear Regulator, TO-220 / TO-263 (D2-PAK)"
+			(at 73.66 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "LM1084ISX-ADJ/NOPB"
 			(at 73.66 63.5 0)
 			(effects
 				(font
@@ -7102,7 +7406,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d58ee175-8aaa-4aa1-9a1e-c4b6d535dc44")
-		(property "Reference" "#PWR072"
+		(property "Reference" "#PWR058"
 			(at 49.53 207.01 0)
 			(effects
 				(font
@@ -7152,7 +7456,7 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "#PWR072")
+					(reference "#PWR058")
 					(unit 1)
 				)
 			)
@@ -7168,7 +7472,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "e45576c4-a3a3-4611-93f6-b9b8a8ce1bdd")
-		(property "Reference" "C30"
+		(property "Reference" "C23"
 			(at 266.7 66.0399 0)
 			(effects
 				(font
@@ -7222,7 +7526,7 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "C30")
+					(reference "C23")
 					(unit 1)
 				)
 			)
@@ -7246,7 +7550,7 @@
 				)
 			)
 		)
-		(property "Value" "LM339"
+		(property "Value" "LM339B"
 			(at 292.1 179.07 0)
 			(effects
 				(font
@@ -7254,7 +7558,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Package_SO:TSSOP-14_4.4x5mm_P0.65mm"
 			(at 293.37 189.23 0)
 			(effects
 				(font
@@ -7263,7 +7567,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://www.st.com/resource/en/datasheet/lm139.pdf"
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/lm2901b.pdf?ts=1695229373008&ref_url=https%253A%252F%252Fwww.ti.com%252Fsitesearch%252Fen-us%252Fdocs%252Funiversalsearch.tsp%253FlangPref%253Den-US%2526searchTerm%253DLM2901BIDR%2526nr%253D12"
 			(at 290.83 191.77 0)
 			(effects
 				(font
@@ -7273,6 +7577,15 @@
 			)
 		)
 		(property "Description" "Quad Differential Comparators, SOIC-14/TSSOP-14"
+			(at 292.1 186.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "LM339BIPWR"
 			(at 292.1 186.69 0)
 			(effects
 				(font
@@ -7342,7 +7655,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f0e0d030-b79b-41c0-a234-76609c37e304")
-		(property "Reference" "#PWR033"
+		(property "Reference" "#PWR047"
 			(at 152.4 59.69 0)
 			(effects
 				(font
@@ -7392,7 +7705,7 @@
 		(instances
 			(project ""
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "#PWR033")
+					(reference "#PWR047")
 					(unit 1)
 				)
 			)
@@ -7408,7 +7721,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f6bb9148-2619-4958-9356-76b99251edd8")
-		(property "Reference" "R10"
+		(property "Reference" "R28"
 			(at 160.02 190.4999 0)
 			(effects
 				(font
@@ -7462,7 +7775,7 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "R10")
+					(reference "R28")
 					(unit 1)
 				)
 			)
@@ -7478,7 +7791,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f8491618-045e-4bfc-9dd8-61891c45e53b")
-		(property "Reference" "#PWR049"
+		(property "Reference" "#PWR050"
 			(at 262.89 77.47 0)
 			(effects
 				(font
@@ -7528,7 +7841,7 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "#PWR049")
+					(reference "#PWR050")
 					(unit 1)
 				)
 			)
@@ -7544,7 +7857,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "fbb208fb-98a3-4d80-a622-2a00d0b42adc")
-		(property "Reference" "C28"
+		(property "Reference" "C21"
 			(at 57.15 66.0399 0)
 			(effects
 				(font
@@ -7562,7 +7875,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
 			(at 54.3052 71.12 0)
 			(effects
 				(font
@@ -7598,7 +7911,7 @@
 		(instances
 			(project ""
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "C28")
+					(reference "C21")
 					(unit 1)
 				)
 			)

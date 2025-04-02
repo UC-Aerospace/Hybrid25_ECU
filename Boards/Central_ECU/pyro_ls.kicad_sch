@@ -4,6 +4,14 @@
 	(generator_version "9.0")
 	(uuid "c0009b18-b23c-4be3-873f-4a0beb7e35a3")
 	(paper "A3")
+	(title_block
+		(title "Pyro Low Side")
+		(date "2025-04-02")
+		(rev "A")
+		(company "Hybrid Test Stand 2025")
+		(comment 1 "Drawn: Brad Redpath")
+		(comment 2 "Checked: ")
+	)
 	(lib_symbols
 		(symbol "Device:C"
 			(pin_numbers
@@ -418,36 +426,28 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Simulation_SPICE:NMOS"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-			)
+		(symbol "TS_Symbols:DMT12H060LFDF"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(property "Reference" "Q1"
-				(at 6.35 1.2701 0)
+			(property "Reference" "Q"
+				(at 2.54 3.048 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
-					(justify left)
 				)
 			)
-			(property "Value" "DMT12H060LFDF-7"
-				(at 6.35 -1.27 0)
+			(property "Value" "DMT12H060LFDF"
+				(at 9.906 1.016 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
-					(justify left)
 				)
 			)
 			(property "Footprint" "Package_DFN_QFN:Diodes_UDFN2020-6_Type-F"
-				(at 5.08 2.54 0)
+				(at -0.254 -14.986 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -456,15 +456,6 @@
 				)
 			)
 			(property "Datasheet" "https://www.diodes.com/assets/Datasheets/DMT12H060LFDF.pdf"
-				(at 0 -12.7 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "N-MOSFET transistor, drain/source/gate"
 				(at 0 0 0)
 				(effects
 					(font
@@ -473,34 +464,7 @@
 					(hide yes)
 				)
 			)
-			(property "Sim.Device" "NMOS"
-				(at 0 -17.145 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Sim.Type" "VDMOS"
-				(at 0 -19.05 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Sim.Pins" "1=D 2=G 3=S"
-				(at 0 -15.24 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "transistor NMOS N-MOS N-MOSFET simulation"
+			(property "Description" "N-Channel 115 V 4.4A (Ta) 1.1W (Ta) Surface Mount U-DFN2020-6 (Type F)"
 				(at 0 0 0)
 				(effects
 					(font
@@ -509,10 +473,19 @@
 					(hide yes)
 				)
 			)
-			(symbol "NMOS_0_1"
+			(property "MPN" "DMT12H060LFDF-7"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "DMT12H060LFDF_0_1"
 				(polyline
 					(pts
-						(xy 0.254 1.905) (xy 0.254 -1.905)
+						(xy -2.286 1.905) (xy -2.286 -1.905)
 					)
 					(stroke
 						(width 0.254)
@@ -524,7 +497,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0.254 0) (xy -2.54 0)
+						(xy -2.286 0) (xy -5.08 0)
 					)
 					(stroke
 						(width 0)
@@ -536,7 +509,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0.762 2.286) (xy 0.762 1.27)
+						(xy -1.778 2.286) (xy -1.778 1.27)
 					)
 					(stroke
 						(width 0.254)
@@ -548,7 +521,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0.762 0.508) (xy 0.762 -0.508)
+						(xy -1.778 0.508) (xy -1.778 -0.508)
 					)
 					(stroke
 						(width 0.254)
@@ -560,7 +533,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0.762 -1.27) (xy 0.762 -2.286)
+						(xy -1.778 -1.27) (xy -1.778 -2.286)
 					)
 					(stroke
 						(width 0.254)
@@ -572,7 +545,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0.762 -1.778) (xy 3.302 -1.778) (xy 3.302 1.778) (xy 0.762 1.778)
+						(xy -1.778 -1.778) (xy 0.762 -1.778) (xy 0.762 1.778) (xy -1.778 1.778)
 					)
 					(stroke
 						(width 0)
@@ -584,7 +557,7 @@
 				)
 				(polyline
 					(pts
-						(xy 1.016 0) (xy 2.032 0.381) (xy 2.032 -0.381) (xy 1.016 0)
+						(xy -1.524 0) (xy -0.508 0.381) (xy -0.508 -0.381) (xy -1.524 0)
 					)
 					(stroke
 						(width 0)
@@ -595,7 +568,7 @@
 					)
 				)
 				(circle
-					(center 1.651 0)
+					(center -0.889 0)
 					(radius 2.794)
 					(stroke
 						(width 0.254)
@@ -607,7 +580,7 @@
 				)
 				(polyline
 					(pts
-						(xy 2.54 2.54) (xy 2.54 1.778)
+						(xy 0 2.54) (xy 0 1.778)
 					)
 					(stroke
 						(width 0)
@@ -618,7 +591,7 @@
 					)
 				)
 				(circle
-					(center 2.54 1.778)
+					(center 0 1.778)
 					(radius 0.254)
 					(stroke
 						(width 0)
@@ -629,7 +602,7 @@
 					)
 				)
 				(circle
-					(center 2.54 -1.778)
+					(center 0 -1.778)
 					(radius 0.254)
 					(stroke
 						(width 0)
@@ -641,7 +614,7 @@
 				)
 				(polyline
 					(pts
-						(xy 2.54 -2.54) (xy 2.54 0) (xy 0.762 0)
+						(xy 0 -2.54) (xy 0 0) (xy -1.778 0)
 					)
 					(stroke
 						(width 0)
@@ -653,7 +626,7 @@
 				)
 				(polyline
 					(pts
-						(xy 2.794 0.508) (xy 2.921 0.381) (xy 3.683 0.381) (xy 3.81 0.254)
+						(xy 0.254 0.508) (xy 0.381 0.381) (xy 1.143 0.381) (xy 1.27 0.254)
 					)
 					(stroke
 						(width 0)
@@ -665,7 +638,7 @@
 				)
 				(polyline
 					(pts
-						(xy 3.302 0.381) (xy 2.921 -0.254) (xy 3.683 -0.254) (xy 3.302 0.381)
+						(xy 0.762 0.381) (xy 0.381 -0.254) (xy 1.143 -0.254) (xy 0.762 0.381)
 					)
 					(stroke
 						(width 0)
@@ -676,18 +649,18 @@
 					)
 				)
 			)
-			(symbol "NMOS_1_1"
-				(pin input line
-					(at -5.08 0 0)
+			(symbol "DMT12H060LFDF_1_1"
+				(pin passive line
+					(at -7.62 0 0)
 					(length 2.54)
-					(name "G"
+					(name "~"
 						(effects
 							(font
 								(size 1.27 1.27)
 							)
 						)
 					)
-					(number "4"
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -696,9 +669,9 @@
 					)
 				)
 				(pin passive line
-					(at 2.54 5.08 270)
+					(at 0 5.08 270)
 					(length 2.54)
-					(name "D"
+					(name "~"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -714,7 +687,7 @@
 					)
 				)
 				(pin passive line
-					(at 2.54 5.08 270)
+					(at 0 5.08 270)
 					(length 2.54)
 					(hide yes)
 					(name "D"
@@ -733,7 +706,7 @@
 					)
 				)
 				(pin passive line
-					(at 2.54 5.08 270)
+					(at 0 5.08 270)
 					(length 2.54)
 					(hide yes)
 					(name "D"
@@ -752,7 +725,7 @@
 					)
 				)
 				(pin passive line
-					(at 2.54 5.08 270)
+					(at 0 5.08 270)
 					(length 2.54)
 					(hide yes)
 					(name "D"
@@ -771,7 +744,7 @@
 					)
 				)
 				(pin passive line
-					(at 2.54 5.08 270)
+					(at 0 5.08 270)
 					(length 2.54)
 					(hide yes)
 					(name "D"
@@ -790,16 +763,16 @@
 					)
 				)
 				(pin passive line
-					(at 2.54 -5.08 90)
+					(at 0 -5.08 90)
 					(length 2.54)
-					(name "S"
+					(name "~"
 						(effects
 							(font
 								(size 1.27 1.27)
 							)
 						)
 					)
-					(number "3"
+					(number "4"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -808,8 +781,9 @@
 					)
 				)
 				(pin passive line
-					(at 2.54 -5.08 90)
+					(at 0 -5.08 90)
 					(length 2.54)
+					(hide yes)
 					(name "S"
 						(effects
 							(font
@@ -944,7 +918,7 @@
 	)
 	(text "RC Filter, \ncutoff 7.95Hz"
 		(exclude_from_sim no)
-		(at 239.014 148.082 0)
+		(at 256.032 148.844 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -954,22 +928,22 @@
 		(uuid "51192ee7-70ad-4e9f-8dbc-e6289f27cc17")
 	)
 	(junction
-		(at 237.49 133.35)
+		(at 255.27 133.35)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "1005ff2c-3836-4183-a7d0-79eee2ea80e1")
 	)
 	(junction
-		(at 224.79 133.35)
+		(at 242.57 133.35)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "2045bdd8-5a2c-42d2-8555-e0d2a6b9a17d")
 	)
 	(junction
-		(at 256.54 133.35)
+		(at 222.25 133.35)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "2ddb96d7-1106-4951-af18-13ac4bbc0572")
+		(uuid "66e9dba8-0931-46bc-84da-4e40274390dc")
 	)
 	(junction
 		(at 170.18 121.92)
@@ -997,7 +971,7 @@
 	)
 	(wire
 		(pts
-			(xy 224.79 146.05) (xy 224.79 160.02)
+			(xy 242.57 146.05) (xy 242.57 160.02)
 		)
 		(stroke
 			(width 0)
@@ -1007,7 +981,7 @@
 	)
 	(wire
 		(pts
-			(xy 224.79 138.43) (xy 224.79 133.35)
+			(xy 242.57 138.43) (xy 242.57 133.35)
 		)
 		(stroke
 			(width 0)
@@ -1037,7 +1011,7 @@
 	)
 	(wire
 		(pts
-			(xy 224.79 133.35) (xy 237.49 133.35)
+			(xy 242.57 133.35) (xy 255.27 133.35)
 		)
 		(stroke
 			(width 0)
@@ -1077,7 +1051,7 @@
 	)
 	(wire
 		(pts
-			(xy 203.2 133.35) (xy 198.12 133.35)
+			(xy 228.6 133.35) (xy 222.25 133.35)
 		)
 		(stroke
 			(width 0)
@@ -1117,23 +1091,23 @@
 	)
 	(wire
 		(pts
-			(xy 256.54 133.35) (xy 256.54 138.43)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8ecb060e-ba9c-4701-9f08-ded601b4a93c")
-	)
-	(wire
-		(pts
-			(xy 237.49 133.35) (xy 256.54 133.35)
+			(xy 255.27 133.35) (xy 270.51 133.35)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "98303ffe-8864-49fb-aea1-1bfc16606155")
+	)
+	(wire
+		(pts
+			(xy 222.25 146.05) (xy 222.25 160.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9977c75e-dd0c-4d23-936b-ace5f7f61124")
 	)
 	(wire
 		(pts
@@ -1167,7 +1141,7 @@
 	)
 	(wire
 		(pts
-			(xy 237.49 138.43) (xy 237.49 133.35)
+			(xy 255.27 138.43) (xy 255.27 133.35)
 		)
 		(stroke
 			(width 0)
@@ -1177,17 +1151,27 @@
 	)
 	(wire
 		(pts
-			(xy 256.54 133.35) (xy 270.51 133.35)
+			(xy 222.25 133.35) (xy 198.12 133.35)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "d2e1616b-8e67-48a3-9fef-cd9615598088")
+		(uuid "db2fb4ce-2866-4c07-b497-132f5f5bf943")
 	)
 	(wire
 		(pts
-			(xy 210.82 133.35) (xy 224.79 133.35)
+			(xy 222.25 133.35) (xy 222.25 138.43)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dec951c0-3370-4022-b38b-83e7bc697314")
+	)
+	(wire
+		(pts
+			(xy 236.22 133.35) (xy 242.57 133.35)
 		)
 		(stroke
 			(width 0)
@@ -1207,17 +1191,7 @@
 	)
 	(wire
 		(pts
-			(xy 256.54 146.05) (xy 256.54 160.02)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f5c80406-4f2f-48b8-8a13-4f262fd9bda3")
-	)
-	(wire
-		(pts
-			(xy 237.49 146.05) (xy 237.49 160.02)
+			(xy 255.27 146.05) (xy 255.27 160.02)
 		)
 		(stroke
 			(width 0)
@@ -1282,7 +1256,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 224.79 142.24 0)
+		(at 242.57 142.24 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1290,8 +1264,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "202b9f14-1243-44ec-9c84-83db38734ae4")
-		(property "Reference" "R28"
-			(at 227.33 140.9699 0)
+		(property "Reference" "R34"
+			(at 245.11 140.9699 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1300,7 +1274,7 @@
 			)
 		)
 		(property "Value" "20K"
-			(at 227.33 143.5099 0)
+			(at 245.11 143.5099 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1309,7 +1283,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
-			(at 223.012 142.24 90)
+			(at 240.792 142.24 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1318,7 +1292,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 224.79 142.24 0)
+			(at 242.57 142.24 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1327,7 +1301,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 224.79 142.24 0)
+			(at 242.57 142.24 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1344,11 +1318,11 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/643d687a-943d-4705-82bf-eed53f48fae4"
-					(reference "R28")
+					(reference "R34")
 					(unit 1)
 				)
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/fc6867a4-106d-4cbd-bbd7-95d649ae44c2"
-					(reference "R23")
+					(reference "R38")
 					(unit 1)
 				)
 			)
@@ -1356,7 +1330,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 207.01 133.35 90)
+		(at 232.41 133.35 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1364,8 +1338,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3727d664-77d6-40fd-af87-450a4bc3e4b4")
-		(property "Reference" "R27"
-			(at 207.01 127 90)
+		(property "Reference" "R32"
+			(at 232.41 127 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1373,7 +1347,7 @@
 			)
 		)
 		(property "Value" "20K"
-			(at 207.01 129.54 90)
+			(at 232.41 129.54 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1381,7 +1355,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
-			(at 207.01 135.128 90)
+			(at 232.41 135.128 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1390,7 +1364,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 207.01 133.35 0)
+			(at 232.41 133.35 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1399,7 +1373,7 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 207.01 133.35 0)
+			(at 232.41 133.35 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1416,11 +1390,11 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/643d687a-943d-4705-82bf-eed53f48fae4"
-					(reference "R27")
+					(reference "R32")
 					(unit 1)
 				)
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/fc6867a4-106d-4cbd-bbd7-95d649ae44c2"
-					(reference "R21")
+					(reference "R36")
 					(unit 1)
 				)
 			)
@@ -1436,7 +1410,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3954f9f6-5123-47c0-a69e-375374754d2a")
-		(property "Reference" "C25"
+		(property "Reference" "C30"
 			(at 162.56 124.4599 0)
 			(effects
 				(font
@@ -1490,11 +1464,11 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/643d687a-943d-4705-82bf-eed53f48fae4"
-					(reference "C25")
+					(reference "C30")
 					(unit 1)
 				)
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/fc6867a4-106d-4cbd-bbd7-95d649ae44c2"
-					(reference "C22")
+					(reference "C33")
 					(unit 1)
 				)
 			)
@@ -1502,7 +1476,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 224.79 160.02 0)
+		(at 242.57 160.02 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1510,8 +1484,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "479b3722-4c70-4344-b3f3-db255cc622a6")
-		(property "Reference" "#PWR047"
-			(at 224.79 166.37 0)
+		(property "Reference" "#PWR067"
+			(at 242.57 166.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1520,7 +1494,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 224.79 165.1 0)
+			(at 242.57 165.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1528,7 +1502,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 224.79 160.02 0)
+			(at 242.57 160.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1537,7 +1511,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 224.79 160.02 0)
+			(at 242.57 160.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1546,7 +1520,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 224.79 160.02 0)
+			(at 242.57 160.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1560,11 +1534,11 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/643d687a-943d-4705-82bf-eed53f48fae4"
-					(reference "#PWR047")
+					(reference "#PWR067")
 					(unit 1)
 				)
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/fc6867a4-106d-4cbd-bbd7-95d649ae44c2"
-					(reference "#PWR041")
+					(reference "#PWR074")
 					(unit 1)
 				)
 			)
@@ -1580,7 +1554,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "57126fa8-65b3-4b24-965a-7968568231aa")
-		(property "Reference" "#PWR044"
+		(property "Reference" "#PWR065"
 			(at 162.56 166.37 0)
 			(effects
 				(font
@@ -1630,11 +1604,11 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/643d687a-943d-4705-82bf-eed53f48fae4"
-					(reference "#PWR044")
+					(reference "#PWR065")
 					(unit 1)
 				)
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/fc6867a4-106d-4cbd-bbd7-95d649ae44c2"
-					(reference "#PWR038")
+					(reference "#PWR072")
 					(unit 1)
 				)
 			)
@@ -1650,7 +1624,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "5c12c7c6-0bc9-42a4-af0f-6b94c4f87edf")
-		(property "Reference" "R26"
+		(property "Reference" "R33"
 			(at 179.07 135.89 90)
 			(effects
 				(font
@@ -1702,11 +1676,11 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/643d687a-943d-4705-82bf-eed53f48fae4"
-					(reference "R26")
+					(reference "R33")
 					(unit 1)
 				)
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/fc6867a4-106d-4cbd-bbd7-95d649ae44c2"
-					(reference "R22")
+					(reference "R37")
 					(unit 1)
 				)
 			)
@@ -1722,7 +1696,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "749f3602-c971-45d2-905e-043b68663791")
-		(property "Reference" "R25"
+		(property "Reference" "R35"
 			(at 165.1 149.8599 0)
 			(effects
 				(font
@@ -1776,11 +1750,11 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/643d687a-943d-4705-82bf-eed53f48fae4"
-					(reference "R25")
+					(reference "R35")
 					(unit 1)
 				)
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/fc6867a4-106d-4cbd-bbd7-95d649ae44c2"
-					(reference "R24")
+					(reference "R39")
 					(unit 1)
 				)
 			)
@@ -1788,7 +1762,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 237.49 160.02 0)
+		(at 255.27 160.02 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1796,8 +1770,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "7f312d3a-7909-4a3e-93ea-95fbaaba50b8")
-		(property "Reference" "#PWR048"
-			(at 237.49 166.37 0)
+		(property "Reference" "#PWR068"
+			(at 255.27 166.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1806,7 +1780,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 237.49 165.1 0)
+			(at 255.27 165.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1814,7 +1788,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 237.49 160.02 0)
+			(at 255.27 160.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1823,7 +1797,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 237.49 160.02 0)
+			(at 255.27 160.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1832,7 +1806,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 237.49 160.02 0)
+			(at 255.27 160.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1846,11 +1820,11 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/643d687a-943d-4705-82bf-eed53f48fae4"
-					(reference "#PWR048")
+					(reference "#PWR068")
 					(unit 1)
 				)
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/fc6867a4-106d-4cbd-bbd7-95d649ae44c2"
-					(reference "#PWR042")
+					(reference "#PWR075")
 					(unit 1)
 				)
 			)
@@ -1866,7 +1840,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "81fc45ba-9e01-4ec2-bcda-db39abb01307")
-		(property "Reference" "#PWR043"
+		(property "Reference" "#PWR063"
 			(at 158.75 135.89 0)
 			(effects
 				(font
@@ -1916,11 +1890,11 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/643d687a-943d-4705-82bf-eed53f48fae4"
-					(reference "#PWR043")
+					(reference "#PWR063")
 					(unit 1)
 				)
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/fc6867a4-106d-4cbd-bbd7-95d649ae44c2"
-					(reference "#PWR037")
+					(reference "#PWR070")
 					(unit 1)
 				)
 			)
@@ -1936,7 +1910,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "87c71c7d-fb79-4a82-9e96-a90a8ea0dace")
-		(property "Reference" "#PWR046"
+		(property "Reference" "#PWR066"
 			(at 198.12 166.37 0)
 			(effects
 				(font
@@ -1986,11 +1960,11 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/643d687a-943d-4705-82bf-eed53f48fae4"
-					(reference "#PWR046")
+					(reference "#PWR066")
 					(unit 1)
 				)
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/fc6867a4-106d-4cbd-bbd7-95d649ae44c2"
-					(reference "#PWR040")
+					(reference "#PWR073")
 					(unit 1)
 				)
 			)
@@ -1998,15 +1972,15 @@
 	)
 	(symbol
 		(lib_id "Device:D_TVS")
-		(at 256.54 142.24 90)
+		(at 222.25 142.24 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
 		(uuid "ab050057-d5ca-45d0-a963-6952beebbc20")
-		(property "Reference" "D11"
-			(at 259.08 140.9699 90)
+		(property "Reference" "D7"
+			(at 224.79 140.9699 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2015,7 +1989,7 @@
 			)
 		)
 		(property "Value" "TVS 30V"
-			(at 259.08 143.51 90)
+			(at 224.79 143.51 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2024,7 +1998,7 @@
 			)
 		)
 		(property "Footprint" "Diode_SMD:D_SOD-882"
-			(at 256.54 142.24 0)
+			(at 222.25 142.24 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2032,8 +2006,8 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/PESD1CANFD30LS-Q.pdf"
-			(at 256.54 142.24 0)
+		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/PESD1CANFD30L-Q.pdf"
+			(at 222.25 142.24 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2042,7 +2016,7 @@
 			)
 		)
 		(property "Description" "Bidirectional transient-voltage-suppression diode"
-			(at 256.54 142.24 0)
+			(at 222.25 142.24 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2050,8 +2024,8 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "PESD1CANFD30LS-QYL"
-			(at 256.54 142.24 90)
+		(property "MPN" "PESD1CANFD30L-QYL"
+			(at 222.25 142.24 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2068,11 +2042,11 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/643d687a-943d-4705-82bf-eed53f48fae4"
-					(reference "D11")
+					(reference "D7")
 					(unit 1)
 				)
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/fc6867a4-106d-4cbd-bbd7-95d649ae44c2"
-					(reference "D10")
+					(reference "D15")
 					(unit 1)
 				)
 			)
@@ -2080,7 +2054,7 @@
 	)
 	(symbol
 		(lib_id "Device:C")
-		(at 237.49 142.24 0)
+		(at 255.27 142.24 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2088,8 +2062,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "afba3eeb-fb1c-463e-95c5-e984255475b0")
-		(property "Reference" "C27"
-			(at 241.3 140.9699 0)
+		(property "Reference" "C32"
+			(at 259.08 140.9699 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2098,7 +2072,7 @@
 			)
 		)
 		(property "Value" "100n"
-			(at 241.3 143.5099 0)
+			(at 259.08 143.5099 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2107,7 +2081,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
-			(at 238.4552 146.05 0)
+			(at 256.2352 146.05 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2116,7 +2090,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 237.49 142.24 0)
+			(at 255.27 142.24 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2125,7 +2099,7 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
-			(at 237.49 142.24 0)
+			(at 255.27 142.24 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2142,129 +2116,11 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/643d687a-943d-4705-82bf-eed53f48fae4"
-					(reference "C27")
+					(reference "C32")
 					(unit 1)
 				)
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/fc6867a4-106d-4cbd-bbd7-95d649ae44c2"
-					(reference "C24")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Simulation_SPICE:NMOS")
-		(at 195.58 142.24 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "b2a24c34-a2ec-4a62-89b3-de8efe32dc2f")
-		(property "Reference" "Q2"
-			(at 201.93 140.9699 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "DMT12H060LFDF-7"
-			(at 201.93 143.51 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Package_DFN_QFN:Diodes_UDFN2020-6_Type-F"
-			(at 200.66 139.7 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.diodes.com/assets/Datasheets/DMT12H060LFDF.pdf"
-			(at 195.58 154.94 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "N-MOSFET transistor, drain/source/gate"
-			(at 195.58 142.24 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Device" "NMOS"
-			(at 195.58 159.385 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Type" "VDMOS"
-			(at 195.58 161.29 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Pins" "1=D 2=G 3=S"
-			(at 195.58 157.48 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "3"
-			(uuid "300334bf-bd42-4f28-91f8-15985c485da9")
-		)
-		(pin "2"
-			(uuid "e10a7bff-d6ea-42bc-bff1-64c98de4e212")
-		)
-		(pin "1"
-			(uuid "7b8ff41f-4fc2-47ca-9b3f-3fe25b792ae7")
-		)
-		(pin "4"
-			(uuid "6472d7bc-5f40-42bf-a8d1-03137de9e81e")
-		)
-		(pin "6"
-			(uuid "1c278658-1504-4ca1-aa4b-31d5b3314f81")
-		)
-		(pin "5"
-			(uuid "50aac4aa-3cd4-4a33-a2d5-aac6e678b2d4")
-		)
-		(pin "7"
-			(uuid "6cb7a4a2-0ad3-4042-8f85-2899cd08e9d7")
-		)
-		(pin "8"
-			(uuid "1dce41e4-0db2-4d0e-b272-c87e45decc6c")
-		)
-		(instances
-			(project "Central_ECU"
-				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/643d687a-943d-4705-82bf-eed53f48fae4"
-					(reference "Q2")
-					(unit 1)
-				)
-				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/fc6867a4-106d-4cbd-bbd7-95d649ae44c2"
-					(reference "Q1")
+					(reference "C35")
 					(unit 1)
 				)
 			)
@@ -2272,7 +2128,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 256.54 160.02 0)
+		(at 222.25 160.02 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2280,8 +2136,8 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "c525215c-6c87-4b71-8e85-03764345a4d5")
-		(property "Reference" "#PWR065"
-			(at 256.54 166.37 0)
+		(property "Reference" "#PWR076"
+			(at 222.25 166.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2290,7 +2146,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 256.54 165.1 0)
+			(at 222.25 165.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2298,7 +2154,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 256.54 160.02 0)
+			(at 222.25 160.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2307,7 +2163,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 256.54 160.02 0)
+			(at 222.25 160.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2316,7 +2172,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 256.54 160.02 0)
+			(at 222.25 160.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2330,11 +2186,11 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/643d687a-943d-4705-82bf-eed53f48fae4"
-					(reference "#PWR065")
+					(reference "#PWR076")
 					(unit 1)
 				)
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/fc6867a4-106d-4cbd-bbd7-95d649ae44c2"
-					(reference "#PWR064")
+					(reference "#PWR0115")
 					(unit 1)
 				)
 			)
@@ -2350,7 +2206,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d14d5a3a-b18f-4789-96b8-3cb3260c17cc")
-		(property "Reference" "C26"
+		(property "Reference" "C31"
 			(at 173.99 124.4599 0)
 			(effects
 				(font
@@ -2422,11 +2278,112 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/643d687a-943d-4705-82bf-eed53f48fae4"
-					(reference "C26")
+					(reference "C31")
 					(unit 1)
 				)
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/fc6867a4-106d-4cbd-bbd7-95d649ae44c2"
-					(reference "C23")
+					(reference "C34")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "TS_Symbols:DMT12H060LFDF")
+		(at 198.12 142.24 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "dec9244a-d5d9-4e15-b189-330b2f8eff1e")
+		(property "Reference" "Q2"
+			(at 201.93 140.9699 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "DMT12H060LFDF"
+			(at 201.93 143.5099 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_DFN_QFN:Diodes_UDFN2020-6_Type-F"
+			(at 197.866 157.226 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.diodes.com/assets/Datasheets/DMT12H060LFDF.pdf"
+			(at 198.12 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "N-Channel 115 V 4.4A (Ta) 1.1W (Ta) Surface Mount U-DFN2020-6 (Type F)"
+			(at 198.12 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "DMT12H060LFDF-7"
+			(at 198.12 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "6"
+			(uuid "ac1ab356-9e26-45fa-b0fe-6e34f952e846")
+		)
+		(pin "2"
+			(uuid "38228f6f-fa5e-41ee-951f-1355024a18d8")
+		)
+		(pin "1"
+			(uuid "ec98a3a8-12fd-49d3-b7e4-8b0654b1c96a")
+		)
+		(pin "5"
+			(uuid "59092b3e-e7d7-4f64-9d75-bb4ab81c9f1c")
+		)
+		(pin "3"
+			(uuid "d8f8cffc-45f7-4ffc-965a-2174492a5a9e")
+		)
+		(pin "8"
+			(uuid "e6627890-9c2a-49b7-a6fb-d50868cd7b6c")
+		)
+		(pin "4"
+			(uuid "fab6b9f5-31f8-41cb-97a2-5a2a8996569f")
+		)
+		(pin "7"
+			(uuid "f5686206-13db-45be-b171-a7ea2fa3529a")
+		)
+		(instances
+			(project ""
+				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/643d687a-943d-4705-82bf-eed53f48fae4"
+					(reference "Q2")
+					(unit 1)
+				)
+				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/fc6867a4-106d-4cbd-bbd7-95d649ae44c2"
+					(reference "Q3")
 					(unit 1)
 				)
 			)
@@ -2442,7 +2399,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f848ab19-4c20-4dc4-bbaa-0b895ad258e0")
-		(property "Reference" "#PWR045"
+		(property "Reference" "#PWR064"
 			(at 170.18 135.89 0)
 			(effects
 				(font
@@ -2492,11 +2449,11 @@
 		(instances
 			(project "Central_ECU"
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/643d687a-943d-4705-82bf-eed53f48fae4"
-					(reference "#PWR045")
+					(reference "#PWR064")
 					(unit 1)
 				)
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/fc6867a4-106d-4cbd-bbd7-95d649ae44c2"
-					(reference "#PWR039")
+					(reference "#PWR071")
 					(unit 1)
 				)
 			)
