@@ -2606,7 +2606,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Device:D"
+		(symbol "Device:D_Schottky"
 			(pin_numbers
 				(hide yes)
 			)
@@ -2625,7 +2625,7 @@
 					)
 				)
 			)
-			(property "Value" "D"
+			(property "Value" "D_Schottky"
 				(at 0 -2.54 0)
 				(effects
 					(font
@@ -2651,7 +2651,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Diode"
+			(property "Description" "Schottky diode"
 				(at 0 0 0)
 				(effects
 					(font
@@ -2660,25 +2660,7 @@
 					(hide yes)
 				)
 			)
-			(property "Sim.Device" "D"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Sim.Pins" "1=K 2=A"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "diode"
+			(property "ki_keywords" "diode Schottky"
 				(at 0 0 0)
 				(effects
 					(font
@@ -2696,10 +2678,10 @@
 					(hide yes)
 				)
 			)
-			(symbol "D_0_1"
+			(symbol "D_Schottky_0_1"
 				(polyline
 					(pts
-						(xy -1.27 1.27) (xy -1.27 -1.27)
+						(xy -1.905 0.635) (xy -1.905 1.27) (xy -1.27 1.27) (xy -1.27 -1.27) (xy -0.635 -1.27) (xy -0.635 -0.635)
 					)
 					(stroke
 						(width 0.254)
@@ -2734,7 +2716,7 @@
 					)
 				)
 			)
-			(symbol "D_1_1"
+			(symbol "D_Schottky_1_1"
 				(pin passive line
 					(at -3.81 0 0)
 					(length 2.54)
@@ -5252,19 +5234,7 @@
 		(at 121.92 144.78)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "016d727d-4b71-45a7-8b5a-3d60410b8839")
-	)
-	(junction
-		(at 121.92 133.35)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "08851e7c-aac8-4fde-b132-1b80e289d703")
-	)
-	(junction
-		(at 193.04 106.68)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "142623a3-f0d8-4e55-b25e-a6f0e09feb3a")
+		(uuid "37650b31-6e21-409e-b9c6-a827846e0bac")
 	)
 	(junction
 		(at 25.4 29.21)
@@ -5273,16 +5243,28 @@
 		(uuid "3eb65a79-37bf-4288-a1a9-d84650514593")
 	)
 	(junction
-		(at 193.04 99.06)
+		(at 121.92 133.35)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "62587440-6708-4533-b0d9-3cc5c973eaa3")
+		(uuid "49120fe0-bad4-4d58-a233-a53439a5b1a6")
+	)
+	(junction
+		(at 186.69 38.1)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "613596fe-d6da-43c7-a0d7-b96708c215b7")
 	)
 	(junction
 		(at 30.48 62.23)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "6df2ddae-f94d-4d86-b7ba-d453b345377a")
+	)
+	(junction
+		(at 121.92 156.21)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "6e4458d2-39e5-41a4-af47-ce07f3f844ce")
 	)
 	(junction
 		(at 35.56 118.11)
@@ -5294,7 +5276,25 @@
 		(at 121.92 110.49)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "a9c186f4-c9ff-43d4-8895-6d1d093a93c6")
+		(uuid "7d288295-fb8e-4266-b4da-ca983a65e021")
+	)
+	(junction
+		(at 121.92 121.92)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "7e4d6d8e-f518-4bb4-a65a-30fb9c078d59")
+	)
+	(junction
+		(at 121.92 167.64)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "9328148b-cd92-499a-b3a1-7840d9606dfc")
+	)
+	(junction
+		(at 121.92 99.06)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "a6978b69-d9b9-4731-a318-5c9d485d9339")
 	)
 	(junction
 		(at 71.12 26.67)
@@ -5303,34 +5303,16 @@
 		(uuid "bd0a2f0c-2ff8-498d-8c65-89eead7e0116")
 	)
 	(junction
-		(at 121.92 99.06)
+		(at 186.69 45.72)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "bd5a1297-c3bc-4e85-b3f8-f134ee1185ec")
-	)
-	(junction
-		(at 121.92 121.92)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "ca6b8eb8-cd30-4f92-963a-54fcddd7d0b7")
-	)
-	(junction
-		(at 121.92 156.21)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "ceda64de-1d23-422f-859d-5d9b55f83bb7")
+		(uuid "be3053ba-38f4-4255-b550-1a21a86da61b")
 	)
 	(junction
 		(at 201.93 35.56)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "cef99a84-dad6-4f23-ad8a-b7f4f2754e35")
-	)
-	(junction
-		(at 121.92 167.64)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "d84c83ce-041c-499a-81e7-b8dfd6462ada")
 	)
 	(junction
 		(at 242.57 19.05)
@@ -5359,26 +5341,6 @@
 			(type default)
 		)
 		(uuid "027ff654-2f97-41dd-98b4-a93eb6bee98f")
-	)
-	(wire
-		(pts
-			(xy 196.85 106.68) (xy 196.85 104.14)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0421355d-c33a-47b9-a7b9-5f140d96dd29")
-	)
-	(wire
-		(pts
-			(xy 196.85 104.14) (xy 205.74 104.14)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "04ac7f6f-2e51-42f7-b606-bcab74813cc5")
 	)
 	(wire
 		(pts
@@ -5432,7 +5394,7 @@
 	)
 	(wire
 		(pts
-			(xy 121.92 133.35) (xy 127 133.35)
+			(xy 113.03 133.35) (xy 121.92 133.35)
 		)
 		(stroke
 			(width 0)
@@ -5449,6 +5411,16 @@
 			(type default)
 		)
 		(uuid "151f4ab2-15f2-49e6-8e39-62de55caad76")
+	)
+	(wire
+		(pts
+			(xy 190.5 43.18) (xy 205.74 43.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "15a61372-96e5-4bf0-ae2d-01c51ad9e73b")
 	)
 	(wire
 		(pts
@@ -5492,6 +5464,16 @@
 	)
 	(wire
 		(pts
+			(xy 121.92 110.49) (xy 127 110.49)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1d0c9ded-4d6f-4051-8201-f86dcc391ee5")
+	)
+	(wire
+		(pts
 			(xy 127 119.38) (xy 127 121.92)
 		)
 		(stroke
@@ -5522,7 +5504,7 @@
 	)
 	(wire
 		(pts
-			(xy 121.92 167.64) (xy 127 167.64)
+			(xy 113.03 167.64) (xy 121.92 167.64)
 		)
 		(stroke
 			(width 0)
@@ -5542,6 +5524,16 @@
 	)
 	(wire
 		(pts
+			(xy 186.69 45.72) (xy 190.5 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "23ebfb5f-009c-4aa7-b8e2-b880a5e83119")
+	)
+	(wire
+		(pts
 			(xy 127 116.84) (xy 127 114.3)
 		)
 		(stroke
@@ -5549,6 +5541,16 @@
 			(type default)
 		)
 		(uuid "244b172d-e3ca-49dc-be81-bbc3d47c5990")
+	)
+	(wire
+		(pts
+			(xy 121.92 167.64) (xy 127 167.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "24e9ad3a-ee8d-4d10-a6aa-38b2d1918bac")
 	)
 	(wire
 		(pts
@@ -5592,6 +5594,16 @@
 	)
 	(wire
 		(pts
+			(xy 166.37 38.1) (xy 186.69 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2d59f83d-d92c-42a5-a5ab-9deab98d688f")
+	)
+	(wire
+		(pts
 			(xy 27.94 36.83) (xy 25.4 36.83)
 		)
 		(stroke
@@ -5629,6 +5641,16 @@
 			(type default)
 		)
 		(uuid "33285ef3-ba6a-404b-8574-1dc93fd64263")
+	)
+	(wire
+		(pts
+			(xy 190.5 38.1) (xy 190.5 40.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "36d21d81-231b-454e-8916-3592da98f518")
 	)
 	(wire
 		(pts
@@ -5709,16 +5731,6 @@
 			(type default)
 		)
 		(uuid "3b0c92cb-9792-4d06-92b0-1424c20c88ac")
-	)
-	(wire
-		(pts
-			(xy 121.92 156.21) (xy 127 156.21)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3ba2a7a1-10d8-4eb5-b91c-36f4b7858cfd")
 	)
 	(wire
 		(pts
@@ -5872,23 +5884,13 @@
 	)
 	(wire
 		(pts
-			(xy 187.96 106.68) (xy 193.04 106.68)
+			(xy 121.92 121.92) (xy 127 121.92)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "52b66e23-3ac1-496f-a44a-8095dd4c2da5")
-	)
-	(wire
-		(pts
-			(xy 196.85 101.6) (xy 205.74 101.6)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "53ea2c8e-454e-408e-bec5-cbf931396c7d")
+		(uuid "5794eb36-7700-41da-b511-edba7c4fe0ec")
 	)
 	(wire
 		(pts
@@ -5942,6 +5944,26 @@
 	)
 	(wire
 		(pts
+			(xy 190.5 40.64) (xy 205.74 40.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "60a6fc27-4866-487b-be45-90bfa9e607fc")
+	)
+	(wire
+		(pts
+			(xy 121.92 144.78) (xy 127 144.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "61e67a04-3fad-45bd-a403-171e9fa30afd")
+	)
+	(wire
+		(pts
 			(xy 127 128.27) (xy 127 125.73)
 		)
 		(stroke
@@ -5949,16 +5971,6 @@
 			(type default)
 		)
 		(uuid "62951a66-a349-4fbb-b20f-cd82efb0c333")
-	)
-	(wire
-		(pts
-			(xy 193.04 106.68) (xy 196.85 106.68)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "63330eeb-3fe0-4620-a4e2-e4175ec37ed2")
 	)
 	(wire
 		(pts
@@ -6142,16 +6154,6 @@
 	)
 	(wire
 		(pts
-			(xy 113.03 167.64) (xy 121.92 167.64)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "88e8ce7f-f153-486d-baf3-a68ed8169e57")
-	)
-	(wire
-		(pts
 			(xy 121.92 160.02) (xy 127 160.02)
 		)
 		(stroke
@@ -6272,13 +6274,23 @@
 	)
 	(wire
 		(pts
-			(xy 121.92 144.78) (xy 127 144.78)
+			(xy 113.03 144.78) (xy 121.92 144.78)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "97c908dd-e542-43bb-90f9-2fe4131ec521")
+	)
+	(wire
+		(pts
+			(xy 121.92 133.35) (xy 127 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "99d6c4d8-07c2-4dd4-b416-c7a79d93008e")
 	)
 	(wire
 		(pts
@@ -6289,16 +6301,6 @@
 			(type default)
 		)
 		(uuid "9a488736-e6d9-4974-9c86-8983d8195dab")
-	)
-	(wire
-		(pts
-			(xy 127 99.06) (xy 121.92 99.06)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9d666dd7-0242-4233-81cf-f11687d885fb")
 	)
 	(wire
 		(pts
@@ -6352,6 +6354,16 @@
 	)
 	(wire
 		(pts
+			(xy 190.5 45.72) (xy 190.5 43.18)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a48a964f-f3e5-49b9-b620-664e221b5af5")
+	)
+	(wire
+		(pts
 			(xy 13.97 153.67) (xy 22.86 153.67)
 		)
 		(stroke
@@ -6359,6 +6371,16 @@
 			(type default)
 		)
 		(uuid "a5556079-6c49-44b1-8824-7aeb5d07bb04")
+	)
+	(wire
+		(pts
+			(xy 121.92 99.06) (xy 127 99.06)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a73ebb4d-5ab0-496c-bc7e-633d420682b4")
 	)
 	(wire
 		(pts
@@ -6412,16 +6434,6 @@
 	)
 	(wire
 		(pts
-			(xy 196.85 99.06) (xy 196.85 101.6)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "aca4186e-5cef-4856-9d45-12305f9a36b6")
-	)
-	(wire
-		(pts
 			(xy 95.25 26.67) (xy 99.06 26.67)
 		)
 		(stroke
@@ -6439,16 +6451,6 @@
 			(type default)
 		)
 		(uuid "ad5902dd-7f97-4311-b66e-1e8ff121df9a")
-	)
-	(wire
-		(pts
-			(xy 113.03 133.35) (xy 121.92 133.35)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "afb7e475-0bd7-42cb-a1e9-3247f13e9b2b")
 	)
 	(wire
 		(pts
@@ -6532,16 +6534,6 @@
 	)
 	(wire
 		(pts
-			(xy 172.72 99.06) (xy 193.04 99.06)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c2679c24-4c6f-45ff-86c1-6758c91c4b91")
-	)
-	(wire
-		(pts
 			(xy 135.89 107.95) (xy 127 107.95)
 		)
 		(stroke
@@ -6549,6 +6541,26 @@
 			(type default)
 		)
 		(uuid "c3a2cb43-c0fe-4bb6-8691-012a2d345b10")
+	)
+	(wire
+		(pts
+			(xy 186.69 38.1) (xy 190.5 38.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c404b4c1-a0da-4bd4-b9f0-0cea6234a4bd")
+	)
+	(wire
+		(pts
+			(xy 181.61 45.72) (xy 186.69 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c52c8901-e765-4a05-8728-6a2f975fb55e")
 	)
 	(wire
 		(pts
@@ -6632,26 +6644,6 @@
 	)
 	(wire
 		(pts
-			(xy 113.03 110.49) (xy 121.92 110.49)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d327a1ca-6bff-4703-9810-2953babd372d")
-	)
-	(wire
-		(pts
-			(xy 193.04 99.06) (xy 196.85 99.06)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d39b00e1-08cc-43ad-b61b-a79b8aa9fa20")
-	)
-	(wire
-		(pts
 			(xy 127 162.56) (xy 127 160.02)
 		)
 		(stroke
@@ -6732,7 +6724,7 @@
 	)
 	(wire
 		(pts
-			(xy 121.92 110.49) (xy 127 110.49)
+			(xy 113.03 110.49) (xy 121.92 110.49)
 		)
 		(stroke
 			(width 0)
@@ -6822,16 +6814,6 @@
 	)
 	(wire
 		(pts
-			(xy 113.03 144.78) (xy 121.92 144.78)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ed22257f-e4ce-49e9-99dd-5622233c5c7c")
-	)
-	(wire
-		(pts
 			(xy 135.89 139.7) (xy 127 139.7)
 		)
 		(stroke
@@ -6862,16 +6844,6 @@
 	)
 	(wire
 		(pts
-			(xy 121.92 121.92) (xy 127 121.92)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f2e96cb0-06d1-4ce3-9a3d-78eb890cde75")
-	)
-	(wire
-		(pts
 			(xy 68.58 29.21) (xy 71.12 29.21)
 		)
 		(stroke
@@ -6879,6 +6851,16 @@
 			(type default)
 		)
 		(uuid "f3db2aa1-f1e7-4772-ab65-6322cb70749d")
+	)
+	(wire
+		(pts
+			(xy 121.92 156.21) (xy 127 156.21)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f5277a95-339a-4dc4-ad18-0c0c76ea9091")
 	)
 	(wire
 		(pts
@@ -8143,7 +8125,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 96.2152 34.29 0)
 			(effects
 				(font
@@ -8168,6 +8150,30 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 95.25 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 95.25 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 95.25 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -8212,7 +8218,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 22.5552 125.73 0)
 			(effects
 				(font
@@ -8239,6 +8245,30 @@
 				(hide yes)
 			)
 		)
+		(property "Part Number" ""
+			(at 21.59 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 21.59 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 21.59 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "f5019852-5e98-461d-938d-fac5139aea7c")
 		)
@@ -8255,103 +8285,16 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:D")
-		(at 121.92 106.68 270)
+		(lib_id "Device:D_Schottky")
+		(at 121.92 163.83 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "0ca915a6-4a82-4c55-a7bc-3e62d0dfa4f9")
-		(property "Reference" "D3"
-			(at 123.698 105.41 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "D"
-			(at 123.698 107.95 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 121.92 106.68 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 121.92 106.68 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Diode"
-			(at 121.92 106.68 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Device" "D"
-			(at 121.92 106.68 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Pins" "1=K 2=A"
-			(at 121.92 106.68 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "a183afa4-2c15-482c-8a19-365cb7fdb794")
-		)
-		(pin "2"
-			(uuid "efbd6572-8c3d-4a69-92c0-5d2e9302edaf")
-		)
-		(instances
-			(project "Servo_Board"
-				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
-					(reference "D3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:D")
-		(at 121.92 152.4 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "15600527-d2e3-4bd7-9d3b-6087e4d5695c")
+		(uuid "0e7265ef-0162-464f-9998-a78b36013e4b")
 		(property "Reference" "D7"
-			(at 123.698 151.13 90)
+			(at 109.22 162.306 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8359,8 +8302,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "D"
-			(at 123.698 153.67 90)
+		(property "Value" "D_Schottky"
+			(at 109.22 164.846 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8368,8 +8311,8 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
-			(at 121.92 152.4 0)
+		(property "Footprint" "Diode_SMD:D_SOD-882"
+			(at 121.92 163.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8378,7 +8321,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 121.92 152.4 0)
+			(at 121.92 163.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8386,8 +8329,8 @@
 				(hide yes)
 			)
 		)
-		(property "Description" "Diode"
-			(at 121.92 152.4 0)
+		(property "Description" "Schottky diode"
+			(at 121.92 163.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8395,8 +8338,8 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Device" "D"
-			(at 121.92 152.4 0)
+		(property "MPN" "CTS05S4T,L3F"
+			(at 121.92 163.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8404,20 +8347,27 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Pins" "1=K 2=A"
-			(at 121.92 152.4 0)
+		(property "Sim.Device" ""
+			(at 121.92 163.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(hide yes)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 121.92 163.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
-			(uuid "4259d0f1-7a02-4e3e-bd07-cf133210c1f0")
+			(uuid "d81a3322-2cdc-4d7e-9141-38032bd73de0")
 		)
 		(pin "2"
-			(uuid "2016656b-fe30-4eff-b96a-a5cfd370289d")
+			(uuid "075d3d83-d015-49fc-8991-eefd6d3675fb")
 		)
 		(instances
 			(project "Servo_Board"
@@ -8479,6 +8429,30 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 20.32 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 20.32 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 20.32 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "2"
@@ -8577,7 +8551,7 @@
 	)
 	(symbol
 		(lib_id "Device:C")
-		(at 172.72 102.87 0)
+		(at 166.37 41.91 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -8585,7 +8559,7 @@
 		(dnp no)
 		(uuid "1cef8231-36d2-41a8-93b1-8a8d10742428")
 		(property "Reference" "C9"
-			(at 166.116 102.108 0)
+			(at 159.766 41.148 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8594,7 +8568,7 @@
 			)
 		)
 		(property "Value" "20p"
-			(at 166.116 103.886 0)
+			(at 159.766 42.926 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8602,8 +8576,8 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
-			(at 173.6852 106.68 0)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 167.3352 45.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8612,7 +8586,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 172.72 102.87 0)
+			(at 166.37 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8621,12 +8595,36 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
-			(at 172.72 102.87 0)
+			(at 166.37 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 166.37 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 166.37 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 166.37 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -8695,6 +8693,30 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 67.31 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 67.31 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 67.31 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "4"
@@ -8828,7 +8850,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 24.13 91.948 90)
 			(effects
 				(font
@@ -8853,6 +8875,30 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 24.13 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 24.13 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 24.13 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -9005,6 +9051,100 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:D_Schottky")
+		(at 121.92 152.4 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "29b4a627-2b80-4266-ab10-c599ace4d61f")
+		(property "Reference" "D6"
+			(at 109.22 150.876 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "D_Schottky"
+			(at 109.22 153.416 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-882"
+			(at 121.92 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 121.92 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Schottky diode"
+			(at 121.92 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "CTS05S4T,L3F"
+			(at 121.92 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 121.92 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 121.92 152.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "65211a40-cae4-4a6f-9bb8-c9969d1ed11f")
+		)
+		(pin "2"
+			(uuid "d231afe6-36c3-417f-8236-88a64c6ba2c7")
+		)
+		(instances
+			(project "Servo_Board"
+				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
+					(reference "D6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 265.43 58.42 90)
 		(unit 1)
@@ -9029,7 +9169,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 265.43 60.198 90)
 			(effects
 				(font
@@ -9056,6 +9196,30 @@
 				(hide yes)
 			)
 		)
+		(property "Part Number" ""
+			(at 265.43 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 265.43 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 265.43 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "97d9f1a6-00d7-4230-bab4-87afb2506584")
 		)
@@ -9066,6 +9230,100 @@
 			(project ""
 				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
 					(reference "R5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_Schottky")
+		(at 121.92 140.97 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "2ab21b09-9620-4f6d-894d-6c2d2043cf68")
+		(property "Reference" "D5"
+			(at 109.22 139.446 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "D_Schottky"
+			(at 109.22 141.986 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-882"
+			(at 121.92 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 121.92 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Schottky diode"
+			(at 121.92 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "CTS05S4T,L3F"
+			(at 121.92 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 121.92 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 121.92 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "6f147a94-77c7-4ebf-aee7-267ee9304297")
+		)
+		(pin "2"
+			(uuid "b848ed4a-6a7a-4084-8fd5-2d798b3cd282")
+		)
+		(instances
+			(project "Servo_Board"
+				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
+					(reference "D5")
 					(unit 1)
 				)
 			)
@@ -9096,7 +9354,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 41.91 104.648 90)
 			(effects
 				(font
@@ -9121,6 +9379,30 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 41.91 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 41.91 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 41.91 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -9163,7 +9445,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 41.91 91.948 90)
 			(effects
 				(font
@@ -9190,6 +9472,30 @@
 				(hide yes)
 			)
 		)
+		(property "Part Number" ""
+			(at 41.91 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 41.91 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 41.91 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "0e8832f1-1ba3-40ec-9bc3-c0024b3607f9")
 		)
@@ -9206,8 +9512,102 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:D_Schottky")
+		(at 121.92 95.25 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "2f254f26-2105-4a76-adfc-7a94ced9c3e8")
+		(property "Reference" "D1"
+			(at 109.22 93.726 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "D_Schottky"
+			(at 109.22 96.266 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-882"
+			(at 121.92 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 121.92 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Schottky diode"
+			(at 121.92 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "CTS05S4T,L3F"
+			(at 121.92 95.25 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 121.92 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 121.92 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "a1a6597f-5846-49b3-868b-bf1f75a5a98e")
+		)
+		(pin "2"
+			(uuid "3ba76317-00f2-4b39-b821-c1759e4c161c")
+		)
+		(instances
+			(project ""
+				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
+					(reference "D1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
-		(at 172.72 106.68 0)
+		(at 166.37 45.72 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -9216,7 +9616,7 @@
 		(fields_autoplaced yes)
 		(uuid "2f515f45-2581-472e-aee6-25a52ca2bd3a")
 		(property "Reference" "#PWR011"
-			(at 172.72 113.03 0)
+			(at 166.37 52.07 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9225,7 +9625,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 172.72 111.76 0)
+			(at 166.37 50.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9234,7 +9634,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 172.72 106.68 0)
+			(at 166.37 45.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9243,7 +9643,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 172.72 106.68 0)
+			(at 166.37 45.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9252,7 +9652,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 172.72 106.68 0)
+			(at 166.37 45.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9401,93 +9801,6 @@
 			(project "Servo_Board"
 				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
 					(reference "#PWR035")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:D")
-		(at 121.92 140.97 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "352a0cae-ac72-494a-98a4-85e254c710e3")
-		(property "Reference" "D6"
-			(at 123.698 139.7 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "D"
-			(at 123.698 142.24 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 121.92 140.97 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 121.92 140.97 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Diode"
-			(at 121.92 140.97 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Device" "D"
-			(at 121.92 140.97 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Pins" "1=K 2=A"
-			(at 121.92 140.97 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "c3ed1f42-dc19-414f-80a7-66dff7e65ceb")
-		)
-		(pin "2"
-			(uuid "75da3af5-57cf-4be4-8a00-8bedbab41f26")
-		)
-		(instances
-			(project "Servo_Board"
-				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
-					(reference "D6")
 					(unit 1)
 				)
 			)
@@ -9655,7 +9968,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_Molex:Molex_Micro-Fit_3.0_43045-0412_2x02_P3.00mm_Vertical"
 			(at 140.97 93.98 0)
 			(effects
 				(font
@@ -9680,6 +9993,39 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "MPN" "0430450428"
+			(at 140.97 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 140.97 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 140.97 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 140.97 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -9798,7 +10144,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 22.5552 36.83 0)
 			(effects
 				(font
@@ -9825,6 +10171,30 @@
 				(hide yes)
 			)
 		)
+		(property "Part Number" ""
+			(at 21.59 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 21.59 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 21.59 33.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "b1271cb6-b59f-485f-91c2-eb60bf1811f7")
 		)
@@ -9835,93 +10205,6 @@
 			(project "Servo_Board"
 				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
 					(reference "C16")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:D")
-		(at 121.92 163.83 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "50c510a8-b524-4ac7-afa4-e42cbbbeb002")
-		(property "Reference" "D8"
-			(at 123.698 162.56 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "D"
-			(at 123.698 165.1 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 121.92 163.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 121.92 163.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Diode"
-			(at 121.92 163.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Device" "D"
-			(at 121.92 163.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Pins" "1=K 2=A"
-			(at 121.92 163.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "fc924503-2fb4-486d-ae14-2b7e74b32680")
-		)
-		(pin "2"
-			(uuid "50a7a80f-d95d-456a-80bb-5bcec6e561c7")
-		)
-		(instances
-			(project "Servo_Board"
-				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
-					(reference "D8")
 					(unit 1)
 				)
 			)
@@ -9955,7 +10238,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_Molex:Molex_Micro-Fit_3.0_43045-0412_2x02_P3.00mm_Vertical"
 			(at 140.97 105.41 0)
 			(effects
 				(font
@@ -9982,6 +10265,39 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "0430450428"
+			(at 140.97 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 140.97 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 140.97 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 140.97 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "8617624c-4710-4c74-afe4-d83c14961ac9")
 		)
@@ -9998,180 +10314,6 @@
 			(project "Servo_Board"
 				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
 					(reference "J11")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:D")
-		(at 121.92 118.11 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "567c2f66-5421-4336-940e-daf03cb36997")
-		(property "Reference" "D4"
-			(at 123.698 116.84 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "D"
-			(at 123.698 119.38 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 121.92 118.11 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 121.92 118.11 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Diode"
-			(at 121.92 118.11 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Device" "D"
-			(at 121.92 118.11 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Pins" "1=K 2=A"
-			(at 121.92 118.11 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "d2f31195-960d-423b-a29c-2d4462b5c08e")
-		)
-		(pin "2"
-			(uuid "5d0d2e35-5873-48db-8d3c-718bb1e34638")
-		)
-		(instances
-			(project "Servo_Board"
-				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
-					(reference "D4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:D")
-		(at 121.92 95.25 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "569e08a4-dc20-48bd-9081-c98dbdb5a6e1")
-		(property "Reference" "D2"
-			(at 123.698 93.98 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "D"
-			(at 123.698 96.52 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 121.92 95.25 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 121.92 95.25 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Diode"
-			(at 121.92 95.25 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Device" "D"
-			(at 121.92 95.25 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Pins" "1=K 2=A"
-			(at 121.92 95.25 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "28058c36-8d01-43c4-a591-e73316f89783")
-		)
-		(pin "2"
-			(uuid "719c2694-1fd0-4823-a92b-ef1104349337")
-		)
-		(instances
-			(project ""
-				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
-					(reference "D2")
 					(unit 1)
 				)
 			)
@@ -10203,7 +10345,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "footprints:TSOT23-5_ONS"
 			(at 106.68 24.13 0)
 			(effects
 				(font
@@ -10228,6 +10370,30 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 106.68 24.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 106.68 24.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 106.68 24.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin ""
@@ -10483,7 +10649,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_Molex:Molex_Micro-Fit_3.0_43045-0412_2x02_P3.00mm_Vertical"
 			(at 140.97 128.27 0)
 			(effects
 				(font
@@ -10508,6 +10674,39 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "MPN" "0430450428"
+			(at 140.97 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 140.97 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 140.97 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 140.97 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -10559,7 +10758,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_Molex:Molex_Micro-Fit_3.0_43045-0412_2x02_P3.00mm_Vertical"
 			(at 140.97 151.13 0)
 			(effects
 				(font
@@ -10586,6 +10785,39 @@
 				(hide yes)
 			)
 		)
+		(property "MPN" "0430450428"
+			(at 140.97 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 140.97 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 140.97 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 140.97 151.13 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "87e03f9c-9a28-48c6-b1fd-62b213efa6d9")
 		)
@@ -10602,6 +10834,100 @@
 			(project "Servo_Board"
 				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
 					(reference "J15")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_Schottky")
+		(at 121.92 129.54 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "6fd2c833-043b-4b66-a89c-40b74a3b7790")
+		(property "Reference" "D4"
+			(at 109.22 128.016 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "D_Schottky"
+			(at 109.22 130.556 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-882"
+			(at 121.92 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 121.92 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Schottky diode"
+			(at 121.92 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "CTS05S4T,L3F"
+			(at 121.92 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 121.92 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 121.92 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "eef3c63c-74a6-483b-af31-e79532b79e5f")
+		)
+		(pin "2"
+			(uuid "21df9ea9-9ce4-4a7a-ae43-efe165653f76")
+		)
+		(instances
+			(project "Servo_Board"
+				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
+					(reference "D4")
 					(unit 1)
 				)
 			)
@@ -10768,7 +11094,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 254.9652 26.67 0)
 			(effects
 				(font
@@ -10793,6 +11119,30 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 254 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 254 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 254 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -10837,7 +11187,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_Molex:Molex_Micro-Fit_3.0_43650-0915_1x09_P3.00mm_Vertical"
 			(at 40.64 184.15 0)
 			(effects
 				(font
@@ -10856,6 +11206,40 @@
 			)
 		)
 		(property "Description" "9-pin D-SUB connector, pins (male)"
+			(at 40.64 184.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Part Number" "0436500916"
+			(at 40.64 184.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 40.64 184.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 40.64 184.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0436500916"
 			(at 40.64 184.15 0)
 			(effects
 				(font
@@ -10969,7 +11353,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 187.96 114.3 0)
+		(at 181.61 53.34 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -10978,7 +11362,7 @@
 		(fields_autoplaced yes)
 		(uuid "84d91bd5-6479-4887-826c-f647eba21002")
 		(property "Reference" "#PWR010"
-			(at 187.96 120.65 0)
+			(at 181.61 59.69 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10987,7 +11371,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 187.96 119.38 0)
+			(at 181.61 58.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10996,7 +11380,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 187.96 114.3 0)
+			(at 181.61 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11005,7 +11389,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 187.96 114.3 0)
+			(at 181.61 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11014,7 +11398,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 187.96 114.3 0)
+			(at 181.61 53.34 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11126,7 +11510,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 265.43 65.278 90)
 			(effects
 				(font
@@ -11151,6 +11535,30 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 265.43 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 265.43 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 265.43 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "2"
@@ -11195,7 +11603,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 200.66 34.5948 0)
 			(effects
 				(font
@@ -11220,6 +11628,30 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 196.85 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 196.85 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 196.85 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -11264,7 +11696,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 31.4452 62.23 0)
 			(effects
 				(font
@@ -11289,6 +11721,30 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 30.48 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 30.48 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 30.48 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -11334,7 +11790,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_Molex:Molex_Micro-Fit_3.0_43045-0412_2x02_P3.00mm_Vertical"
 			(at 140.97 116.84 0)
 			(effects
 				(font
@@ -11359,6 +11815,39 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "MPN" "0430450428"
+			(at 140.97 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 140.97 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 140.97 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 140.97 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -11476,7 +11965,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 45.4152 125.73 0)
 			(effects
 				(font
@@ -11501,6 +11990,30 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 44.45 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 44.45 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 44.45 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -11545,7 +12058,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 120.3452 34.29 0)
 			(effects
 				(font
@@ -11570,6 +12083,30 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 119.38 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 119.38 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 119.38 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -11641,6 +12178,30 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 233.68 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 233.68 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 233.68 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "45"
@@ -11937,7 +12498,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x02_P2.54mm_Vertical"
 			(at 33.02 90.17 0)
 			(effects
 				(font
@@ -11962,6 +12523,30 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 33.02 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 33.02 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 33.02 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -12108,93 +12693,6 @@
 			(project "Servo_Board"
 				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
 					(reference "#PWR036")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:D")
-		(at 121.92 129.54 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "a3ee1b18-79fe-48bf-b3b1-36422e1bd8c8")
-		(property "Reference" "D5"
-			(at 123.698 128.27 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "D"
-			(at 123.698 130.81 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 121.92 129.54 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 121.92 129.54 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Diode"
-			(at 121.92 129.54 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Device" "D"
-			(at 121.92 129.54 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Pins" "1=K 2=A"
-			(at 121.92 129.54 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "fbf9f3e0-35be-4b55-8aed-036fb6f8547b")
-		)
-		(pin "2"
-			(uuid "7f4cca11-d981-4082-918e-1d541856a4a5")
-		)
-		(instances
-			(project "Servo_Board"
-				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
-					(reference "D5")
 					(unit 1)
 				)
 			)
@@ -12361,7 +12859,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 77.1652 34.29 0)
 			(effects
 				(font
@@ -12386,6 +12884,30 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 76.2 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 76.2 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 76.2 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -12430,7 +12952,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 243.5352 26.67 0)
 			(effects
 				(font
@@ -12455,6 +12977,30 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 242.57 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 242.57 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 242.57 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -12608,16 +13154,16 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:C")
-		(at 187.96 110.49 0)
+		(lib_id "Device:D_Schottky")
+		(at 121.92 106.68 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "d7e1b058-24d0-4f55-9754-9ee2025de869")
-		(property "Reference" "C8"
-			(at 191.008 109.982 0)
+		(uuid "d4ab9e79-5ee2-4fe4-86e8-3f5d39a537a5")
+		(property "Reference" "D2"
+			(at 109.22 105.156 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12625,8 +13171,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "20p"
-			(at 191.008 111.76 0)
+		(property "Value" "D_Schottky"
+			(at 109.22 107.696 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12634,8 +13180,8 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
-			(at 188.9252 114.3 0)
+		(property "Footprint" "Diode_SMD:D_SOD-882"
+			(at 121.92 106.68 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12644,7 +13190,101 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 187.96 110.49 0)
+			(at 121.92 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Schottky diode"
+			(at 121.92 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "CTS05S4T,L3F"
+			(at 121.92 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 121.92 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 121.92 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "951c0dc0-aed7-4bbf-96a2-8c1a05fb80fe")
+		)
+		(pin "2"
+			(uuid "a6acbf55-4911-4c2b-94fa-ff8ef2a40dc4")
+		)
+		(instances
+			(project "Servo_Board"
+				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
+					(reference "D2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 181.61 49.53 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "d7e1b058-24d0-4f55-9754-9ee2025de869")
+		(property "Reference" "C8"
+			(at 184.658 49.022 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "20p"
+			(at 184.658 50.8 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
+			(at 182.5752 53.34 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 181.61 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12653,12 +13293,36 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
-			(at 187.96 110.49 0)
+			(at 181.61 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 181.61 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 181.61 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 181.61 49.53 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -12703,7 +13367,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 225.7552 26.67 0)
 			(effects
 				(font
@@ -12728,6 +13392,30 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 224.79 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 224.79 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 224.79 22.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -12771,7 +13459,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_PinSocket_2.54mm:PinSocket_1x02_P2.54mm_Vertical"
 			(at 33.02 102.87 0)
 			(effects
 				(font
@@ -12798,6 +13486,30 @@
 				(hide yes)
 			)
 		)
+		(property "Part Number" ""
+			(at 33.02 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 33.02 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 33.02 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "1db3322c-d798-49eb-8c42-7ee8a498b24e")
 		)
@@ -12808,6 +13520,100 @@
 			(project "Servo_Board"
 				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
 					(reference "JP2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_Schottky")
+		(at 121.92 118.11 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "dd9b307e-ff8c-4d07-8900-39787cfae293")
+		(property "Reference" "D3"
+			(at 109.22 116.586 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "D_Schottky"
+			(at 109.22 119.126 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-882"
+			(at 121.92 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 121.92 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Schottky diode"
+			(at 121.92 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "CTS05S4T,L3F"
+			(at 121.92 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 121.92 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 121.92 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "6d54d845-13de-40df-9b3f-70c519cdb6f8")
+		)
+		(pin "2"
+			(uuid "4c76b9c9-b959-41e6-ace5-908f261c6bcb")
+		)
+		(instances
+			(project "Servo_Board"
+				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
+					(reference "D3")
 					(unit 1)
 				)
 			)
@@ -12840,7 +13646,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_Molex:Molex_Micro-Fit_3.0_43650-0915_1x09_P3.00mm_Vertical"
 			(at 54.61 184.15 0)
 			(effects
 				(font
@@ -12859,6 +13665,40 @@
 			)
 		)
 		(property "Description" "9-pin D-SUB connector, socket (female)"
+			(at 54.61 184.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Part Number" "0436500916"
+			(at 54.61 184.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 54.61 184.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 54.61 184.15 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "0436500916"
 			(at 54.61 184.15 0)
 			(effects
 				(font
@@ -12931,7 +13771,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_Molex:Molex_Micro-Fit_3.0_43045-0412_2x02_P3.00mm_Vertical"
 			(at 140.97 162.56 0)
 			(effects
 				(font
@@ -12956,6 +13796,39 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "MPN" "0430450428"
+			(at 140.97 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 140.97 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 140.97 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 140.97 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -13073,7 +13946,7 @@
 				)
 			)
 		)
-		(property "Footprint" "HTSOP-J8_ROM"
+		(property "Footprint" "footprints:HTSOP-J8_ROM"
 			(at 68.58 26.67 0)
 			(effects
 				(font
@@ -13100,6 +13973,30 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 68.58 26.67 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 68.58 26.67 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 68.58 26.67 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "3"
@@ -13163,7 +14060,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 24.13 104.648 90)
 			(effects
 				(font
@@ -13188,6 +14085,30 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 24.13 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 24.13 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 24.13 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -13369,7 +14290,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_Molex:Molex_Micro-Fit_3.0_43045-0412_2x02_P3.00mm_Vertical"
 			(at 140.97 139.7 0)
 			(effects
 				(font
@@ -13394,6 +14315,39 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "MPN" "0430450428"
+			(at 140.97 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 140.97 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 140.97 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 140.97 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -13553,7 +14507,7 @@
 	)
 	(symbol
 		(lib_id "Device:Crystal")
-		(at 193.04 102.87 90)
+		(at 186.69 41.91 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -13561,7 +14515,7 @@
 		(dnp no)
 		(uuid "f7fdae64-ff8b-4a45-bbd9-c5a8c6b2a79b")
 		(property "Reference" "Y2"
-			(at 187.452 101.6 90)
+			(at 181.102 40.64 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13570,7 +14524,7 @@
 			)
 		)
 		(property "Value" "Crystal 8MHz"
-			(at 177.038 104.14 90)
+			(at 170.688 43.18 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13578,8 +14532,8 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" ""
-			(at 193.04 102.87 0)
+		(property "Footprint" "Crystal:Crystal_SMD_Abracon_ABM3B-4Pin_5.0x3.2mm"
+			(at 186.69 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13588,7 +14542,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 193.04 102.87 0)
+			(at 186.69 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13597,12 +14551,36 @@
 			)
 		)
 		(property "Description" "Two pin crystal"
-			(at 193.04 102.87 0)
+			(at 186.69 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 186.69 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 186.69 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 186.69 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "2"
@@ -13612,7 +14590,7 @@
 			(uuid "b0b1685b-bfd6-4cfc-bdb1-7f50ef22a936")
 		)
 		(instances
-			(project ""
+			(project "Servo_Board"
 				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
 					(reference "Y2")
 					(unit 1)
@@ -13716,7 +14694,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Custom:SOT23_DYY_TEX"
+		(property "Footprint" "footprints:SOT23_DYY_TEX"
 			(at 33.02 144.78 0)
 			(effects
 				(font
@@ -13741,6 +14719,30 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 33.02 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 33.02 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 33.02 144.78 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "6"
