@@ -6451,6 +6451,16 @@
 	)
 	(wire
 		(pts
+			(xy 280.67 224.79) (xy 280.67 236.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b77d84b5-6e1b-4482-bff9-2a79b44dc023")
+	)
+	(wire
+		(pts
 			(xy 139.7 49.53) (xy 144.78 49.53)
 		)
 		(stroke
@@ -7324,6 +7334,17 @@
 		)
 		(uuid "930fcce5-3960-4314-976b-12a741e746c3")
 	)
+	(hierarchical_label "~{NRST}"
+		(shape output)
+		(at 280.67 236.22 270)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "94b711b6-ef51-424c-b662-713809c5ab04")
+	)
 	(hierarchical_label "422_TX-"
 		(shape input)
 		(at 170.18 236.22 270)
@@ -7500,15 +7521,15 @@
 		(fields_autoplaced yes)
 		(uuid "037acf39-aed6-461e-a885-0e028e3fc07e")
 		(property "Reference" "J8"
-			(at 359.41 166.37 90)
+			(at 363.22 156.21 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Value" "Ignitor JST"
-			(at 356.87 166.37 90)
+		(property "Value" "Ignitor JST EH"
+			(at 363.22 158.75 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -7567,88 +7588,6 @@
 			(project ""
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/11639c01-8282-4891-a201-9121a32f140b"
 					(reference "J8")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector_Generic:Conn_01x03")
-		(at 275.59 219.71 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "03b5a1cb-9835-4e72-a38a-40865dc6b1ac")
-		(property "Reference" "J14"
-			(at 280.67 218.4399 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "SWD JST"
-			(at 280.67 220.9799 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Connector_JST:JST_PH_B3B-PH-K_1x03_P2.00mm_Vertical"
-			(at 275.59 219.71 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.jst-mfg.com/product/pdf/eng/ePH.pdf"
-			(at 275.59 219.71 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 275.59 219.71 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "MPN" "B3B-PH-K-S"
-			(at 275.59 219.71 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "59ba94f2-0400-4f40-a393-e0b6ae4ec199")
-		)
-		(pin "1"
-			(uuid "e9722f71-2cc4-41a0-80a9-1b2f49bb51ec")
-		)
-		(pin "3"
-			(uuid "dc5f28ec-70cf-4153-841c-f83520e77c3f")
-		)
-		(instances
-			(project ""
-				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/11639c01-8282-4891-a201-9121a32f140b"
-					(reference "J14")
 					(unit 1)
 				)
 			)
@@ -8306,7 +8245,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 103.632 63.5 90)
 			(effects
 				(font
@@ -8376,7 +8315,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 252.4252 71.12 0)
 			(effects
 				(font
@@ -8723,7 +8662,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 127.762 78.74 90)
 			(effects
 				(font
@@ -8872,7 +8811,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 141.732 106.68 90)
 			(effects
 				(font
@@ -9384,7 +9323,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 338.582 45.72 90)
 			(effects
 				(font
@@ -9730,7 +9669,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 215.5952 71.12 0)
 			(effects
 				(font
@@ -10023,7 +9962,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 320.802 45.72 90)
 			(effects
 				(font
@@ -10093,7 +10032,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 329.692 45.72 90)
 			(effects
 				(font
@@ -10470,7 +10409,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 127.762 71.12 90)
 			(effects
 				(font
@@ -10721,6 +10660,89 @@
 			(project ""
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/11639c01-8282-4891-a201-9121a32f140b"
 					(reference "#PWR084")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x04")
+		(at 275.59 219.71 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "6de94d90-8214-4078-9fcd-b1cd6c1d23fd")
+		(property "Reference" "J14"
+			(at 276.86 213.36 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SWD JST PH"
+			(at 276.86 215.9 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Connector_JST:JST_PH_B4B-PH-K_1x04_P2.00mm_Vertical"
+			(at 275.59 219.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.jst-mfg.com/product/pdf/eng/ePH.pdf"
+			(at 275.59 219.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 275.59 219.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "B4B-PH-K-S"
+			(at 275.59 219.71 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "67a47203-2de2-4f24-9c38-a4dcf75107ac")
+		)
+		(pin "3"
+			(uuid "f4ecadd4-e670-4b3c-8ff5-98cdd6b3ad11")
+		)
+		(pin "4"
+			(uuid "480e42f0-e5cb-4172-86b4-f7261b7bb476")
+		)
+		(pin "2"
+			(uuid "1737ce7f-d553-407e-8e44-dd9e104ae613")
+		)
+		(instances
+			(project ""
+				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/11639c01-8282-4891-a201-9121a32f140b"
+					(reference "J14")
 					(unit 1)
 				)
 			)
@@ -11664,10 +11686,6 @@
 					(reference "D11")
 					(unit 1)
 				)
-				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10"
-					(reference "D11")
-					(unit 1)
-				)
 			)
 		)
 	)
@@ -11869,7 +11887,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 186.182 119.38 90)
 			(effects
 				(font
@@ -12098,7 +12116,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0805_2012Metric"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 186.182 111.76 90)
 			(effects
 				(font
