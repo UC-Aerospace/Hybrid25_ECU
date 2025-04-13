@@ -6,7 +6,7 @@
 	(paper "A3")
 	(title_block
 		(title "Interlocked Components")
-		(date "2025-04-02")
+		(date "2025-04-13")
 		(rev "A")
 		(company "Hybrid Test Stand 2025")
 		(comment 1 "Drawn: Brad Redpath")
@@ -5624,7 +5624,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5005-5009_Compact"
+		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
 			(at 182.88 173.99 0)
 			(effects
 				(font
@@ -6749,7 +6749,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Keystone_5005-5009_Compact"
+		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
 			(at 143.51 101.6 0)
 			(effects
 				(font
