@@ -5118,6 +5118,16 @@
 		)
 		(uuid "db1db6ed-174e-49bb-a9e4-9fa564eb320d")
 	)
+	(text "Spicy stuff includes ignitors and the main valve, both\npowered through the hardware arm switch"
+		(exclude_from_sim no)
+		(at 170.942 253.492 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "eac0ec82-f3b1-4cc1-a156-8c9b58cc88be")
+	)
 	(text "MCU"
 		(exclude_from_sim no)
 		(at 229.362 27.686 0)
@@ -5141,6 +5151,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "0739c062-4cb9-4643-a31b-b2e96a7ee0d0")
+	)
+	(junction
+		(at 262.89 72.39)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "092d0d2f-dd8b-41ec-b6af-fd8f03cef7e9")
 	)
 	(junction
 		(at 313.69 113.03)
@@ -5239,7 +5255,7 @@
 		(uuid "3468f71a-9160-4253-a69b-1dfa2fc2d218")
 	)
 	(junction
-		(at 128.27 60.96)
+		(at 146.05 41.91)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "4497a6c8-4560-4154-87b7-f99e5853bae0")
@@ -5257,7 +5273,7 @@
 		(uuid "464c929d-cdee-47e7-b510-08185f90f40a")
 	)
 	(junction
-		(at 293.37 82.55)
+		(at 293.37 72.39)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "483d8a85-452b-4875-85fd-2749f67edc66")
@@ -5401,7 +5417,7 @@
 		(uuid "9b768df5-0f88-435b-b063-6c1a791df0a8")
 	)
 	(junction
-		(at 115.57 60.96)
+		(at 133.35 41.91)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "9bf1f50c-7b65-4690-bf34-51ef5cdcc01e")
@@ -5479,12 +5495,6 @@
 		(uuid "cb526f98-4885-4238-8b43-b5b90daba1d2")
 	)
 	(junction
-		(at 280.67 82.55)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "cf521033-5883-4834-ae2b-aafea08c4d03")
-	)
-	(junction
 		(at 44.45 92.71)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -5515,7 +5525,7 @@
 		(uuid "dc77955a-b0fc-4f2c-bcde-1777d0238486")
 	)
 	(junction
-		(at 121.92 68.58)
+		(at 139.7 49.53)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "de07bc57-3ede-445e-946d-9916898fc0f7")
@@ -5609,6 +5619,10 @@
 	(no_connect
 		(at 236.22 100.33)
 		(uuid "96bcfbb5-3853-4241-9668-b88b81f6b248")
+	)
+	(no_connect
+		(at 236.22 82.55)
+		(uuid "b32b5d59-fa9e-49fd-b456-7b65c2773d78")
 	)
 	(no_connect
 		(at 332.74 66.04)
@@ -5758,6 +5772,16 @@
 	)
 	(wire
 		(pts
+			(xy 236.22 72.39) (xy 262.89 72.39)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0e78b883-e0bd-4971-928d-2a634b7459d6")
+	)
+	(wire
+		(pts
 			(xy 382.27 71.12) (xy 382.27 74.93)
 		)
 		(stroke
@@ -5888,7 +5912,7 @@
 	)
 	(wire
 		(pts
-			(xy 115.57 68.58) (xy 121.92 68.58)
+			(xy 133.35 49.53) (xy 139.7 49.53)
 		)
 		(stroke
 			(width 0)
@@ -6258,6 +6282,16 @@
 	)
 	(wire
 		(pts
+			(xy 298.45 50.8) (xy 298.45 72.39)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "30823779-d37e-4d10-af90-ed98a8e9c7cd")
+	)
+	(wire
+		(pts
 			(xy 293.37 121.92) (xy 285.75 121.92)
 		)
 		(stroke
@@ -6348,7 +6382,7 @@
 	)
 	(wire
 		(pts
-			(xy 308.61 82.55) (xy 293.37 82.55)
+			(xy 298.45 72.39) (xy 293.37 72.39)
 		)
 		(stroke
 			(width 0)
@@ -6408,7 +6442,7 @@
 	)
 	(wire
 		(pts
-			(xy 115.57 57.15) (xy 115.57 60.96)
+			(xy 133.35 38.1) (xy 133.35 41.91)
 		)
 		(stroke
 			(width 0)
@@ -6608,7 +6642,7 @@
 	)
 	(wire
 		(pts
-			(xy 175.26 62.23) (xy 180.34 62.23)
+			(xy 160.02 62.23) (xy 180.34 62.23)
 		)
 		(stroke
 			(width 0)
@@ -7088,16 +7122,6 @@
 	)
 	(wire
 		(pts
-			(xy 236.22 72.39) (xy 248.92 72.39)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6de47e3f-a87a-47b0-a34d-2159d083457b")
-	)
-	(wire
-		(pts
 			(xy 387.35 118.11) (xy 401.32 118.11)
 		)
 		(stroke
@@ -7348,7 +7372,7 @@
 	)
 	(wire
 		(pts
-			(xy 293.37 82.55) (xy 280.67 82.55)
+			(xy 293.37 72.39) (xy 262.89 72.39)
 		)
 		(stroke
 			(width 0)
@@ -7415,16 +7439,6 @@
 			(type default)
 		)
 		(uuid "8243e07f-8ed7-4e33-a10a-eadeee377806")
-	)
-	(wire
-		(pts
-			(xy 280.67 82.55) (xy 236.22 82.55)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8362027e-6cfe-4290-9d80-1447e955da22")
 	)
 	(wire
 		(pts
@@ -7575,16 +7589,6 @@
 			(type default)
 		)
 		(uuid "8b980c7e-9d31-40af-a0ee-f7da8f91b295")
-	)
-	(wire
-		(pts
-			(xy 293.37 81.28) (xy 293.37 82.55)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8d4fdb63-c248-4760-9686-df084ef7537b")
 	)
 	(wire
 		(pts
@@ -7798,7 +7802,17 @@
 	)
 	(wire
 		(pts
-			(xy 175.26 60.96) (xy 175.26 62.23)
+			(xy 293.37 71.12) (xy 293.37 72.39)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9d2938cc-316d-4d9f-a6ba-a67b4c86d727")
+	)
+	(wire
+		(pts
+			(xy 160.02 41.91) (xy 160.02 62.23)
 		)
 		(stroke
 			(width 0)
@@ -8268,7 +8282,7 @@
 	)
 	(wire
 		(pts
-			(xy 121.92 68.58) (xy 128.27 68.58)
+			(xy 139.7 49.53) (xy 146.05 49.53)
 		)
 		(stroke
 			(width 0)
@@ -8428,17 +8442,7 @@
 	)
 	(wire
 		(pts
-			(xy 308.61 50.8) (xy 308.61 82.55)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c876be7e-32a1-4b1b-a80d-ac5cb255fbf4")
-	)
-	(wire
-		(pts
-			(xy 128.27 60.96) (xy 175.26 60.96)
+			(xy 146.05 41.91) (xy 160.02 41.91)
 		)
 		(stroke
 			(width 0)
@@ -8458,7 +8462,7 @@
 	)
 	(wire
 		(pts
-			(xy 115.57 60.96) (xy 128.27 60.96)
+			(xy 133.35 41.91) (xy 146.05 41.91)
 		)
 		(stroke
 			(width 0)
@@ -8575,16 +8579,6 @@
 			(type default)
 		)
 		(uuid "cfe59f7c-7153-4300-a755-ab8455306ca3")
-	)
-	(wire
-		(pts
-			(xy 293.37 73.66) (xy 293.37 63.5)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d138c312-c9b3-457e-91c7-84874944adf0")
 	)
 	(wire
 		(pts
@@ -8738,7 +8732,7 @@
 	)
 	(wire
 		(pts
-			(xy 308.61 50.8) (xy 332.74 50.8)
+			(xy 298.45 50.8) (xy 332.74 50.8)
 		)
 		(stroke
 			(width 0)
@@ -9587,14 +9581,14 @@
 		(uuid "7ead4131-f9c8-4baa-bcba-02eed53108c4")
 	)
 	(label "SPI_SD_CS"
-		(at 240.03 82.55 0)
+		(at 248.92 72.39 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify right bottom)
 		)
-		(uuid "83050ed4-526c-4ae7-884a-0ec5e92bb4e7")
+		(uuid "7eeed482-d5ad-4ced-bb65-d3e04b5c3e2e")
 	)
 	(label "4S_V+"
 		(at 86.36 176.53 180)
@@ -9705,16 +9699,6 @@
 			(justify right bottom)
 		)
 		(uuid "a5d18e8c-bb38-4854-9fbb-a70968f11488")
-	)
-	(label "ADC_4"
-		(at 248.92 72.39 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "a6fe1661-59f3-4944-8cb3-c1308a04f488")
 	)
 	(label "CANH2"
 		(at 26.67 110.49 0)
@@ -10031,6 +10015,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 97.79 29.21 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "56732ee0-9e71-4102-b3bc-9404c5d24e24")
 		)
@@ -10094,6 +10086,14 @@
 		)
 		(property "Description" "HSE Crystal"
 			(at 159.512 72.39 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 153.67 67.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10302,6 +10302,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 77.47 241.3 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "2616349a-b980-445f-8a86-8156ed3bca2d")
 		)
@@ -10368,6 +10376,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 44.45 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -10505,6 +10521,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 289.56 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "539e9cbe-11ab-48ff-8de9-ee2bdcdc1ea9")
 		)
@@ -10575,6 +10599,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 133.35 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "98e6da51-3350-4d3f-af65-5e1e0afb174c")
 		)
@@ -10589,7 +10621,7 @@
 	)
 	(symbol
 		(lib_id "Device:C")
-		(at 128.27 64.77 0)
+		(at 146.05 45.72 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -10598,7 +10630,7 @@
 		(fields_autoplaced yes)
 		(uuid "18587f5e-94af-4d39-b587-7dc99772f72a")
 		(property "Reference" "C10"
-			(at 132.08 63.4999 0)
+			(at 149.86 44.4499 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10607,7 +10639,7 @@
 			)
 		)
 		(property "Value" "4u7"
-			(at 132.08 66.0399 0)
+			(at 149.86 46.9899 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10616,7 +10648,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 129.2352 68.58 0)
+			(at 147.0152 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10625,7 +10657,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 128.27 64.77 0)
+			(at 146.05 45.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10634,12 +10666,20 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
-			(at 128.27 64.77 0)
+			(at 146.05 45.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 146.05 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -10844,6 +10884,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 41.91 217.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "746d7ecc-222b-4d2b-87d2-60cca4bc5ce6")
 		)
@@ -11041,6 +11089,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 311.15 228.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "5604880c-1e5c-4674-9923-f9c9a1554352")
 		)
@@ -11178,6 +11234,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 106.68 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "26226797-bdae-439d-b643-e271419e7277")
 		)
@@ -11254,6 +11318,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 64.77 190.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "147e699d-ddaf-4d18-9add-7bc02842b8b8")
 		)
@@ -11322,6 +11394,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 16.51 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "2"
@@ -11399,6 +11479,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 176.53 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "c181e359-fc14-44a5-b516-3998d5ce12c7")
 		)
@@ -11469,6 +11557,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 140.97 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "fd0d141b-b46e-4534-ac3e-c51d489b80f5")
 		)
@@ -11536,6 +11632,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 313.69 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "bed96e0d-ca51-4ccf-bf9e-c97b3b412035")
 		)
@@ -11601,6 +11705,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 311.15 236.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -11673,6 +11785,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 147.32 135.89 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "a3b8fc35-21ba-403e-8d2d-8af86cd32005")
 		)
@@ -11687,7 +11807,7 @@
 	)
 	(symbol
 		(lib_id "Device:R")
-		(at 293.37 77.47 0)
+		(at 293.37 67.31 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -11695,7 +11815,7 @@
 		(dnp no)
 		(uuid "36680e7d-80c1-4018-a58e-60eaa063f0ed")
 		(property "Reference" "R5"
-			(at 294.132 73.66 0)
+			(at 294.132 63.5 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11704,7 +11824,7 @@
 			)
 		)
 		(property "Value" "20K"
-			(at 293.37 79.248 90)
+			(at 293.37 69.088 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11713,7 +11833,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 291.592 77.47 90)
+			(at 291.592 67.31 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11722,7 +11842,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 293.37 77.47 0)
+			(at 293.37 67.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11731,12 +11851,20 @@
 			)
 		)
 		(property "Description" "Resistor"
-			(at 293.37 77.47 0)
+			(at 293.37 67.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 293.37 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -11807,6 +11935,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 69.85 241.3 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -11937,6 +12073,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 135.89 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "2"
@@ -12085,6 +12229,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 327.66 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "3"
 			(uuid "f825e57c-c509-4788-bdee-7fa00c2f8236")
 		)
@@ -12173,6 +12325,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 149.86 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "2b8b4a03-d59c-4797-ada6-319dd732ac9a")
 		)
@@ -12239,6 +12399,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 102.87 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "2"
@@ -12377,6 +12545,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 63.5 217.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "b3f9ab65-7a7d-4bdf-8f16-2620338d3460")
 		)
@@ -12441,6 +12617,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 248.92 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -12517,6 +12701,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 87.63 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "6"
@@ -12625,6 +12817,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 74.93 218.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "74b009f6-1cda-45a4-b41a-cdfb570b77da")
 		)
@@ -12688,6 +12888,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 205.74 40.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "2"
@@ -12758,6 +12966,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 153.67 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -12896,6 +13112,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 250.19 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "4c71ba8c-f6b7-43e5-85d2-443e64851795")
 		)
@@ -12961,6 +13185,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 100.33 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -13029,6 +13261,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 44.45 114.3 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -13110,6 +13350,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 78.74 190.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "4a3f2ceb-c855-464e-95a6-0339278ecabf")
 		)
@@ -13177,6 +13425,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 285.75 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -13324,6 +13580,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 50.8 190.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "e45d42eb-435c-4591-bb58-5b4037e25619")
 		)
@@ -13393,6 +13657,14 @@
 			)
 		)
 		(property "MPN" "CTS05S40,L3F"
+			(at 196.85 40.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Type" ""
 			(at 196.85 40.64 0)
 			(effects
 				(font
@@ -13470,6 +13742,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 151.13 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "24ede455-e9d3-4bac-93d6-866ce672347c")
 		)
@@ -13537,6 +13817,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 181.61 43.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "e7ad3ebd-512d-4d31-8d24-52dc021df5a8")
 		)
@@ -13602,6 +13890,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 86.36 218.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -13737,6 +14033,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 146.05 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "174c4a7d-4686-4f04-80b1-436bff6ced7f")
 		)
@@ -13807,6 +14111,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 260.35 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "c1210e2d-a6c9-4916-9b49-98f8f897dc0c")
 		)
@@ -13872,6 +14184,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 78.74 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "2"
@@ -13952,6 +14272,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 208.28 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "38"
@@ -14607,6 +14935,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 62.23 241.3 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "35879acb-6d8a-4316-aba7-050ff2e3f2d5")
 		)
@@ -14669,6 +15005,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 311.15 233.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -14739,6 +15083,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 54.61 241.3 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -14870,6 +15222,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 133.35 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "2"
@@ -15008,6 +15368,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 251.46 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "7e3c928c-d772-40a8-8495-9dedf84f5262")
 		)
@@ -15074,6 +15442,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 72.39 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -15143,6 +15519,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 248.92 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -15278,6 +15662,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 251.46 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "34487189-fede-4153-b720-7a49ba784ba4")
 		)
@@ -15352,6 +15744,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 166.37 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "382740c3-2478-444e-a59c-491ba912afb6")
 		)
@@ -15417,6 +15817,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 254 85.09 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -15496,6 +15904,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 68.58 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "3"
 			(uuid "e5cc3c21-a7fa-41ee-b472-04e894965c3a")
 		)
@@ -15571,6 +15987,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 281.94 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "35a8fb32-cfbf-40fd-a8f9-3caff94bb4dc")
 		)
@@ -15581,72 +16005,6 @@
 			(project ""
 				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91"
 					(reference "R2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint_Small")
-		(at 248.92 72.39 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "904c5979-d34d-41d5-a37a-0dae8f117a7b")
-		(property "Reference" "TP33"
-			(at 237.998 72.39 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "ADC4"
-			(at 250.444 72.136 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
-			(at 254 72.39 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 254 72.39 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "test point"
-			(at 248.92 72.39 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "14c2a8ad-afbb-4439-a7e2-f81ad947a2ef")
-		)
-		(instances
-			(project "Central_ECU"
-				(path "/24ed8402-c9e1-4a61-8a56-11abd1b07d91"
-					(reference "TP33")
 					(unit 1)
 				)
 			)
@@ -15786,7 +16144,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 121.92 68.58 0)
+		(at 139.7 49.53 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -15795,7 +16153,7 @@
 		(fields_autoplaced yes)
 		(uuid "94b11c33-97b0-4345-af6d-31192a88a7b8")
 		(property "Reference" "#PWR014"
-			(at 121.92 74.93 0)
+			(at 139.7 55.88 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15804,7 +16162,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 121.92 73.66 0)
+			(at 139.7 54.61 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15812,7 +16170,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 121.92 68.58 0)
+			(at 139.7 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15821,7 +16179,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 121.92 68.58 0)
+			(at 139.7 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15830,7 +16188,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 121.92 68.58 0)
+			(at 139.7 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16036,6 +16394,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 100.33 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "fcef9b4a-315f-4dfb-a51f-8f260cc174e7")
 		)
@@ -16102,6 +16468,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 44.45 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "2"
@@ -16235,6 +16609,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 49.53 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -16440,6 +16822,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 44.45 104.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "118fc853-eba7-49a5-86a1-ffe65d7dd983")
 		)
@@ -16508,6 +16898,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 109.22 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -16582,6 +16980,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 355.6 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "8"
@@ -16754,16 +17160,15 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint_Small")
-		(at 280.67 82.55 0)
+		(at 262.89 72.39 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "aaf2d0af-418f-4248-823a-075183d9ee3f")
 		(property "Reference" "TP7"
-			(at 281.94 81.2799 0)
+			(at 264.16 71.1199 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16772,7 +17177,7 @@
 			)
 		)
 		(property "Value" "SPICS"
-			(at 281.94 83.8199 0)
+			(at 264.16 73.6599 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16781,7 +17186,7 @@
 			)
 		)
 		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
-			(at 285.75 82.55 0)
+			(at 267.97 72.39 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16790,7 +17195,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 285.75 82.55 0)
+			(at 267.97 72.39 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -16799,12 +17204,20 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 280.67 82.55 0)
+			(at 262.89 72.39 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 262.89 72.39 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -16874,6 +17287,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 270.51 80.01 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "4298b3bd-c2d6-4686-abd8-dd955a7bfae2")
 		)
@@ -16939,6 +17360,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 262.89 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -17072,6 +17501,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 140.97 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -17340,6 +17777,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 53.34 217.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "20b2e772-b0bc-42f0-beb0-181662fdfc8a")
 		)
@@ -17405,6 +17850,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 261.62 64.77 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -17473,6 +17926,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 308.61 40.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -17546,6 +18007,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 297.18 40.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "212ec6b1-2f82-4cd8-b760-efe33cc1d827")
 		)
@@ -17616,6 +18085,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 130.81 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "4d95b22f-5bcc-420b-a348-98c8021e5a85")
 		)
@@ -17681,6 +18158,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 199.39 46.99 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "2"
@@ -17753,6 +18238,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 204.47 185.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "b8cd3b58-50ce-4671-9533-44d1f0578856")
 		)
@@ -17818,6 +18311,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 218.44 44.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -17887,6 +18388,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 311.15 226.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "ffbe45da-b8a8-494e-acd0-27562b25c1c9")
 		)
@@ -17952,6 +18461,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 254 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "2"
@@ -18154,6 +18671,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 49.53 100.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "9d294d6b-3f7b-4443-8ac9-8ba9aae40ec0")
 		)
@@ -18224,6 +18749,22 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "MPN" "LPS22HHTR"
+			(at 44.45 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 44.45 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "10"
@@ -18385,6 +18926,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 138.43 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -18585,6 +19134,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 378.46 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -18856,6 +19413,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 109.22 29.21 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "84f9a6d7-4152-44ae-914d-d1146b148de8")
 		)
@@ -18926,6 +19491,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 64.77 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "3442d244-5405-40d8-bf4f-fe0b25fc2550")
 		)
@@ -18943,7 +19516,7 @@
 	)
 	(symbol
 		(lib_id "power:+3V3")
-		(at 115.57 57.15 0)
+		(at 133.35 38.1 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -18952,7 +19525,7 @@
 		(fields_autoplaced yes)
 		(uuid "e7db985e-a64d-4bd6-a35f-017b197026f5")
 		(property "Reference" "#PWR012"
-			(at 115.57 60.96 0)
+			(at 133.35 41.91 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18961,7 +19534,7 @@
 			)
 		)
 		(property "Value" "+3V3"
-			(at 115.57 52.07 0)
+			(at 133.35 33.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18969,7 +19542,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 115.57 57.15 0)
+			(at 133.35 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18978,7 +19551,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 115.57 57.15 0)
+			(at 133.35 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18987,7 +19560,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3V3\""
-			(at 115.57 57.15 0)
+			(at 133.35 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19128,6 +19701,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 302.26 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "bc3c6b16-acee-4f06-9c19-50b0733dcf14")
 		)
@@ -19264,6 +19845,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 50.8 182.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "7ddf3215-155d-45de-8f98-53557c967034")
 		)
@@ -19347,7 +19936,7 @@
 	)
 	(symbol
 		(lib_id "Device:C")
-		(at 115.57 64.77 0)
+		(at 133.35 45.72 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -19356,7 +19945,7 @@
 		(fields_autoplaced yes)
 		(uuid "eefd842d-6693-4c13-ae55-9527cb0b4e63")
 		(property "Reference" "C9"
-			(at 119.38 63.4999 0)
+			(at 137.16 44.4499 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19365,7 +19954,7 @@
 			)
 		)
 		(property "Value" "100n"
-			(at 119.38 66.0399 0)
+			(at 137.16 46.9899 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19374,7 +19963,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0402_1005Metric"
-			(at 116.5352 68.58 0)
+			(at 134.3152 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19383,7 +19972,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 115.57 64.77 0)
+			(at 133.35 45.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19392,12 +19981,20 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor"
-			(at 115.57 64.77 0)
+			(at 133.35 45.72 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 133.35 45.72 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "2"
@@ -19535,6 +20132,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 158.75 149.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "a01a92eb-cbb0-4712-8181-0453079063f4")
 		)
@@ -19603,6 +20208,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 231.14 44.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -19740,6 +20353,14 @@
 				(hide yes)
 			)
 		)
+		(property "Sim.Type" ""
+			(at 210.82 189.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "a267d57b-f2ce-4adb-9fb9-a8db2edf33ff")
 		)
@@ -19805,6 +20426,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 139.7 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"

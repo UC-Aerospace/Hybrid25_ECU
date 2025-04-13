@@ -66,6 +66,10 @@
         [
           "hole_clearance|186698000|145386000|ca38db64-dc7d-4396-ac06-4fdf9cb488bf|cc737ef7-c481-4fb4-98a5-fd0bcf02d991",
           ""
+        ],
+        [
+          "silk_overlap|173973750|101138736|0d567c9f-3b64-4ba7-80e5-6fea5004533a|e9082e4c-333b-40be-b6bc-0c98a562c4d3",
+          ""
         ]
       ],
       "meta": {
