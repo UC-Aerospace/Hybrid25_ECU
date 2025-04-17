@@ -1435,7 +1435,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "22u"
+		(property "Value" "10u"
 			(at 162.56 126.9999 0)
 			(effects
 				(font
@@ -2271,7 +2271,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "22u"
+		(property "Value" "10u"
 			(at 173.99 126.9999 0)
 			(effects
 				(font

@@ -4698,6 +4698,16 @@
 		)
 		(uuid "0f03aab5-70a4-48f4-8bdf-561c740c72cd")
 	)
+	(text "To allow for 8s battery connection (33.6V max) change TVS to PESD1CANFD33L-QYL"
+		(exclude_from_sim no)
+		(at 143.51 37.084 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "21d05724-e371-43f1-aaf1-5e9ed6535c09")
+	)
 	(text "USB"
 		(exclude_from_sim no)
 		(at 229.362 200.914 0)
@@ -8067,7 +8077,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://content.kemet.com/datasheets/KEM_A4088_A768.pdf"
+		(property "Datasheet" "https://search.kemet.com/download/datasheet/A768KS107M1HLAE030"
 			(at 176.53 55.88 0)
 			(effects
 				(font
@@ -8085,7 +8095,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "A768KE107M1VLAE036"
+		(property "MPN" "A768KS107M1HLAE030"
 			(at 176.53 55.88 0)
 			(effects
 				(font
@@ -8694,7 +8704,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://content.kemet.com/datasheets/KEM_A4088_A768.pdf"
+		(property "Datasheet" "https://search.kemet.com/download/datasheet/A768KS107M1HLAE030"
 			(at 172.72 97.79 0)
 			(effects
 				(font
@@ -8712,7 +8722,7 @@
 				(hide yes)
 			)
 		)
-		(property "MPN" "A768KE107M1VLAE036"
+		(property "MPN" "A768KS107M1HLAE030"
 			(at 172.72 97.79 0)
 			(effects
 				(font

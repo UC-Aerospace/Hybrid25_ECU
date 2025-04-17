@@ -271,6 +271,18 @@
   "erc": {
     "erc_exclusions": [
       [
+        "lib_symbol_issues|1155700|1930400|9f9bd2df-9a10-4103-95fe-ba618f19d673|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "lib_symbol_mismatch|1536700|673100|01d5974f-2c9a-4099-98b2-c41de6a4d049|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "lib_symbol_mismatch|3276600|1181100|44ed0ab1-6a02-458d-83d0-a66368acd850|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
         "pin_to_pin|1384300|1765300|203f5bd6-2ce7-48ae-9e3b-5371e546f080|fc7f5f8b-4a8c-4f0e-a810-418f32aa3007|/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10|/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10|/24ed8402-c9e1-4a61-8a56-11abd1b07d91/2e6b12ab-ed95-45d4-9da7-c2098bba7a10",
         ""
       ],
@@ -461,7 +473,7 @@
       "different_unit_net": "error",
       "duplicate_reference": "error",
       "duplicate_sheet_names": "error",
-      "endpoint_off_grid": "warning",
+      "endpoint_off_grid": "ignore",
       "extra_units": "error",
       "footprint_filter": "ignore",
       "footprint_link_issues": "warning",
@@ -538,10 +550,10 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "",
+      "plot": "Manufacture/",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "",
+      "step": "Central_ECU.step",
       "svg": "",
       "vrml": ""
     },

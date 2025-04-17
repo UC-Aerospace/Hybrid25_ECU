@@ -10342,7 +10342,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "60R"
+		(property "Value" "60.4R"
 			(at 41.91 123.1899 0)
 			(effects
 				(font
@@ -11273,7 +11273,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "LED"
+		(property "Value" "LED_G"
 			(at 68.58 193.3574 90)
 			(effects
 				(font
@@ -11291,7 +11291,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "~"
+		(property "Datasheet" "https://optoelectronics.liteon.com/upload/download/DS22-2000-072/LTST-C150KGKT.pdf"
 			(at 64.77 190.5 0)
 			(effects
 				(font
@@ -11309,21 +11309,13 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Pins" "1=K 2=A"
-			(at 64.77 190.5 0)
+		(property "MPN" "LTST-C150KGKT"
+			(at 64.77 190.5 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(hide yes)
-			)
-		)
-		(property "Sim.Type" ""
-			(at 64.77 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
 			)
 		)
 		(pin "1"
@@ -13227,7 +13219,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "60R"
+		(property "Value" "60.4R"
 			(at 41.91 115.5699 0)
 			(effects
 				(font
@@ -13305,7 +13297,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "LED"
+		(property "Value" "LED_B"
 			(at 82.55 193.3574 90)
 			(effects
 				(font
@@ -13323,7 +13315,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "~"
+		(property "Datasheet" "https://optoelectronics.liteon.com/upload/download/DS22-2000-026/LTST-C150TBKT(0630).pdf"
 			(at 78.74 190.5 0)
 			(effects
 				(font
@@ -13341,21 +13333,13 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Pins" "1=K 2=A"
-			(at 78.74 190.5 0)
+		(property "MPN" "LTST-C150TBKT"
+			(at 78.74 190.5 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(hide yes)
-			)
-		)
-		(property "Sim.Type" ""
-			(at 78.74 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
 			)
 		)
 		(pin "1"
@@ -13535,7 +13519,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "LED"
+		(property "Value" "LED_R"
 			(at 54.61 193.3574 90)
 			(effects
 				(font
@@ -13553,7 +13537,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "~"
+		(property "Datasheet" "https://optoelectronics.liteon.com/upload/download/DS-22-99-0149/LTST-C150KRKT.pdf"
 			(at 50.8 190.5 0)
 			(effects
 				(font
@@ -13571,21 +13555,13 @@
 				(hide yes)
 			)
 		)
-		(property "Sim.Pins" "1=K 2=A"
-			(at 50.8 190.5 0)
+		(property "MPN" "LTST-C150KRKT"
+			(at 50.8 190.5 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 				(hide yes)
-			)
-		)
-		(property "Sim.Type" ""
-			(at 50.8 190.5 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
 			)
 		)
 		(pin "1"
@@ -16434,7 +16410,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "60R"
+		(property "Value" "60.4R"
 			(at 41.91 97.7899 0)
 			(effects
 				(font
@@ -16786,7 +16762,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "60R"
+		(property "Value" "60.4R"
 			(at 41.91 105.4099 0)
 			(effects
 				(font
