@@ -553,7 +553,7 @@
       "plot": "Manufacture/",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "Central_ECU.step",
+      "step": "Central_ECU.stl",
       "svg": "",
       "vrml": ""
     },

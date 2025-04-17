@@ -36344,6 +36344,17 @@
 			(uuid "0468ae92-632c-4ba6-9a71-f41c41ebfc05")
 		)
 		(embedded_fonts no)
+		(model "../CAD_Models/DYY0014A.stp"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
 	)
 	(footprint "Resistor_SMD:R_0603_1608Metric"
 		(layer "F.Cu")
