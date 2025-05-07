@@ -12,6 +12,7 @@ set(MX_Defines_Syms
 set(MX_Include_Dirs
     ${CMAKE_SOURCE_DIR}/FATFS/Target
     ${CMAKE_SOURCE_DIR}/FATFS/App
+    ${CMAKE_SOURCE_DIR}/X-CUBE-MEMS1/Target
     ${CMAKE_SOURCE_DIR}/USB_Device/App
     ${CMAKE_SOURCE_DIR}/USB_Device/Target
     ${CMAKE_SOURCE_DIR}/Core/Inc
@@ -22,6 +23,7 @@ set(MX_Include_Dirs
     ${CMAKE_SOURCE_DIR}/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc
     ${CMAKE_SOURCE_DIR}/Drivers/CMSIS/Device/ST/STM32G0xx/Include
     ${CMAKE_SOURCE_DIR}/Drivers/CMSIS/Include
+    ${CMAKE_SOURCE_DIR}/Drivers/BSP/Components/lps22hh
 )
 
 # STM32CubeMX generated application sources
@@ -33,6 +35,7 @@ set(MX_Application_Src
     ${CMAKE_SOURCE_DIR}/FATFS/Target/user_diskio.c
     ${CMAKE_SOURCE_DIR}/FATFS/App/app_fatfs.c
     ${CMAKE_SOURCE_DIR}/Core/Src/main.c
+    ${CMAKE_SOURCE_DIR}/Core/Src/custom_bus.c
     ${CMAKE_SOURCE_DIR}/Core/Src/stm32g0xx_it.c
     ${CMAKE_SOURCE_DIR}/Core/Src/stm32g0xx_hal_msp.c
     ${CMAKE_SOURCE_DIR}/Core/Src/sysmem.c
@@ -59,18 +62,20 @@ set(STM32_Drivers_Src
     ${CMAKE_SOURCE_DIR}/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_cortex.c
     ${CMAKE_SOURCE_DIR}/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal.c
     ${CMAKE_SOURCE_DIR}/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_exti.c
+    ${CMAKE_SOURCE_DIR}/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_i2c.c
+    ${CMAKE_SOURCE_DIR}/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_i2c_ex.c
     ${CMAKE_SOURCE_DIR}/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c
     ${CMAKE_SOURCE_DIR}/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc_ex.c
     ${CMAKE_SOURCE_DIR}/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_ll_adc.c
     ${CMAKE_SOURCE_DIR}/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_fdcan.c
-    ${CMAKE_SOURCE_DIR}/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_i2c.c
-    ${CMAKE_SOURCE_DIR}/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_i2c_ex.c
     ${CMAKE_SOURCE_DIR}/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_rtc.c
     ${CMAKE_SOURCE_DIR}/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_rtc_ex.c
     ${CMAKE_SOURCE_DIR}/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_spi.c
     ${CMAKE_SOURCE_DIR}/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_spi_ex.c
     ${CMAKE_SOURCE_DIR}/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart.c
     ${CMAKE_SOURCE_DIR}/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart_ex.c
+    ${CMAKE_SOURCE_DIR}/Drivers/BSP/Components/lps22hh/lps22hh_reg.c
+    ${CMAKE_SOURCE_DIR}/Drivers/BSP/Components/lps22hh/lps22hh.c
 )
 
 # Drivers Midllewares
