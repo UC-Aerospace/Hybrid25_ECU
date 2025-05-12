@@ -1,0 +1,6 @@
+{
+    "cmake.useCMakePresets": "always",
+    "files.associations": {
+        "lps22hh_reg.h": "c"
+    }
+}

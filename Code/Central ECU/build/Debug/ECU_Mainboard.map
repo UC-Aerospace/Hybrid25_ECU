@@ -66,6 +66,8 @@ Archive member included to satisfy reference by file (symbol)
                               /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/libgcc.a(_udivmoddi4.o) (__clzdi2)
 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg_nano.a(libc_a-errno.o)
                               CMakeFiles/ECU_Mainboard.dir/Core/Src/sysmem.c.obj (__errno)
+/Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg_nano.a(libc_a-strlen.o)
+                              CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj (strlen)
 
 Discarded input sections
 
@@ -2215,8 +2217,6 @@ Discarded input sections
                 0x00000000       0x20 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_cortex.c.obj
  .text.HAL_SYSTICK_CLKSourceConfig
                 0x00000000       0x34 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_cortex.c.obj
- .text.HAL_SYSTICK_IRQHandler
-                0x00000000        0xe cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_cortex.c.obj
  .text.HAL_SYSTICK_Callback
                 0x00000000        0xa cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_cortex.c.obj
  .text.HAL_MPU_Enable
@@ -3431,8 +3431,6 @@ Discarded input sections
                 0x00000000       0x5e cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_fdcan.c.obj
  .text.HAL_FDCAN_ExitPowerDownMode
                 0x00000000       0x70 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_fdcan.c.obj
- .text.HAL_FDCAN_ConfigFilter
-                0x00000000       0xba cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_fdcan.c.obj
  .text.HAL_FDCAN_ConfigGlobalFilter
                 0x00000000       0x60 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_fdcan.c.obj
  .text.HAL_FDCAN_ConfigExtendedIdMask
@@ -3475,8 +3473,6 @@ Discarded input sections
                 0x00000000       0x40 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_fdcan.c.obj
  .text.HAL_FDCAN_DisableEdgeFiltering
                 0x00000000       0x44 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_fdcan.c.obj
- .text.HAL_FDCAN_Start
-                0x00000000       0x4c cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_fdcan.c.obj
  .text.HAL_FDCAN_Stop
                 0x00000000       0xda cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_fdcan.c.obj
  .text.HAL_FDCAN_AddMessageToTxFifoQ
@@ -3507,8 +3503,6 @@ Discarded input sections
                 0x00000000       0x50 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_fdcan.c.obj
  .text.HAL_FDCAN_ConfigInterruptLines
                 0x00000000       0x6e cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_fdcan.c.obj
- .text.HAL_FDCAN_ActivateNotification
-                0x00000000      0x1ac cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_fdcan.c.obj
  .text.HAL_FDCAN_DeactivateNotification
                 0x00000000      0x1a0 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_fdcan.c.obj
  .text.HAL_FDCAN_IRQHandler
@@ -7510,13 +7504,23 @@ Discarded input sections
  .group         0x00000000        0xc CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
  .group         0x00000000        0xc CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
  .group         0x00000000        0xc CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
- .group         0x00000000        0xc CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
- .group         0x00000000        0xc CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
  .text          0x00000000        0x0 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
  .data          0x00000000        0x0 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
  .bss           0x00000000        0x0 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
  .rodata.CHANNEL_OFFSET_TAB
                 0x00000000        0x7 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+ .bss.ubKeyNumber
+                0x00000000        0x1 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+ .bss.RxHeader  0x00000000       0x28 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+ .bss.RxData    0x00000000        0x8 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+ .bss.TxData    0x00000000        0x8 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+ .rodata        0x00000000       0x60 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+ .text.LED_Display
+                0x00000000       0x94 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+ .text.HAL_FDCAN_RxFifo0Callback
+                0x00000000       0x6c CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+ .text.USB_SendString
+                0x00000000       0x36 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
  .debug_macro   0x00000000      0xaae CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
  .debug_macro   0x00000000      0x148 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
  .debug_macro   0x00000000       0x2e CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
@@ -7596,7 +7600,6 @@ Discarded input sections
  .debug_macro   0x00000000       0x16 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
  .debug_macro   0x00000000       0x5f CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
  .debug_macro   0x00000000      0x20f CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
- .debug_macro   0x00000000      0x19b CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
  .debug_macro   0x00000000       0x95 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
  .debug_macro   0x00000000       0x10 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
  .group         0x00000000        0xc CMakeFiles/ECU_Mainboard.dir/Core/Src/custom_bus.c.obj
@@ -8269,6 +8272,13 @@ Discarded input sections
  .debug_frame   0x00000000       0x20 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg_nano.a(libc_a-errno.o)
  .ARM.attributes
                 0x00000000       0x2c /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg_nano.a(libc_a-errno.o)
+ .text          0x00000000        0xe /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg_nano.a(libc_a-strlen.o)
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg_nano.a(libc_a-strlen.o)
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg_nano.a(libc_a-strlen.o)
+ .debug_line_str
+                0x00000000       0xf0 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg_nano.a(libc_a-strlen.o)
+ .ARM.attributes
+                0x00000000       0x1c /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libg_nano.a(libc_a-strlen.o)
  .text          0x00000000        0x0 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/crtend.o
  .data          0x00000000        0x0 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/crtend.o
  .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/crtend.o
@@ -8369,7 +8379,7 @@ LOAD /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-no
                 0x08000000                g_pfnVectors
                 0x080000bc                        . = ALIGN (0x4)
 
-.text           0x080000bc     0xb4e0
+.text           0x080000bc     0xb884
                 0x080000bc                        . = ALIGN (0x4)
  *(.text)
  .text          0x080000bc      0x114 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/libgcc.a(_udivsi3.o)
@@ -8555,596 +8565,613 @@ LOAD /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-no
  .text.HAL_SYSTICK_Config
                 0x080052ba       0x1a cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_cortex.c.obj
                 0x080052ba                HAL_SYSTICK_Config
+ .text.HAL_SYSTICK_IRQHandler
+                0x080052d4        0xe cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_cortex.c.obj
+                0x080052d4                HAL_SYSTICK_IRQHandler
+ *fill*         0x080052e2        0x2 
  .text.HAL_Init
-                0x080052d4       0x40 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal.c.obj
-                0x080052d4                HAL_Init
+                0x080052e4       0x40 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal.c.obj
+                0x080052e4                HAL_Init
  .text.HAL_InitTick
-                0x08005314       0x94 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal.c.obj
-                0x08005314                HAL_InitTick
+                0x08005324       0x94 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal.c.obj
+                0x08005324                HAL_InitTick
  .text.HAL_IncTick
-                0x080053a8       0x24 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal.c.obj
-                0x080053a8                HAL_IncTick
+                0x080053b8       0x24 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal.c.obj
+                0x080053b8                HAL_IncTick
  .text.HAL_GetTick
-                0x080053cc       0x14 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal.c.obj
-                0x080053cc                HAL_GetTick
+                0x080053dc       0x14 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal.c.obj
+                0x080053dc                HAL_GetTick
  .text.HAL_Delay
-                0x080053e0       0x48 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal.c.obj
-                0x080053e0                HAL_Delay
+                0x080053f0       0x48 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal.c.obj
+                0x080053f0                HAL_Delay
  .text.HAL_SYSCFG_StrobeDBattpinsConfig
-                0x08005428       0x2c cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal.c.obj
-                0x08005428                HAL_SYSCFG_StrobeDBattpinsConfig
+                0x08005438       0x2c cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal.c.obj
+                0x08005438                HAL_SYSCFG_StrobeDBattpinsConfig
  .text.HAL_I2C_Init
-                0x08005454      0x14c cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_i2c.c.obj
-                0x08005454                HAL_I2C_Init
+                0x08005464      0x14c cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_i2c.c.obj
+                0x08005464                HAL_I2C_Init
  .text.HAL_I2CEx_ConfigAnalogFilter
-                0x080055a0       0x98 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_i2c_ex.c.obj
-                0x080055a0                HAL_I2CEx_ConfigAnalogFilter
+                0x080055b0       0x98 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_i2c_ex.c.obj
+                0x080055b0                HAL_I2CEx_ConfigAnalogFilter
  .text.HAL_I2CEx_ConfigDigitalFilter
-                0x08005638       0x98 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_i2c_ex.c.obj
-                0x08005638                HAL_I2CEx_ConfigDigitalFilter
+                0x08005648       0x98 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_i2c_ex.c.obj
+                0x08005648                HAL_I2CEx_ConfigDigitalFilter
  .text.LL_ADC_SetCommonPathInternalCh
-                0x080056d0       0x28 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
+                0x080056e0       0x28 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
  .text.LL_ADC_GetCommonPathInternalCh
-                0x080056f8       0x1a cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
+                0x08005708       0x1a cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
  .text.LL_ADC_SetSamplingTimeCommonChannels
-                0x08005712       0x3a cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
+                0x08005722       0x3a cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
  .text.LL_ADC_GetSamplingTimeCommonChannels
-                0x0800574c       0x2e cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
+                0x0800575c       0x2e cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
  .text.LL_ADC_REG_SetSequencerRanks
-                0x0800577a       0x40 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
+                0x0800578a       0x40 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
  .text.LL_ADC_REG_SetSequencerChAdd
-                0x080057ba       0x22 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
+                0x080057ca       0x22 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
  .text.LL_ADC_REG_SetSequencerChRem
-                0x080057dc       0x24 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
+                0x080057ec       0x24 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
  .text.LL_ADC_SetChannelSamplingTime
-                0x08005800       0x38 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
+                0x08005810       0x38 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
  .text.LL_ADC_EnableInternalRegulator
-                0x08005838       0x28 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
+                0x08005848       0x28 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
  .text.LL_ADC_IsInternalRegulatorEnabled
-                0x08005860       0x28 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
+                0x08005870       0x28 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
  .text.LL_ADC_IsEnabled
-                0x08005888       0x22 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
+                0x08005898       0x22 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
  .text.LL_ADC_REG_IsConversionOngoing
-                0x080058aa       0x22 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
+                0x080058ba       0x22 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
  .text.HAL_ADC_Init
-                0x080058cc      0x350 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
-                0x080058cc                HAL_ADC_Init
+                0x080058dc      0x350 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
+                0x080058dc                HAL_ADC_Init
  .text.HAL_ADC_ConfigChannel
-                0x08005c1c      0x3b0 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
-                0x08005c1c                HAL_ADC_ConfigChannel
+                0x08005c2c      0x3b0 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
+                0x08005c2c                HAL_ADC_ConfigChannel
  .text.HAL_FDCAN_Init
-                0x08005fcc      0x2cc cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_fdcan.c.obj
-                0x08005fcc                HAL_FDCAN_Init
+                0x08005fdc      0x2cc cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_fdcan.c.obj
+                0x08005fdc                HAL_FDCAN_Init
+ .text.HAL_FDCAN_ConfigFilter
+                0x080062a8       0xba cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_fdcan.c.obj
+                0x080062a8                HAL_FDCAN_ConfigFilter
+ .text.HAL_FDCAN_Start
+                0x08006362       0x4c cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_fdcan.c.obj
+                0x08006362                HAL_FDCAN_Start
+ .text.HAL_FDCAN_ActivateNotification
+                0x080063ae      0x1ac cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_fdcan.c.obj
+                0x080063ae                HAL_FDCAN_ActivateNotification
+ *fill*         0x0800655a        0x2 
  .text.FDCAN_CalcultateRamBlockAddresses
-                0x08006298       0xd8 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_fdcan.c.obj
+                0x0800655c       0xd8 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_fdcan.c.obj
  .text.HAL_RTC_Init
-                0x08006370      0x144 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_rtc.c.obj
-                0x08006370                HAL_RTC_Init
+                0x08006634      0x144 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_rtc.c.obj
+                0x08006634                HAL_RTC_Init
  .text.HAL_RTC_WaitForSynchro
-                0x080064b4       0x4c cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_rtc.c.obj
-                0x080064b4                HAL_RTC_WaitForSynchro
+                0x08006778       0x4c cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_rtc.c.obj
+                0x08006778                HAL_RTC_WaitForSynchro
  .text.RTC_EnterInitMode
-                0x08006500       0x84 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_rtc.c.obj
-                0x08006500                RTC_EnterInitMode
+                0x080067c4       0x84 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_rtc.c.obj
+                0x080067c4                RTC_EnterInitMode
  .text.RTC_ExitInitMode
-                0x08006584       0x88 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_rtc.c.obj
-                0x08006584                RTC_ExitInitMode
+                0x08006848       0x88 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_rtc.c.obj
+                0x08006848                RTC_ExitInitMode
  .text.HAL_SPI_Init
-                0x0800660c      0x170 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_spi.c.obj
-                0x0800660c                HAL_SPI_Init
+                0x080068d0      0x170 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_spi.c.obj
+                0x080068d0                HAL_SPI_Init
  .text.HAL_UART_Init
-                0x0800677c       0xac cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart.c.obj
-                0x0800677c                HAL_UART_Init
+                0x08006a40       0xac cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart.c.obj
+                0x08006a40                HAL_UART_Init
  .text.UART_SetConfig
-                0x08006828      0x6ac cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart.c.obj
-                0x08006828                UART_SetConfig
+                0x08006aec      0x6ac cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart.c.obj
+                0x08006aec                UART_SetConfig
  .text.UART_AdvFeatureConfig
-                0x08006ed4      0x168 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart.c.obj
-                0x08006ed4                UART_AdvFeatureConfig
+                0x08007198      0x168 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart.c.obj
+                0x08007198                UART_AdvFeatureConfig
  .text.UART_CheckIdleState
-                0x0800703c      0x154 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart.c.obj
-                0x0800703c                UART_CheckIdleState
+                0x08007300      0x154 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart.c.obj
+                0x08007300                UART_CheckIdleState
  .text.UART_WaitOnFlagUntilTimeout
-                0x08007190       0xde cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart.c.obj
-                0x08007190                UART_WaitOnFlagUntilTimeout
- *fill*         0x0800726e        0x2 
+                0x08007454       0xde cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart.c.obj
+                0x08007454                UART_WaitOnFlagUntilTimeout
+ *fill*         0x08007532        0x2 
  .text.UART_EndRxTransfer
-                0x08007270       0xcc cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart.c.obj
+                0x08007534       0xcc cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart.c.obj
  .text.HAL_UARTEx_DisableFifoMode
-                0x0800733c       0x74 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart_ex.c.obj
-                0x0800733c                HAL_UARTEx_DisableFifoMode
+                0x08007600       0x74 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart_ex.c.obj
+                0x08007600                HAL_UARTEx_DisableFifoMode
  .text.HAL_UARTEx_SetTxFifoThreshold
-                0x080073b0       0x7e cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart_ex.c.obj
-                0x080073b0                HAL_UARTEx_SetTxFifoThreshold
- *fill*         0x0800742e        0x2 
+                0x08007674       0x7e cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart_ex.c.obj
+                0x08007674                HAL_UARTEx_SetTxFifoThreshold
+ *fill*         0x080076f2        0x2 
  .text.HAL_UARTEx_SetRxFifoThreshold
-                0x08007430       0x84 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart_ex.c.obj
-                0x08007430                HAL_UARTEx_SetRxFifoThreshold
+                0x080076f4       0x84 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart_ex.c.obj
+                0x080076f4                HAL_UARTEx_SetRxFifoThreshold
  .text.UARTEx_SetNbDataToProcess
-                0x080074b4       0xbc cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart_ex.c.obj
+                0x08007778       0xbc cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart_ex.c.obj
  .text.USBD_Init
-                0x08007570       0x74 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
-                0x08007570                USBD_Init
+                0x08007834       0x74 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
+                0x08007834                USBD_Init
  .text.USBD_RegisterClass
-                0x080075e4       0x7c cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
-                0x080075e4                USBD_RegisterClass
+                0x080078a8       0x7c cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
+                0x080078a8                USBD_RegisterClass
  .text.USBD_Start
-                0x08007660       0x1a cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
-                0x08007660                USBD_Start
+                0x08007924       0x1a cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
+                0x08007924                USBD_Start
  .text.USBD_RunTestMode
-                0x0800767a       0x12 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
-                0x0800767a                USBD_RunTestMode
+                0x0800793e       0x12 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
+                0x0800793e                USBD_RunTestMode
  .text.USBD_SetClassConfig
-                0x0800768c       0x4a cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
-                0x0800768c                USBD_SetClassConfig
+                0x08007950       0x4a cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
+                0x08007950                USBD_SetClassConfig
  .text.USBD_ClrClassConfig
-                0x080076d6       0x42 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
-                0x080076d6                USBD_ClrClassConfig
+                0x0800799a       0x42 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
+                0x0800799a                USBD_ClrClassConfig
  .text.USBD_LL_SetupStage
-                0x08007718       0xd4 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
-                0x08007718                USBD_LL_SetupStage
+                0x080079dc       0xd4 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
+                0x080079dc                USBD_LL_SetupStage
  .text.USBD_LL_DataOutStage
-                0x080077ec      0x1d0 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
-                0x080077ec                USBD_LL_DataOutStage
+                0x08007ab0      0x1d0 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
+                0x08007ab0                USBD_LL_DataOutStage
  .text.USBD_LL_DataInStage
-                0x080079bc      0x1b0 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
-                0x080079bc                USBD_LL_DataInStage
+                0x08007c80      0x1b0 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
+                0x08007c80                USBD_LL_DataInStage
  .text.USBD_LL_Reset
-                0x08007b6c       0xbe cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
-                0x08007b6c                USBD_LL_Reset
+                0x08007e30       0xbe cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
+                0x08007e30                USBD_LL_Reset
  .text.USBD_LL_SetSpeed
-                0x08007c2a       0x20 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
-                0x08007c2a                USBD_LL_SetSpeed
- *fill*         0x08007c4a        0x2 
+                0x08007eee       0x20 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
+                0x08007eee                USBD_LL_SetSpeed
+ *fill*         0x08007f0e        0x2 
  .text.USBD_LL_Suspend
-                0x08007c4c       0x30 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
-                0x08007c4c                USBD_LL_Suspend
+                0x08007f10       0x30 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
+                0x08007f10                USBD_LL_Suspend
  .text.USBD_LL_Resume
-                0x08007c7c       0x34 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
-                0x08007c7c                USBD_LL_Resume
+                0x08007f40       0x34 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
+                0x08007f40                USBD_LL_Resume
  .text.USBD_LL_SOF
-                0x08007cb0       0x4a cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
-                0x08007cb0                USBD_LL_SOF
+                0x08007f74       0x4a cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
+                0x08007f74                USBD_LL_SOF
  .text.USBD_CoreFindIF
-                0x08007cfa       0x18 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
-                0x08007cfa                USBD_CoreFindIF
+                0x08007fbe       0x18 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
+                0x08007fbe                USBD_CoreFindIF
  .text.USBD_CoreFindEP
-                0x08007d12       0x18 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
-                0x08007d12                USBD_CoreFindEP
+                0x08007fd6       0x18 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
+                0x08007fd6                USBD_CoreFindEP
  .text.USBD_GetEpDesc
-                0x08007d2a       0x8e cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
-                0x08007d2a                USBD_GetEpDesc
+                0x08007fee       0x8e cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
+                0x08007fee                USBD_GetEpDesc
  .text.USBD_GetNextDesc
-                0x08007db8       0x34 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
-                0x08007db8                USBD_GetNextDesc
+                0x0800807c       0x34 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
+                0x0800807c                USBD_GetNextDesc
  .text.SWAPBYTE
-                0x08007dec       0x4c cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
+                0x080080b0       0x4c cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
  .text.USBD_StdDevReq
-                0x08007e38       0xfc cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
-                0x08007e38                USBD_StdDevReq
+                0x080080fc       0xfc cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
+                0x080080fc                USBD_StdDevReq
  .text.USBD_StdItfReq
-                0x08007f34      0x11a cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
-                0x08007f34                USBD_StdItfReq
+                0x080081f8      0x11a cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
+                0x080081f8                USBD_StdItfReq
  .text.USBD_StdEPReq
-                0x0800804e      0x40a cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
-                0x0800804e                USBD_StdEPReq
+                0x08008312      0x40a cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
+                0x08008312                USBD_StdEPReq
  .text.USBD_GetDescriptor
-                0x08008458      0x3b4 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
+                0x0800871c      0x3b4 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
  .text.USBD_SetAddress
-                0x0800880c       0xac cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
+                0x08008ad0       0xac cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
  .text.USBD_SetConfig
-                0x080088b8      0x19c cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
+                0x08008b7c      0x19c cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
  .text.USBD_GetConfig
-                0x08008a54       0x78 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
+                0x08008d18       0x78 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
  .text.USBD_GetStatus
-                0x08008acc       0x76 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
+                0x08008d90       0x76 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
  .text.USBD_SetFeature
-                0x08008b42       0x5e cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
+                0x08008e06       0x5e cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
  .text.USBD_ClrFeature
-                0x08008ba0       0x4e cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
+                0x08008e64       0x4e cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
  .text.USBD_ParseSetupRequest
-                0x08008bee       0x7a cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
-                0x08008bee                USBD_ParseSetupRequest
+                0x08008eb2       0x7a cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
+                0x08008eb2                USBD_ParseSetupRequest
  .text.USBD_CtlError
-                0x08008c68       0x26 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
-                0x08008c68                USBD_CtlError
+                0x08008f2c       0x26 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
+                0x08008f2c                USBD_CtlError
  .text.USBD_GetString
-                0x08008c8e       0xac cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
-                0x08008c8e                USBD_GetString
+                0x08008f52       0xac cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
+                0x08008f52                USBD_GetString
  .text.USBD_GetLen
-                0x08008d3a       0x3e cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
+                0x08008ffe       0x3e cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
  .text.USBD_CtlSendData
-                0x08008d78       0x38 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c.obj
-                0x08008d78                USBD_CtlSendData
+                0x0800903c       0x38 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c.obj
+                0x0800903c                USBD_CtlSendData
  .text.USBD_CtlContinueSendData
-                0x08008db0       0x22 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c.obj
-                0x08008db0                USBD_CtlContinueSendData
+                0x08009074       0x22 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c.obj
+                0x08009074                USBD_CtlContinueSendData
  .text.USBD_CtlPrepareRx
-                0x08008dd2       0x40 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c.obj
-                0x08008dd2                USBD_CtlPrepareRx
+                0x08009096       0x40 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c.obj
+                0x08009096                USBD_CtlPrepareRx
  .text.USBD_CtlContinueRx
-                0x08008e12       0x22 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c.obj
-                0x08008e12                USBD_CtlContinueRx
+                0x080090d6       0x22 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c.obj
+                0x080090d6                USBD_CtlContinueRx
  .text.USBD_CtlSendStatus
-                0x08008e34       0x28 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c.obj
-                0x08008e34                USBD_CtlSendStatus
+                0x080090f8       0x28 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c.obj
+                0x080090f8                USBD_CtlSendStatus
  .text.USBD_CtlReceiveStatus
-                0x08008e5c       0x28 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c.obj
-                0x08008e5c                USBD_CtlReceiveStatus
+                0x08009120       0x28 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c.obj
+                0x08009120                USBD_CtlReceiveStatus
  .text.USBD_CDC_Init
-                0x08008e84      0x220 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
+                0x08009148      0x220 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
  .text.USBD_CDC_DeInit
-                0x080090a4      0x120 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
+                0x08009368      0x120 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
  .text.USBD_CDC_Setup
-                0x080091c4      0x1f0 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
+                0x08009488      0x1f0 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
  .text.USBD_CDC_DataIn
-                0x080093b4      0x11e cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
+                0x08009678      0x11e cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
  .text.USBD_CDC_DataOut
-                0x080094d2       0x86 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
+                0x08009796       0x86 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
  .text.USBD_CDC_EP0_RxReady
-                0x08009558       0x88 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
+                0x0800981c       0x88 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
  .text.USBD_CDC_GetFSCfgDesc
-                0x080095e0       0x90 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
+                0x080098a4       0x90 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
  .text.USBD_CDC_GetHSCfgDesc
-                0x08009670       0x90 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
+                0x08009934       0x90 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
  .text.USBD_CDC_GetOtherSpeedCfgDesc
-                0x08009700       0x90 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
+                0x080099c4       0x90 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
  .text.USBD_CDC_GetDeviceQualifierDescriptor
-                0x08009790       0x1c cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
-                0x08009790                USBD_CDC_GetDeviceQualifierDescriptor
+                0x08009a54       0x1c cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
+                0x08009a54                USBD_CDC_GetDeviceQualifierDescriptor
  .text.USBD_CDC_RegisterInterface
-                0x080097ac       0x34 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
-                0x080097ac                USBD_CDC_RegisterInterface
+                0x08009a70       0x34 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
+                0x08009a70                USBD_CDC_RegisterInterface
  .text.USBD_CDC_SetTxBuffer
-                0x080097e0       0x46 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
-                0x080097e0                USBD_CDC_SetTxBuffer
+                0x08009aa4       0x46 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
+                0x08009aa4                USBD_CDC_SetTxBuffer
  .text.USBD_CDC_SetRxBuffer
-                0x08009826       0x3a cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
-                0x08009826                USBD_CDC_SetRxBuffer
+                0x08009aea       0x3a cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
+                0x08009aea                USBD_CDC_SetRxBuffer
  .text.USBD_CDC_ReceivePacket
-                0x08009860       0x74 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
-                0x08009860                USBD_CDC_ReceivePacket
+                0x08009b24       0x74 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
+                0x08009b24                USBD_CDC_ReceivePacket
  .text.FATFS_LinkDriverEx
-                0x080098d4       0xa8 cmake/stm32cubemx/CMakeFiles/FatFs.dir/__/__/Middlewares/Third_Party/FatFs/src/ff_gen_drv.c.obj
-                0x080098d4                FATFS_LinkDriverEx
+                0x08009b98       0xa8 cmake/stm32cubemx/CMakeFiles/FatFs.dir/__/__/Middlewares/Third_Party/FatFs/src/ff_gen_drv.c.obj
+                0x08009b98                FATFS_LinkDriverEx
  .text.FATFS_LinkDriver
-                0x0800997c       0x20 cmake/stm32cubemx/CMakeFiles/FatFs.dir/__/__/Middlewares/Third_Party/FatFs/src/ff_gen_drv.c.obj
-                0x0800997c                FATFS_LinkDriver
+                0x08009c40       0x20 cmake/stm32cubemx/CMakeFiles/FatFs.dir/__/__/Middlewares/Third_Party/FatFs/src/ff_gen_drv.c.obj
+                0x08009c40                FATFS_LinkDriver
  .text.HAL_PCD_MspInit
-                0x0800999c       0xc0 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
-                0x0800999c                HAL_PCD_MspInit
+                0x08009c60       0xc0 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
+                0x08009c60                HAL_PCD_MspInit
  .text.HAL_PCD_SetupStageCallback
-                0x08009a5c       0x2a CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
-                0x08009a5c                HAL_PCD_SetupStageCallback
+                0x08009d20       0x2a CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
+                0x08009d20                HAL_PCD_SetupStageCallback
  .text.HAL_PCD_DataOutStageCallback
-                0x08009a86       0x42 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
-                0x08009a86                HAL_PCD_DataOutStageCallback
+                0x08009d4a       0x42 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
+                0x08009d4a                HAL_PCD_DataOutStageCallback
  .text.HAL_PCD_DataInStageCallback
-                0x08009ac8       0x3c CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
-                0x08009ac8                HAL_PCD_DataInStageCallback
+                0x08009d8c       0x3c CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
+                0x08009d8c                HAL_PCD_DataInStageCallback
  .text.HAL_PCD_SOFCallback
-                0x08009b04       0x1e CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
-                0x08009b04                HAL_PCD_SOFCallback
+                0x08009dc8       0x1e CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
+                0x08009dc8                HAL_PCD_SOFCallback
  .text.HAL_PCD_ResetCallback
-                0x08009b22       0x48 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
-                0x08009b22                HAL_PCD_ResetCallback
- *fill*         0x08009b6a        0x2 
+                0x08009de6       0x48 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
+                0x08009de6                HAL_PCD_ResetCallback
+ *fill*         0x08009e2e        0x2 
  .text.HAL_PCD_SuspendCallback
-                0x08009b6c       0x38 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
-                0x08009b6c                HAL_PCD_SuspendCallback
+                0x08009e30       0x38 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
+                0x08009e30                HAL_PCD_SuspendCallback
  .text.HAL_PCD_ResumeCallback
-                0x08009ba4       0x3c CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
-                0x08009ba4                HAL_PCD_ResumeCallback
+                0x08009e68       0x3c CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
+                0x08009e68                HAL_PCD_ResumeCallback
  .text.USBD_LL_Init
-                0x08009be0       0xe4 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
-                0x08009be0                USBD_LL_Init
+                0x08009ea4       0xe4 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
+                0x08009ea4                USBD_LL_Init
  .text.USBD_LL_Start
-                0x08009cc4       0x4a CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
-                0x08009cc4                USBD_LL_Start
+                0x08009f88       0x4a CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
+                0x08009f88                USBD_LL_Start
  .text.USBD_LL_OpenEP
-                0x08009d0e       0x6e CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
-                0x08009d0e                USBD_LL_OpenEP
+                0x08009fd2       0x6e CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
+                0x08009fd2                USBD_LL_OpenEP
  .text.USBD_LL_CloseEP
-                0x08009d7c       0x56 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
-                0x08009d7c                USBD_LL_CloseEP
+                0x0800a040       0x56 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
+                0x0800a040                USBD_LL_CloseEP
  .text.USBD_LL_StallEP
-                0x08009dd2       0x56 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
-                0x08009dd2                USBD_LL_StallEP
+                0x0800a096       0x56 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
+                0x0800a096                USBD_LL_StallEP
  .text.USBD_LL_ClearStallEP
-                0x08009e28       0x56 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
-                0x08009e28                USBD_LL_ClearStallEP
+                0x0800a0ec       0x56 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
+                0x0800a0ec                USBD_LL_ClearStallEP
  .text.USBD_LL_IsStallEP
-                0x08009e7e       0x60 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
-                0x08009e7e                USBD_LL_IsStallEP
+                0x0800a142       0x60 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
+                0x0800a142                USBD_LL_IsStallEP
  .text.USBD_LL_SetUSBAddress
-                0x08009ede       0x56 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
-                0x08009ede                USBD_LL_SetUSBAddress
+                0x0800a1a2       0x56 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
+                0x0800a1a2                USBD_LL_SetUSBAddress
  .text.USBD_LL_Transmit
-                0x08009f34       0x60 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
-                0x08009f34                USBD_LL_Transmit
+                0x0800a1f8       0x60 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
+                0x0800a1f8                USBD_LL_Transmit
  .text.USBD_LL_PrepareReceive
-                0x08009f94       0x60 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
-                0x08009f94                USBD_LL_PrepareReceive
+                0x0800a258       0x60 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
+                0x0800a258                USBD_LL_PrepareReceive
  .text.USBD_LL_GetRxDataSize
-                0x08009ff4       0x2c CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
-                0x08009ff4                USBD_LL_GetRxDataSize
+                0x0800a2b8       0x2c CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
+                0x0800a2b8                USBD_LL_GetRxDataSize
  .text.HAL_PCDEx_LPM_Callback
-                0x0800a020       0x74 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
-                0x0800a020                HAL_PCDEx_LPM_Callback
+                0x0800a2e4       0x74 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
+                0x0800a2e4                HAL_PCDEx_LPM_Callback
  .text.USBD_static_malloc
-                0x0800a094       0x18 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
-                0x0800a094                USBD_static_malloc
+                0x0800a358       0x18 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
+                0x0800a358                USBD_static_malloc
  .text.USBD_static_free
-                0x0800a0ac       0x10 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
-                0x0800a0ac                USBD_static_free
+                0x0800a370       0x10 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
+                0x0800a370                USBD_static_free
  .text.SystemClockConfig_Resume
-                0x0800a0bc        0xe CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
+                0x0800a380        0xe CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
  .text.USBD_Get_USB_Status
-                0x0800a0ca       0x6e CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
+                0x0800a38e       0x6e CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
  .text.MX_USB_Device_Init
-                0x0800a138       0x68 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usb_device.c.obj
-                0x0800a138                MX_USB_Device_Init
+                0x0800a3fc       0x68 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usb_device.c.obj
+                0x0800a3fc                MX_USB_Device_Init
  .text.USBD_CDC_DeviceDescriptor
-                0x0800a1a0       0x24 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_desc.c.obj
-                0x0800a1a0                USBD_CDC_DeviceDescriptor
+                0x0800a464       0x24 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_desc.c.obj
+                0x0800a464                USBD_CDC_DeviceDescriptor
  .text.USBD_CDC_LangIDStrDescriptor
-                0x0800a1c4       0x24 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_desc.c.obj
-                0x0800a1c4                USBD_CDC_LangIDStrDescriptor
+                0x0800a488       0x24 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_desc.c.obj
+                0x0800a488                USBD_CDC_LangIDStrDescriptor
  .text.USBD_CDC_ProductStrDescriptor
-                0x0800a1e8       0x44 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_desc.c.obj
-                0x0800a1e8                USBD_CDC_ProductStrDescriptor
+                0x0800a4ac       0x44 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_desc.c.obj
+                0x0800a4ac                USBD_CDC_ProductStrDescriptor
  .text.USBD_CDC_ManufacturerStrDescriptor
-                0x0800a22c       0x2c CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_desc.c.obj
-                0x0800a22c                USBD_CDC_ManufacturerStrDescriptor
+                0x0800a4f0       0x2c CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_desc.c.obj
+                0x0800a4f0                USBD_CDC_ManufacturerStrDescriptor
  .text.USBD_CDC_SerialStrDescriptor
-                0x0800a258       0x28 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_desc.c.obj
-                0x0800a258                USBD_CDC_SerialStrDescriptor
+                0x0800a51c       0x28 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_desc.c.obj
+                0x0800a51c                USBD_CDC_SerialStrDescriptor
  .text.USBD_CDC_ConfigStrDescriptor
-                0x0800a280       0x44 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_desc.c.obj
-                0x0800a280                USBD_CDC_ConfigStrDescriptor
+                0x0800a544       0x44 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_desc.c.obj
+                0x0800a544                USBD_CDC_ConfigStrDescriptor
  .text.USBD_CDC_InterfaceStrDescriptor
-                0x0800a2c4       0x44 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_desc.c.obj
-                0x0800a2c4                USBD_CDC_InterfaceStrDescriptor
+                0x0800a588       0x44 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_desc.c.obj
+                0x0800a588                USBD_CDC_InterfaceStrDescriptor
  .text.Get_SerialNum
-                0x0800a308       0x5c CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_desc.c.obj
+                0x0800a5cc       0x5c CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_desc.c.obj
  .text.IntToUnicode
-                0x0800a364       0x96 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_desc.c.obj
- *fill*         0x0800a3fa        0x2 
+                0x0800a628       0x96 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_desc.c.obj
+ *fill*         0x0800a6be        0x2 
  .text.CDC_Init_FS
-                0x0800a3fc       0x30 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_cdc_if.c.obj
+                0x0800a6c0       0x30 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_cdc_if.c.obj
  .text.CDC_DeInit_FS
-                0x0800a42c        0xc CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_cdc_if.c.obj
+                0x0800a6f0        0xc CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_cdc_if.c.obj
  .text.CDC_Control_FS
-                0x0800a438       0x38 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_cdc_if.c.obj
+                0x0800a6fc       0x38 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_cdc_if.c.obj
  .text.CDC_Receive_FS
-                0x0800a470       0x2c CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_cdc_if.c.obj
+                0x0800a734       0x2c CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_cdc_if.c.obj
  .text.CDC_TransmitCplt_FS
-                0x0800a49c       0x24 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_cdc_if.c.obj
+                0x0800a760       0x24 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_cdc_if.c.obj
  .text.USER_initialize
-                0x0800a4c0       0x24 CMakeFiles/ECU_Mainboard.dir/FATFS/Target/user_diskio.c.obj
-                0x0800a4c0                USER_initialize
+                0x0800a784       0x24 CMakeFiles/ECU_Mainboard.dir/FATFS/Target/user_diskio.c.obj
+                0x0800a784                USER_initialize
  .text.USER_status
-                0x0800a4e4       0x24 CMakeFiles/ECU_Mainboard.dir/FATFS/Target/user_diskio.c.obj
-                0x0800a4e4                USER_status
+                0x0800a7a8       0x24 CMakeFiles/ECU_Mainboard.dir/FATFS/Target/user_diskio.c.obj
+                0x0800a7a8                USER_status
  .text.USER_read
-                0x0800a508       0x1e CMakeFiles/ECU_Mainboard.dir/FATFS/Target/user_diskio.c.obj
-                0x0800a508                USER_read
+                0x0800a7cc       0x1e CMakeFiles/ECU_Mainboard.dir/FATFS/Target/user_diskio.c.obj
+                0x0800a7cc                USER_read
  .text.USER_write
-                0x0800a526       0x1e CMakeFiles/ECU_Mainboard.dir/FATFS/Target/user_diskio.c.obj
-                0x0800a526                USER_write
+                0x0800a7ea       0x1e CMakeFiles/ECU_Mainboard.dir/FATFS/Target/user_diskio.c.obj
+                0x0800a7ea                USER_write
  .text.USER_ioctl
-                0x0800a544       0x28 CMakeFiles/ECU_Mainboard.dir/FATFS/Target/user_diskio.c.obj
-                0x0800a544                USER_ioctl
+                0x0800a808       0x28 CMakeFiles/ECU_Mainboard.dir/FATFS/Target/user_diskio.c.obj
+                0x0800a808                USER_ioctl
  .text.MX_FATFS_Init
-                0x0800a56c       0x34 CMakeFiles/ECU_Mainboard.dir/FATFS/App/app_fatfs.c.obj
-                0x0800a56c                MX_FATFS_Init
- .text.main     0x0800a5a0       0x7c CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
-                0x0800a5a0                main
+                0x0800a830       0x34 CMakeFiles/ECU_Mainboard.dir/FATFS/App/app_fatfs.c.obj
+                0x0800a830                MX_FATFS_Init
+ .text.main     0x0800a864       0x5c CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+                0x0800a864                main
  .text.SystemClock_Config
-                0x0800a61c       0xb4 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
-                0x0800a61c                SystemClock_Config
+                0x0800a8c0       0xb4 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+                0x0800a8c0                SystemClock_Config
  .text.MX_ADC1_Init
-                0x0800a6d0       0xd4 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+                0x0800a974       0xd4 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
  .text.MX_FDCAN1_Init
-                0x0800a7a4       0x90 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+                0x0800aa48       0x90 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
  .text.MX_FDCAN2_Init
-                0x0800a834       0x90 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+                0x0800aad8       0x90 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
  .text.MX_I2C1_Init
-                0x0800a8c4       0x80 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+                0x0800ab68       0x80 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
  .text.MX_I2C2_Init
-                0x0800a944       0x80 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+                0x0800abe8       0x80 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
  .text.MX_RTC_Init
-                0x0800a9c4       0x5c CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+                0x0800ac68       0x5c CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
  .text.MX_SPI1_Init
-                0x0800aa20       0x7c CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+                0x0800acc4       0x7c CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
  .text.MX_USART1_UART_Init
-                0x0800aa9c       0x9c CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+                0x0800ad40       0x9c CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
  .text.MX_USART2_UART_Init
-                0x0800ab38       0x9c CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+                0x0800addc       0x9c CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
  .text.MX_GPIO_Init
-                0x0800abd4      0x15c CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+                0x0800ae78      0x15c CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+ .text.FDCAN_Config
+                0x0800afd4       0xb4 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+ .text.HAL_SYSTICK_Callback
+                0x0800b088       0x48 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+                0x0800b088                HAL_SYSTICK_Callback
  .text.Error_Handler
-                0x0800ad30        0xc CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
-                0x0800ad30                Error_Handler
+                0x0800b0d0        0xc CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+                0x0800b0d0                Error_Handler
  .text.NMI_Handler
-                0x0800ad3c        0x8 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
-                0x0800ad3c                NMI_Handler
+                0x0800b0dc        0x8 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
+                0x0800b0dc                NMI_Handler
  .text.HardFault_Handler
-                0x0800ad44        0x8 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
-                0x0800ad44                HardFault_Handler
+                0x0800b0e4        0x8 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
+                0x0800b0e4                HardFault_Handler
  .text.SVC_Handler
-                0x0800ad4c        0xa CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
-                0x0800ad4c                SVC_Handler
+                0x0800b0ec        0xa CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
+                0x0800b0ec                SVC_Handler
  .text.PendSV_Handler
-                0x0800ad56        0xa CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
-                0x0800ad56                PendSV_Handler
+                0x0800b0f6        0xa CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
+                0x0800b0f6                PendSV_Handler
  .text.SysTick_Handler
-                0x0800ad60        0xe CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
-                0x0800ad60                SysTick_Handler
- *fill*         0x0800ad6e        0x2 
+                0x0800b100       0x12 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
+                0x0800b100                SysTick_Handler
+ *fill*         0x0800b112        0x2 
  .text.USB_UCPD1_2_IRQHandler
-                0x0800ad70       0x18 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
-                0x0800ad70                USB_UCPD1_2_IRQHandler
+                0x0800b114       0x18 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
+                0x0800b114                USB_UCPD1_2_IRQHandler
  .text.HAL_MspInit
-                0x0800ad88       0x50 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
-                0x0800ad88                HAL_MspInit
+                0x0800b12c       0x50 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
+                0x0800b12c                HAL_MspInit
  .text.HAL_ADC_MspInit
-                0x0800add8       0x88 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
-                0x0800add8                HAL_ADC_MspInit
+                0x0800b17c       0x88 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
+                0x0800b17c                HAL_ADC_MspInit
  .text.HAL_FDCAN_MspInit
-                0x0800ae60      0x180 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
-                0x0800ae60                HAL_FDCAN_MspInit
+                0x0800b204      0x180 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
+                0x0800b204                HAL_FDCAN_MspInit
  .text.HAL_I2C_MspInit
-                0x0800afe0      0x154 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
-                0x0800afe0                HAL_I2C_MspInit
+                0x0800b384      0x154 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
+                0x0800b384                HAL_I2C_MspInit
  .text.HAL_RTC_MspInit
-                0x0800b134       0x7c CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
-                0x0800b134                HAL_RTC_MspInit
+                0x0800b4d8       0x7c CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
+                0x0800b4d8                HAL_RTC_MspInit
  .text.HAL_SPI_MspInit
-                0x0800b1b0       0x94 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
-                0x0800b1b0                HAL_SPI_MspInit
+                0x0800b554       0x94 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
+                0x0800b554                HAL_SPI_MspInit
  .text.HAL_UART_MspInit
-                0x0800b244      0x154 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
-                0x0800b244                HAL_UART_MspInit
+                0x0800b5e8      0x154 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
+                0x0800b5e8                HAL_UART_MspInit
  .text.Reset_Handler
-                0x0800b398       0x50 CMakeFiles/ECU_Mainboard.dir/startup_stm32g0b1xx.s.obj
-                0x0800b398                Reset_Handler
+                0x0800b73c       0x50 CMakeFiles/ECU_Mainboard.dir/startup_stm32g0b1xx.s.obj
+                0x0800b73c                Reset_Handler
  .text.Default_Handler
-                0x0800b3e8        0x2 CMakeFiles/ECU_Mainboard.dir/startup_stm32g0b1xx.s.obj
-                0x0800b3e8                TIM1_BRK_UP_TRG_COM_IRQHandler
-                0x0800b3e8                USART3_4_5_6_LPUART1_IRQHandler
-                0x0800b3e8                TIM1_CC_IRQHandler
-                0x0800b3e8                ADC1_COMP_IRQHandler
-                0x0800b3e8                I2C1_IRQHandler
-                0x0800b3e8                TIM7_LPTIM2_IRQHandler
-                0x0800b3e8                TIM17_FDCAN_IT1_IRQHandler
-                0x0800b3e8                DMA1_Ch4_7_DMA2_Ch1_5_DMAMUX1_OVR_IRQHandler
-                0x0800b3e8                RCC_CRS_IRQHandler
-                0x0800b3e8                RTC_TAMP_IRQHandler
-                0x0800b3e8                SPI1_IRQHandler
-                0x0800b3e8                EXTI2_3_IRQHandler
-                0x0800b3e8                USART2_LPUART2_IRQHandler
-                0x0800b3e8                PVD_VDDIO2_IRQHandler
-                0x0800b3e8                EXTI4_15_IRQHandler
-                0x0800b3e8                DMA1_Channel1_IRQHandler
-                0x0800b3e8                Default_Handler
-                0x0800b3e8                CEC_IRQHandler
-                0x0800b3e8                TIM14_IRQHandler
-                0x0800b3e8                TIM15_IRQHandler
-                0x0800b3e8                TIM3_TIM4_IRQHandler
-                0x0800b3e8                EXTI0_1_IRQHandler
-                0x0800b3e8                SPI2_3_IRQHandler
-                0x0800b3e8                TIM6_DAC_LPTIM1_IRQHandler
-                0x0800b3e8                WWDG_IRQHandler
-                0x0800b3e8                TIM2_IRQHandler
-                0x0800b3e8                DMA1_Channel2_3_IRQHandler
-                0x0800b3e8                FLASH_IRQHandler
-                0x0800b3e8                USART1_IRQHandler
-                0x0800b3e8                TIM16_FDCAN_IT0_IRQHandler
-                0x0800b3e8                I2C2_3_IRQHandler
- *fill*         0x0800b3ea        0x2 
+                0x0800b78c        0x2 CMakeFiles/ECU_Mainboard.dir/startup_stm32g0b1xx.s.obj
+                0x0800b78c                TIM1_BRK_UP_TRG_COM_IRQHandler
+                0x0800b78c                USART3_4_5_6_LPUART1_IRQHandler
+                0x0800b78c                TIM1_CC_IRQHandler
+                0x0800b78c                ADC1_COMP_IRQHandler
+                0x0800b78c                I2C1_IRQHandler
+                0x0800b78c                TIM7_LPTIM2_IRQHandler
+                0x0800b78c                TIM17_FDCAN_IT1_IRQHandler
+                0x0800b78c                DMA1_Ch4_7_DMA2_Ch1_5_DMAMUX1_OVR_IRQHandler
+                0x0800b78c                RCC_CRS_IRQHandler
+                0x0800b78c                RTC_TAMP_IRQHandler
+                0x0800b78c                SPI1_IRQHandler
+                0x0800b78c                EXTI2_3_IRQHandler
+                0x0800b78c                USART2_LPUART2_IRQHandler
+                0x0800b78c                PVD_VDDIO2_IRQHandler
+                0x0800b78c                EXTI4_15_IRQHandler
+                0x0800b78c                DMA1_Channel1_IRQHandler
+                0x0800b78c                Default_Handler
+                0x0800b78c                CEC_IRQHandler
+                0x0800b78c                TIM14_IRQHandler
+                0x0800b78c                TIM15_IRQHandler
+                0x0800b78c                TIM3_TIM4_IRQHandler
+                0x0800b78c                EXTI0_1_IRQHandler
+                0x0800b78c                SPI2_3_IRQHandler
+                0x0800b78c                TIM6_DAC_LPTIM1_IRQHandler
+                0x0800b78c                WWDG_IRQHandler
+                0x0800b78c                TIM2_IRQHandler
+                0x0800b78c                DMA1_Channel2_3_IRQHandler
+                0x0800b78c                FLASH_IRQHandler
+                0x0800b78c                USART1_IRQHandler
+                0x0800b78c                TIM16_FDCAN_IT0_IRQHandler
+                0x0800b78c                I2C2_3_IRQHandler
+ *fill*         0x0800b78e        0x2 
  .text.__udivmoddi4
-                0x0800b3ec      0x198 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/libgcc.a(_udivmoddi4.o)
-                0x0800b3ec                __udivmoddi4
+                0x0800b790      0x198 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/libgcc.a(_udivmoddi4.o)
+                0x0800b790                __udivmoddi4
  *(.glue_7)
- .glue_7        0x0800b584        0x0 linker stubs
+ .glue_7        0x0800b928        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x0800b584        0x0 linker stubs
+ .glue_7t       0x0800b928        0x0 linker stubs
  *(.eh_frame)
- .eh_frame      0x0800b584        0x0 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/crtbegin.o
+ .eh_frame      0x0800b928        0x0 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/crtbegin.o
  *(.init)
- .init          0x0800b584        0x4 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/crti.o
-                0x0800b584                _init
- .init          0x0800b588        0x8 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/crtn.o
+ .init          0x0800b928        0x4 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/crti.o
+                0x0800b928                _init
+ .init          0x0800b92c        0x8 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/crtn.o
  *(.fini)
- .fini          0x0800b590        0x4 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/crti.o
-                0x0800b590                _fini
- .fini          0x0800b594        0x8 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/crtn.o
-                0x0800b59c                        . = ALIGN (0x4)
-                0x0800b59c                        _etext = .
+ .fini          0x0800b934        0x4 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/crti.o
+                0x0800b934                _fini
+ .fini          0x0800b938        0x8 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/crtn.o
+                0x0800b940                        . = ALIGN (0x4)
+                0x0800b940                        _etext = .
 
-.vfp11_veneer   0x0800b59c        0x0
- .vfp11_veneer  0x0800b59c        0x0 linker stubs
+.vfp11_veneer   0x0800b940        0x0
+ .vfp11_veneer  0x0800b940        0x0 linker stubs
 
-.v4_bx          0x0800b59c        0x0
- .v4_bx         0x0800b59c        0x0 linker stubs
+.v4_bx          0x0800b940        0x0
+ .v4_bx         0x0800b940        0x0 linker stubs
 
-.iplt           0x0800b59c        0x0
- .iplt          0x0800b59c        0x0 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/crtbegin.o
+.iplt           0x0800b940        0x0
+ .iplt          0x0800b940        0x0 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/crtbegin.o
 
-.rodata         0x0800b59c      0x204
-                0x0800b59c                        . = ALIGN (0x4)
+.rodata         0x0800b940      0x1e0
+                0x0800b940                        . = ALIGN (0x4)
  *(.rodata)
- .rodata        0x0800b59c       0x46 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_desc.c.obj
- *fill*         0x0800b5e2        0x2 
- .rodata        0x0800b5e4       0x22 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+ .rodata        0x0800b940       0x46 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_desc.c.obj
  *(.rodata*)
- *fill*         0x0800b606        0x2 
+ *fill*         0x0800b986        0x2 
  .rodata.AHBPrescTable
-                0x0800b608       0x40 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32g0xx.c.obj
-                0x0800b608                AHBPrescTable
+                0x0800b988       0x40 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32g0xx.c.obj
+                0x0800b988                AHBPrescTable
  .rodata.APBPrescTable
-                0x0800b648       0x20 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32g0xx.c.obj
-                0x0800b648                APBPrescTable
+                0x0800b9c8       0x20 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32g0xx.c.obj
+                0x0800b9c8                APBPrescTable
  .rodata.UARTPrescTable
-                0x0800b668       0x18 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart.c.obj
-                0x0800b668                UARTPrescTable
+                0x0800b9e8       0x18 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart.c.obj
+                0x0800b9e8                UARTPrescTable
  .rodata.numerator.1
-                0x0800b680        0x8 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart_ex.c.obj
+                0x0800ba00        0x8 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart_ex.c.obj
  .rodata.denominator.0
-                0x0800b688        0x8 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart_ex.c.obj
+                0x0800ba08        0x8 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart_ex.c.obj
  .rodata.USBD_StdDevReq
-                0x0800b690       0x28 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
+                0x0800ba10       0x28 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
  .rodata.USBD_GetDescriptor
-                0x0800b6b8       0x58 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
+                0x0800ba38       0x58 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
  .rodata.CDC_Control_FS
-                0x0800b710       0x90 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_cdc_if.c.obj
-                0x0800b7a0                        . = ALIGN (0x4)
+                0x0800ba90       0x90 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_cdc_if.c.obj
+                0x0800bb20                        . = ALIGN (0x4)
 
-.ARM.extab      0x0800b7a0        0x0
-                0x0800b7a0                        . = ALIGN (0x4)
+.ARM.extab      0x0800bb20        0x0
+                0x0800bb20                        . = ALIGN (0x4)
  *(.ARM.extab* .gnu.linkonce.armextab.*)
-                0x0800b7a0                        . = ALIGN (0x4)
+                0x0800bb20                        . = ALIGN (0x4)
 
-.ARM            0x0800b7a0        0x8
-                0x0800b7a0                        . = ALIGN (0x4)
-                0x0800b7a0                        __exidx_start = .
+.ARM            0x0800bb20        0x8
+                0x0800bb20                        . = ALIGN (0x4)
+                0x0800bb20                        __exidx_start = .
  *(.ARM.exidx*)
  .ARM.exidx.text.__udivmoddi4
-                0x0800b7a0        0x8 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/libgcc.a(_udivmoddi4.o)
-                0x0800b7a8                        __exidx_end = .
-                0x0800b7a8                        . = ALIGN (0x4)
+                0x0800bb20        0x8 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/libgcc.a(_udivmoddi4.o)
+                0x0800bb28                        __exidx_end = .
+                0x0800bb28                        . = ALIGN (0x4)
 
-.preinit_array  0x0800b7a8        0x0
-                0x0800b7a8                        . = ALIGN (0x4)
-                0x0800b7a8                        PROVIDE (__preinit_array_start = .)
+.preinit_array  0x0800bb28        0x0
+                0x0800bb28                        . = ALIGN (0x4)
+                0x0800bb28                        PROVIDE (__preinit_array_start = .)
  *(.preinit_array*)
-                0x0800b7a8                        PROVIDE (__preinit_array_end = .)
-                0x0800b7a8                        . = ALIGN (0x4)
+                0x0800bb28                        PROVIDE (__preinit_array_end = .)
+                0x0800bb28                        . = ALIGN (0x4)
 
-.init_array     0x0800b7a8        0x4
-                0x0800b7a8                        . = ALIGN (0x4)
-                0x0800b7a8                        PROVIDE (__init_array_start = .)
+.init_array     0x0800bb28        0x4
+                0x0800bb28                        . = ALIGN (0x4)
+                0x0800bb28                        PROVIDE (__init_array_start = .)
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array*)
- .init_array    0x0800b7a8        0x4 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/crtbegin.o
-                0x0800b7ac                        PROVIDE (__init_array_end = .)
-                0x0800b7ac                        . = ALIGN (0x4)
+ .init_array    0x0800bb28        0x4 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/crtbegin.o
+                0x0800bb2c                        PROVIDE (__init_array_end = .)
+                0x0800bb2c                        . = ALIGN (0x4)
 
-.fini_array     0x0800b7ac        0x4
-                0x0800b7ac                        . = ALIGN (0x4)
+.fini_array     0x0800bb2c        0x4
+                0x0800bb2c                        . = ALIGN (0x4)
                 [!provide]                        PROVIDE (__fini_array_start = .)
  *(SORT_BY_NAME(.fini_array.*))
  *(.fini_array*)
- .fini_array    0x0800b7ac        0x4 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/crtbegin.o
+ .fini_array    0x0800bb2c        0x4 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/crtbegin.o
                 [!provide]                        PROVIDE (__fini_array_end = .)
-                0x0800b7b0                        . = ALIGN (0x4)
-                0x0800b7b0                        _sidata = LOADADDR (.data)
+                0x0800bb30                        . = ALIGN (0x4)
+                0x0800bb30                        _sidata = LOADADDR (.data)
 
-.rel.dyn        0x0800b7b0        0x0
- .rel.iplt      0x0800b7b0        0x0 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/crtbegin.o
+.rel.dyn        0x0800bb30        0x0
+ .rel.iplt      0x0800bb30        0x0 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/crtbegin.o
 
-.data           0x20000000      0x118 load address 0x0800b7b0
+.data           0x20000000      0x118 load address 0x0800bb30
                 0x20000000                        . = ALIGN (0x4)
                 0x20000000                        _sdata = .
  *(.data)
@@ -9202,17 +9229,17 @@ LOAD /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-no
                 0x20000118                        _edata = .
 
 .tm_clone_table
-                0x20000118        0x0 load address 0x0800b8c8
+                0x20000118        0x0 load address 0x0800bc48
  .tm_clone_table
                 0x20000118        0x0 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/crtbegin.o
  .tm_clone_table
                 0x20000118        0x0 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/crtend.o
 
-.igot.plt       0x20000118        0x0 load address 0x0800b8c8
+.igot.plt       0x20000118        0x0 load address 0x0800bc48
  .igot.plt      0x20000118        0x0 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/crtbegin.o
                 0x20000118                        . = ALIGN (0x4)
 
-.bss            0x20000118     0x1da4 load address 0x0800b8c8
+.bss            0x20000118     0x1dd0 load address 0x0800bc48
                 0x20000118                        _sbss = .
                 0x20000118                        __bss_start__ = _sbss
  *(.bss)
@@ -9267,24 +9294,35 @@ LOAD /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-no
                 0x20001d90                huart1
  .bss.huart2    0x20001e24       0x94 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
                 0x20001e24                huart2
+ .bss.ubKeyNumberValue
+                0x20001eb8        0x1 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+                0x20001eb8                ubKeyNumberValue
+ .bss.ubLedBlinkTime
+                0x20001eb9        0x1 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+                0x20001eb9                ubLedBlinkTime
+ *fill*         0x20001eba        0x2 
+ .bss.TxHeader  0x20001ebc       0x24 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+                0x20001ebc                TxHeader
+ .bss.u16LedBlinkCounter.0
+                0x20001ee0        0x2 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+ *fill*         0x20001ee2        0x2 
  .bss.HAL_RCC_FDCAN_CLK_ENABLED
-                0x20001eb8        0x4 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
+                0x20001ee4        0x4 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
  *(COMMON)
-                0x20001ebc                        . = ALIGN (0x4)
-                0x20001ebc                        _ebss = .
-                0x20001ebc                        __bss_end__ = _ebss
+                0x20001ee8                        . = ALIGN (0x4)
+                0x20001ee8                        _ebss = .
+                0x20001ee8                        __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x20001ebc      0x604 load address 0x0800b8c8
-                0x20001ec0                        . = ALIGN (0x8)
- *fill*         0x20001ebc        0x4 
+                0x20001ee8      0x600 load address 0x0800bc48
+                0x20001ee8                        . = ALIGN (0x8)
                 [!provide]                        PROVIDE (end = .)
-                0x20001ec0                        PROVIDE (_end = .)
-                0x200020c0                        . = (. + _Min_Heap_Size)
- *fill*         0x20001ec0      0x200 
-                0x200024c0                        . = (. + _Min_Stack_Size)
- *fill*         0x200020c0      0x400 
-                0x200024c0                        . = ALIGN (0x8)
+                0x20001ee8                        PROVIDE (_end = .)
+                0x200020e8                        . = (. + _Min_Heap_Size)
+ *fill*         0x20001ee8      0x200 
+                0x200024e8                        . = (. + _Min_Stack_Size)
+ *fill*         0x200020e8      0x400 
+                0x200024e8                        . = ALIGN (0x8)
 
 /DISCARD/
  libc.a(*)
@@ -9429,7 +9467,7 @@ LOAD /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-no
  .comment       0x00000045       0x46 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
  .comment       0x00000045       0x46 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
 
-.debug_frame    0x00000000     0x61c8
+.debug_frame    0x00000000     0x6260
  .debug_frame   0x00000000       0x20 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc_nano.a(libc_a-memset.o)
  .debug_frame   0x00000020       0x2c /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/lib/thumb/v6-m/nofp/libc_nano.a(libc_a-init.o)
  .debug_frame   0x0000004c       0x4c cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32g0xx.c.obj
@@ -9462,14 +9500,14 @@ LOAD /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-no
  .debug_frame   0x00005b74       0xcc CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_cdc_if.c.obj
  .debug_frame   0x00005c40       0xb0 CMakeFiles/ECU_Mainboard.dir/FATFS/Target/user_diskio.c.obj
  .debug_frame   0x00005cf0       0x68 CMakeFiles/ECU_Mainboard.dir/FATFS/App/app_fatfs.c.obj
- .debug_frame   0x00005d58      0x18c CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
- .debug_frame   0x00005ee4       0xb8 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
- .debug_frame   0x00005f9c      0x1b0 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
- .debug_frame   0x0000614c       0x20 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/libgcc.a(_udivsi3.o)
- .debug_frame   0x0000616c       0x20 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/libgcc.a(_divsi3.o)
- .debug_frame   0x0000618c       0x3c /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/libgcc.a(_udivmoddi4.o)
+ .debug_frame   0x00005d58      0x224 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+ .debug_frame   0x00005f7c       0xb8 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
+ .debug_frame   0x00006034      0x1b0 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
+ .debug_frame   0x000061e4       0x20 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/libgcc.a(_udivsi3.o)
+ .debug_frame   0x00006204       0x20 /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/libgcc.a(_divsi3.o)
+ .debug_frame   0x00006224       0x3c /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/thumb/v6-m/nofp/libgcc.a(_udivmoddi4.o)
 
-.debug_info     0x00000000    0x203b4
+.debug_info     0x00000000    0x2077b
  .debug_info    0x00000000      0x316 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32g0xx.c.obj
  .debug_info    0x00000316     0x1502 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_pcd.c.obj
  .debug_info    0x00001818      0x7e7 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_pcd_ex.c.obj
@@ -9500,12 +9538,12 @@ LOAD /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-no
  .debug_info    0x0001ab48      0x933 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_cdc_if.c.obj
  .debug_info    0x0001b47b      0x36c CMakeFiles/ECU_Mainboard.dir/FATFS/Target/user_diskio.c.obj
  .debug_info    0x0001b7e7      0x571 CMakeFiles/ECU_Mainboard.dir/FATFS/App/app_fatfs.c.obj
- .debug_info    0x0001bd58     0x2086 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
- .debug_info    0x0001ddde      0x5ca CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
- .debug_info    0x0001e3a8     0x1fdc CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
- .debug_info    0x00020384       0x30 CMakeFiles/ECU_Mainboard.dir/startup_stm32g0b1xx.s.obj
+ .debug_info    0x0001bd58     0x2446 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+ .debug_info    0x0001e19e      0x5d1 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
+ .debug_info    0x0001e76f     0x1fdc CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
+ .debug_info    0x0002074b       0x30 CMakeFiles/ECU_Mainboard.dir/startup_stm32g0b1xx.s.obj
 
-.debug_abbrev   0x00000000     0x4ae3
+.debug_abbrev   0x00000000     0x4b3e
  .debug_abbrev  0x00000000      0x119 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32g0xx.c.obj
  .debug_abbrev  0x00000119      0x327 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_pcd.c.obj
  .debug_abbrev  0x00000440      0x22e cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_pcd_ex.c.obj
@@ -9536,12 +9574,12 @@ LOAD /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-no
  .debug_abbrev  0x00003e6e      0x2b5 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_cdc_if.c.obj
  .debug_abbrev  0x00004123      0x14e CMakeFiles/ECU_Mainboard.dir/FATFS/Target/user_diskio.c.obj
  .debug_abbrev  0x00004271      0x1a6 CMakeFiles/ECU_Mainboard.dir/FATFS/App/app_fatfs.c.obj
- .debug_abbrev  0x00004417      0x2ca CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
- .debug_abbrev  0x000046e1      0x1aa CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
- .debug_abbrev  0x0000488b      0x234 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
- .debug_abbrev  0x00004abf       0x24 CMakeFiles/ECU_Mainboard.dir/startup_stm32g0b1xx.s.obj
+ .debug_abbrev  0x00004417      0x324 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+ .debug_abbrev  0x0000473b      0x1ab CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
+ .debug_abbrev  0x000048e6      0x234 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
+ .debug_abbrev  0x00004b1a       0x24 CMakeFiles/ECU_Mainboard.dir/startup_stm32g0b1xx.s.obj
 
-.debug_aranges  0x00000000     0x1b20
+.debug_aranges  0x00000000     0x1b48
  .debug_aranges
                 0x00000000       0x28 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32g0xx.c.obj
  .debug_aranges
@@ -9603,16 +9641,16 @@ LOAD /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-no
  .debug_aranges
                 0x00001980       0x30 CMakeFiles/ECU_Mainboard.dir/FATFS/App/app_fatfs.c.obj
  .debug_aranges
-                0x000019b0       0x80 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+                0x000019b0       0xa8 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
  .debug_aranges
-                0x00001a30       0x48 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
+                0x00001a58       0x48 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
  .debug_aranges
-                0x00001a78       0x80 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
+                0x00001aa0       0x80 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
  .debug_aranges
-                0x00001af8       0x28 CMakeFiles/ECU_Mainboard.dir/startup_stm32g0b1xx.s.obj
+                0x00001b20       0x28 CMakeFiles/ECU_Mainboard.dir/startup_stm32g0b1xx.s.obj
 
 .debug_rnglists
-                0x00000000     0x14dc
+                0x00000000     0x14fc
  .debug_rnglists
                 0x00000000       0x1a cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32g0xx.c.obj
  .debug_rnglists
@@ -9674,15 +9712,15 @@ LOAD /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-no
  .debug_rnglists
                 0x000013ad       0x1f CMakeFiles/ECU_Mainboard.dir/FATFS/App/app_fatfs.c.obj
  .debug_rnglists
-                0x000013cc       0x64 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+                0x000013cc       0x84 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
  .debug_rnglists
-                0x00001430       0x31 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
+                0x00001450       0x31 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
  .debug_rnglists
-                0x00001461       0x62 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
+                0x00001481       0x62 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
  .debug_rnglists
-                0x000014c3       0x19 CMakeFiles/ECU_Mainboard.dir/startup_stm32g0b1xx.s.obj
+                0x000014e3       0x19 CMakeFiles/ECU_Mainboard.dir/startup_stm32g0b1xx.s.obj
 
-.debug_macro    0x00000000    0x229e8
+.debug_macro    0x00000000    0x228ba
  .debug_macro   0x00000000      0x268 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32g0xx.c.obj
  .debug_macro   0x00000268      0xaae cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32g0xx.c.obj
  .debug_macro   0x00000d16       0x2e cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32g0xx.c.obj
@@ -9790,15 +9828,14 @@ LOAD /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-no
  .debug_macro   0x00021a8a       0x10 CMakeFiles/ECU_Mainboard.dir/FATFS/Target/user_diskio.c.obj
  .debug_macro   0x00021a9a      0x392 CMakeFiles/ECU_Mainboard.dir/FATFS/App/app_fatfs.c.obj
  .debug_macro   0x00021e2c       0x16 CMakeFiles/ECU_Mainboard.dir/FATFS/App/app_fatfs.c.obj
- .debug_macro   0x00021e42      0x483 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
- .debug_macro   0x000222c5       0xeb CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
- .debug_macro   0x000223b0       0x1c CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
- .debug_macro   0x000223cc       0x1c CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
- .debug_macro   0x000223e8      0x108 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
- .debug_macro   0x000224f0      0x281 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
- .debug_macro   0x00022771      0x277 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
+ .debug_macro   0x00021e42      0x45d CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+ .debug_macro   0x0002229f       0xeb CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+ .debug_macro   0x0002238a       0x1c CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+ .debug_macro   0x000223a6       0x1c CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+ .debug_macro   0x000223c2      0x281 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
+ .debug_macro   0x00022643      0x277 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
 
-.debug_line     0x00000000    0x2290c
+.debug_line     0x00000000    0x229ef
  .debug_line    0x00000000      0x81a cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32g0xx.c.obj
  .debug_line    0x0000081a     0x141d cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_pcd.c.obj
  .debug_line    0x00001c37      0x945 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_pcd_ex.c.obj
@@ -9829,47 +9866,47 @@ LOAD /Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-no
  .debug_line    0x0001e863      0xa9a CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_cdc_if.c.obj
  .debug_line    0x0001f2fd      0x95d CMakeFiles/ECU_Mainboard.dir/FATFS/Target/user_diskio.c.obj
  .debug_line    0x0001fc5a      0x960 CMakeFiles/ECU_Mainboard.dir/FATFS/App/app_fatfs.c.obj
- .debug_line    0x000205ba     0x100c CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
- .debug_line    0x000215c6      0x81c CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
- .debug_line    0x00021de2      0xaaf CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
- .debug_line    0x00022891       0x7b CMakeFiles/ECU_Mainboard.dir/startup_stm32g0b1xx.s.obj
+ .debug_line    0x000205ba     0x10ee CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+ .debug_line    0x000216a8      0x81d CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
+ .debug_line    0x00021ec5      0xaaf CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
+ .debug_line    0x00022974       0x7b CMakeFiles/ECU_Mainboard.dir/startup_stm32g0b1xx.s.obj
 
-.debug_str      0x00000000    0xd205b
- .debug_str     0x00000000    0xd205b cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32g0xx.c.obj
+.debug_str      0x00000000    0xd14dc
+ .debug_str     0x00000000    0xd14dc cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32g0xx.c.obj
                               0xc3c4c (size before relaxing)
- .debug_str     0x000d205b    0xc452a cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_pcd.c.obj
- .debug_str     0x000d205b    0xc40fb cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_pcd_ex.c.obj
- .debug_str     0x000d205b    0xc42d2 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_ll_usb.c.obj
- .debug_str     0x000d205b    0xc4418 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_rcc.c.obj
- .debug_str     0x000d205b    0xc42a8 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_rcc_ex.c.obj
- .debug_str     0x000d205b    0xc3daf cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_gpio.c.obj
- .debug_str     0x000d205b    0xc3e4d cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_pwr.c.obj
- .debug_str     0x000d205b    0xc41ce cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_pwr_ex.c.obj
- .debug_str     0x000d205b    0xc415d cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_cortex.c.obj
- .debug_str     0x000d205b    0xc4525 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal.c.obj
- .debug_str     0x000d205b    0xc5036 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_i2c.c.obj
- .debug_str     0x000d205b    0xc42b5 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_i2c_ex.c.obj
- .debug_str     0x000d205b    0xc4a2e cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
- .debug_str     0x000d205b    0xc52e4 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_fdcan.c.obj
- .debug_str     0x000d205b    0xc414e cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_rtc.c.obj
- .debug_str     0x000d205b    0xc4659 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_spi.c.obj
- .debug_str     0x000d205b    0xc4c37 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart.c.obj
- .debug_str     0x000d205b    0xc44fd cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart_ex.c.obj
- .debug_str     0x000d205b    0xc8091 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
- .debug_str     0x000d205b    0xc7ebc cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
- .debug_str     0x000d205b    0xc7d91 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c.obj
- .debug_str     0x000d205b    0xc86fd cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
- .debug_str     0x000d205b    0xc7196 cmake/stm32cubemx/CMakeFiles/FatFs.dir/__/__/Middlewares/Third_Party/FatFs/src/ff_gen_drv.c.obj
- .debug_str     0x000d205b    0xc8dc4 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
- .debug_str     0x000d205b    0xc8145 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usb_device.c.obj
- .debug_str     0x000d205b    0xc7c78 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_desc.c.obj
- .debug_str     0x000d205b    0xc8184 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_cdc_if.c.obj
- .debug_str     0x000d205b    0xc7176 CMakeFiles/ECU_Mainboard.dir/FATFS/Target/user_diskio.c.obj
- .debug_str     0x000d205b    0xc7303 CMakeFiles/ECU_Mainboard.dir/FATFS/App/app_fatfs.c.obj
- .debug_str     0x000d205b    0xca6c7 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
- .debug_str     0x000d205b    0xc42ab CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
- .debug_str     0x000d205b    0xc52d7 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
- .debug_str     0x000d205b       0xa4 CMakeFiles/ECU_Mainboard.dir/startup_stm32g0b1xx.s.obj
+ .debug_str     0x000d14dc    0xc452a cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_pcd.c.obj
+ .debug_str     0x000d14dc    0xc40fb cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_pcd_ex.c.obj
+ .debug_str     0x000d14dc    0xc42d2 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_ll_usb.c.obj
+ .debug_str     0x000d14dc    0xc4418 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_rcc.c.obj
+ .debug_str     0x000d14dc    0xc42a8 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_rcc_ex.c.obj
+ .debug_str     0x000d14dc    0xc3daf cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_gpio.c.obj
+ .debug_str     0x000d14dc    0xc3e4d cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_pwr.c.obj
+ .debug_str     0x000d14dc    0xc41ce cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_pwr_ex.c.obj
+ .debug_str     0x000d14dc    0xc415d cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_cortex.c.obj
+ .debug_str     0x000d14dc    0xc4525 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal.c.obj
+ .debug_str     0x000d14dc    0xc5036 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_i2c.c.obj
+ .debug_str     0x000d14dc    0xc42b5 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_i2c_ex.c.obj
+ .debug_str     0x000d14dc    0xc4a2e cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj
+ .debug_str     0x000d14dc    0xc52e4 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_fdcan.c.obj
+ .debug_str     0x000d14dc    0xc414e cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_rtc.c.obj
+ .debug_str     0x000d14dc    0xc4659 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_spi.c.obj
+ .debug_str     0x000d14dc    0xc4c37 cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart.c.obj
+ .debug_str     0x000d14dc    0xc44fd cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart_ex.c.obj
+ .debug_str     0x000d14dc    0xc8091 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj
+ .debug_str     0x000d14dc    0xc7ebc cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj
+ .debug_str     0x000d14dc    0xc7d91 cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c.obj
+ .debug_str     0x000d14dc    0xc86fd cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj
+ .debug_str     0x000d14dc    0xc7196 cmake/stm32cubemx/CMakeFiles/FatFs.dir/__/__/Middlewares/Third_Party/FatFs/src/ff_gen_drv.c.obj
+ .debug_str     0x000d14dc    0xc8dc4 CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj
+ .debug_str     0x000d14dc    0xc8145 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usb_device.c.obj
+ .debug_str     0x000d14dc    0xc7c78 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_desc.c.obj
+ .debug_str     0x000d14dc    0xc8184 CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_cdc_if.c.obj
+ .debug_str     0x000d14dc    0xc7176 CMakeFiles/ECU_Mainboard.dir/FATFS/Target/user_diskio.c.obj
+ .debug_str     0x000d14dc    0xc7303 CMakeFiles/ECU_Mainboard.dir/FATFS/App/app_fatfs.c.obj
+ .debug_str     0x000d14dc    0xc9d65 CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj
+ .debug_str     0x000d14dc    0xc42c2 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj
+ .debug_str     0x000d14dc    0xc52d7 CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj
+ .debug_str     0x000d14dc       0xa4 CMakeFiles/ECU_Mainboard.dir/startup_stm32g0b1xx.s.obj
 
 .debug_line_str
                 0x00000000      0x166
