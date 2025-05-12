@@ -5,6 +5,113 @@
 	(uuid "4ae9a124-fbf3-40f6-85f1-a157fc3d72a0")
 	(paper "A3")
 	(lib_symbols
+		(symbol "Connector:TestPoint_Small"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.762)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "TP"
+				(at 0 3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "TestPoint_Small"
+				(at 0 2.032 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 5.08 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 5.08 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "test point"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "test point tp"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "Pin* Test*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "TestPoint_Small_0_1"
+				(circle
+					(center 0 0)
+					(radius 0.508)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "TestPoint_Small_1_1"
+				(pin passive line
+					(at 0 0 90)
+					(length 0)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Connector_Generic:Conn_01x02"
 			(pin_names
 				(offset 1.016)
@@ -2037,13 +2144,14 @@
 		)
 		(uuid a9ca56fa-7cc0-473d-9003-48b691fa785e)
 	)
-	(text "Differential filter (between inputs) should be set 10x higher than ADC BW and common mode caps should be 1/10 of the differential.\nUse NP0 where possible, X7R otherwise.\n"
+	(text "Differential filter (between inputs) should be set 1/10th - 1/100th of ADC f_MOD (while being 10x digital filter)\nand common mode caps should be 1/10 of the differential.\nUse NP0 where possible, X7R otherwise.\n"
 		(exclude_from_sim no)
-		(at 223.012 55.88 0)
+		(at 223.012 51.054 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
+			(href "https://e2e.ti.com/support/data-converters-group/data-converters/f/data-converters-forum/955466/faq-delta-sigma-adc-anti-aliasing-filter-component-selection?utm_source=chatgpt.com")
 		)
 		(uuid "0ca34aab-8ce1-4ae9-b16a-b254e692e465")
 	)
@@ -2058,6 +2166,26 @@
 			)
 		)
 		(uuid "36075a58-3bcd-45e8-9b4d-4dcb320bf2a0")
+	)
+	(text "LC_B_EX-"
+		(exclude_from_sim no)
+		(at 256.794 117.348 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "510401f8-6673-41f3-bc1a-40ca15df0e47")
+	)
+	(text "LC_C_EX-"
+		(exclude_from_sim no)
+		(at 256.794 137.668 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "62d986c2-fe68-44e4-a3e9-b31f3de3ecd5")
 	)
 	(text "To MCU ADC as it good enough™ for this"
 		(exclude_from_sim no)
@@ -2082,7 +2210,37 @@
 		)
 		(uuid "8d217c60-86e1-478b-90ae-fc85d75dc646")
 	)
-	(text "Filters have a -3dB point at 800Hz"
+	(text "Therefore filter should be 7180<f<25600 Hz.\nChoose cutoff frequency 10kHz."
+		(exclude_from_sim no)
+		(at 219.71 57.404 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "91aff051-1139-4b25-8fb3-1621b3223e57")
+	)
+	(text "LC_A_EX+"
+		(exclude_from_sim no)
+		(at 255.524 74.168 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "949b219e-06b4-43fa-86a5-9f9cc098b042")
+	)
+	(text "LC_B_EX+"
+		(exclude_from_sim no)
+		(at 256.794 104.648 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "94be7567-2fcc-4e67-8546-6d4006801caa")
+	)
+	(text "Filters have a -3dB point at 10.2kHz"
 		(exclude_from_sim no)
 		(at 193.548 146.812 0)
 		(effects
@@ -2091,6 +2249,36 @@
 			)
 		)
 		(uuid "a1cef87f-42e7-4c11-a7a2-84187b9f824d")
+	)
+	(text "LC_C_EX+"
+		(exclude_from_sim no)
+		(at 256.794 124.968 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "b69e6db7-eaeb-4f71-bec3-d95b7ab6bf08")
+	)
+	(text "LC_A_EX-"
+		(exclude_from_sim no)
+		(at 255.524 86.868 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "d86ff876-30f0-46b6-b940-7feed25c3292")
+	)
+	(text "Filters have a -3dB point at 800 Hz"
+		(exclude_from_sim no)
+		(at 363.474 195.072 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "e338c1c4-684f-4f60-a4a9-42b4495b397d")
 	)
 	(text "Will bias by connecing internal VBIAS to negative lead.\nElliminates current loss from resistor biasing.\nhttps://www.ti.com/lit/an/sbaa274a/sbaa274a.pdf"
 		(exclude_from_sim no)
@@ -2165,6 +2353,12 @@
 		(uuid "2054386a-c64f-4f66-8751-425fa64c703c")
 	)
 	(junction
+		(at 147.32 106.68)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "253210b9-2dd2-4e5a-be5b-b16486232195")
+	)
+	(junction
 		(at 102.87 53.34)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2181,6 +2375,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "3062e3f7-ffbe-4091-a894-9e2d6e5fa9d8")
+	)
+	(junction
+		(at 147.32 91.44)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "3b34afe1-a3d8-4c52-803c-1e64bfaa550d")
 	)
 	(junction
 		(at 186.69 224.79)
@@ -2213,6 +2413,12 @@
 		(uuid "48539ee6-465f-4525-8943-1f8581253374")
 	)
 	(junction
+		(at 138.43 134.62)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "4add81fb-cea3-44ba-96ad-abe98e097bdd")
+	)
+	(junction
 		(at 196.85 163.83)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2241,6 +2447,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "6e9fc48f-9a3d-4ca9-911d-3e9338663af0")
+	)
+	(junction
+		(at 138.43 77.47)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "6fb9a1fb-7268-4409-abff-d4aaa487e11b")
 	)
 	(junction
 		(at 372.11 118.11)
@@ -2303,16 +2515,34 @@
 		(uuid "8bba1325-7d57-421a-bc2c-44e4f410d5ae")
 	)
 	(junction
+		(at 138.43 127)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "8be78a31-313b-4636-8aad-286e6d219dca")
+	)
+	(junction
 		(at 186.69 168.91)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "8d3d7a48-1daf-4f26-a857-59991070a654")
 	)
 	(junction
+		(at 147.32 123.19)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "8f1933a3-68bf-4828-824c-11c5412d20c5")
+	)
+	(junction
 		(at 196.85 125.73)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "91a88da8-dc62-4b26-81c4-d04acc48be2f")
+	)
+	(junction
+		(at 138.43 87.63)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "96b341e9-c01c-44d1-8bb2-4f0134d1d3ce")
 	)
 	(junction
 		(at 222.25 163.83)
@@ -2327,10 +2557,34 @@
 		(uuid "aac150c6-7c06-49d1-ad4e-a0f27d82050c")
 	)
 	(junction
+		(at 147.32 138.43)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "af999a4c-9cd1-4a31-a9d4-8f8c68fd88bc")
+	)
+	(junction
 		(at 196.85 91.44)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "afc49361-6647-40ec-aa4d-4d0de8ed95e7")
+	)
+	(junction
+		(at 147.32 99.06)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "b11ea265-cb18-4f10-a984-781185a24a92")
+	)
+	(junction
+		(at 138.43 95.25)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "b22b71a1-1c43-4a48-b3f8-aa6912d629b4")
+	)
+	(junction
+		(at 138.43 82.55)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "b5fdc163-0f34-4357-be1a-68e30b9fdb3d")
 	)
 	(junction
 		(at 186.69 91.44)
@@ -2375,16 +2629,34 @@
 		(uuid "dc60eb0e-ce30-4dfa-b69d-dd96eb67f908")
 	)
 	(junction
+		(at 138.43 119.38)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "dda51eec-4bca-4841-b6e3-1a04c17dd461")
+	)
+	(junction
 		(at 372.11 177.8)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "dfac5c89-f825-41c0-a8aa-d25460e61086")
 	)
 	(junction
+		(at 147.32 130.81)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e14b52af-e435-44f7-a8a8-275267038c61")
+	)
+	(junction
 		(at 196.85 107.95)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "e46ed5d9-b1b0-4297-8caa-8ada1f38481b")
+	)
+	(junction
+		(at 138.43 102.87)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e5188038-7cd7-482e-8a9a-8903f275862f")
 	)
 	(junction
 		(at 196.85 224.79)
@@ -2452,13 +2724,23 @@
 	)
 	(wire
 		(pts
-			(xy 137.16 119.38) (xy 162.56 119.38)
+			(xy 137.16 119.38) (xy 138.43 119.38)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "03141e21-dc9d-46d0-87ed-e4de525aee02")
+	)
+	(wire
+		(pts
+			(xy 138.43 134.62) (xy 152.4 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "047ff1d6-032e-40ad-beee-8297f0c14a1e")
 	)
 	(wire
 		(pts
@@ -2472,7 +2754,7 @@
 	)
 	(wire
 		(pts
-			(xy 173.99 91.44) (xy 137.16 91.44)
+			(xy 173.99 91.44) (xy 147.32 91.44)
 		)
 		(stroke
 			(width 0)
@@ -2852,6 +3134,16 @@
 	)
 	(wire
 		(pts
+			(xy 138.43 87.63) (xy 137.16 87.63)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "311be54e-fdef-4bd2-9f9a-eeb19118764a")
+	)
+	(wire
+		(pts
 			(xy 74.93 99.06) (xy 74.93 100.33)
 		)
 		(stroke
@@ -2922,7 +3214,17 @@
 	)
 	(wire
 		(pts
-			(xy 168.91 106.68) (xy 137.16 106.68)
+			(xy 147.32 138.43) (xy 137.16 138.43)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "35560d9f-e3dd-416e-9328-22cd987e98fc")
+	)
+	(wire
+		(pts
+			(xy 168.91 106.68) (xy 147.32 106.68)
 		)
 		(stroke
 			(width 0)
@@ -3122,7 +3424,7 @@
 	)
 	(wire
 		(pts
-			(xy 137.16 134.62) (xy 152.4 134.62)
+			(xy 137.16 134.62) (xy 138.43 134.62)
 		)
 		(stroke
 			(width 0)
@@ -3382,6 +3684,16 @@
 	)
 	(wire
 		(pts
+			(xy 138.43 82.55) (xy 137.16 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6d00f0d2-6514-44d1-84eb-f75c00622d10")
+	)
+	(wire
+		(pts
 			(xy 229.87 113.03) (xy 229.87 118.11)
 		)
 		(stroke
@@ -3432,6 +3744,16 @@
 	)
 	(wire
 		(pts
+			(xy 137.16 113.03) (xy 139.7 113.03)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "743b9326-005b-4e7c-9c97-9a5cb0e9f5de")
+	)
+	(wire
+		(pts
 			(xy 236.22 82.55) (xy 236.22 101.6)
 		)
 		(stroke
@@ -3442,7 +3764,17 @@
 	)
 	(wire
 		(pts
-			(xy 157.48 127) (xy 137.16 127)
+			(xy 147.32 123.19) (xy 137.16 123.19)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "76af7250-1f41-4543-a61e-efcda100de76")
+	)
+	(wire
+		(pts
+			(xy 157.48 127) (xy 138.43 127)
 		)
 		(stroke
 			(width 0)
@@ -3512,7 +3844,7 @@
 	)
 	(wire
 		(pts
-			(xy 175.26 87.63) (xy 137.16 87.63)
+			(xy 175.26 87.63) (xy 138.43 87.63)
 		)
 		(stroke
 			(width 0)
@@ -3522,7 +3854,7 @@
 	)
 	(wire
 		(pts
-			(xy 160.02 123.19) (xy 137.16 123.19)
+			(xy 160.02 123.19) (xy 147.32 123.19)
 		)
 		(stroke
 			(width 0)
@@ -3532,7 +3864,7 @@
 	)
 	(wire
 		(pts
-			(xy 172.72 95.25) (xy 137.16 95.25)
+			(xy 172.72 95.25) (xy 138.43 95.25)
 		)
 		(stroke
 			(width 0)
@@ -3542,7 +3874,7 @@
 	)
 	(wire
 		(pts
-			(xy 176.53 82.55) (xy 137.16 82.55)
+			(xy 176.53 82.55) (xy 138.43 82.55)
 		)
 		(stroke
 			(width 0)
@@ -3599,6 +3931,16 @@
 			(type default)
 		)
 		(uuid "857a4cb0-362d-4680-b3b9-eadb1a9346b3")
+	)
+	(wire
+		(pts
+			(xy 147.32 99.06) (xy 137.16 99.06)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8630f73f-01d3-48dd-9b72-c6a41b39c8ca")
 	)
 	(wire
 		(pts
@@ -3662,6 +4004,16 @@
 	)
 	(wire
 		(pts
+			(xy 147.32 106.68) (xy 137.16 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8b7530d3-b675-46fe-8743-f9e951ae4b55")
+	)
+	(wire
+		(pts
 			(xy 78.74 99.06) (xy 74.93 99.06)
 		)
 		(stroke
@@ -3682,7 +4034,7 @@
 	)
 	(wire
 		(pts
-			(xy 154.94 130.81) (xy 137.16 130.81)
+			(xy 154.94 130.81) (xy 147.32 130.81)
 		)
 		(stroke
 			(width 0)
@@ -3732,7 +4084,7 @@
 	)
 	(wire
 		(pts
-			(xy 171.45 99.06) (xy 137.16 99.06)
+			(xy 171.45 99.06) (xy 147.32 99.06)
 		)
 		(stroke
 			(width 0)
@@ -3942,7 +4294,17 @@
 	)
 	(wire
 		(pts
-			(xy 149.86 138.43) (xy 137.16 138.43)
+			(xy 138.43 127) (xy 137.16 127)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "acda2779-646a-4fa0-8a2f-d820bc39d5aa")
+	)
+	(wire
+		(pts
+			(xy 149.86 138.43) (xy 147.32 138.43)
 		)
 		(stroke
 			(width 0)
@@ -3979,6 +4341,16 @@
 			(type default)
 		)
 		(uuid "b2eb1437-fa4f-4ee2-a2b5-557f757fa253")
+	)
+	(wire
+		(pts
+			(xy 147.32 130.81) (xy 137.16 130.81)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b3865fa2-112b-4c5d-b691-a4ea972d7dbe")
 	)
 	(wire
 		(pts
@@ -4182,6 +4554,26 @@
 	)
 	(wire
 		(pts
+			(xy 147.32 91.44) (xy 137.16 91.44)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c8e186eb-6a65-4588-b138-943c3bc27ffb")
+	)
+	(wire
+		(pts
+			(xy 138.43 119.38) (xy 162.56 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ca982123-4a91-4015-a3ff-14ee2181af20")
+	)
+	(wire
+		(pts
 			(xy 182.88 81.28) (xy 186.69 81.28)
 		)
 		(stroke
@@ -4212,13 +4604,23 @@
 	)
 	(wire
 		(pts
-			(xy 177.8 77.47) (xy 137.16 77.47)
+			(xy 177.8 77.47) (xy 138.43 77.47)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "cc1bbb8c-eb2e-4da4-bb43-2f935ec7ac68")
+	)
+	(wire
+		(pts
+			(xy 138.43 95.25) (xy 137.16 95.25)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ce2760c4-30a2-47e5-a862-3b471d44c7a3")
 	)
 	(wire
 		(pts
@@ -4442,7 +4844,7 @@
 	)
 	(wire
 		(pts
-			(xy 170.18 102.87) (xy 137.16 102.87)
+			(xy 170.18 102.87) (xy 138.43 102.87)
 		)
 		(stroke
 			(width 0)
@@ -4532,6 +4934,16 @@
 	)
 	(wire
 		(pts
+			(xy 138.43 77.47) (xy 137.16 77.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f0d7fbbe-b7e0-4993-907b-c2b327e9a034")
+	)
+	(wire
+		(pts
 			(xy 245.11 125.73) (xy 261.62 125.73)
 		)
 		(stroke
@@ -4569,6 +4981,16 @@
 			(type default)
 		)
 		(uuid "f61e1752-cd15-4065-89ed-49229e7cdf77")
+	)
+	(wire
+		(pts
+			(xy 138.43 102.87) (xy 137.16 102.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f731893e-94b7-423f-a8fb-878783f539fa")
 	)
 	(wire
 		(pts
@@ -4710,16 +5132,6 @@
 		)
 		(uuid "4c8c6c2c-5434-492a-8d54-19cf158196e8")
 	)
-	(label "LC_C_EX+"
-		(at 261.62 125.73 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "57a67426-98d3-49e7-b7e0-bad9a62f0dc8")
-	)
 	(label "LC_A_SENSE-"
 		(at 260.35 85.09 180)
 		(effects
@@ -4730,36 +5142,6 @@
 		)
 		(uuid "59837cab-7d8e-41ed-b83a-d43cbb0a2f88")
 	)
-	(label "LC_B_EX-"
-		(at 261.62 118.11 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "66bd5c53-a8ec-4966-9d7a-cb41d2fe9b3a")
-	)
-	(label "LC_B_EX+"
-		(at 261.62 105.41 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "81888d45-9d00-41b3-983f-ccc260dc5df4")
-	)
-	(label "LC_C_EX-"
-		(at 261.62 138.43 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "9b28f965-30e1-4d09-b293-d12eddf24640")
-	)
 	(label "LC_B_SENSE+"
 		(at 261.62 107.95 180)
 		(effects
@@ -4769,26 +5151,6 @@
 			(justify right bottom)
 		)
 		(uuid "a43e2251-cb10-4938-bcec-bf864fa639a6")
-	)
-	(label "LC_A_EX-"
-		(at 260.35 87.63 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "c0ddb5b3-d524-4bb2-98d1-6214c736c5e2")
-	)
-	(label "LC_A_EX+"
-		(at 260.35 74.93 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "e7ad3175-2cad-4d25-96cf-fb5b494e9b9d")
 	)
 	(label "LC_A_SIG+"
 		(at 260.35 80.01 180)
@@ -4957,7 +5319,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 363.22 149.098 90)
 			(effects
 				(font
@@ -5263,7 +5625,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical"
 			(at 90.17 223.52 0)
 			(effects
 				(font
@@ -5300,6 +5662,73 @@
 			(project "ADC_Board"
 				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf/73528528-0bac-403c-a080-68784e95fc95"
 					(reference "J22")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint_Small")
+		(at 147.32 130.81 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "08289830-21f7-4a36-b34d-f9b32c796ea0")
+		(property "Reference" "TP32"
+			(at 148.59 129.5399 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "AIN9"
+			(at 148.59 132.0799 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+			(at 152.4 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 152.4 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 147.32 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "80a8c843-0556-45f4-af73-2b1278c7c747")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf/73528528-0bac-403c-a080-68784e95fc95"
+					(reference "TP32")
 					(unit 1)
 				)
 			)
@@ -5390,7 +5819,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "200n"
+		(property "Value" "3n9"
 			(at 200.66 114.2999 0)
 			(effects
 				(font
@@ -5399,7 +5828,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 197.8152 116.84 0)
 			(effects
 				(font
@@ -5466,7 +5895,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 208.28 226.568 90)
 			(effects
 				(font
@@ -5509,6 +5938,73 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint_Small")
+		(at 147.32 138.43 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "0cdfa75c-76e5-4b63-ab7d-d76742993ee2")
+		(property "Reference" "TP34"
+			(at 148.59 137.1599 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "AIN11"
+			(at 148.59 139.6999 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+			(at 152.4 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 152.4 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 147.32 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "bba5f196-de03-48f9-969d-21601d2f5fe7")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf/73528528-0bac-403c-a080-68784e95fc95"
+					(reference "TP34")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 222.25 210.82 0)
 		(unit 1)
@@ -5536,7 +6032,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 220.472 210.82 90)
 			(effects
 				(font
@@ -5801,7 +6297,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 208.28 201.168 90)
 			(effects
 				(font
@@ -5844,6 +6340,73 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint_Small")
+		(at 138.43 77.47 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2474a71e-f085-4848-957c-b131b2e1edc8")
+		(property "Reference" "TP16"
+			(at 139.7 76.1999 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "REFP0"
+			(at 139.7 78.7399 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+			(at 143.51 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 143.51 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 138.43 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "d9107d79-d315-4703-99f9-b16804cd37c7")
+		)
+		(instances
+			(project ""
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf/73528528-0bac-403c-a080-68784e95fc95"
+					(reference "TP16")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 208.28 107.95 90)
 		(unit 1)
@@ -5868,7 +6431,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 208.28 109.728 90)
 			(effects
 				(font
@@ -5929,7 +6492,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "200n"
+		(property "Value" "3n9"
 			(at 200.66 170.1799 0)
 			(effects
 				(font
@@ -5938,7 +6501,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 197.8152 172.72 0)
 			(effects
 				(font
@@ -5975,6 +6538,73 @@
 			(project "ADC_Board"
 				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf/73528528-0bac-403c-a080-68784e95fc95"
 					(reference "C33")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint_Small")
+		(at 138.43 95.25 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "28a3f520-f734-48f9-8573-41faf1d00593")
+		(property "Reference" "TP20"
+			(at 139.7 93.9799 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "AIN2"
+			(at 139.7 96.5199 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+			(at 143.51 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 143.51 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 138.43 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "c6746882-099b-4e33-b97b-0119a6bdaff0")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf/73528528-0bac-403c-a080-68784e95fc95"
+					(reference "TP20")
 					(unit 1)
 				)
 			)
@@ -6065,7 +6695,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100n"
+		(property "Value" "390p"
 			(at 189.23 100.3362 0)
 			(effects
 				(font
@@ -6074,7 +6704,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 186.69 99.06 0)
 			(effects
 				(font
@@ -6144,7 +6774,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 231.902 185.42 90)
 			(effects
 				(font
@@ -6544,7 +7174,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 220.472 177.8 90)
 			(effects
 				(font
@@ -6603,7 +7233,7 @@
 				)
 			)
 		)
-		(property "Value" "MIPA_A"
+		(property "Value" "MIPA_C"
 			(at 337.82 171.45 0)
 			(effects
 				(font
@@ -6611,7 +7241,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_JST:JST_PH_B3B-PH-K_1x03_P2.00mm_Vertical"
 			(at 337.82 177.8 0)
 			(effects
 				(font
@@ -6741,7 +7371,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100n"
+		(property "Value" "390p"
 			(at 189.23 95.2562 0)
 			(effects
 				(font
@@ -6750,7 +7380,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 186.69 93.98 0)
 			(effects
 				(font
@@ -6820,7 +7450,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 82.2452 62.23 0)
 			(effects
 				(font
@@ -6863,6 +7493,73 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint_Small")
+		(at 139.7 113.03 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "4632c879-b3fc-42cb-8a6e-f5365ce9fbb0")
+		(property "Reference" "TP35"
+			(at 140.97 111.7599 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "AINCOM"
+			(at 140.97 114.2999 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+			(at 144.78 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 144.78 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 139.7 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "e11f1b23-df9d-41a2-bf50-4d90f8bf8c46")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf/73528528-0bac-403c-a080-68784e95fc95"
+					(reference "TP35")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 363.22 118.11 90)
 		(unit 1)
@@ -6888,7 +7585,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 363.22 119.888 90)
 			(effects
 				(font
@@ -7080,7 +7777,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "200n"
+		(property "Value" "3n9"
 			(at 200.66 97.7899 0)
 			(effects
 				(font
@@ -7089,7 +7786,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 197.8152 100.33 0)
 			(effects
 				(font
@@ -7156,7 +7853,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 208.28 119.888 90)
 			(effects
 				(font
@@ -7217,7 +7914,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100n"
+		(property "Value" "390p"
 			(at 189.23 80.0162 0)
 			(effects
 				(font
@@ -7226,7 +7923,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 186.69 78.74 0)
 			(effects
 				(font
@@ -7287,7 +7984,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100n"
+		(property "Value" "390p"
 			(at 189.23 129.5462 0)
 			(effects
 				(font
@@ -7296,7 +7993,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 186.69 128.27 0)
 			(effects
 				(font
@@ -7363,7 +8060,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 64.77 108.458 90)
 			(effects
 				(font
@@ -7424,7 +8121,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100n"
+		(property "Value" "390p"
 			(at 189.23 134.6262 0)
 			(effects
 				(font
@@ -7433,7 +8130,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 186.69 133.35 0)
 			(effects
 				(font
@@ -7494,7 +8191,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100n"
+		(property "Value" "390p"
 			(at 189.23 193.0462 0)
 			(effects
 				(font
@@ -7503,7 +8200,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 186.69 191.77 0)
 			(effects
 				(font
@@ -7546,6 +8243,73 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint_Small")
+		(at 147.32 91.44 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "5bc4cf70-aaef-4a0d-851d-711b13221a75")
+		(property "Reference" "TP19"
+			(at 148.59 90.1699 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "AIN1"
+			(at 148.59 92.7099 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+			(at 152.4 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 152.4 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 147.32 91.44 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "430b4373-8e19-486f-9ed1-214ef30fe515")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf/73528528-0bac-403c-a080-68784e95fc95"
+					(reference "TP19")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C")
 		(at 196.85 194.31 0)
 		(unit 1)
@@ -7564,7 +8328,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "200n"
+		(property "Value" "3n9"
 			(at 200.66 195.5799 0)
 			(effects
 				(font
@@ -7573,7 +8337,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 197.8152 198.12 0)
 			(effects
 				(font
@@ -7643,7 +8407,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 220.472 228.6 90)
 			(effects
 				(font
@@ -7710,7 +8474,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 208.28 77.978 90)
 			(effects
 				(font
@@ -7780,7 +8544,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 231.902 203.2 90)
 			(effects
 				(font
@@ -7847,7 +8611,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 208.28 175.768 90)
 			(effects
 				(font
@@ -7914,7 +8678,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 64.77 128.778 90)
 			(effects
 				(font
@@ -8050,7 +8814,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_JST:JST_PH_B6B-PH-K_1x06_P2.00mm_Vertical"
 			(at 265.43 80.01 0)
 			(effects
 				(font
@@ -8129,7 +8893,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 208.28 93.218 90)
 			(effects
 				(font
@@ -8196,7 +8960,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 208.28 216.408 90)
 			(effects
 				(font
@@ -8257,7 +9021,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100n"
+		(property "Value" "390p"
 			(at 189.23 116.8462 0)
 			(effects
 				(font
@@ -8266,7 +9030,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 186.69 115.57 0)
 			(effects
 				(font
@@ -8336,7 +9100,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 220.472 160.02 90)
 			(effects
 				(font
@@ -8373,6 +9137,73 @@
 			(project "ADC_Board"
 				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf/73528528-0bac-403c-a080-68784e95fc95"
 					(reference "R35")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint_Small")
+		(at 147.32 106.68 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "7730289d-31e5-468a-8a7f-7cb4a0a55085")
+		(property "Reference" "TP23"
+			(at 148.59 105.4099 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "AIN5"
+			(at 148.59 107.9499 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+			(at 152.4 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 152.4 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 147.32 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "a2f9757a-0e2b-46a0-a78c-fb3add9bbc7a")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf/73528528-0bac-403c-a080-68784e95fc95"
+					(reference "TP23")
 					(unit 1)
 				)
 			)
@@ -8667,7 +9498,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 72.0852 85.09 0)
 			(effects
 				(font
@@ -8802,7 +9633,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 373.0752 185.42 0)
 			(effects
 				(font
@@ -8845,6 +9676,73 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint_Small")
+		(at 138.43 134.62 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "87760090-4ad1-436e-ab42-a47c68534b2c")
+		(property "Reference" "TP33"
+			(at 139.7 133.3499 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "AIN10"
+			(at 139.7 135.8899 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+			(at 143.51 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 143.51 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 138.43 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "08725750-3f46-463e-80fa-76c6294e0b7d")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf/73528528-0bac-403c-a080-68784e95fc95"
+					(reference "TP33")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 208.28 135.89 90)
 		(unit 1)
@@ -8869,7 +9767,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 208.28 137.668 90)
 			(effects
 				(font
@@ -9001,7 +9899,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 64.77 133.858 90)
 			(effects
 				(font
@@ -9071,7 +9969,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 53.0352 228.6 0)
 			(effects
 				(font
@@ -9114,6 +10012,73 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint_Small")
+		(at 138.43 119.38 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "951871f2-a6cb-416a-a1d0-4495efd8215a")
+		(property "Reference" "TP29"
+			(at 139.7 118.1099 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "AIN6"
+			(at 139.7 120.6499 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+			(at 143.51 119.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 143.51 119.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 138.43 119.38 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "e3d17d17-8739-4c0b-bf6f-29fce1c101bb")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf/73528528-0bac-403c-a080-68784e95fc95"
+					(reference "TP29")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C_Small")
 		(at 186.69 222.25 0)
 		(unit 1)
@@ -9132,7 +10097,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100n"
+		(property "Value" "390p"
 			(at 189.23 223.5262 0)
 			(effects
 				(font
@@ -9141,7 +10106,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 186.69 222.25 0)
 			(effects
 				(font
@@ -9208,7 +10173,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_JST:JST_PH_B3B-PH-K_1x03_P2.00mm_Vertical"
 			(at 337.82 118.11 0)
 			(effects
 				(font
@@ -9401,7 +10366,7 @@
 				)
 			)
 		)
-		(property "Value" "MIPA_A"
+		(property "Value" "MIPA_B"
 			(at 337.82 140.97 0)
 			(effects
 				(font
@@ -9409,7 +10374,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_JST:JST_PH_B3B-PH-K_1x03_P2.00mm_Vertical"
 			(at 337.82 147.32 0)
 			(effects
 				(font
@@ -9482,7 +10447,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 373.0752 125.73 0)
 			(effects
 				(font
@@ -9543,7 +10508,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100n"
+		(property "Value" "390p"
 			(at 189.23 167.6462 0)
 			(effects
 				(font
@@ -9552,7 +10517,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 186.69 166.37 0)
 			(effects
 				(font
@@ -9660,6 +10625,73 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint_Small")
+		(at 147.32 123.19 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "9ed674d9-3252-4228-b7d6-070e1f88acfe")
+		(property "Reference" "TP30"
+			(at 148.59 121.9199 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "AIN7"
+			(at 148.59 124.4599 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+			(at 152.4 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 152.4 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 147.32 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "ad3f8e13-fa28-4ad9-a2b7-534ddab1e254")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf/73528528-0bac-403c-a080-68784e95fc95"
+					(reference "TP30")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 233.68 207.01 0)
 		(unit 1)
@@ -9744,7 +10776,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100n"
+		(property "Value" "390p"
 			(at 189.23 218.4462 0)
 			(effects
 				(font
@@ -9753,7 +10785,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 186.69 217.17 0)
 			(effects
 				(font
@@ -9823,7 +10855,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_JST:JST_PH_B6B-PH-K_1x06_P2.00mm_Vertical"
 			(at 266.7 110.49 0)
 			(effects
 				(font
@@ -9896,7 +10928,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "200n"
+		(property "Value" "3n9"
 			(at 200.66 220.9799 0)
 			(effects
 				(font
@@ -9905,7 +10937,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 197.8152 223.52 0)
 			(effects
 				(font
@@ -9974,7 +11006,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 83.312 212.09 90)
 			(effects
 				(font
@@ -10040,7 +11072,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 208.28 191.008 90)
 			(effects
 				(font
@@ -10167,7 +11199,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100n"
+		(property "Value" "390p"
 			(at 189.23 111.7662 0)
 			(effects
 				(font
@@ -10176,7 +11208,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 186.69 110.49 0)
 			(effects
 				(font
@@ -10219,6 +11251,73 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint_Small")
+		(at 138.43 127 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "c3232607-2278-41c9-a1c5-96172a4982cf")
+		(property "Reference" "TP31"
+			(at 139.7 125.7299 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "AIN8"
+			(at 139.7 128.2699 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+			(at 143.51 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 143.51 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 138.43 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "12c66b2e-1dfd-44e8-8690-ff9b7854636a")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf/73528528-0bac-403c-a080-68784e95fc95"
+					(reference "TP31")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C_Small")
 		(at 186.69 196.85 0)
 		(unit 1)
@@ -10237,7 +11336,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100n"
+		(property "Value" "390p"
 			(at 189.23 198.1262 0)
 			(effects
 				(font
@@ -10246,7 +11345,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 186.69 196.85 0)
 			(effects
 				(font
@@ -10353,6 +11452,73 @@
 			(project "ADC_Board"
 				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf/73528528-0bac-403c-a080-68784e95fc95"
 					(reference "J20")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint_Small")
+		(at 138.43 87.63 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "c4a69846-5b25-41a7-953d-69ee806b19b2")
+		(property "Reference" "TP18"
+			(at 139.7 86.3599 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "AIN0"
+			(at 139.7 88.8999 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+			(at 143.51 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 143.51 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 138.43 87.63 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "ee13f732-14a7-4bcb-8072-27ca49592de7")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf/73528528-0bac-403c-a080-68784e95fc95"
+					(reference "TP18")
 					(unit 1)
 				)
 			)
@@ -10514,7 +11680,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 208.28 165.608 90)
 			(effects
 				(font
@@ -10575,7 +11741,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100n"
+		(property "Value" "390p"
 			(at 189.23 85.0962 0)
 			(effects
 				(font
@@ -10584,7 +11750,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 186.69 83.82 0)
 			(effects
 				(font
@@ -10651,7 +11817,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 208.28 127.508 90)
 			(effects
 				(font
@@ -10855,7 +12021,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 363.22 179.578 90)
 			(effects
 				(font
@@ -10916,7 +12082,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "200n"
+		(property "Value" "3n9"
 			(at 200.66 82.5499 0)
 			(effects
 				(font
@@ -10925,7 +12091,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 197.8152 85.09 0)
 			(effects
 				(font
@@ -11164,6 +12330,73 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint_Small")
+		(at 138.43 82.55 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d2e65d9e-ff48-46c4-87ca-5c2a97327899")
+		(property "Reference" "TP17"
+			(at 139.7 81.2799 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "REFN0"
+			(at 139.7 83.8199 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+			(at 143.51 82.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 143.51 82.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 138.43 82.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "c3ea6cde-869c-44f7-a20b-14fc8ac2c451")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf/73528528-0bac-403c-a080-68784e95fc95"
+					(reference "TP17")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 208.28 101.6 90)
 		(unit 1)
@@ -11188,7 +12421,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 208.28 103.378 90)
 			(effects
 				(font
@@ -11249,7 +12482,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "200n"
+		(property "Value" "3n9"
 			(at 200.66 132.0799 0)
 			(effects
 				(font
@@ -11258,7 +12491,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 197.8152 134.62 0)
 			(effects
 				(font
@@ -11460,7 +12693,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_JST:JST_PH_B6B-PH-K_1x06_P2.00mm_Vertical"
 			(at 266.7 130.81 0)
 			(effects
 				(font
@@ -11542,7 +12775,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 373.0752 154.94 0)
 			(effects
 				(font
@@ -11669,7 +12902,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100n"
+		(property "Value" "390p"
 			(at 189.23 172.7262 0)
 			(effects
 				(font
@@ -11678,7 +12911,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 186.69 171.45 0)
 			(effects
 				(font
@@ -11745,7 +12978,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 64.77 123.698 90)
 			(effects
 				(font
@@ -11812,7 +13045,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 64.77 113.538 90)
 			(effects
 				(font
@@ -11882,7 +13115,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 126.6952 62.23 0)
 			(effects
 				(font
@@ -11950,7 +13183,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 67.31 221.488 90)
 			(effects
 				(font
@@ -12083,7 +13316,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 64.77 98.298 90)
 			(effects
 				(font
@@ -12120,6 +13353,73 @@
 			(project "ADC_Board"
 				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf/73528528-0bac-403c-a080-68784e95fc95"
 					(reference "R21")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint_Small")
+		(at 147.32 99.06 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "ef49911b-2141-4c5d-9916-5aac2d28b164")
+		(property "Reference" "TP21"
+			(at 148.59 97.7899 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "AIN3"
+			(at 148.59 100.3299 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+			(at 152.4 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 152.4 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 147.32 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "5743b843-0a96-451d-be45-b12be98283f7")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf/73528528-0bac-403c-a080-68784e95fc95"
+					(reference "TP21")
 					(unit 1)
 				)
 			)
@@ -12216,7 +13516,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 208.28 88.138 90)
 			(effects
 				(font
@@ -12259,6 +13559,73 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint_Small")
+		(at 138.43 102.87 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f30b36cc-e4a8-4ce0-86f1-3cc9cedeb36a")
+		(property "Reference" "TP22"
+			(at 139.7 101.5999 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "AIN4"
+			(at 139.7 104.1399 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+			(at 143.51 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 143.51 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 138.43 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "2c66d259-6ebb-4624-840c-912b85e2eb94")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf/73528528-0bac-403c-a080-68784e95fc95"
+					(reference "TP22")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R")
 		(at 64.77 116.84 90)
 		(unit 1)
@@ -12283,7 +13650,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 64.77 118.618 90)
 			(effects
 				(font
