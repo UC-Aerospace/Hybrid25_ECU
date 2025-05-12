@@ -13,6 +13,171 @@
 		(comment 2 "Checked: ")
 	)
 	(lib_symbols
+		(symbol "Connector:Conn_01x02_Socket"
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "J"
+				(at 0 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Conn_01x02_Socket"
+				(at 0 -5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Generic connector, single row, 01x02, script generated"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_locked" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "connector"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "Connector*:*_1x??_*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "Conn_01x02_Socket_1_1"
+				(polyline
+					(pts
+						(xy -1.27 0) (xy -0.508 0)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.27 -2.54) (xy -0.508 -2.54)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0 -0.508)
+					(mid -0.5058 0)
+					(end 0 0.508)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0 -3.048)
+					(mid -0.5058 -2.54)
+					(end 0 -2.032)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 3.81)
+					(name "Pin_1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -2.54 0)
+					(length 3.81)
+					(name "Pin_2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Connector:DE9_Socket"
 			(pin_names
 				(offset 1.016)
@@ -9285,6 +9450,16 @@
 	)
 	(wire
 		(pts
+			(xy 208.28 201.93) (xy 208.28 203.2)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "34fe65fd-5219-4626-a318-dd0c6d56981c")
+	)
+	(wire
+		(pts
 			(xy 386.08 80.01) (xy 394.97 80.01)
 		)
 		(stroke
@@ -10045,6 +10220,16 @@
 	)
 	(wire
 		(pts
+			(xy 227.33 203.2) (xy 231.14 203.2)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6506e306-c9b1-4960-8726-2f61b5673faa")
+	)
+	(wire
+		(pts
 			(xy 229.87 90.17) (xy 242.57 90.17)
 		)
 		(stroke
@@ -10535,7 +10720,7 @@
 	)
 	(wire
 		(pts
-			(xy 220.98 203.2) (xy 231.14 203.2)
+			(xy 220.98 203.2) (xy 224.79 203.2)
 		)
 		(stroke
 			(width 0)
@@ -16107,6 +16292,73 @@
 			(project "Servo_Board"
 				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
 					(reference "U3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 208.28 201.93 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "39426f56-30d7-420e-a456-e204ca89a140")
+		(property "Reference" "#PWR067"
+			(at 208.28 205.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+7V4"
+			(at 208.28 196.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 208.28 201.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 208.28 201.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+7V4\""
+			(at 208.28 201.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "8ca1887d-1c4d-40f9-b53a-a4be927f7b7b")
+		)
+		(instances
+			(project "Servo_Board"
+				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
+					(reference "#PWR067")
 					(unit 1)
 				)
 			)
@@ -25495,6 +25747,93 @@
 			(project "Servo_Board"
 				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
 					(reference "#PWR03")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:Conn_01x02_Socket")
+		(at 224.79 198.12 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f1770cf7-b007-4fb3-bc63-210409f7f581")
+		(property "Reference" "SW1"
+			(at 228.6 197.4849 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "On Switch"
+			(at 228.6 200.0249 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Connector_Molex:Molex_Micro-Fit_3.0_43650-0215_1x02_P3.00mm_Vertical"
+			(at 224.79 198.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://tools.molex.com/pdm_docs/ps/PS-43650.pdf"
+			(at 224.79 198.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x02, script generated"
+			(at 224.79 198.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" "436500228"
+			(at 224.79 198.12 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 224.79 198.12 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "ea1bf719-5657-42df-a822-567f94a51288")
+		)
+		(pin "1"
+			(uuid "fac87a70-f419-43f0-88e7-d6ff1ad77978")
+		)
+		(instances
+			(project "Servo_Board"
+				(path "/2ef6413b-3d6c-4280-a117-e3d1b74ccf03"
+					(reference "SW1")
 					(unit 1)
 				)
 			)
