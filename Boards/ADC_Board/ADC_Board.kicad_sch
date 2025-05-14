@@ -7515,6 +7515,10 @@
 		(uuid "da883d70-f99b-43a9-ac3f-7b59e06b06f0")
 	)
 	(no_connect
+		(at 351.79 194.31)
+		(uuid "defc79fd-8213-4a11-85f5-b53ca974428b")
+	)
+	(no_connect
 		(at 209.55 179.07)
 		(uuid "e7d24b5e-ca3e-472b-944b-f5d3dd49a8de")
 	)
@@ -7529,6 +7533,10 @@
 	(no_connect
 		(at 153.67 176.53)
 		(uuid "ebf3db94-6cef-4f98-8bc8-7e486578865d")
+	)
+	(no_connect
+		(at 351.79 132.08)
+		(uuid "f4b295f6-8ba3-4af1-9f22-9fdbb6332d92")
 	)
 	(no_connect
 		(at 359.41 78.74)
@@ -7703,16 +7711,6 @@
 			(type default)
 		)
 		(uuid "0b4c0ad6-56c5-4b62-ad47-99088be887dd")
-	)
-	(wire
-		(pts
-			(xy 351.79 176.53) (xy 351.79 194.31)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "0b54749d-42bc-4a3b-874c-5a0e96843f4b")
 	)
 	(polyline
 		(pts
@@ -8166,7 +8164,7 @@
 	)
 	(wire
 		(pts
-			(xy 33.02 142.24) (xy 50.8 142.24)
+			(xy 33.02 142.24) (xy 64.77 142.24)
 		)
 		(stroke
 			(width 0)
@@ -8243,16 +8241,6 @@
 			(type default)
 		)
 		(uuid "3cd44914-2a54-4197-8c1e-d9432aedcee7")
-	)
-	(wire
-		(pts
-			(xy 351.79 149.86) (xy 351.79 132.08)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3d8ce3ea-8f85-42d0-b728-afef90278ac2")
 	)
 	(wire
 		(pts
@@ -9266,7 +9254,7 @@
 	)
 	(wire
 		(pts
-			(xy 33.02 101.6) (xy 50.8 101.6)
+			(xy 33.02 101.6) (xy 57.15 101.6)
 		)
 		(stroke
 			(width 0)
@@ -9796,7 +9784,7 @@
 	)
 	(wire
 		(pts
-			(xy 33.02 175.26) (xy 50.8 175.26)
+			(xy 33.02 175.26) (xy 66.04 175.26)
 		)
 		(stroke
 			(width 0)
@@ -9946,7 +9934,7 @@
 	)
 	(wire
 		(pts
-			(xy 33.02 170.18) (xy 50.8 170.18)
+			(xy 33.02 170.18) (xy 57.15 170.18)
 		)
 		(stroke
 			(width 0)
@@ -9956,7 +9944,7 @@
 	)
 	(wire
 		(pts
-			(xy 33.02 137.16) (xy 50.8 137.16)
+			(xy 33.02 137.16) (xy 57.15 137.16)
 		)
 		(stroke
 			(width 0)
@@ -10226,7 +10214,7 @@
 	)
 	(wire
 		(pts
-			(xy 33.02 106.68) (xy 50.8 106.68)
+			(xy 33.02 106.68) (xy 64.77 106.68)
 		)
 		(stroke
 			(width 0)
@@ -10344,16 +10332,6 @@
 		)
 		(uuid "feb5332e-18c1-4ecf-a0ee-918e04da3e3e")
 	)
-	(label "CAN2_AUX"
-		(at 351.79 176.53 270)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "007ddbd1-ca5b-42b0-becb-ba2011dc964d")
-	)
 	(label "E4"
 		(at 140.97 123.19 0)
 		(effects
@@ -10453,16 +10431,6 @@
 			(justify left bottom)
 		)
 		(uuid "2254748e-2819-4ad5-bbb9-0788d3ee0c02")
-	)
-	(label "CAN2_AUX"
-		(at 220.98 158.75 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "22ce8da7-dbac-41a1-bf14-47b3fe82cf5b")
 	)
 	(label "NRST"
 		(at 144.78 107.95 0)
@@ -10813,16 +10781,6 @@
 			(justify right bottom)
 		)
 		(uuid "a7465e08-76d5-409b-9931-cf50740f9e0d")
-	)
-	(label "CAN1_AUX"
-		(at 351.79 149.86 90)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "aa401ded-3fc1-46b9-bcea-4f24bafd0e3f")
 	)
 	(label "USB_D-"
 		(at 368.3 86.36 180)
@@ -11719,6 +11677,93 @@
 		)
 	)
 	(symbol
+		(lib_id "Power_Protection:PESD3V3L4UW")
+		(at 33.02 96.52 90)
+		(unit 2)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "151b8ce3-f0d7-4fc9-968a-82f942143195")
+		(property "Reference" "D1"
+			(at 35.56 95.2499 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "PESD3V3L4UW"
+			(at 35.56 97.7899 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_SMD:SOT-665"
+			(at 27.94 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/PESDXL4UF_G_W.pdf"
+			(at 38.1 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Low capacitance unidirectional quadruple ESD protection diode array, 3.3V, Common Anode, SOT-665"
+			(at 33.02 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 33.02 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "4698858e-5fe0-4c4e-8d7a-06e29989184f")
+		)
+		(pin "2"
+			(uuid "f7e3a70a-871f-42ba-9cba-bcd82a307bd8")
+		)
+		(pin "3"
+			(uuid "3dd5ad6b-df48-459a-be74-f2853a1bb162")
+		)
+		(pin "4"
+			(uuid "93729ca0-7928-4208-a0cb-9615706ea9cf")
+		)
+		(pin "5"
+			(uuid "80fd1889-f687-4916-aa8a-baa808407114")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
+					(reference "D1")
+					(unit 2)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Jumper:SolderJumper_3_Bridged12")
 		(at 313.69 151.13 270)
 		(unit 1)
@@ -11793,6 +11838,76 @@
 			(project "ADC_Board"
 				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
 					(reference "JP1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 57.15 133.35 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "17f6865b-6eef-44c1-a287-4b6492ac52d7")
+		(property "Reference" "R52"
+			(at 59.69 132.0799 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10K"
+			(at 59.69 134.6199 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 55.372 133.35 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 57.15 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 57.15 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "3fc1f4a6-f1ad-4477-9f06-702da7eaa922")
+		)
+		(pin "1"
+			(uuid "44a047f2-a7a5-4c70-bd20-db6bdbb03628")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
+					(reference "R52")
 					(unit 1)
 				)
 			)
@@ -11979,7 +12094,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
 			(at 12.7 273.05 0)
 			(effects
 				(font
@@ -12352,6 +12467,76 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R")
+		(at 64.77 102.87 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "251c8c05-0050-4a7e-be40-05b5fbfb2488")
+		(property "Reference" "R54"
+			(at 67.31 101.5999 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10K"
+			(at 67.31 104.1399 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 62.992 102.87 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 64.77 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 64.77 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "9916f230-5319-4674-b779-42f5dad04356")
+		)
+		(pin "1"
+			(uuid "8c91daf5-a5c5-4f45-a933-27328f909b53")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
+					(reference "R54")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 270.51 185.42 0)
 		(unit 1)
@@ -12627,7 +12812,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
 			(at 246.38 161.29 0)
 			(effects
 				(font
@@ -12678,6 +12863,93 @@
 				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
 					(reference "TP13")
 					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Power_Protection:PESD3V3L4UW")
+		(at 33.02 165.1 90)
+		(unit 2)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2a9639b3-62f9-4bb2-ab6e-1552b063c1bc")
+		(property "Reference" "D2"
+			(at 35.56 163.8299 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "PESD3V3L4UW"
+			(at 35.56 166.3699 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_SMD:SOT-665"
+			(at 27.94 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/PESDXL4UF_G_W.pdf"
+			(at 38.1 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Low capacitance unidirectional quadruple ESD protection diode array, 3.3V, Common Anode, SOT-665"
+			(at 33.02 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 33.02 165.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "5"
+			(uuid "fd49638f-c90d-4a6b-8d48-200326b3cad8")
+		)
+		(pin "1"
+			(uuid "4d59ed1d-b330-4d95-b817-b22d0003bdf9")
+		)
+		(pin "2"
+			(uuid "51220032-b5f9-4723-b77a-6a77d5f924f4")
+		)
+		(pin "4"
+			(uuid "d32af79d-64f1-4220-bc7a-12d86f33e06c")
+		)
+		(pin "3"
+			(uuid "1e2585dc-125f-42c0-baaf-12ee6fd3917a")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
+					(reference "D2")
+					(unit 2)
 				)
 			)
 		)
@@ -12777,7 +13049,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
 			(at 233.68 97.79 0)
 			(effects
 				(font
@@ -12827,6 +13099,72 @@
 			(project "ADC_Board"
 				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
 					(reference "TP6")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 57.15 162.56 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2e538f48-bdfa-47c5-a740-f3cad6094306")
+		(property "Reference" "#PWR068"
+			(at 57.15 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 57.15 157.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 57.15 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 57.15 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 57.15 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "69caf932-922c-4aaa-9dbe-66c52a2cda8c")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
+					(reference "#PWR068")
 					(unit 1)
 				)
 			)
@@ -12928,7 +13266,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
 			(at 227.33 138.43 0)
 			(effects
 				(font
@@ -13165,7 +13503,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
 			(at 228.6 105.41 0)
 			(effects
 				(font
@@ -13999,6 +14337,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:+3V3")
+		(at 57.15 93.98 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "47eb691d-808b-451f-bee0-52174b2c162a")
+		(property "Reference" "#PWR076"
+			(at 57.15 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 57.15 88.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 57.15 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 57.15 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 57.15 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "156d4505-2f6c-414d-bb5c-b8670f55a7b2")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
+					(reference "#PWR076")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Connector:TestPoint")
 		(at 39.37 273.05 180)
 		(unit 1)
@@ -14026,7 +14430,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
 			(at 34.29 273.05 0)
 			(effects
 				(font
@@ -14335,7 +14739,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
 			(at 228.6 95.25 0)
 			(effects
 				(font
@@ -14580,7 +14984,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
 			(at 238.76 100.33 0)
 			(effects
 				(font
@@ -16786,93 +17190,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Power_Protection:PESD3V3L4UW")
-		(at 33.02 110.49 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "74a93786-da23-4adc-b3c7-ddceacc2de81")
-		(property "Reference" "D2"
-			(at 35.56 109.2199 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "PESD3V3L4UW"
-			(at 35.56 111.7599 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Package_TO_SOT_SMD:SOT-665"
-			(at 38.1 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/PESDXL4UF_G_W.pdf"
-			(at 27.94 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Low capacitance unidirectional quadruple ESD protection diode array, 3.3V, Common Anode, SOT-665"
-			(at 33.02 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Part Number" ""
-			(at 33.02 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "5"
-			(uuid "fd49638f-c90d-4a6b-8d48-200326b3cad7")
-		)
-		(pin "1"
-			(uuid "4d59ed1d-b330-4d95-b817-b22d0003bdf8")
-		)
-		(pin "2"
-			(uuid "51220032-b5f9-4723-b77a-6a77d5f924f3")
-		)
-		(pin "4"
-			(uuid "d32af79d-64f1-4220-bc7a-12d86f33e06b")
-		)
-		(pin "3"
-			(uuid "ead14c30-236b-47c0-b74a-9ee181df2ec3")
-		)
-		(instances
-			(project "ADC_Board"
-				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
-					(reference "D2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Connector:TestPoint_Small")
 		(at 223.52 107.95 270)
 		(mirror x)
@@ -16901,7 +17218,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
 			(at 223.52 102.87 0)
 			(effects
 				(font
@@ -17204,6 +17521,76 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R")
+		(at 57.15 166.37 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "77ad9ca4-0371-4782-9636-2e81c58c230a")
+		(property "Reference" "R53"
+			(at 59.69 165.0999 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10K"
+			(at 59.69 167.6399 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 55.372 166.37 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 57.15 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 57.15 166.37 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "a6c02821-baed-4877-be40-48079b8506cd")
+		)
+		(pin "1"
+			(uuid "55cff372-a7f5-43c5-9834-082feb0c4e69")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
+					(reference "R53")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:C")
 		(at 285.75 144.78 0)
 		(unit 1)
@@ -17442,93 +17829,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Power_Protection:PESD3V3L4UW")
-		(at 33.02 165.1 90)
-		(unit 2)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "80e88343-024e-43f7-89a1-d3a45b3df872")
-		(property "Reference" "D1"
-			(at 35.56 163.8299 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "PESD3V3L4UW"
-			(at 35.56 166.3699 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Package_TO_SOT_SMD:SOT-665"
-			(at 27.94 165.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/PESDXL4UF_G_W.pdf"
-			(at 38.1 165.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Low capacitance unidirectional quadruple ESD protection diode array, 3.3V, Common Anode, SOT-665"
-			(at 33.02 165.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Part Number" ""
-			(at 33.02 165.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "4698858e-5fe0-4c4e-8d7a-06e29989184f")
-		)
-		(pin "2"
-			(uuid "f7e3a70a-871f-42ba-9cba-bcd82a307bd8")
-		)
-		(pin "3"
-			(uuid "1064fc49-012f-466b-b132-03807165292a")
-		)
-		(pin "4"
-			(uuid "93729ca0-7928-4208-a0cb-9615706ea9cf")
-		)
-		(pin "5"
-			(uuid "80fd1889-f687-4916-aa8a-baa808407114")
-		)
-		(instances
-			(project "ADC_Board"
-				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
-					(reference "D1")
-					(unit 2)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Connector:TestPoint_Small")
 		(at 265.43 95.25 90)
 		(mirror x)
@@ -17556,7 +17856,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
 			(at 265.43 100.33 0)
 			(effects
 				(font
@@ -17606,6 +17906,159 @@
 			(project "ADC_Board"
 				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
 					(reference "TP3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 64.77 99.06 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "866968dd-1ff1-4605-aff7-fb99ff3e5958")
+		(property "Reference" "#PWR099"
+			(at 64.77 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 64.77 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 64.77 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 64.77 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 64.77 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "f5d58c8f-a9bd-4e0c-9cca-a538df3cc9c6")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
+					(reference "#PWR099")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Power_Protection:PESD3V3L4UW")
+		(at 33.02 179.07 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "868a4bb3-6aea-4f9a-8101-8b7811c3772c")
+		(property "Reference" "D2"
+			(at 35.56 177.7999 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "PESD3V3L4UW"
+			(at 35.56 180.3399 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_SMD:SOT-665"
+			(at 38.1 179.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/PESDXL4UF_G_W.pdf"
+			(at 27.94 179.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Low capacitance unidirectional quadruple ESD protection diode array, 3.3V, Common Anode, SOT-665"
+			(at 33.02 179.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 33.02 179.07 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "5"
+			(uuid "fd49638f-c90d-4a6b-8d48-200326b3cad7")
+		)
+		(pin "1"
+			(uuid "c3cbaffe-14d5-468d-a1b9-bb6b06488eb3")
+		)
+		(pin "2"
+			(uuid "c895b72a-afcd-423c-8f6f-aef81fe88f87")
+		)
+		(pin "4"
+			(uuid "d32af79d-64f1-4220-bc7a-12d86f33e06b")
+		)
+		(pin "3"
+			(uuid "ead14c30-236b-47c0-b74a-9ee181df2ec3")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
+					(reference "D2")
 					(unit 1)
 				)
 			)
@@ -17805,7 +18258,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
 			(at 233.68 107.95 0)
 			(effects
 				(font
@@ -18162,6 +18615,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:+3V3")
+		(at 64.77 134.62 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "9303e684-08b9-498d-a833-0af62e29a126")
+		(property "Reference" "#PWR0100"
+			(at 64.77 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 64.77 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 64.77 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 64.77 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 64.77 134.62 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "a0b8d91e-0224-4336-80b3-d310c4553b26")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
+					(reference "#PWR0100")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 167.64 85.09 0)
 		(mirror y)
@@ -18323,7 +18842,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
 			(at 227.33 161.29 0)
 			(effects
 				(font
@@ -18494,7 +19013,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
 			(at 252.73 163.83 0)
 			(effects
 				(font
@@ -18796,6 +19315,76 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R")
+		(at 64.77 138.43 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "a6f6b8ad-d3d5-4832-a7fa-c0196091f95d")
+		(property "Reference" "R55"
+			(at 67.31 137.1599 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10K"
+			(at 67.31 139.6999 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 62.992 138.43 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 64.77 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 64.77 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "2fac1ee8-831b-4ccc-af33-61fca7f34e09")
+		)
+		(pin "1"
+			(uuid "64544fde-a3c5-48cb-bac8-453064360a73")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
+					(reference "R55")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:LED")
 		(at 86.36 264.16 90)
 		(unit 1)
@@ -18948,6 +19537,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:+3V3")
+		(at 57.15 129.54 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "ad22bd4d-3764-40d9-8f65-50f80f630028")
+		(property "Reference" "#PWR082"
+			(at 57.15 133.35 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 57.15 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 57.15 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 57.15 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 57.15 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "69a7272f-03ee-483a-b605-b96fd81ad2c8")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
+					(reference "#PWR082")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 113.03 106.68 0)
 		(unit 1)
@@ -19014,93 +19669,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Power_Protection:PESD3V3L4UW")
-		(at 33.02 96.52 90)
-		(unit 2)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "ae62d984-7dce-425a-96e8-e9f8b3216f20")
-		(property "Reference" "D2"
-			(at 35.56 95.2499 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "PESD3V3L4UW"
-			(at 35.56 97.7899 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Package_TO_SOT_SMD:SOT-665"
-			(at 27.94 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/PESDXL4UF_G_W.pdf"
-			(at 38.1 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Low capacitance unidirectional quadruple ESD protection diode array, 3.3V, Common Anode, SOT-665"
-			(at 33.02 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Part Number" ""
-			(at 33.02 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "5"
-			(uuid "fd49638f-c90d-4a6b-8d48-200326b3cad8")
-		)
-		(pin "1"
-			(uuid "4d59ed1d-b330-4d95-b817-b22d0003bdf9")
-		)
-		(pin "2"
-			(uuid "51220032-b5f9-4723-b77a-6a77d5f924f4")
-		)
-		(pin "4"
-			(uuid "d32af79d-64f1-4220-bc7a-12d86f33e06c")
-		)
-		(pin "3"
-			(uuid "ead14c30-236b-47c0-b74a-9ee181df2ec4")
-		)
-		(instances
-			(project "ADC_Board"
-				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
-					(reference "D2")
-					(unit 2)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 27.94 147.32 0)
 		(unit 1)
@@ -19161,6 +19729,72 @@
 			(project "ADC_Board"
 				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
 					(reference "#PWR023")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 66.04 167.64 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "b1ebf3e8-b51e-4b4a-83fe-49e964649ae7")
+		(property "Reference" "#PWR0101"
+			(at 66.04 171.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 66.04 162.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 66.04 167.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 66.04 167.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 66.04 167.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "1892acc2-88cf-4fd7-82dd-8a84e43c925e")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
+					(reference "#PWR0101")
 					(unit 1)
 				)
 			)
@@ -19326,7 +19960,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
 			(at 24.13 273.05 0)
 			(effects
 				(font
@@ -19376,6 +20010,93 @@
 			(project "ADC_Board"
 				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
 					(reference "TP17")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Power_Protection:PESD3V3L4UW")
+		(at 33.02 110.49 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "b96152d9-e47b-4b4f-93d0-488272687d18")
+		(property "Reference" "D1"
+			(at 35.56 109.2199 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "PESD3V3L4UW"
+			(at 35.56 111.7599 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_SMD:SOT-665"
+			(at 38.1 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/PESDXL4UF_G_W.pdf"
+			(at 27.94 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Low capacitance unidirectional quadruple ESD protection diode array, 3.3V, Common Anode, SOT-665"
+			(at 33.02 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Part Number" ""
+			(at 33.02 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "b3cdb07b-06b5-41ed-9158-acf3c7644fd8")
+		)
+		(pin "2"
+			(uuid "4939ac5a-1804-4f89-9628-f49c7e246b59")
+		)
+		(pin "3"
+			(uuid "1064fc49-012f-466b-b132-03807165292c")
+		)
+		(pin "4"
+			(uuid "93729ca0-7928-4208-a0cb-9615706ea9d1")
+		)
+		(pin "5"
+			(uuid "80fd1889-f687-4916-aa8a-baa808407116")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
+					(reference "D1")
 					(unit 1)
 				)
 			)
@@ -19475,7 +20196,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
 			(at 270.51 92.71 0)
 			(effects
 				(font
@@ -19657,6 +20378,76 @@
 			(project "ADC_Board"
 				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
 					(reference "#PWR037")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 66.04 171.45 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "c135bc58-2d06-48dd-b24a-365d7f251918")
+		(property "Reference" "R56"
+			(at 68.58 170.1799 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10K"
+			(at 68.58 172.7199 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 64.262 171.45 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 66.04 171.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 66.04 171.45 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "79a53c09-db78-44a3-b9e6-e1eb218066db")
+		)
+		(pin "1"
+			(uuid "64a4f36f-43d6-4c16-8a5a-09e9ca20c562")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
+					(reference "R56")
 					(unit 1)
 				)
 			)
@@ -20016,7 +20807,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
 			(at 238.76 110.49 0)
 			(effects
 				(font
@@ -20450,7 +21241,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
 			(at 270.51 88.9 0)
 			(effects
 				(font
@@ -20596,93 +21387,6 @@
 			(project "ADC_Board"
 				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
 					(reference "D3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Power_Protection:PESD3V3L4UW")
-		(at 33.02 179.07 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "d6ad61fb-6f6f-4a3e-b4ba-14a7aba213e8")
-		(property "Reference" "D1"
-			(at 35.56 177.7999 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "PESD3V3L4UW"
-			(at 35.56 180.3399 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Package_TO_SOT_SMD:SOT-665"
-			(at 38.1 179.07 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://assets.nexperia.com/documents/data-sheet/PESDXL4UF_G_W.pdf"
-			(at 27.94 179.07 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Low capacitance unidirectional quadruple ESD protection diode array, 3.3V, Common Anode, SOT-665"
-			(at 33.02 179.07 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Part Number" ""
-			(at 33.02 179.07 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "4698858e-5fe0-4c4e-8d7a-06e299891851")
-		)
-		(pin "2"
-			(uuid "f7e3a70a-871f-42ba-9cba-bcd82a307bda")
-		)
-		(pin "3"
-			(uuid "1064fc49-012f-466b-b132-03807165292c")
-		)
-		(pin "4"
-			(uuid "93729ca0-7928-4208-a0cb-9615706ea9d1")
-		)
-		(pin "5"
-			(uuid "80fd1889-f687-4916-aa8a-baa808407116")
-		)
-		(instances
-			(project "ADC_Board"
-				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
-					(reference "D1")
 					(unit 1)
 				)
 			)
@@ -21091,7 +21795,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_1.5x1.5mm"
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
 			(at 223.52 92.71 0)
 			(effects
 				(font
@@ -21274,6 +21978,76 @@
 			(project "ADC_Board"
 				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
 					(reference "#PWR038")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R")
+		(at 57.15 97.79 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "e6a624ec-2499-423d-8bfc-6bb2f773c08c")
+		(property "Reference" "R51"
+			(at 59.69 96.5199 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10K"
+			(at 59.69 99.0599 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 55.372 97.79 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 57.15 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Resistor"
+			(at 57.15 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "51560c95-6878-490f-9368-83a07dd9dc26")
+		)
+		(pin "1"
+			(uuid "1efa189c-458f-4f05-9361-f669f4440a9c")
+		)
+		(instances
+			(project "ADC_Board"
+				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
+					(reference "R51")
 					(unit 1)
 				)
 			)
