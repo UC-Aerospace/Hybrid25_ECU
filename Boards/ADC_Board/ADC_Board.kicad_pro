@@ -65,6 +65,10 @@
       ],
       "drc_exclusions": [
         [
+          "lib_footprint_issues|149797212|88603826|30ecb3c3-55fc-4a8a-afab-219402e9e511|00000000-0000-0000-0000-000000000000",
+          ""
+        ],
+        [
           "silk_edge_clearance|106515000|120000000|b90a48ae-0118-4a7c-b55c-33dfe39474a1|107ab6d1-39ce-45e1-a67e-a13d740099a6",
           ""
         ],
@@ -78,6 +82,38 @@
         ],
         [
           "silk_edge_clearance|173485000|120000000|b90a48ae-0118-4a7c-b55c-33dfe39474a1|453c4009-89e4-4821-8a71-2f06ac21aa3d",
+          ""
+        ],
+        [
+          "silk_overlap|101888534|85215825|56b5cc23-ca2e-49fb-9e11-e841d3e54d13|b8fab490-b801-4756-9919-d3b83200f86c",
+          ""
+        ],
+        [
+          "silk_overlap|101890000|87174000|56b5cc23-ca2e-49fb-9e11-e841d3e54d13|978ad473-efe4-4065-90c0-a6f210036143",
+          ""
+        ],
+        [
+          "silk_overlap|103814841|86821330|56b5cc23-ca2e-49fb-9e11-e841d3e54d13|d561792c-431b-4955-99af-27a9b7eb8a46",
+          ""
+        ],
+        [
+          "silk_overlap|112000000|87187000|51551146-87ff-4e82-ad95-189157bef4e5|56b5cc23-ca2e-49fb-9e11-e841d3e54d13",
+          ""
+        ],
+        [
+          "silk_overlap|119533333|106730000|2f606990-daa2-4255-a353-5dec5f22e230|bfa6cf5f-c5fd-43b2-b718-f82353588179",
+          ""
+        ],
+        [
+          "silk_overlap|120070000|106657533|814033e2-f2e3-461f-8d14-999feb7c62b2|bfa6cf5f-c5fd-43b2-b718-f82353588179",
+          ""
+        ],
+        [
+          "silk_overlap|121405000|106730000|5a028311-655e-4e3c-89e0-cdd145847837|ba22300b-60c6-4274-bda6-bea625b1c1db",
+          ""
+        ],
+        [
+          "silk_overlap|121533333|106730000|ba22300b-60c6-4274-bda6-bea625b1c1db|fcea4b42-5d46-401d-bfea-235e9c6665fb",
           ""
         ]
       ],
@@ -279,7 +315,16 @@
     "equivalence_files": []
   },
   "erc": {
-    "erc_exclusions": [],
+    "erc_exclusions": [
+      [
+        "lib_symbol_mismatch|1092200|1143000|0402fe7c-ef47-4212-8e1b-f0690d5f3b0d|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ],
+      [
+        "lib_symbol_mismatch|1270000|1028700|01d5974f-2c9a-4099-98b2-c41de6a4d049|00000000-0000-0000-0000-000000000000|||",
+        ""
+      ]
+    ],
     "meta": {
       "version": 0
     },
@@ -539,7 +584,7 @@
       "gencad": "",
       "idf": "",
       "netlist": "",
-      "plot": "",
+      "plot": "Manufacture/",
       "pos_files": "",
       "specctra_dsn": "",
       "step": "",
