@@ -1,0 +1,30 @@
+# Build
+/build/
+
+# IDE
+.vscode/*
+!.vscode/settings.json
+!.vscode/c_cpp_properties.json
+.idea/
+*.user
+*.project
+*.cproject
+*.mxproject
+*.osx.project
+
+# OS
+.DS_Store
+
+# Build artifacts
+*.o
+*.a
+*.d
+*.map
+*.elf
+*.bin
+*.hex
+
+# Backup / temp
+*.swp
+*.tmp
+*.bak
