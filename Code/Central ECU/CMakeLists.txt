@@ -41,8 +41,6 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE ${MODULE_SOURCES})
 # === Include paths ===
 
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
-    Core/Inc
-    Drivers
     include             # global project-wide headers
     src                 # for app.h
     src/modules         # base module dir

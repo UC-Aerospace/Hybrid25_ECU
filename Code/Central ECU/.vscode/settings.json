@@ -2,5 +2,6 @@
     "cmake.useCMakePresets": "always",
     "files.associations": {
         "lps22hh_reg.h": "c"
-    }
+    },
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
 }
