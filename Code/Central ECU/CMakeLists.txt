@@ -1,68 +1,72 @@
 cmake_minimum_required(VERSION 3.22)
 
-#
-# This file is generated only once,
-# and is not re-generated if converter is called multiple times.
-#
-# User is free to modify the file as much as necessary
-#
-
-# Setup compiler settings
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS ON)
 
-
-# Define the build type
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
-# Set the project name
 set(CMAKE_PROJECT_NAME ECU_Mainboard)
 
-# Include toolchain file
 include("cmake/gcc-arm-none-eabi.cmake")
 
-# Enable compile command to ease indexing with e.g. clangd
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
-# Core project settings
 project(${CMAKE_PROJECT_NAME})
 message("Build type: " ${CMAKE_BUILD_TYPE})
 
-# Enable CMake support for ASM and C languages
 enable_language(C ASM)
 
-# Create an executable object type
 add_executable(${CMAKE_PROJECT_NAME})
 
-# Add STM32CubeMX generated sources
+# === Add STM32CubeMX sources ===
 add_subdirectory(cmake/stm32cubemx)
 
-# Link directories setup
-target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
-    # Add user defined library search paths
-)
+# === Add user sources ===
 
-# Add sources to executable
+# Add top-level application code (like app.c)
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
-    # Add user sources here
+    src/app.c
 )
 
-# Add include paths
+# Automatically collect all module sources (*.c files in src/modules/**)
+file(GLOB_RECURSE MODULE_SOURCES CONFIGURE_DEPENDS
+    src/modules/*.c
+)
+
+target_sources(${CMAKE_PROJECT_NAME} PRIVATE ${MODULE_SOURCES})
+
+# === Include paths ===
+
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
-    # Add user defined include paths
+    Core/Inc
+    Drivers
+    include             # global project-wide headers
+    src                 # for app.h
+    src/modules         # base module dir
 )
 
-# Add project symbols (macros)
+# Optional: include subdirectories of modules explicitly
+file(GLOB MODULE_DIRS LIST_DIRECTORIES true src/modules/*)
+foreach(dir ${MODULE_DIRS})
+    if(IS_DIRECTORY ${dir})
+        target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${dir})
+    endif()
+endforeach()
+
+# === Preprocessor defines (optional) ===
 target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
-    # Add user defined symbols
+    # Example: -DDEBUG
 )
 
-# Add linked libraries
+# === Link with CubeMX output ===
 target_link_libraries(${CMAKE_PROJECT_NAME}
     stm32cubemx
+)
 
-    # Add user defined libraries
+# === User-defined library paths (optional) ===
+target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
+    # Add user library paths if needed
 )

@@ -23,8 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "usbd_cdc_if.h"
-#include <stdio.h>
+#include "app.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -60,14 +59,6 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 
-uint8_t ubKeyNumber = 0x0;
-uint8_t ubKeyNumberValue = 0x0;
-uint8_t ubLedBlinkTime = 0x0;
-FDCAN_RxHeaderTypeDef RxHeader;
-uint8_t RxData[8];
-FDCAN_TxHeaderTypeDef TxHeader;
-uint8_t TxData[8];
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -83,9 +74,7 @@ static void MX_USART2_UART_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_RTC_Init(void);
 /* USER CODE BEGIN PFP */
-static void FDCAN_Config(void);
-static void LED_Display(uint8_t LedStatus);
-void USB_SendString(char *str);
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -136,17 +125,18 @@ int main(void)
   }
   MX_USB_Device_Init();
   /* USER CODE BEGIN 2 */
-
-  FDCAN_Config();
-	ubKeyNumberValue = 0x4;
-
+  app_init();
   /* USER CODE END 2 */
-  while (1) 
+
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
+  while (1)
   {
+    /* USER CODE END WHILE */
+    app_run();
     /* USER CODE BEGIN 3 */
-    HAL_Delay(10);
-    /* USER CODE END 3 */
   }
+  /* USER CODE END 3 */
 }
 
 /**
@@ -673,115 +663,6 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
-/**
-  * @brief  Configures the FDCAN.
-  *   None
-  * @retval None
-  */
- static void FDCAN_Config(void)
- {
-   FDCAN_FilterTypeDef sFilterConfig;
- 
-   /* Configure Rx filter */
-   sFilterConfig.IdType = FDCAN_STANDARD_ID;
-   sFilterConfig.FilterIndex = 0;
-   sFilterConfig.FilterType = FDCAN_FILTER_RANGE;
-   sFilterConfig.FilterConfig = FDCAN_FILTER_TO_RXFIFO0;
-   sFilterConfig.FilterID1 = 0x321;
-   sFilterConfig.FilterID2 = 0x7FF;
-   if (HAL_FDCAN_ConfigFilter(&hfdcan1, &sFilterConfig) != HAL_OK)
-   {
-     Error_Handler();
-   }
- 
-   /* Start the FDCAN module */
-   if (HAL_FDCAN_Start(&hfdcan1) != HAL_OK)
-   {
-     Error_Handler();
-   }
- 
-   if (HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0) != HAL_OK)
-   {
-     Error_Handler();
-   }
- 
-   /* Prepare Tx Header */
-   TxHeader.Identifier = 0x321;
-   TxHeader.IdType = FDCAN_STANDARD_ID;
-   TxHeader.TxFrameType = FDCAN_DATA_FRAME;
-   TxHeader.DataLength = FDCAN_DLC_BYTES_2;
-   TxHeader.ErrorStateIndicator = FDCAN_ESI_PASSIVE;
-   TxHeader.BitRateSwitch = FDCAN_BRS_OFF;
-   TxHeader.FDFormat = FDCAN_CLASSIC_CAN;
-   TxHeader.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
-   TxHeader.MessageMarker = 0;
- }
-
- void LED_Display(uint8_t LedStatus)
-{
-  /* Turn OFF all LEDs */
-  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_0, GPIO_PIN_RESET) ;
-
-  /* Blink LED every 200ms */
-  switch(LedStatus)
-   {
-     case (1):
-      USB_SendString("Blink LED every 100ms\r\n");
-      ubLedBlinkTime = 1;
-       break;
-     case (2):
-		  USB_SendString("Blink LED every 200ms\r\n");
-      ubLedBlinkTime = 2;
-       break;
-     case (3):
-		  USB_SendString("Blink LED every 400ms\r\n");
-      ubLedBlinkTime = 4;
-       break;
-     case (4):
-		  USB_SendString("Blink LED every 800ms\r\n");
-      ubLedBlinkTime = 8;
-       break;
-     default:
-       break;
-   }
-}
-
-void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
-{
-  if((RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) != RESET)
-  {
-    /* Retrieve Rx messages from RX FIFO0 */
-    if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &RxHeader, RxData) != HAL_OK)
-    {
-    Error_Handler();
-    }
-
-    /* Display LEDx */
-    if ((RxHeader.Identifier == 0x321) && (RxHeader.IdType == FDCAN_STANDARD_ID) && (RxHeader.DataLength == FDCAN_DLC_BYTES_2))
-    {
-      LED_Display(RxData[0]);
-      ubKeyNumber = RxData[0];
-    }
-  }
-}
-
-void HAL_SYSTICK_Callback(void){
-	static uint16_t u16LedBlinkCounter = 0;
-	if(u16LedBlinkCounter){
-			u16LedBlinkCounter--;
-	}
-	else{
-		u16LedBlinkCounter = 100*ubLedBlinkTime;//delay based in the received value
-		HAL_GPIO_TogglePin(GPIOD,GPIO_PIN_0);
-	}
-}
-
-void USB_SendString(char *str) {
-  while (CDC_Transmit_FS((uint8_t*)str, strlen(str)) == USBD_BUSY) {
-      HAL_Delay(1);
-  }
-}
 
 /* USER CODE END 4 */
 
