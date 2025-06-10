@@ -244,7 +244,7 @@
 	(net 92 "Net-(U6-ILIM)")
 	(net 93 "/OX_LOW_SENSE")
 	(net 94 "/EMATCH_1_CONT")
-	(net 95 "/ADC_0 (4S)")
+	(net 95 "/ADC_0 (6S)")
 	(net 96 "/ADC_1 (2S)")
 	(net 97 "/CAN1_RX")
 	(net 98 "/CAN1_TX")
@@ -297,7 +297,7 @@
 				)
 			)
 		)
-		(property "Value" "10K2"
+		(property "Value" "18K"
 			(at 0 1.43 0)
 			(layer "F.Fab")
 			(uuid "e4e0c88e-e521-4ffd-8251-524c548a6c74")
@@ -477,7 +477,7 @@
 			(size 0.8 0.95)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net 95 "/ADC_0 (4S)")
+			(net 95 "/ADC_0 (6S)")
 			(pintype "passive")
 			(uuid "d31db35a-2e33-43aa-83f7-24da821106eb")
 		)
@@ -4838,7 +4838,7 @@
 			)
 		)
 		(property ki_fp_filters "SOT?665*")
-		(path "/11639c01-8282-4891-a201-9121a32f140b/7ae7f4b2-4634-458d-9904-eab33c265eb0")
+		(path "/11639c01-8282-4891-a201-9121a32f140b/53a0d642-4319-4142-bcaf-08e1a7c07ae3")
 		(sheetname "/Connectors/")
 		(sheetfile "connectors.kicad_sch")
 		(attr smd)
@@ -11690,7 +11690,7 @@
 				)
 			)
 		)
-		(property "Value" "60R"
+		(property "Value" "60.4R"
 			(at 0 1.43 0)
 			(layer "F.Fab")
 			(uuid "8cb7ed1f-d3df-4c98-a022-a5e610c2ea8b")
@@ -16415,7 +16415,7 @@
 				)
 			)
 		)
-		(property "Value" "2K49"
+		(property "Value" "2K7"
 			(at 0 1.43 0)
 			(layer "F.Fab")
 			(uuid "746e725b-e5fa-4da4-9ce3-5260e3a86816")
@@ -16586,7 +16586,7 @@
 			(size 0.8 0.95)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net 95 "/ADC_0 (4S)")
+			(net 95 "/ADC_0 (6S)")
 			(pintype "passive")
 			(uuid "61b92038-8c6a-4d23-870f-8357310b9e2f")
 		)
@@ -17057,7 +17057,7 @@
 				)
 			)
 		)
-		(property "Value" "60R"
+		(property "Value" "60.4R"
 			(at 0 1.43 0)
 			(layer "F.Fab")
 			(uuid "3c63c274-0690-4dc4-bb40-8cfdd5358d02")
@@ -18379,7 +18379,7 @@
 				)
 			)
 		)
-		(property "MPN" "B4B-PH-K-S"
+		(property "MPN" "B4B-EH-A"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -25938,7 +25938,7 @@
 			)
 		)
 		(property ki_fp_filters "SOIC*3.9x8.7mm*P1.27mm* TSSOP*4.4x5mm*P0.65mm*")
-		(path "/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/e625c380-13be-49b6-806f-221a5b12238d")
+		(path "/2e6b12ab-ed95-45d4-9da7-c2098bba7a10/bf7bad8b-1d11-4361-a530-774e90d3e03b")
 		(sheetname "/Interlocked/")
 		(sheetfile "ign+nc_valve.kicad_sch")
 		(attr smd)
@@ -29171,7 +29171,7 @@
 				)
 			)
 		)
-		(property "Value" "ADC4S"
+		(property "Value" "ADC6S"
 			(at 0 1.75 0)
 			(layer "F.SilkS")
 			(uuid "7f123551-e10c-48cd-88d7-4b3908f8eacf")
@@ -29321,7 +29321,7 @@
 			(at 0 0)
 			(size 1.5 1.5)
 			(layers "F.Cu" "F.Mask")
-			(net 95 "/ADC_0 (4S)")
+			(net 95 "/ADC_0 (6S)")
 			(pinfunction "1")
 			(pintype "passive")
 			(uuid "90e7c957-c96b-4a33-8717-1951658876b9")
@@ -31466,7 +31466,7 @@
 			(size 0.3 1.55)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net 95 "/ADC_0 (4S)")
+			(net 95 "/ADC_0 (6S)")
 			(pinfunction "PA0")
 			(pintype "bidirectional")
 			(uuid "61c36a22-528f-4885-9688-0ae4eb285178")
@@ -37618,7 +37618,7 @@
 				)
 			)
 		)
-		(property "Value" "60R"
+		(property "Value" "60.4R"
 			(at 0 1.43 0)
 			(layer "F.Fab")
 			(uuid "3b356c09-5c06-4d51-bd8e-ec6c7f0a557e")
@@ -38463,7 +38463,7 @@
 				)
 			)
 		)
-		(property "Value" "60R"
+		(property "Value" "60.4R"
 			(at 0 1.43 0)
 			(layer "F.Fab")
 			(uuid "64c96f5e-812c-418b-8503-c83e4de46fa3")

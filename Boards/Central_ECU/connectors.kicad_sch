@@ -4820,7 +4820,7 @@
 		)
 		(uuid "92816d0c-35a5-441b-80ea-107765fb0668")
 	)
-	(text "4S with max voltage 16.8V, nom 14.8.\nAlso should allow for 3S (11.1V, max 12.6V)\nAnd 6-7S (22.2V, max 25.2 / 25.9, max 29.4V)\nOr regulated 24V input"
+	(text "6S with max voltage 25.2V, nom 22.2V\nAllows 3S/4S (11.1V, max 12.6V / 16.8V, nom 14.8)\nAnd 7S (25.9, max 29.4V)\nOr regulated 24V input"
 		(exclude_from_sim no)
 		(at 34.798 39.116 0)
 		(effects
@@ -4831,7 +4831,7 @@
 		)
 		(uuid "941334f3-499d-415d-a382-d1762f5db238")
 	)
-	(text "4S"
+	(text "6S"
 		(exclude_from_sim no)
 		(at 48.006 53.848 0)
 		(effects
@@ -7418,7 +7418,7 @@
 		)
 		(uuid "ad376e8e-1ac0-4dc8-a15e-374bb45c8db0")
 	)
-	(hierarchical_label "4S_VOLTAGE"
+	(hierarchical_label "6S_VOLTAGE"
 		(shape output)
 		(at 31.75 74.93 180)
 		(effects
@@ -8773,7 +8773,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "2K49"
+		(property "Value" "2K7"
 			(at 132.08 80.0099 0)
 			(effects
 				(font
@@ -10664,7 +10664,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "10K2"
+		(property "Value" "18K"
 			(at 132.08 72.3899 0)
 			(effects
 				(font

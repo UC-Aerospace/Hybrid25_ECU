@@ -9560,7 +9560,7 @@
 		)
 		(uuid "728966da-273a-4c2a-a9e8-3c5982957344")
 	)
-	(label "ADC_0 (4S)"
+	(label "ADC_0 (6S)"
 		(at 248.92 62.23 180)
 		(effects
 			(font
@@ -15308,7 +15308,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "ADC4S"
+		(property "Value" "ADC6S"
 			(at 252.73 63.4999 0)
 			(effects
 				(font
@@ -20711,7 +20711,7 @@
 				(justify right)
 			)
 		)
-		(pin "4S_VOLTAGE" output
+		(pin "6S_VOLTAGE" output
 			(at 279.4 177.8 90)
 			(uuid "63133cf2-c1d7-4dd0-828f-0f11386e48a8")
 			(effects
