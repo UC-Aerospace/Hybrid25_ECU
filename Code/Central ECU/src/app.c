@@ -1,6 +1,7 @@
 #include "app.h"
 #include "debug_io.h"
 #include "battery_check.h"
+#include "ssd1306.h"
 
 void app_init(void) {
     // Initialize the application
@@ -14,6 +15,7 @@ void app_init(void) {
     // dbg_printf("UID: %08lX %08lX %08lX\n", uid[0], uid[1], uid[2]); // Print the unique device ID to subsequently lock firmware to this device
     // UID = 00130041 5442500C 20373357 on central ECU rev 1 (Board C)
     HAL_ADCEx_Calibration_Start(&hadc1);
+    ssd1306_Init();
 }
 
 void app_run(void) {
