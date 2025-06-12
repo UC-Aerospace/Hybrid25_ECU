@@ -56,6 +56,8 @@
 
 /* External variables --------------------------------------------------------*/
 extern PCD_HandleTypeDef hpcd_USB_DRD_FS;
+extern FDCAN_HandleTypeDef hfdcan1;
+extern FDCAN_HandleTypeDef hfdcan2;
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -152,6 +154,21 @@ void USB_UCPD1_2_IRQHandler(void)
   /* USER CODE BEGIN USB_UCPD1_2_IRQn 1 */
 
   /* USER CODE END USB_UCPD1_2_IRQn 1 */
+}
+
+/**
+  * @brief This function handles TIM16, FDCAN1_IT0 and FDCAN2_IT0 Interrupt.
+  */
+void TIM16_FDCAN_IT0_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM16_FDCAN_IT0_IRQn 0 */
+
+  /* USER CODE END TIM16_FDCAN_IT0_IRQn 0 */
+  HAL_FDCAN_IRQHandler(&hfdcan1);
+  HAL_FDCAN_IRQHandler(&hfdcan2);
+  /* USER CODE BEGIN TIM16_FDCAN_IT0_IRQn 1 */
+
+  /* USER CODE END TIM16_FDCAN_IT0_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */

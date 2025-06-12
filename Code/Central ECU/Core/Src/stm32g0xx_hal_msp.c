@@ -195,6 +195,9 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan)
     GPIO_InitStruct.Alternate = GPIO_AF3_FDCAN1;
     HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
+    /* FDCAN1 interrupt Init */
+    HAL_NVIC_SetPriority(TIM16_FDCAN_IT0_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(TIM16_FDCAN_IT0_IRQn);
     /* USER CODE BEGIN FDCAN1_MspInit 1 */
 
     /* USER CODE END FDCAN1_MspInit 1 */
@@ -233,6 +236,9 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan)
     GPIO_InitStruct.Alternate = GPIO_AF3_FDCAN2;
     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
+    /* FDCAN2 interrupt Init */
+    HAL_NVIC_SetPriority(TIM16_FDCAN_IT0_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(TIM16_FDCAN_IT0_IRQn);
     /* USER CODE BEGIN FDCAN2_MspInit 1 */
 
     /* USER CODE END FDCAN2_MspInit 1 */
@@ -265,6 +271,15 @@ void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* hfdcan)
     */
     HAL_GPIO_DeInit(GPIOC, GPIO_PIN_4|GPIO_PIN_5);
 
+    /* FDCAN1 interrupt DeInit */
+    /* USER CODE BEGIN FDCAN1:TIM16_FDCAN_IT0_IRQn disable */
+    /**
+    * Uncomment the line below to disable the "TIM16_FDCAN_IT0_IRQn" interrupt
+    * Be aware, disabling shared interrupt may affect other IPs
+    */
+    /* HAL_NVIC_DisableIRQ(TIM16_FDCAN_IT0_IRQn); */
+    /* USER CODE END FDCAN1:TIM16_FDCAN_IT0_IRQn disable */
+
     /* USER CODE BEGIN FDCAN1_MspDeInit 1 */
 
     /* USER CODE END FDCAN1_MspDeInit 1 */
@@ -285,6 +300,15 @@ void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* hfdcan)
     PB1     ------> FDCAN2_TX
     */
     HAL_GPIO_DeInit(GPIOB, GPIO_PIN_0|GPIO_PIN_1);
+
+    /* FDCAN2 interrupt DeInit */
+    /* USER CODE BEGIN FDCAN2:TIM16_FDCAN_IT0_IRQn disable */
+    /**
+    * Uncomment the line below to disable the "TIM16_FDCAN_IT0_IRQn" interrupt
+    * Be aware, disabling shared interrupt may affect other IPs
+    */
+    /* HAL_NVIC_DisableIRQ(TIM16_FDCAN_IT0_IRQn); */
+    /* USER CODE END FDCAN2:TIM16_FDCAN_IT0_IRQn disable */
 
     /* USER CODE BEGIN FDCAN2_MspDeInit 1 */
 
