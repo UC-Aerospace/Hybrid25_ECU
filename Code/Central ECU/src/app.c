@@ -2,6 +2,9 @@
 #include "debug_io.h"
 #include "battery_check.h"
 #include "ssd1306.h"
+#include "rs422.h"
+#include "rtc_helper.h"
+#include "sd_log.h"
 
 void app_init(void) {
     // Initialize the application
@@ -22,6 +25,10 @@ void app_init(void) {
 
     HAL_ADCEx_Calibration_Start(&hadc1);
     ssd1306_Init();
+    rs422_init(&huart1); // Initialize RS422 communication
+    batt_check();
+    rtc_helper_init();
+    sd_log_init();
 }
 
 void app_run(void) {
@@ -29,6 +36,7 @@ void app_run(void) {
     
     while (1) {
         batt_check(); // Check battery status
-        HAL_Delay(1000); // Delay for 1 second before the next reading
+        rs422_send((uint8_t *)"Hello RS422", 11); // Send a test message over RS422
+        HAL_Delay(10000); // Delay for 1 second before the next reading
     }
 }
