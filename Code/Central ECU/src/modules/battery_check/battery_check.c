@@ -79,8 +79,8 @@ void batt_check(void) {
     uint8_t percentage_6s = batt_volt_to_soc(status.voltage_6s, 6);
     if (percentage_6s > 100) percentage_6s = 100; // Clamp to 100%
     ssd1306_SetCursor(0, 0);
-    sprintf(buffer, "6S : %d%%", percentage_6s);
-    ssd1306_WriteString(buffer, Font_11x18, White);
+    sprintf(buffer, "6S : %d%%   ", percentage_6s);
+    ssd1306_WriteString(buffer, Font_16x15, White);
 
     if (percentage_6s <= 20) {
         dbg_printf("6S Battery: %d%% (WARN)\r\n", percentage_6s);
@@ -91,13 +91,15 @@ void batt_check(void) {
     // Calculate 2S battery percentage as an integer
     uint8_t percentage_2s = batt_volt_to_soc(status.voltage_2s, 2);
     if (percentage_2s > 100) percentage_2s = 100; // Clamp to 100%
-    ssd1306_SetCursor(0, 11);
-    sprintf(buffer, "2S : %d%%", percentage_2s);
-    ssd1306_WriteString(buffer, Font_11x18, White);
+    ssd1306_SetCursor(0, 16);
+    sprintf(buffer, "2S : %d%%   ", percentage_2s);
+    ssd1306_WriteString(buffer, Font_16x15, White);
 
     if (percentage_2s <= 20) {
         dbg_printf("2S Battery: %d%% (WARN)\r\n", percentage_2s);
     } else {
         dbg_printf("2S Battery: %d%%\r\n", percentage_2s);
     }
+
+    ssd1306_UpdateScreen();
 }
