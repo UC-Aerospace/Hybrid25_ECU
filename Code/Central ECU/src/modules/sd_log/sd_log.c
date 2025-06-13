@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include "debug_io.h"
+#include "sdcard.h"
 
 // File system objects
 static FATFS fs;
@@ -13,6 +15,9 @@ static FIL crash_file;
 static char current_dir[32];
 static bool is_initialized = false;
 static uint32_t dir_counter = 1;  // Counter for sequential directory numbering
+
+// Buffer for formatted messages
+static char msg_buffer[SD_LOG_MAX_MSG_LEN];
 
 // Function to find the highest existing log number
 static uint32_t find_highest_log_number(void) {
@@ -46,9 +51,6 @@ static uint32_t find_highest_log_number(void) {
     return highest;
 }
 
-// Buffer for formatted messages
-static char msg_buffer[SD_LOG_MAX_MSG_LEN];
-
 // Function to generate a unique directory name based on sequential numbering
 static void generate_dir_name(void) {
     // Format: LOG_XXXXX where XXXXX is a sequential number
@@ -75,9 +77,16 @@ static bool open_file(FIL* file, const char* filename, BYTE mode) {
 bool sd_log_init(void) {
     FRESULT res;
     
+    // Initialize SD card first
+    if (SDCARD_Init() != 0) {
+        dbg_printf("Failed to initialize SD card\n");
+        return false;
+    }
+    
     // Mount the file system
     res = f_mount(&fs, "", 1);
     if (res != FR_OK) {
+        dbg_printf("Error mounting file system: %d\n", res);
         return false;
     }
     

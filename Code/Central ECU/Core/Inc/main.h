@@ -63,6 +63,8 @@ void Error_Handler(void);
 #define EMATCH1_FIRE_GPIO_Port GPIOC
 #define ARM_HS_Pin GPIO_PIN_13
 #define ARM_HS_GPIO_Port GPIOC
+#define SPI1_CSS_Pin GPIO_PIN_4
+#define SPI1_CSS_GPIO_Port GPIOA
 #define CAN2_AUX_Pin GPIO_PIN_12
 #define CAN2_AUX_GPIO_Port GPIOB
 #define CAN1_AUX_Pin GPIO_PIN_13

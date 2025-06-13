@@ -37,6 +37,6 @@ void app_run(void) {
     while (1) {
         batt_check(); // Check battery status
         rs422_send((uint8_t *)"Hello RS422", 11); // Send a test message over RS422
-        HAL_Delay(10000); // Delay for 1 second before the next reading
+        HAL_Delay(1000); // Delay for 1 second before the next reading
     }
 }
