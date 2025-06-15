@@ -35,6 +35,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include <string.h>
 #include "ff_gen_drv.h"
+#include "sdcard.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -81,7 +82,14 @@ DSTATUS USER_initialize (
 )
 {
   /* USER CODE BEGIN INIT */
-    Stat = STA_NOINIT;
+    if (pdrv) return STA_NOINIT;  // Only support drive 0
+    
+    if (SDCARD_Init() != 0) {
+        Stat = STA_NOINIT;
+        return Stat;
+    }
+    
+    Stat = RES_OK;
     return Stat;
   /* USER CODE END INIT */
 }
@@ -96,7 +104,7 @@ DSTATUS USER_status (
 )
 {
   /* USER CODE BEGIN STATUS */
-    Stat = STA_NOINIT;
+    if (pdrv) return STA_NOINIT;  // Only support drive 0
     return Stat;
   /* USER CODE END STATUS */
 }
@@ -117,6 +125,14 @@ DRESULT USER_read (
 )
 {
   /* USER CODE BEGIN READ */
+    if (pdrv) return RES_PARERR;  // Only support drive 0
+    
+    for (UINT i = 0; i < count; i++) {
+        if (SDCARD_ReadSingleBlock(sector + i, buff + (i * 512)) != 0) {
+            return RES_ERROR;
+        }
+    }
+    
     return RES_OK;
   /* USER CODE END READ */
 }
@@ -138,7 +154,14 @@ DRESULT USER_write (
 )
 {
   /* USER CODE BEGIN WRITE */
-  /* USER CODE HERE */
+    if (pdrv) return RES_PARERR;  // Only support drive 0
+    
+    for (UINT i = 0; i < count; i++) {
+        if (SDCARD_WriteSingleBlock(sector + i, buff + (i * 512)) != 0) {
+            return RES_ERROR;
+        }
+    }
+    
     return RES_OK;
   /* USER CODE END WRITE */
 }
@@ -159,8 +182,29 @@ DRESULT USER_ioctl (
 )
 {
   /* USER CODE BEGIN IOCTL */
-    DRESULT res = RES_ERROR;
-    return res;
+    if (pdrv) return RES_PARERR;  // Only support drive 0
+    
+    switch (cmd) {
+        case CTRL_SYNC:
+            return RES_OK;
+            
+        case GET_SECTOR_COUNT:
+            if (SDCARD_GetBlocksNumber((uint32_t*)buff) != 0) {
+                return RES_ERROR;
+            }
+            return RES_OK;
+            
+        case GET_SECTOR_SIZE:
+            *(WORD*)buff = 512;
+            return RES_OK;
+            
+        case GET_BLOCK_SIZE:
+            *(DWORD*)buff = 1;
+            return RES_OK;
+            
+        default:
+            return RES_PARERR;
+    }
   /* USER CODE END IOCTL */
 }
 #endif /* _USE_IOCTL == 1 */

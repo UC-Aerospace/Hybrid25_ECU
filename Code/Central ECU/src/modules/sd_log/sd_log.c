@@ -12,7 +12,7 @@ static FIL log_file;
 static FIL crash_file;
 
 // Current directory name
-static char current_dir[32];
+static char current_dir[10];
 static bool is_initialized = false;
 static uint32_t dir_counter = 1;  // Counter for sequential directory numbering
 
@@ -54,7 +54,7 @@ static uint32_t find_highest_log_number(void) {
 // Function to generate a unique directory name based on sequential numbering
 static void generate_dir_name(void) {
     // Format: LOG_XXXXX where XXXXX is a sequential number
-    snprintf(current_dir, sizeof(current_dir), "LOG_%05lu", dir_counter++);
+    snprintf(current_dir, sizeof(current_dir), "LOG_%04lu", dir_counter++);
 }
 
 // Function to create and open a file with error checking
@@ -76,12 +76,6 @@ static bool open_file(FIL* file, const char* filename, BYTE mode) {
 
 bool sd_log_init(void) {
     FRESULT res;
-    
-    // Initialize SD card first
-    if (SDCARD_Init() != 0) {
-        dbg_printf("Failed to initialize SD card\n");
-        return false;
-    }
     
     // Mount the file system
     res = f_mount(&fs, "", 1);
@@ -156,8 +150,8 @@ bool sd_log_write(SD_LogType_t type, const char* format, ...) {
     rtc_helper_get_datetime(&time, &date);
     
     // Format timestamp
-    snprintf(msg_buffer, sizeof(msg_buffer), "[%02d:%02d:%02d] ",
-             time.Hours, time.Minutes, time.Seconds);
+    snprintf(msg_buffer, sizeof(msg_buffer), "[%02d:%02d:%02d.%03lu] ",
+             time.Hours, time.Minutes, time.Seconds, (uint32_t)((time.SecondFraction - time.SubSeconds) * 1000 / (time.SecondFraction + 1)));
     
     // Append the actual message
     va_start(args, format);

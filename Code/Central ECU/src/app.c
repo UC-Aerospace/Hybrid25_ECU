@@ -29,6 +29,7 @@ void app_init(void) {
     batt_check();
     rtc_helper_init();
     sd_log_init();
+    sd_log_write(SD_LOG_INFO, "ECU initialized");
 }
 
 void app_run(void) {

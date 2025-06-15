@@ -86,7 +86,16 @@ static int SDCARD_WaitNotBusy() {
 
     return 0;
 }
- 
+
+// Function to change SPI speed
+static void SDCARD_SetSpeed(uint32_t prescaler) {
+    __HAL_SPI_DISABLE(&SDCARD_SPI_PORT);
+
+    MODIFY_REG(SDCARD_SPI_PORT.Instance->CR1, SPI_CR1_BR_Msk, prescaler);
+
+    __HAL_SPI_ENABLE(&SDCARD_SPI_PORT);
+}
+
 int SDCARD_Init() {
     /*
     Step 1.
@@ -244,6 +253,9 @@ int SDCARD_Init() {
             return -9;
         }
     }
+
+    // Switch to high speed (16MHz)
+    SDCARD_SetSpeed(SPI_BAUDRATEPRESCALER_4);
 
     SDCARD_Unselect();
     return 0;
