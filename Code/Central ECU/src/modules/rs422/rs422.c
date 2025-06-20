@@ -1,6 +1,7 @@
 #include "rs422.h"
 
-uint8_t rx_buff[10]; // Buffer for received data
+uint8_t rx_buff[10] = {0}; // Buffer for received data
+bool rx_buff_ready = false;
 RS422_TxBuffer_t tx_buffer = {0}; // Initialize circular buffer
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
@@ -8,6 +9,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     if (huart->Instance == USART1) {
         // Process received data here if needed
         HAL_UART_Receive_IT(huart, rx_buff, sizeof(rx_buff));
+        rx_buff_ready = true;
   }
 }
 
@@ -31,9 +33,17 @@ bool rs422_init(UART_HandleTypeDef *huart)
     tx_buffer.is_busy = false;
     
     // Start receiving data in interrupt mode
-    HAL_UART_Receive_IT(huart, rx_buff, sizeof(rx_buff));
+    HAL_StatusTypeDef status = HAL_UART_Receive_IT(huart, rx_buff, sizeof(rx_buff));
+    
+    // Debug output
+    extern void dbg_printf(const char* format, ...);
+    if (status == HAL_OK) {
+        dbg_printf("RS422 init: UART receive started successfully\r\n");
+    } else {
+        dbg_printf("RS422 init: UART receive failed with status %d\r\n", status);
+    }
 
-    return true; // Initialization successful
+    return (status == HAL_OK); // Return true only if initialization was successful
 }
 
 bool rs422_send(uint8_t *data, uint16_t size)
@@ -78,4 +88,13 @@ void rs422_process_tx_queue(void)
     // Start DMA transfer for the next packet
     tx_buffer.is_busy = true; // Mark that we're sending one packet
     HAL_UART_Transmit_DMA(&huart1, tx_buffer.buffer[tx_buffer.head], sizeof(RS422_packet));
+}
+
+uint8_t* rs422_get_rx_data(void)
+{
+    if (rx_buff_ready) {
+        rx_buff_ready = false; // Clear the ready flag
+        return rx_buff;
+    }
+    return NULL; // No data ready
 }

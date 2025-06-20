@@ -28,6 +28,7 @@ bool rs422_init(UART_HandleTypeDef *huart);
 bool rs422_send(uint8_t *data, uint16_t size);
 uint16_t rs422_get_tx_buffer_space(void);
 void rs422_process_tx_queue(void);
+uint8_t* rs422_get_rx_data(void);
 
 // External declarations
 extern uint8_t rx_buff[10];  // Buffer for received data

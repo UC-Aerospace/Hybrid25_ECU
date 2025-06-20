@@ -8,7 +8,6 @@
 
 void app_init(void) {
     // Initialize the application
-    // HAL_Delay(5000);
     uint32_t uid[3];
 
     uid[0] = HAL_GetUIDw0();
@@ -16,18 +15,31 @@ void app_init(void) {
     uid[2] = HAL_GetUIDw2();
     if (uid[0] == 0x00130041 && uid[1] == 0x5442500C && uid[2] == 0x20373357) {
         // Device is recognized, proceed with initialization
-        dbg_printf("Device recognized: UID %08lX %08lX %08lX\n", uid[0], uid[1], uid[2]);
+        dbg_printf("Device recognized: UID %08lX %08lX %08lX\r\n", uid[0], uid[1], uid[2]);
     } else {
         // Unrecognized device, handle error
-        dbg_printf("Unrecognized device UID: %08lX %08lX %08lX\n", uid[0], uid[1], uid[2]);
+        dbg_printf("Unrecognized device UID: %08lX %08lX %08lX\r\n", uid[0], uid[1], uid[2]);
         while (1); // Halt execution
     }
 
     HAL_ADCEx_Calibration_Start(&hadc1);
     ssd1306_Init();
-    rs422_init(&huart1); // Initialize RS422 communication
+    /*
+    bool rs422_ok = rs422_init(&huart1); // Initialize RS422 communication
+    if (!rs422_ok) {
+        dbg_printf("RS422 initialization failed!\r\n");
+    } else {
+        dbg_printf("RS422 initialization successful\r\n");
+    }
+    */
+
+    char receive_buffer[256];
+    int received = dbg_recv(receive_buffer, sizeof(receive_buffer));
+    if (received > 0) {
+        rtc_helper_set_from_string(receive_buffer);
+    }
+
     batt_check();
-    rtc_helper_init();
     sd_log_init();
     sd_log_write(SD_LOG_INFO, "ECU initialized");
 }
@@ -37,7 +49,13 @@ void app_run(void) {
     
     while (1) {
         batt_check(); // Check battery status
-        rs422_send((uint8_t *)"Hello RS422", 11); // Send a test message over RS422
+        HAL_UART_Transmit(&huart1, (uint8_t *)0xFF, 1, HAL_MAX_DELAY);
+        //rs422_send((uint8_t *)0xFD, 1); // Send a test message over RS422
+        // uint8_t *rx_data = rs422_get_rx_data();
+        // if (rx_data != NULL) {
+        //     dbg_printf("Received data: %s\r\n", rx_data);
+        // }
+        HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
         HAL_Delay(1000); // Delay for 1 second before the next reading
     }
 }

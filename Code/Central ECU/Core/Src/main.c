@@ -106,7 +106,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  
+
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -182,7 +182,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
   RCC_OscInitStruct.PLL.PLLM = RCC_PLLM_DIV1;
   RCC_OscInitStruct.PLL.PLLN = 8;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
   RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV8;
   RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
@@ -547,7 +547,7 @@ static void MX_RTC_Init(void)
   */
   hrtc.Instance = RTC;
   hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
-  hrtc.Init.AsynchPrediv = 127;
+  hrtc.Init.AsynchPrediv = 31;
   hrtc.Init.SynchPrediv = 1023;
   hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
   hrtc.Init.OutPutRemap = RTC_OUTPUT_REMAP_NONE;
@@ -560,12 +560,17 @@ static void MX_RTC_Init(void)
   }
 
   /* USER CODE BEGIN Check_RTC_BKUP */
+
+  if (__HAL_RTC_IS_CALENDAR_INITIALIZED(&hrtc) != 0U)
+  {
+    return;
+  }
   
   /* USER CODE END Check_RTC_BKUP */
 
   /** Initialize RTC and set the Time and Date
   */
-  sTime.Hours = 0x0;
+  sTime.Hours = 0x12;
   sTime.Minutes = 0x0;
   sTime.Seconds = 0x0;
   sTime.SubSeconds = 0x0;
@@ -578,7 +583,7 @@ static void MX_RTC_Init(void)
   sDate.WeekDay = RTC_WEEKDAY_MONDAY;
   sDate.Month = RTC_MONTH_JANUARY;
   sDate.Date = 0x1;
-  sDate.Year = 0x0;
+  sDate.Year = 0x25;
 
   if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BCD) != HAL_OK)
   {
@@ -668,7 +673,7 @@ static void MX_USART1_UART_Init(void)
   {
     Error_Handler();
   }
-  if (HAL_UARTEx_DisableFifoMode(&huart1) != HAL_OK)
+  if (HAL_UARTEx_EnableFifoMode(&huart1) != HAL_OK)
   {
     Error_Handler();
   }

@@ -6,5 +6,6 @@
 #define DEBUG_OUTPUT_USB
 
 void dbg_printf(const char *fmt, ...);
+int dbg_recv(char *buffer, int max_length);
 
 #endif // DEBUG_IO_H
