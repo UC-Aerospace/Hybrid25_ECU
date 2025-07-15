@@ -1,0 +1,238 @@
+Date : 2025-07-15 15:27:24
+Directory : /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo
+Total : 161 files,  93055 codes, 75724 comments, 24840 blanks, all 193619 lines
+
+Languages
++--------------+------------+------------+------------+------------+------------+
+| language     | files      | code       | comment    | blank      | total      |
++--------------+------------+------------+------------+------------+------------+
+| C++          |         97 |     59,237 |     51,487 |     15,540 |    126,264 |
+| C            |         48 |     32,040 |     24,169 |      9,018 |     65,227 |
+| YAML         |          1 |        402 |          4 |         36 |        442 |
+| JSON         |          3 |        358 |          0 |          1 |        359 |
+| CMake        |          9 |        332 |          0 |         88 |        420 |
+| CMake Cache  |          1 |        329 |          0 |         73 |        402 |
+| Assembly     |          1 |        240 |          0 |         57 |        297 |
+| LinkerScript |          1 |        117 |         64 |         27 |        208 |
++--------------+------------+------------+------------+------------+------------+
+
+Directories
++-------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                              | files      | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                 |        161 |     93,055 |     75,724 |     24,840 |    193,619 |
+| . (Files)                                                                                                         |          6 |      1,094 |         64 |        166 |      1,324 |
+| CMakeFiles                                                                                                        |         10 |      2,009 |        127 |        404 |      2,540 |
+| CMakeFiles (Files)                                                                                                |          4 |        429 |          4 |         41 |        474 |
+| CMakeFiles/4.0.1                                                                                                  |          6 |      1,580 |        123 |        363 |      2,066 |
+| CMakeFiles/4.0.1 (Files)                                                                                          |          4 |        182 |          0 |         57 |        239 |
+| CMakeFiles/4.0.1/CompilerIdC                                                                                      |          1 |        690 |         61 |        155 |        906 |
+| CMakeFiles/4.0.1/CompilerIdCXX                                                                                    |          1 |        708 |         62 |        151 |        921 |
+| Core                                                                                                              |          9 |      1,235 |      1,140 |        495 |      2,870 |
+| Core/Inc                                                                                                          |          3 |        251 |        189 |         92 |        532 |
+| Core/Src                                                                                                          |          6 |        984 |        951 |        403 |      2,338 |
+| Drivers                                                                                                           |        106 |     84,069 |     72,031 |     22,498 |    178,598 |
+| Drivers/CMSIS                                                                                                     |         27 |     29,860 |     10,558 |      7,879 |     48,297 |
+| Drivers/CMSIS/Device                                                                                              |          3 |      9,859 |        988 |        776 |     11,623 |
+| Drivers/CMSIS/Device/ST                                                                                           |          3 |      9,859 |        988 |        776 |     11,623 |
+| Drivers/CMSIS/Device/ST/STM32G0xx                                                                                 |          3 |      9,859 |        988 |        776 |     11,623 |
+| Drivers/CMSIS/Device/ST/STM32G0xx/Include                                                                         |          3 |      9,859 |        988 |        776 |     11,623 |
+| Drivers/CMSIS/Include                                                                                             |         24 |     20,001 |      9,570 |      7,103 |     36,674 |
+| Drivers/STM32G0xx_HAL_Driver                                                                                      |         79 |     54,209 |     61,473 |     14,619 |    130,301 |
+| Drivers/STM32G0xx_HAL_Driver/Inc                                                                                  |         49 |     26,624 |     39,945 |      6,965 |     73,534 |
+| Drivers/STM32G0xx_HAL_Driver/Inc (Files)                                                                          |         48 |     23,729 |     39,329 |      6,556 |     69,614 |
+| Drivers/STM32G0xx_HAL_Driver/Inc/Legacy                                                                           |          1 |      2,895 |        616 |        409 |      3,920 |
+| Drivers/STM32G0xx_HAL_Driver/Src                                                                                  |         30 |     27,585 |     21,528 |      7,654 |     56,767 |
+| Middlewares                                                                                                       |          9 |      2,560 |      1,216 |        707 |      4,483 |
+| Middlewares/ST                                                                                                    |          9 |      2,560 |      1,216 |        707 |      4,483 |
+| Middlewares/ST/STM32_USB_Device_Library                                                                           |          9 |      2,560 |      1,216 |        707 |      4,483 |
+| Middlewares/ST/STM32_USB_Device_Library/Class                                                                     |          2 |        593 |        315 |        172 |      1,080 |
+| Middlewares/ST/STM32_USB_Device_Library/Class/CDC                                                                 |          2 |        593 |        315 |        172 |      1,080 |
+| Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc                                                             |          1 |         85 |         66 |         34 |        185 |
+| Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src                                                             |          1 |        508 |        249 |        138 |        895 |
+| Middlewares/ST/STM32_USB_Device_Library/Core                                                                      |          7 |      1,967 |        901 |        535 |      3,403 |
+| Middlewares/ST/STM32_USB_Device_Library/Core/Inc                                                                  |          4 |        463 |        263 |        178 |        904 |
+| Middlewares/ST/STM32_USB_Device_Library/Core/Src                                                                  |          3 |      1,504 |        638 |        357 |      2,499 |
+| USB_Device                                                                                                        |          8 |        715 |      1,052 |        417 |      2,184 |
+| USB_Device/App                                                                                                    |          6 |        311 |        646 |        249 |      1,206 |
+| USB_Device/Target                                                                                                 |          2 |        404 |        406 |        168 |        978 |
+| X-CUBE-MEMS1                                                                                                      |          3 |      1,061 |         64 |         85 |      1,210 |
+| X-CUBE-MEMS1/Target                                                                                               |          3 |      1,061 |         64 |         85 |      1,210 |
+| cmake                                                                                                             |          2 |         73 |          0 |         18 |         91 |
+| cmake (Files)                                                                                                     |          1 |         34 |          0 |         11 |         45 |
+| cmake/stm32cubemx                                                                                                 |          1 |         39 |          0 |          7 |         46 |
+| include                                                                                                           |          2 |         72 |          3 |         12 |         87 |
+| src                                                                                                               |          6 |        167 |         27 |         38 |        232 |
+| src (Files)                                                                                                       |          2 |         28 |          5 |          9 |         42 |
+| src/modules                                                                                                       |          4 |        139 |         22 |         29 |        190 |
+| src/modules/debug_io                                                                                              |          2 |         67 |         14 |         17 |         98 |
+| src/modules/rtc_helper                                                                                            |          2 |         72 |          8 |         12 |         92 |
++-------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-------------------------------------------------------------------------------------------------------------------+--------------+------------+------------+------------+------------+
+| filename                                                                                                          | language     | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------------------------+--------------+------------+------------+------------+------------+
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/CMakeCache.txt                                                   | CMake Cache  |        329 |          0 |         73 |        402 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/CMakeFiles/4.0.1/CMakeASMCompiler.cmake                          | CMake        |         24 |          0 |          7 |         31 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/CMakeFiles/4.0.1/CMakeCCompiler.cmake                            | CMake        |         66 |          0 |         18 |         84 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/CMakeFiles/4.0.1/CMakeCXXCompiler.cmake                          | CMake        |         82 |          0 |         26 |        108 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/CMakeFiles/4.0.1/CMakeSystem.cmake                               | CMake        |         10 |          0 |          6 |         16 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/CMakeFiles/4.0.1/CompilerIdC/CMakeCCompilerId.c                  | C            |        690 |         61 |        155 |        906 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/CMakeFiles/4.0.1/CompilerIdCXX/CMakeCXXCompilerId.cpp            | C++          |        708 |         62 |        151 |        921 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/CMakeFiles/CMakeConfigureLog.yaml                                | YAML         |        402 |          4 |         36 |        442 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/CMakeFiles/InstallScripts.json                                   | JSON         |          8 |          0 |          1 |          9 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/CMakeFiles/VerifyGlobs.cmake                                     | CMake        |         12 |          0 |          2 |         14 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/CMakeFiles/clean_additional.cmake                                | CMake        |          7 |          0 |          2 |          9 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/CMakePresets.json                                                | JSON         |         60 |          0 |          0 |         60 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Core/Inc/main.h                                                  | C++          |         56 |         39 |         21 |        116 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Core/Inc/stm32g0xx_hal_conf.h                                    | C++          |        180 |        116 |         56 |        352 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Core/Inc/stm32g0xx_it.h                                          | C++          |         15 |         34 |         15 |         64 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Core/Src/main.c                                                  | C            |        455 |        237 |        137 |        829 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Core/Src/stm32g0xx_hal_msp.c                                     | C            |        279 |        351 |        159 |        789 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Core/Src/stm32g0xx_it.c                                          | C            |         29 |         96 |         35 |        160 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Core/Src/syscalls.c                                              | C            |        123 |         25 |         29 |        177 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Core/Src/sysmem.c                                                | C            |         24 |         48 |          8 |         80 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Core/Src/system_stm32g0xx.c                                      | C            |         74 |        194 |         35 |        303 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Device/ST/STM32G0xx/Include/stm32g0b1xx.h          | C++          |      9,726 |        829 |        719 |     11,274 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Device/ST/STM32G0xx/Include/stm32g0xx.h            | C++          |        119 |         89 |         37 |        245 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Device/ST/STM32G0xx/Include/system_stm32g0xx.h     | C++          |         14 |         70 |         20 |        104 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Include/cmsis_armcc.h                              | C++          |        401 |        355 |        139 |        895 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Include/cmsis_armclang.h                           | C++          |        623 |        595 |        227 |      1,445 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Include/cmsis_armclang_ltm.h                       | C++          |        948 |        595 |        349 |      1,892 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Include/cmsis_compiler.h                           | C++          |        207 |         52 |         25 |        284 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Include/cmsis_gcc.h                                | C++          |      1,170 |        620 |        379 |      2,169 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Include/cmsis_iccarm.h                             | C++          |        769 |         45 |        151 |        965 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Include/cmsis_version.h                            | C++          |         13 |         23 |          4 |         40 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Include/core_armv81mml.h                           | C++          |      1,714 |        651 |        604 |      2,969 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Include/core_armv8mbl.h                            | C++          |      1,033 |        526 |        363 |      1,922 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Include/core_armv8mml.h                            | C++          |      1,627 |        642 |        567 |      2,836 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Include/core_cm0.h                                 | C++          |        444 |        327 |        182 |        953 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Include/core_cm0plus.h                             | C++          |        528 |        346 |        212 |      1,086 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Include/core_cm1.h                                 | C++          |        454 |        338 |        188 |        980 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Include/core_cm23.h                                | C++          |      1,081 |        532 |        384 |      1,997 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Include/core_cm3.h                                 | C++          |      1,051 |        468 |        419 |      1,938 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Include/core_cm33.h                                | C++          |      1,677 |        646 |        588 |      2,911 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Include/core_cm35p.h                               | C++          |      1,677 |        646 |        588 |      2,911 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Include/core_cm4.h                                 | C++          |      1,182 |        485 |        458 |      2,125 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Include/core_cm7.h                                 | C++          |      1,571 |        576 |        579 |      2,726 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Include/core_sc000.h                               | C++          |        488 |        335 |        203 |      1,026 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Include/core_sc300.h                               | C++          |      1,034 |        467 |        412 |      1,913 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Include/mpu_armv7.h                                | C++          |        122 |        125 |         26 |        273 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Include/mpu_armv8.h                                | C++          |        168 |        135 |         44 |        347 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/CMSIS/Include/tz_context.h                               | C++          |         19 |         40 |         12 |         71 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h       | C++          |      2,895 |        616 |        409 |      3,920 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal.h                 | C++          |        460 |        268 |        111 |        839 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_adc.h             | C++          |        521 |      1,248 |        175 |      1,944 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_adc_ex.h          | C++          |         40 |        111 |         36 |        187 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_cortex.h          | C++          |        164 |        171 |         53 |        388 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_def.h             | C++          |        108 |         78 |         30 |        216 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_dma.h             | C++          |        428 |        274 |        102 |        804 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_dma_ex.h          | C++          |        114 |        110 |         55 |        279 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_exti.h            | C++          |        201 |        142 |         45 |        388 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_fdcan.h           | C++          |        622 |        634 |        187 |      1,443 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_flash.h           | C++          |        446 |        490 |         98 |      1,034 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_flash_ex.h        | C++          |         27 |         72 |         18 |        117 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_gpio.h            | C++          |        124 |        188 |         51 |        363 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_gpio_ex.h         | C++          |        457 |        274 |        106 |        837 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_i2c.h             | C++          |        326 |        396 |        117 |        839 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_i2c_ex.h          | C++          |         45 |        106 |         27 |        178 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_pcd.h             | C++          |        244 |        283 |        103 |        630 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_pcd_ex.h          | C++          |         21 |         47 |         21 |         89 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_pwr.h             | C++          |        100 |        186 |         40 |        326 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_pwr_ex.h          | C++          |        251 |        315 |         76 |        642 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_rcc.h             | C++          |      1,882 |        997 |        291 |      3,170 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_rcc_ex.h          | C++          |        696 |        694 |        201 |      1,591 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_rtc.h             | C++          |        369 |        457 |        164 |        990 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_rtc_ex.h          | C++          |        287 |        705 |        171 |      1,163 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_spi.h             | C++          |        298 |        441 |        113 |        852 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_spi_ex.h          | C++          |         11 |         49 |         14 |         74 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_tim.h             | C++          |      1,136 |      1,064 |        270 |      2,470 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_tim_ex.h          | C++          |        231 |        195 |         69 |        495 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_uart.h            | C++          |        545 |        997 |        204 |      1,746 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_uart_ex.h         | C++          |        543 |        180 |         49 |        772 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_adc.h              | C++          |      1,208 |      3,979 |        310 |      5,497 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_bus.h              | C++          |        270 |        975 |         62 |      1,307 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_cortex.h           | C++          |        177 |        349 |         60 |        586 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_crs.h              | C++          |        230 |        461 |         90 |        781 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_dma.h              | C++          |        712 |      1,408 |        151 |      2,271 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_dmamux.h           | C++          |        614 |      1,120 |        105 |      1,839 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_exti.h             | C++          |        350 |      1,109 |         99 |      1,558 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_gpio.h             | C++          |        187 |        702 |         70 |        959 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_i2c.h              | C++          |        678 |      1,404 |        198 |      2,280 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_lpuart.h           | C++          |        831 |      1,566 |        247 |      2,644 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_pwr.h              | C++          |        483 |        918 |        128 |      1,529 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_rcc.h              | C++          |      1,215 |      2,469 |        294 |      3,978 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_rtc.h              | C++          |      1,231 |      2,603 |        382 |      4,216 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_spi.h              | C++          |        671 |      1,372 |        242 |      2,285 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_system.h           | C++          |        823 |      1,092 |        171 |      2,086 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_tim.h              | C++          |      1,512 |      3,374 |        387 |      5,273 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_usart.h            | C++          |      1,274 |      2,764 |        362 |      4,400 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_usb.h              | C++          |        473 |        285 |        157 |        915 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_utils.h            | C++          |         93 |        207 |         44 |        344 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal.c                 | C            |        248 |        429 |         84 |        761 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c             | C            |      1,271 |      1,348 |        369 |      2,988 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc_ex.c          | C            |        144 |        200 |         66 |        410 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_cortex.c          | C            |        115 |        281 |         48 |        444 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_dma.c             | C            |        524 |        479 |        191 |      1,194 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_dma_ex.c          | C            |        110 |        162 |         49 |        321 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_exti.c            | C            |        296 |        270 |        105 |        671 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_fdcan.c           | C            |      1,690 |      1,393 |        458 |      3,541 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_flash.c           | C            |        260 |        367 |        104 |        731 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_flash_ex.c        | C            |        582 |        577 |        151 |      1,310 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_gpio.c            | C            |        195 |        290 |         66 |        551 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_i2c.c             | C            |      3,983 |      2,438 |      1,058 |      7,479 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_i2c_ex.c          | C            |         98 |        208 |         59 |        365 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_pcd.c             | C            |      1,204 |        699 |        347 |      2,250 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_pcd_ex.c          | C            |        142 |        146 |         46 |        334 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_pwr.c             | C            |        110 |        384 |         49 |        543 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_pwr_ex.c          | C            |        426 |        450 |        141 |      1,017 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_rcc.c             | C            |        702 |        614 |        157 |      1,473 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_rcc_ex.c          | C            |        973 |        527 |        179 |      1,679 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_rtc.c             | C            |        925 |        730 |        268 |      1,923 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_rtc_ex.c          | C            |        740 |        857 |        386 |      1,983 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_spi.c             | C            |      2,568 |      1,342 |        520 |      4,430 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_spi_ex.c          | C            |         20 |         79 |         14 |        113 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_tim.c             | C            |      4,103 |      2,738 |      1,091 |      7,932 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_tim_ex.c          | C            |      1,304 |      1,163 |        391 |      2,858 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart.c            | C            |      2,423 |      1,696 |        644 |      4,763 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart_ex.c         | C            |        373 |        561 |        157 |      1,091 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_ll_adc.c              | C            |        375 |        319 |         85 |        779 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_ll_rcc.c              | C            |        869 |        334 |        178 |      1,381 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_ll_usb.c              | C            |        812 |        447 |        193 |      1,452 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc/usbd_cdc.h | C++          |         85 |         66 |         34 |        185 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c | C            |        508 |        249 |        138 |        895 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h     | C++          |         68 |         63 |         42 |        173 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h   | C++          |         16 |         62 |         24 |        102 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h      | C++          |        357 |         76 |         82 |        515 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h    | C++          |         22 |         62 |         30 |        114 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c     | C            |        715 |        336 |        171 |      1,222 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c   | C            |        734 |        175 |        143 |      1,052 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c    | C            |         55 |        127 |         43 |        225 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/STM32G0B1XX_FLASH.ld                                             | LinkerScript |        117 |         64 |         27 |        208 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/USB_Device/App/usb_device.c                                      | C            |         23 |         54 |         21 |         98 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/USB_Device/App/usb_device.h                                      | C++          |         13 |         67 |         24 |        104 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/USB_Device/App/usbd_cdc_if.c                                     | C            |         79 |        185 |         66 |        330 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/USB_Device/App/usbd_cdc_if.h                                     | C++          |         14 |         84 |         35 |        133 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/USB_Device/App/usbd_desc.c                                       | C            |        167 |        166 |         64 |        397 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/USB_Device/App/usbd_desc.h                                       | C++          |         15 |         90 |         39 |        144 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/USB_Device/Target/usbd_conf.c                                    | C            |        356 |        315 |        132 |        803 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/USB_Device/Target/usbd_conf.h                                    | C++          |         48 |         91 |         36 |        175 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/X-CUBE-MEMS1/Target/custom_mems_conf.h                           | C++          |         17 |         21 |         10 |         48 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/X-CUBE-MEMS1/Target/custom_mems_conf_app.h                       | C++          |        966 |         20 |         65 |      1,051 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/X-CUBE-MEMS1/Target/sensor_unicleo_id.h                          | C++          |         78 |         23 |         10 |        111 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/cmake/gcc-arm-none-eabi.cmake                                    | CMake        |         34 |          0 |         11 |         45 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/cmake/stm32cubemx/cmake_install.cmake                            | CMake        |         39 |          0 |          7 |         46 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/cmake_install.cmake                                              | CMake        |         58 |          0 |          9 |         67 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/compile_commands.json                                            | JSON         |        290 |          0 |          0 |        290 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/include/config.h                                                 | C++          |         56 |          2 |          8 |         66 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/include/peripherals.h                                            | C++          |         16 |          1 |          4 |         21 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/src/app.c                                                        | C            |         20 |          2 |          5 |         27 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/src/app.h                                                        | C++          |          8 |          3 |          4 |         15 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/src/modules/debug_io/debug_io.c                                  | C            |         61 |         12 |         14 |         87 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/src/modules/debug_io/debug_io.h                                  | C++          |          6 |          2 |          3 |         11 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/src/modules/rtc_helper/rtc_helper.c                              | C            |         63 |          8 |          9 |         80 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/src/modules/rtc_helper/rtc_helper.h                              | C++          |          9 |          0 |          3 |         12 |
+| /Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/startup_stm32g0b1xx.s                                            | Assembly     |        240 |          0 |         57 |        297 |
+| Total                                                                                                             |              |     93,055 |     75,724 |     24,840 |    193,619 |
++-------------------------------------------------------------------------------------------------------------------+--------------+------------+------------+------------+------------+

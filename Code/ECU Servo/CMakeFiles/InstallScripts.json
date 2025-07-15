@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/cmake_install.cmake",
+		"/Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/cmake/stm32cubemx/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
