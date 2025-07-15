@@ -6,8 +6,8 @@
 	(paper "A3")
 	(title_block
 		(title "ADC ECU Board")
-		(date "2025-05-14")
-		(rev "A")
+		(date "2025-07-15")
+		(rev "B")
 		(company "Hybrid Test Stand")
 		(comment 1 "Drawn: Brad Redpath")
 		(comment 2 "Checked:")
@@ -8642,6 +8642,26 @@
 	)
 	(wire
 		(pts
+			(xy 262.89 134.62) (xy 233.68 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "65804fed-4d5f-4988-b529-c9f06977a144")
+	)
+	(wire
+		(pts
+			(xy 233.68 134.62) (xy 233.68 143.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6743c859-8690-44b9-a85d-4393caf7b4f5")
+	)
+	(wire
+		(pts
 			(xy 127 50.8) (xy 125.73 50.8)
 		)
 		(stroke
@@ -8699,6 +8719,16 @@
 			(type default)
 		)
 		(uuid "6c8732a5-37bf-4742-b82c-7698919a0284")
+	)
+	(wire
+		(pts
+			(xy 287.02 100.33) (xy 262.89 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6ca92c48-0b3c-4006-b305-97d80061154e")
 	)
 	(wire
 		(pts
@@ -9292,7 +9322,7 @@
 	)
 	(wire
 		(pts
-			(xy 209.55 143.51) (xy 227.33 143.51)
+			(xy 209.55 143.51) (xy 233.68 143.51)
 		)
 		(stroke
 			(width 0)
@@ -10272,6 +10302,16 @@
 	)
 	(wire
 		(pts
+			(xy 262.89 100.33) (xy 262.89 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb2f458a-09e6-4cd0-82bb-a0c86dd1f55e")
+	)
+	(wire
+		(pts
 			(xy 140.97 118.11) (xy 153.67 118.11)
 		)
 		(stroke
@@ -10509,16 +10549,6 @@
 			(justify left bottom)
 		)
 		(uuid "4b3e2a07-b051-4b09-91a0-848072f1b042")
-	)
-	(label "A9"
-		(at 222.25 143.51 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "4cd529b7-3b94-4302-8229-d3271d97b389")
 	)
 	(label "LED1"
 		(at 106.68 250.19 180)
@@ -10869,6 +10899,16 @@
 			(justify left bottom)
 		)
 		(uuid "cc9e6096-0e54-44ff-a08f-3b834a0a2436")
+	)
+	(label "5VREF"
+		(at 222.25 143.51 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "cdd5f789-bf60-4967-aceb-747e4a19470b")
 	)
 	(label "MIPA_B A2"
 		(at 222.25 102.87 180)
@@ -13210,90 +13250,6 @@
 			(project "ADC_Board"
 				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
 					(reference "#PWR044")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint_Small")
-		(at 227.33 143.51 270)
-		(mirror x)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "3216f14b-16fe-453b-ad4f-3f7934d93650")
-		(property "Reference" "TP12"
-			(at 228.6 142.2399 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "A9"
-			(at 228.6 144.7799 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
-			(at 227.33 138.43 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 227.33 138.43 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "test point"
-			(at 227.33 143.51 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Sim.Type" ""
-			(at 227.33 143.51 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Part Number" ""
-			(at 227.33 143.51 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "881a8e5d-a384-4007-ad80-d16a20e8883d")
-		)
-		(instances
-			(project "ADC_Board"
-				(path "/4595bb47-7b8a-406e-962e-ec9ceed32faf"
-					(reference "TP12")
 					(unit 1)
 				)
 			)
@@ -23117,6 +23073,16 @@
 		(pin "THERMISOR" output
 			(at 287.02 57.15 180)
 			(uuid "3185cf64-cb3d-4650-8205-77ada34a75f1")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "5VREF" output
+			(at 287.02 100.33 180)
+			(uuid "05e20600-4ded-4cf8-a2ab-ed58b93eb3a3")
 			(effects
 				(font
 					(size 1.27 1.27)

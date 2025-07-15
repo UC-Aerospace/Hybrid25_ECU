@@ -5,13 +5,13 @@
       "Application": "Pcbnew",
       "Version": "9.0.0"
     },
-    "CreationDate": "2025-05-15T12:14:54+12:00"
+    "CreationDate": "2025-07-15T20:23:25+12:00"
   },
   "GeneralSpecs": {
     "ProjectId": {
       "Name": "ADC_Board",
       "GUID": "4144435f-426f-4617-9264-2e6b69636164",
-      "Revision": "A"
+      "Revision": "B"
     },
     "Size": {
       "X": 100.05,
