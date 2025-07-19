@@ -244,6 +244,8 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan)
     /* FDCAN1 interrupt Init */
     HAL_NVIC_SetPriority(TIM16_FDCAN_IT0_IRQn, 0, 0);
     HAL_NVIC_EnableIRQ(TIM16_FDCAN_IT0_IRQn);
+    HAL_NVIC_SetPriority(TIM17_FDCAN_IT1_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(TIM17_FDCAN_IT1_IRQn);
     /* USER CODE BEGIN FDCAN1_MspInit 1 */
 
     /* USER CODE END FDCAN1_MspInit 1 */
@@ -285,6 +287,8 @@ void HAL_FDCAN_MspInit(FDCAN_HandleTypeDef* hfdcan)
     /* FDCAN2 interrupt Init */
     HAL_NVIC_SetPriority(TIM16_FDCAN_IT0_IRQn, 0, 0);
     HAL_NVIC_EnableIRQ(TIM16_FDCAN_IT0_IRQn);
+    HAL_NVIC_SetPriority(TIM17_FDCAN_IT1_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(TIM17_FDCAN_IT1_IRQn);
     /* USER CODE BEGIN FDCAN2_MspInit 1 */
 
     /* USER CODE END FDCAN2_MspInit 1 */
@@ -326,6 +330,14 @@ void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* hfdcan)
     /* HAL_NVIC_DisableIRQ(TIM16_FDCAN_IT0_IRQn); */
     /* USER CODE END FDCAN1:TIM16_FDCAN_IT0_IRQn disable */
 
+    /* USER CODE BEGIN FDCAN1:TIM17_FDCAN_IT1_IRQn disable */
+    /**
+    * Uncomment the line below to disable the "TIM17_FDCAN_IT1_IRQn" interrupt
+    * Be aware, disabling shared interrupt may affect other IPs
+    */
+    /* HAL_NVIC_DisableIRQ(TIM17_FDCAN_IT1_IRQn); */
+    /* USER CODE END FDCAN1:TIM17_FDCAN_IT1_IRQn disable */
+
     /* USER CODE BEGIN FDCAN1_MspDeInit 1 */
 
     /* USER CODE END FDCAN1_MspDeInit 1 */
@@ -355,6 +367,14 @@ void HAL_FDCAN_MspDeInit(FDCAN_HandleTypeDef* hfdcan)
     */
     /* HAL_NVIC_DisableIRQ(TIM16_FDCAN_IT0_IRQn); */
     /* USER CODE END FDCAN2:TIM16_FDCAN_IT0_IRQn disable */
+
+    /* USER CODE BEGIN FDCAN2:TIM17_FDCAN_IT1_IRQn disable */
+    /**
+    * Uncomment the line below to disable the "TIM17_FDCAN_IT1_IRQn" interrupt
+    * Be aware, disabling shared interrupt may affect other IPs
+    */
+    /* HAL_NVIC_DisableIRQ(TIM17_FDCAN_IT1_IRQn); */
+    /* USER CODE END FDCAN2:TIM17_FDCAN_IT1_IRQn disable */
 
     /* USER CODE BEGIN FDCAN2_MspDeInit 1 */
 

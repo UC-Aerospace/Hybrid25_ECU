@@ -54,6 +54,7 @@ void SysTick_Handler(void);
 void USB_UCPD1_2_IRQHandler(void);
 void DMA1_Channel1_IRQHandler(void);
 void TIM16_FDCAN_IT0_IRQHandler(void);
+void TIM17_FDCAN_IT1_IRQHandler(void);
 void USART1_IRQHandler(void);
 /* USER CODE BEGIN EFP */
 
