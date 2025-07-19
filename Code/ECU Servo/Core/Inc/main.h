@@ -69,14 +69,8 @@ void Error_Handler(void);
 #define POT_C_GPIO_Port GPIOA
 #define POT_D_Pin GPIO_PIN_3
 #define POT_D_GPIO_Port GPIOA
-#define AUX_A8_Pin GPIO_PIN_0
-#define AUX_A8_GPIO_Port GPIOB
-#define AUX_A9_Pin GPIO_PIN_1
-#define AUX_A9_GPIO_Port GPIOB
 #define ADC_2S_Pin GPIO_PIN_2
 #define ADC_2S_GPIO_Port GPIOB
-#define AUX_A11_Pin GPIO_PIN_10
-#define AUX_A11_GPIO_Port GPIOB
 #define PWM_D_Pin GPIO_PIN_14
 #define PWM_D_GPIO_Port GPIOB
 #define AUX_PWM_Pin GPIO_PIN_15
