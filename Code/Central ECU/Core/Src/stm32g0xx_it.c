@@ -57,7 +57,6 @@
 /* External variables --------------------------------------------------------*/
 extern PCD_HandleTypeDef hpcd_USB_DRD_FS;
 extern FDCAN_HandleTypeDef hfdcan1;
-extern FDCAN_HandleTypeDef hfdcan2;
 extern DMA_HandleTypeDef hdma_usart1_tx;
 extern UART_HandleTypeDef huart1;
 /* USER CODE BEGIN EV */
@@ -181,7 +180,6 @@ void TIM16_FDCAN_IT0_IRQHandler(void)
 
   /* USER CODE END TIM16_FDCAN_IT0_IRQn 0 */
   HAL_FDCAN_IRQHandler(&hfdcan1);
-  HAL_FDCAN_IRQHandler(&hfdcan2);
   /* USER CODE BEGIN TIM16_FDCAN_IT0_IRQn 1 */
 
   /* USER CODE END TIM16_FDCAN_IT0_IRQn 1 */
@@ -196,7 +194,6 @@ void TIM17_FDCAN_IT1_IRQHandler(void)
 
   /* USER CODE END TIM17_FDCAN_IT1_IRQn 0 */
   HAL_FDCAN_IRQHandler(&hfdcan1);
-  HAL_FDCAN_IRQHandler(&hfdcan2);
   /* USER CODE BEGIN TIM17_FDCAN_IT1_IRQn 1 */
 
   /* USER CODE END TIM17_FDCAN_IT1_IRQn 1 */
