@@ -5942,6 +5942,16 @@
 	)
 	(wire
 		(pts
+			(xy 100.33 105.41) (xy 100.33 113.03)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1a82f1b8-50c7-4697-80e7-389c20331491")
+	)
+	(wire
+		(pts
 			(xy 129.54 91.44) (xy 129.54 105.41)
 		)
 		(stroke
@@ -7232,6 +7242,16 @@
 	)
 	(wire
 		(pts
+			(xy 109.22 109.22) (xy 109.22 115.57)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "73199497-45d4-48cd-9b61-a708de944752")
+	)
+	(wire
+		(pts
 			(xy 323.85 102.87) (xy 323.85 118.11)
 		)
 		(stroke
@@ -7399,6 +7419,16 @@
 			(type default)
 		)
 		(uuid "7e59515f-55d1-4eee-ad2f-75930c4152dc")
+	)
+	(wire
+		(pts
+			(xy 106.68 109.22) (xy 109.22 109.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7f081d89-9d1d-4d77-bf63-b71b1f0a2e49")
 	)
 	(wire
 		(pts
@@ -7959,6 +7989,16 @@
 			(type default)
 		)
 		(uuid "a108ba9e-95af-4f56-bf5f-88bf255fd8b3")
+	)
+	(wire
+		(pts
+			(xy 106.68 102.87) (xy 106.68 109.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a1804931-f3cb-4c39-9529-7baccbf83708")
 	)
 	(wire
 		(pts
@@ -9390,7 +9430,7 @@
 		)
 		(uuid "40f5854e-f9c6-4f90-b522-2ae6cd7bc8d9")
 	)
-	(label "CAN2_TX"
+	(label "CAN1_TX"
 		(at 177.8 115.57 180)
 		(effects
 			(font
@@ -9650,7 +9690,7 @@
 		)
 		(uuid "91ddf752-0841-48e4-8f8d-c4e4addba760")
 	)
-	(label "CAN2_RX"
+	(label "CAN1_RX"
 		(at 177.8 113.03 180)
 		(effects
 			(font
@@ -9660,7 +9700,7 @@
 		)
 		(uuid "97d5fd74-e17c-48a0-88a1-7f1f61689a10")
 	)
-	(label "CAN1_TX"
+	(label "CAN2_TX"
 		(at 248.92 107.95 180)
 		(effects
 			(font
@@ -9790,7 +9830,7 @@
 		)
 		(uuid "c48c0b7d-dff3-4a6a-9124-a6175df32be3")
 	)
-	(label "CAN1_RX"
+	(label "CAN2_RX"
 		(at 248.92 105.41 180)
 		(effects
 			(font
