@@ -5,6 +5,7 @@
 #include "rs422.h"
 #include "rtc_helper.h"
 #include "sd_log.h"
+#include "sd_write_test.h"
 
 void app_init(void) {
     // Initialize the application
@@ -46,6 +47,8 @@ void app_init(void) {
 
 void app_run(void) {
     HAL_ADC_Start(&hadc1); // Start ADC peripheral
+    HAL_Delay(1000);
+    sd_write_test_benchmark(100); // Run SD write test benchmark
     
     while (1) {
         batt_check(); // Check battery status

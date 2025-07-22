@@ -2,6 +2,8 @@
 
 #include "sdcard.h"
 
+volatile bool spi_tx_done = false;
+
 static void SDCARD_Select() {
     HAL_GPIO_WritePin(SDCARD_CS_GPIO_Port, SDCARD_CS_Pin, GPIO_PIN_RESET);
 }
@@ -526,36 +528,50 @@ int SDCARD_WriteBegin(uint32_t blockNum) {
     return 0;
 }
 
+void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi) {
+    if (hspi == &SDCARD_SPI_PORT) {
+        spi_tx_done = true;
+    }
+}
+
+static int SDCARD_TransmitDMA(const uint8_t* data, size_t size) {
+    spi_tx_done = false;
+    if (HAL_SPI_Transmit_DMA(&SDCARD_SPI_PORT, (uint8_t*)data, size) != HAL_OK) {
+        return -1;
+    }
+
+    // Wait until DMA transfer is complete
+    while (!spi_tx_done) {
+        // optionally insert timeout or `__WFI()` for power saving
+    }
+
+    return 0;
+}
+
 int SDCARD_WriteData(const uint8_t* buff) {
     SDCARD_Select();
 
     uint8_t dataToken = DATA_TOKEN_CMD25;
     uint8_t crc[2] = { 0xFF, 0xFF };
-    HAL_SPI_Transmit(&SDCARD_SPI_PORT, &dataToken, sizeof(dataToken), HAL_MAX_DELAY);
-    HAL_SPI_Transmit(&SDCARD_SPI_PORT, (uint8_t*)buff, 512, HAL_MAX_DELAY);
-    HAL_SPI_Transmit(&SDCARD_SPI_PORT, crc, sizeof(crc), HAL_MAX_DELAY);
 
-    /*
-        dataResp:
-        xxx0abc1
-            010 - Data accepted
-            101 - Data rejected due to CRC error
-            110 - Data rejected due to write error
-    */
+    // Transmit token, buffer, and CRC using DMA
+    if (SDCARD_TransmitDMA(&dataToken, sizeof(dataToken)) < 0) goto error;
+    if (SDCARD_TransmitDMA(buff, 512) < 0) goto error;
+    if (SDCARD_TransmitDMA(crc, sizeof(crc)) < 0) goto error;
+
+    // Get response
     uint8_t dataResp;
     SDCARD_ReadBytes(&dataResp, sizeof(dataResp));
-    if((dataResp & 0x1F) != 0x05) { // data rejected
-        SDCARD_Unselect();
-        return -1;
-    }
+    if ((dataResp & 0x1F) != 0x05) goto error;
 
-    if(SDCARD_WaitNotBusy() < 0) {
-        SDCARD_Unselect();
-        return -2;
-    }
+    if (SDCARD_WaitNotBusy() < 0) goto error;
 
     SDCARD_Unselect();
     return 0;
+
+error:
+    SDCARD_Unselect();
+    return -1;
 }
 
 int SDCARD_WriteEnd() {

@@ -7,11 +7,9 @@
 
 /**
  * @brief Test SD card write performance using sd_log raw write function
- * @param path File path (not used in current implementation as sd_log manages paths)
- * @param data Data string (not used in current implementation as we use fixed test data)
  * @return FRESULT status code
  */
-FRESULT sd_write_test(const char* path, const char* data);
+FRESULT sd_write_test();
 
 /**
  * @brief Run multiple SD write tests and calculate average performance

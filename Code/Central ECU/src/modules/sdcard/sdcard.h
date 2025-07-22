@@ -3,6 +3,7 @@
 #define __SDCARD_H__
 
 #include "stm32g0xx_hal.h"
+#include <stdbool.h>
 
 #define SDCARD_SPI_PORT      hspi1
 #define SDCARD_CS_Pin        GPIO_PIN_4

@@ -154,15 +154,24 @@ DRESULT USER_write (
 )
 {
   /* USER CODE BEGIN WRITE */
-    if (pdrv) return RES_PARERR;  // Only support drive 0
-    
-    for (UINT i = 0; i < count; i++) {
-        if (SDCARD_WriteSingleBlock(sector + i, buff + (i * 512)) != 0) {
-            return RES_ERROR;
-        }
+  if (pdrv) return RES_PARERR;  // Only support drive 0
+
+  if (SDCARD_WriteBegin(sector) != 0) {
+    return RES_ERROR;
+  }
+
+  for (UINT i = 0; i < count; i++) {
+    if (SDCARD_WriteData(buff + (i * 512)) != 0) {
+      SDCARD_WriteEnd();  // Clean up even on error
+      return RES_ERROR;
     }
-    
-    return RES_OK;
+  }
+
+  if (SDCARD_WriteEnd() != 0) {
+    return RES_ERROR;
+  }
+
+  return RES_OK;
   /* USER CODE END WRITE */
 }
 #endif /* _USE_WRITE == 1 */

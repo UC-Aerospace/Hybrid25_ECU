@@ -23,7 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "peripherals.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -102,7 +102,20 @@ int32_t MX_FATFS_Process(void)
 DWORD get_fattime(void)
 {
   /* USER CODE BEGIN get_fattime */
-  return 0;
+    RTC_DateTypeDef sDate;
+    RTC_TimeTypeDef sTime;
+
+    // Get the RTC current time and date
+    HAL_RTC_GetTime(&hrtc, &sTime, RTC_FORMAT_BIN);
+    HAL_RTC_GetDate(&hrtc, &sDate, RTC_FORMAT_BIN);  // Must be called *after* GetTime()
+
+    // Pack date and time into FAT format
+    return ((DWORD)(sDate.Year + 20) << 25) |   // Year = offset from 1980 (e.g., 2024 - 1980 = 44)
+           ((DWORD)sDate.Month << 21) |
+           ((DWORD)sDate.Date << 16) |
+           ((DWORD)sTime.Hours << 11) |
+           ((DWORD)sTime.Minutes << 5) |
+           ((DWORD)sTime.Seconds / 2);
   /* USER CODE END get_fattime */
 }
 

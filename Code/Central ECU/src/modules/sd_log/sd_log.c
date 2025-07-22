@@ -111,6 +111,8 @@ bool sd_log_init(void) {
     }
     
     is_initialized = true;
+
+    sd_log_flush(); // Ensure all files are synced to disk initially
     return true;
 }
 
@@ -129,7 +131,7 @@ bool sd_log_write_raw(const uint8_t* data, uint32_t len) {
     }
     
     // Sync to ensure data is written to disk
-    f_sync(&raw_file);
+    //f_sync(&raw_file);
     
     return true;
 }
@@ -186,7 +188,7 @@ bool sd_log_write(SD_LogType_t type, const char* format, ...) {
     }
     
     // Sync to ensure data is written to disk
-    f_sync(target_file);
+    //f_sync(target_file);
     
     return true;
 }
@@ -200,6 +202,52 @@ void sd_log_flush(void) {
     f_sync(&log_file);
     f_sync(&crash_file);
 }
+
+bool sd_log_preallocate_raw(uint32_t size) {
+    FRESULT res;
+    FSIZE_t current_size;
+    
+    if (!is_initialized) {
+        return false;
+    }
+    
+    // Get current file size
+    current_size = f_size(&raw_file);
+    
+    // Only expand if requested size is larger than current size
+    if (size <= current_size) {
+        return true;  // Already has enough space
+    }
+    
+    // Seek to the desired end position
+    res = f_lseek(&raw_file, size - 1);
+    if (res != FR_OK) {
+        return false;
+    }
+    
+    // Write a single byte to expand the file
+    UINT bytes_written;
+    uint8_t dummy_byte = 0;
+    res = f_write(&raw_file, &dummy_byte, 1, &bytes_written);
+    if (res != FR_OK || bytes_written != 1) {
+        return false;
+    }
+    
+    // Seek back to the original position (end of actual data)
+    res = f_lseek(&raw_file, current_size);
+    if (res != FR_OK) {
+        return false;
+    }
+    
+    // Sync to ensure allocation is committed to disk
+    res = f_sync(&raw_file);
+    if (res != FR_OK) {
+        return false;
+    }
+    
+    return true;
+}
+
 
 const char* sd_log_get_dir_name(void) {
     return current_dir;

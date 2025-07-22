@@ -35,6 +35,11 @@ bool sd_log_write(SD_LogType_t type, const char* format, ...);
 // Should be called periodically to ensure data is written
 void sd_log_flush(void);
 
+// Preallocate space for the raw log file
+// size: Number of bytes to preallocate
+// Returns true if successful, false otherwise
+bool sd_log_preallocate_raw(uint32_t size);
+
 // Get the current log directory name
 // Returns the directory name as a string
 const char* sd_log_get_dir_name(void);
