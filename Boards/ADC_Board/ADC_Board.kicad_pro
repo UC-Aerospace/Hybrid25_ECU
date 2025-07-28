@@ -567,7 +567,7 @@
       "plot": "Manufacture/",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "",
+      "step": "ADC_Board.step",
       "svg": "",
       "vrml": ""
     },

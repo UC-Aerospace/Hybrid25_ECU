@@ -573,7 +573,7 @@
       "plot": "Manufacture/",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "",
+      "step": "Servo_Board.step",
       "svg": "",
       "vrml": ""
     },

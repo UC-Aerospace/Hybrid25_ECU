@@ -5593,7 +5593,7 @@
 				)
 			)
 		)
-		(property "Value" "3K"
+		(property "Value" "3K3"
 			(at 354.33 143.51 90)
 			(effects
 				(font
@@ -6279,7 +6279,7 @@
 				)
 			)
 		)
-		(property "Value" "3K"
+		(property "Value" "3K3"
 			(at 354.33 212.09 90)
 			(effects
 				(font
@@ -6566,7 +6566,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "5K90"
+		(property "Value" "6K2"
 			(at 363.22 123.1899 0)
 			(effects
 				(font
@@ -8164,7 +8164,7 @@
 				)
 			)
 		)
-		(property "Value" "3K"
+		(property "Value" "3K3"
 			(at 354.33 114.3 90)
 			(effects
 				(font
@@ -12056,7 +12056,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "5K90"
+		(property "Value" "6K2"
 			(at 363.22 182.8799 0)
 			(effects
 				(font
@@ -12945,7 +12945,7 @@
 				)
 			)
 		)
-		(property "Value" "3K"
+		(property "Value" "3K3"
 			(at 354.33 173.99 90)
 			(effects
 				(font
@@ -13100,7 +13100,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "5K90"
+		(property "Value" "6K2"
 			(at 363.22 152.3999 0)
 			(effects
 				(font
@@ -13527,7 +13527,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "5K90"
+		(property "Value" "6K2"
 			(at 363.22 220.9799 0)
 			(effects
 				(font
