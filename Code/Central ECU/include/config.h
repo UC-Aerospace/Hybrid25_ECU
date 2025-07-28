@@ -3,6 +3,12 @@
 
 #include "stm32g0xx_hal.h"
 
+// WHOAMI
+
+// Board types: _SERVO, _CENTRAL, _ECU
+#define BOARD_TYPE_CENTRAL
+static uint8_t BOARD_ID;
+
 // Pinout configuration
 
 #define EMATCH2_FIRE_Pin GPIO_PIN_11
@@ -27,8 +33,8 @@
 #define OX_LOWSIDE_SENSE_GPIO_Port GPIOC
 #define INTERLOCK_Pin GPIO_PIN_9
 #define INTERLOCK_GPIO_Port GPIOC
-#define LED_Pin GPIO_PIN_0
-#define LED_GPIO_Port GPIOD
+#define LED_STATUS_Pin GPIO_PIN_0
+#define LED_STATUS_GPIO_Port GPIOD
 #define E1_Pin GPIO_PIN_1
 #define E1_GPIO_Port GPIOD
 #define E2_Pin GPIO_PIN_2
@@ -39,6 +45,12 @@
 #define E4_GPIO_Port GPIOD
 #define OX_FIRE_Pin GPIO_PIN_10
 #define OX_FIRE_GPIO_Port GPIOC
+
+#define LED2_Pin GPIO_PIN_11
+#define LED2_GPIO_Port GPIOC
+#define LED3_Pin GPIO_PIN_12
+#define LED3_GPIO_Port GPIOC
+
 
 // ADC configuration
 

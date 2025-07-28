@@ -81,8 +81,8 @@ void Error_Handler(void);
 #define OX_LOWSIDE_SENSE_GPIO_Port GPIOC
 #define SENSE_12V_Pin GPIO_PIN_9
 #define SENSE_12V_GPIO_Port GPIOC
-#define LED_Pin GPIO_PIN_0
-#define LED_GPIO_Port GPIOD
+#define LED_STATUS_Pin GPIO_PIN_0
+#define LED_STATUS_GPIO_Port GPIOD
 #define E1_Pin GPIO_PIN_1
 #define E1_GPIO_Port GPIOD
 #define E2_Pin GPIO_PIN_2

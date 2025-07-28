@@ -81,10 +81,10 @@ void Error_Handler(void);
 #define PWM_A_GPIO_Port GPIOC
 #define PWM_B_Pin GPIO_PIN_7
 #define PWM_B_GPIO_Port GPIOC
-#define LED2_Pin GPIO_PIN_9
-#define LED2_GPIO_Port GPIOC
-#define LED1_Pin GPIO_PIN_0
-#define LED1_GPIO_Port GPIOD
+#define LED_ERROR_Pin GPIO_PIN_9
+#define LED_ERROR_GPIO_Port GPIOC
+#define LED_STATUS_Pin GPIO_PIN_0
+#define LED_STATUS_GPIO_Port GPIOD
 #define E1_Pin GPIO_PIN_1
 #define E1_GPIO_Port GPIOD
 #define E2_Pin GPIO_PIN_2

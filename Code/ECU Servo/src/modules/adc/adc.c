@@ -25,5 +25,3 @@ void getServoPositions(uint16_t *positions)
         positions[i] = adcValues[i];
     }
 }
-
-void 

@@ -5,6 +5,9 @@
 #include "rs422.h"
 #include "rtc_helper.h"
 #include "sd_log.h"
+#include "spicy.h"
+#include "ssd1306_fonts.h"
+#include "can_handler.h"
 
 void app_init(void) {
     // Initialize the application
@@ -41,6 +44,7 @@ void app_init(void) {
 
     batt_check();
     sd_log_init();
+    can_init(); // Initialize CAN peripheral
     sd_log_write(SD_LOG_INFO, "ECU initialized");
 }
 
@@ -50,8 +54,8 @@ void app_run(void) {
     
     while (1) {
         batt_check(); // Check battery status
-        HAL_UART_Transmit(&huart1, (uint8_t *)0xFF, 1, HAL_MAX_DELAY);
-        HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-        HAL_Delay(1000); // Delay for 1 second before the next reading
+        //can_test_send(); // Send a test CAN message
+        HAL_GPIO_TogglePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin);
+        HAL_Delay(1300); // Delay for 1 second before the next reading
     }
 }
