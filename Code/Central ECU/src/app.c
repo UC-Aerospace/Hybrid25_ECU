@@ -53,8 +53,8 @@ void app_run(void) {
     
     while (1) {
         batt_check(); // Check battery status
-        can_test_send(); // Send a test CAN message
-        HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-        HAL_Delay(500); // Delay for 1 second before the next reading
+        //can_test_send(); // Send a test CAN message
+        HAL_GPIO_TogglePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin);
+        HAL_Delay(1300); // Delay for 1 second before the next reading
     }
 }

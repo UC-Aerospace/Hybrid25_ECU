@@ -9,5 +9,13 @@ void handle_error_warning(CAN_ErrorWarningFrame* frame, CAN_ID id, uint8_t dataL
 void handle_command(CAN_CommandFrame* frame, CAN_ID id, uint8_t dataLength);
 void handle_servo_pos(CAN_ServoFrame* frame, CAN_ID id, uint8_t dataLength);
 void handle_adc_data(CAN_ADCFrame* frame, CAN_ID id, uint8_t dataLength);
+void handle_status(CAN_StatusFrame* frame, CAN_ID id, uint8_t dataLength);
+
+// Command enum
+typedef enum {
+    CAN_CMD_UPDATE_STATE = 0b0000,
+    CAN_CMD_SERVO_MOVE = 0b0001
+    // Add more commands as needed
+} CommandType;
 
 #endif // HANDLERS_H

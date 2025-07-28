@@ -32,7 +32,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
 )
 
 # Automatically collect all module sources (*.c files in src/modules/**)
-file(GLOB_RECURSE MODULE_SOURCES CONFIGURE_DEPENDS
+file(GLOB_RECURSE MODULE_SOURCES CONFIGURE_DEPENDS FOLLOW_SYMLINKS
     src/modules/*.c
 )
 
@@ -47,7 +47,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
 )
 
 # Optional: include subdirectories of modules explicitly
-file(GLOB MODULE_DIRS LIST_DIRECTORIES true src/modules/*)
+file(GLOB MODULE_DIRS LIST_DIRECTORIES true FOLLOW_SYMLINKS src/modules/*)
 foreach(dir ${MODULE_DIRS})
     if(IS_DIRECTORY ${dir})
         target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${dir})

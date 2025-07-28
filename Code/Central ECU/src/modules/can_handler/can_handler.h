@@ -12,14 +12,14 @@
 #define CAN_ID_PRIORITY_SHIFT 0
 
 typedef enum {
-    CAN_TYPE_BROADCAST = 0b000,
-    CAN_TYPE_ECU       = 0b001,
-    CAN_TYPE_SERVO     = 0b010,
-    CAN_TYPE_ADC       = 0b011,
-    CAN_TYPE_CMD       = 0b100,
-    CAN_TYPE_STAT      = 0b101,
-    CAN_TYPE_SERVO_POS = 0b110,
-    CAN_TYPE_ADC_DATA  = 0b111,
+    CAN_TYPE_ERROR = 0b000,
+    CAN_TYPE_COMMAND = 0b001,
+    CAN_TYPE_STATUS = 0b010,
+    CAN_TYPE_SERVO_POS = 0b011,
+    // 0b100
+    // 0b101
+    // 0b110
+    CAN_TYPE_ADC_DATA = 0b111
 } CAN_MessageType;
 
 typedef struct {

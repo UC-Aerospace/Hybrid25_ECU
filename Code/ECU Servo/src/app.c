@@ -1,5 +1,6 @@
 #include "app.h"
 #include "debug_io.h"
+#include "can_handler.h"
 
 void app_init(void) {
     uint32_t uid[3];
@@ -7,21 +8,26 @@ void app_init(void) {
     uid[0] = HAL_GetUIDw0();
     uid[1] = HAL_GetUIDw1();
     uid[2] = HAL_GetUIDw2();
-    //dbg_printf("Device UID: %08lX %08lX %08lX\r\n", uid[0], uid[1], uid[2]);
+    if (uid[0] == 0x00430040 && uid[1] == 0x5442500C && uid[2] == 0x20373357) {
+        // Device is recognized, proceed with initialization
+        dbg_printf("Device recognized: UID %08lX %08lX %08lX\r\n", uid[0], uid[1], uid[2]);
+        BOARD_ID = 0b010;
+    } else {
+        // Unrecognized device, handle error
+        dbg_printf("Unrecognized device UID: %08lX %08lX %08lX\r\n", uid[0], uid[1], uid[2]);
+        while (1); // Halt execution
+    }
 
     //HAL_ADCEx_Calibration_Start(&hadc1);
     HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+    can_init(); // Initialize CAN peripheral
 }
 
 void app_run(void) {
     while (1) {
-        HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
-        htim3.Instance->CCR1 = 250;  // duty cycle is .5 ms
-        HAL_Delay(2000);
-        htim3.Instance->CCR1 = 750;  // duty cycle is 1.5 ms
-        HAL_Delay(2000);
-        htim3.Instance->CCR1 = 1250;  // duty cycle is 2.5 ms
-        HAL_Delay(2000);
+        //can_test_send(); // Send a test CAN message
+        HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin); // Toggle LED1
+        HAL_Delay(1000);
     }
     
 }
