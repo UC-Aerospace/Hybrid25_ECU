@@ -26,8 +26,8 @@ void app_init(void) {
 void app_run(void) {
     while (1) {
         //can_test_send(); // Send a test CAN message
-        HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin); // Toggle LED1
-        HAL_Delay(1000);
+        HAL_GPIO_TogglePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin);
+        HAL_Delay(1300);
     }
     
 }

@@ -45,6 +45,6 @@ void servo_init(void) {
     
 }
 
-void servo_set_angle(uint16_t angle) {
+void servo_set_angle(Servo *servo, uint16_t angle) {
     // Set the servo angle
 }

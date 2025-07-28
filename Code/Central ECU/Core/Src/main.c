@@ -766,8 +766,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LED_STATUS_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : E1_Pin E2_Pin E3_Pin E4_Pin */
-  GPIO_InitStruct.Pin = E1_Pin|E2_Pin|E3_Pin|E4_Pin;
+  /*Configure GPIO pins : LED_IND_GREEN_Pin LED_ERROR_Pin HORN_IND_Pin E4_Pin */
+  GPIO_InitStruct.Pin = LED_IND_GREEN_Pin|LED_ERROR_Pin|HORN_IND_Pin|E4_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);

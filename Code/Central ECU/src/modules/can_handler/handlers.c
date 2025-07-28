@@ -1,6 +1,5 @@
 #include "handlers.h"
 #include "debug_io.h"
-#include "sd_log.h"
 
 void handle_error_warning(CAN_ErrorWarningFrame* frame, CAN_ID id, uint8_t dataLength) {
     dbg_printf("Error Warning: what=%d, why=%d, timestamp=%02X%02X%02X\n",
@@ -8,8 +7,8 @@ void handle_error_warning(CAN_ErrorWarningFrame* frame, CAN_ID id, uint8_t dataL
 }
 
 void handle_command(CAN_CommandFrame* frame, CAN_ID id, uint8_t dataLength) {
-    sd_log_write(SD_LOG_INFO, "Command: cmd=%d, param=%d %d %d %d", frame->what, frame->options[0], frame->options[1], 
-                 frame->options[2], frame->options[3]);
+    dbg_printf("Command: cmd=%d, param=%d %d %d %d\n", frame->what, frame->options[0], frame->options[1],
+               frame->options[2], frame->options[3]);
 
     uint8_t command = frame->what >> 3;
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
@@ -30,8 +29,8 @@ void handle_servo_pos(CAN_ServoFrame* frame, CAN_ID id, uint8_t dataLength) {
 }
 
 void handle_status(CAN_StatusFrame* frame, CAN_ID id, uint8_t dataLength) {
-    dbg_printf("Status: status=%d, value=%d\n",
-               frame->status, frame->value);
+    dbg_printf("Status: what=%d, state=%d\n",
+               frame->what, frame->state);
 }
 
 void handle_adc_data(CAN_ADCFrame* frame, CAN_ID id, uint8_t dataLength) {

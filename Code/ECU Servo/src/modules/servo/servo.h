@@ -4,6 +4,7 @@
 #include "stm32g0xx_hal.h"
 #include "peripherals.h"
 #include "config.h"
+#include <stdbool.h>
 
 typedef enum {
     CLOSE = 250,
@@ -13,7 +14,7 @@ typedef enum {
 typedef struct {
     TIM_HandleTypeDef *tim;
     uint32_t channel;
-    bool enabled = false;
+    bool enabled;
     ServoPosition safePosition;
     ServoPosition targetPosition;
     uint16_t currentPosition;
