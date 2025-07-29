@@ -1,6 +1,9 @@
 {
     "cmake.useCMakePresets": "always",
     "files.associations": {
-        "lps22hh_reg.h": "c"
+        "lps22hh_reg.h": "c",
+        "servo.h": "c",
+        "stdbool.h": "c",
+        "can_handler.h": "c"
     }
 }

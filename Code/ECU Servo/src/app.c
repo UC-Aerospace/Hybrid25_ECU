@@ -1,6 +1,7 @@
 #include "app.h"
 #include "debug_io.h"
 #include "can_handler.h"
+#include "servo.h"
 
 void app_init(void) {
     uint32_t uid[3];
@@ -21,6 +22,7 @@ void app_init(void) {
     //HAL_ADCEx_Calibration_Start(&hadc1);
     HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
     can_init(); // Initialize CAN peripheral
+    servo_init(); // Initialize servos
 }
 
 void app_run(void) {

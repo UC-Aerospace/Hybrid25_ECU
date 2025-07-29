@@ -7,7 +7,7 @@
 FDCAN_TxHeaderTypeDef TxHeader;
 FDCAN_RxHeaderTypeDef RxHeader;
 
-uint8_t TxData[12];
+uint8_t TxData[64];
 uint16_t test_counter = 0;
 
 void CAN_Error_Handler(void)
@@ -59,7 +59,7 @@ void HAL_FDCAN_RxFifo1Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo1ITs)
 
     CAN_ID id = unpack_can_id(RxHeader.Identifier);
 
-    switch (id.msgType) {
+    switch (id.frameType) {
         case CAN_TYPE_ERROR:
             handle_error_warning((CAN_ErrorWarningFrame*)rxData, id, RxHeader.DataLength);
             break;
@@ -102,6 +102,33 @@ void can_init(void) {
         CAN_Error_Handler();
     }
 
+}
+
+void can_send_command(CAN_ID id, uint8_t *data, uint8_t length) {
+    // Prepare and send a CAN command message
+    TxHeader.Identifier = pack_can_id(id);
+    TxHeader.IdType = FDCAN_STANDARD_ID;
+    TxHeader.TxFrameType = FDCAN_DATA_FRAME;
+    TxHeader.DataLength = length; // Set data length
+    TxHeader.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
+    TxHeader.BitRateSwitch = FDCAN_BRS_ON;
+    TxHeader.FDFormat = FDCAN_FD_CAN;
+    TxHeader.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
+    TxHeader.MessageMarker = 0;
+
+    for (int i = 0; i < length; i++) {
+        TxData[i] = data[i];
+    }
+
+    dbg_printf("Sending CAN command with ID: %08lX, Data: ", TxHeader.Identifier);
+    for (int i = 0; i < length; i++) {
+        dbg_printf("%02X ", TxData[i]);
+    }
+    dbg_printf("\r\n");
+
+    if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &TxHeader, TxData) != HAL_OK) {
+        CAN_Error_Handler();
+    }
 }
 
 void can_test_send(void) {

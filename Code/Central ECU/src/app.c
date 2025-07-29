@@ -52,9 +52,36 @@ void app_run(void) {
     HAL_ADC_Start(&hadc1); // Start ADC peripheral
     HAL_Delay(1000);
     
+    char test_str[16];
     while (1) {
         batt_check(); // Check battery status
-        //can_test_send(); // Send a test CAN message
+        dbg_printf("Supply servo position from 0 to 20\r\n");
+        dbg_recv(test_str, sizeof(test_str)); // Receive debug input
+        char* end;
+        uint8_t num = strtol(test_str, &end, 10);
+
+        CAN_ID id = {
+            .priority = CAN_PRIORITY_COMMAND,
+            .nodeType = CAN_NODE_TYPE_SERVO,
+            .nodeAddr = CAN_NODE_ADDR_SERVO,
+            .frameType = CAN_TYPE_COMMAND
+        };
+
+        uint8_t frame[8] = {0};
+
+        frame[0] = 17;
+
+        uint8_t servo = 1;
+        uint8_t manual = 1;
+
+        if (num >= 20) {
+            num = 20;
+        }
+
+        frame[1] = servo << 6 | manual << 5 | num;
+
+        can_send_command(id, frame, sizeof(frame));
+
         HAL_GPIO_TogglePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin);
         HAL_Delay(1300); // Delay for 1 second before the next reading
     }

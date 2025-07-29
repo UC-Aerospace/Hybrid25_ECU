@@ -14,7 +14,8 @@ void handle_status(CAN_StatusFrame* frame, CAN_ID id, uint8_t dataLength);
 // Command enum
 typedef enum {
     CAN_CMD_UPDATE_STATE = 0b0000,
-    CAN_CMD_SERVO_MOVE = 0b0001
+    CAN_CMD_SERVO_ARM = 0b0001,
+    CAN_CMD_SERVO_MOVE = 0b0010
     // Add more commands as needed
 } CommandType;
 

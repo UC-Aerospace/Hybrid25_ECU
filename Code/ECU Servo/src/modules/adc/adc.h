@@ -5,7 +5,6 @@
 #include "config.h"
 #include "peripherals.h"
 
-void adc_init(void);
-
+void getServoPositions(uint16_t *positions);
 
 #endif
