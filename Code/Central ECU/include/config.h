@@ -37,8 +37,8 @@ static uint8_t BOARD_ID;
 #define LED_STATUS_GPIO_Port GPIOD
 #define LED_IND_GREEN_Pin GPIO_PIN_1
 #define LED_IND_GREEN_GPIO_Port GPIOD
-#define LED_ERROR_Pin GPIO_PIN_2
-#define LED_ERROR_GPIO_Port GPIOD
+#define LED_IND_ERROR_Pin GPIO_PIN_2
+#define LED_IND_ERROR_GPIO_Port GPIOD
 #define HORN_IND_Pin GPIO_PIN_3
 #define HORN_IND_GPIO_Port GPIOD
 #define E4_Pin GPIO_PIN_4
