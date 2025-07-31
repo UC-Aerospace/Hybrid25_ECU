@@ -253,6 +253,25 @@ void USART1_IRQHandler(void)
 {
   /* USER CODE BEGIN USART1_IRQn 0 */
 
+  // Intercept USART1 IDLE event to handle RS422 reception
+  uint32_t isrflags   = READ_REG(huart1.Instance->ISR);
+  uint32_t cr1its     = READ_REG(huart1.Instance->CR1);
+
+  if ((huart1.ReceptionType == HAL_UART_RECEPTION_TOIDLE)
+      && ((isrflags & USART_ISR_IDLE) != 0U)
+      && ((cr1its & USART_ISR_IDLE) != 0U))
+  {
+    __HAL_UART_CLEAR_FLAG(&huart1, UART_CLEAR_IDLEF);
+
+    uint16_t nb_remaining_rx_data = (uint16_t) __HAL_DMA_GET_COUNTER(huart1.hdmarx);
+    huart1.RxXferCount = nb_remaining_rx_data;
+    huart1.RxEventType = HAL_UART_RXEVENT_IDLE;
+
+    HAL_UARTEx_RxEventCallback(&huart1, (huart1.RxXferSize - huart1.RxXferCount));
+
+    return;
+  }
+
   /* USER CODE END USART1_IRQn 0 */
   HAL_UART_IRQHandler(&huart1);
   /* USER CODE BEGIN USART1_IRQn 1 */

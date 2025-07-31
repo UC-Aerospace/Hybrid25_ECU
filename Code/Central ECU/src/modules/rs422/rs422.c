@@ -1,6 +1,7 @@
 #include "rs422.h"
 #include "crc.h"
 #include "config.h"
+#include "debug_io.h"
 
 // Global buffers for DMA operations
 RS422_TxBuffer_t tx_buffer = {0}; // Initialize circular buffer for transmission
@@ -84,10 +85,9 @@ bool rs422_init(UART_HandleTypeDef *huart)
     // Start continuous DMA reception
     HAL_StatusTypeDef status = HAL_UARTEx_ReceiveToIdle_DMA(huart, rx_buffer.buffer, RS422_RX_BUFFER_SIZE);
     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
-    //__HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_TC);
+    __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_TC);
 
     // Debug output
-    extern void dbg_printf(const char* format, ...);
     if (status == HAL_OK) {
         dbg_printf("RS422 init: DMA reception started successfully\r\n");
     } else {
@@ -221,6 +221,7 @@ uint16_t rs422_read(RS422_RxFrame_t *frame)
     uint16_t crc_received = crc16_compute(message_buffer, data_length+1); // Compute CRC on received data
     uint16_t crc_in_packet = (uint16_t)message_buffer[1 + data_length] | ((uint16_t)message_buffer[2 + data_length] << 8);
     if (crc_received != crc_in_packet) {
+        dbg_printf("RS422 CRC mismatch: computed 0x%04X, received 0x%04X\r\n", crc_received, crc_in_packet);
         rx_buffer.read_pos = rx_buffer.write_pos; // Discard packet and hope write position isn't part way through a new packet
         return 0; // CRC mismatch, invalid packet
     }

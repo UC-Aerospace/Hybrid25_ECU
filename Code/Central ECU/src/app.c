@@ -60,23 +60,30 @@ void app_run(void) {
     while (1) {
         batt_check(); // Check battery status
         char buffer[64];
+        static uint16_t stuck = 0;
         
         // Profile RS422 speed
         uint32_t start_time = HAL_GetTick();
         HAL_GPIO_TogglePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin);
+        uint16_t last = 0;
 
-        for (uint32_t i = 0; i < 10; i++) {
+        for (uint32_t i = 0; i < 1000; i++) {
 
             memcpy(buffer, &i, sizeof(i)); // Copy loop index to buffer
-            rs422_send(buffer, 64, RS422_FRAME_HEARTBEAT); // Send test message over RS422
-
+            rs422_send(buffer, 8, RS422_FRAME_HEARTBEAT); // Send test message over RS422
+            stuck = 0;
             while (rs422_get_rx_available() == 0) {
                 __NOP();
+                stuck++;
+                if (stuck > 1000) {
+                    dbg_printf("RS422 stuck in transmit loop\r\n");
+                    break;
+                }
             }
             while (rs422_get_rx_available() > 0) {
                 uint16_t bytes_read = rs422_read(&rx_frame);
-                uint16_t combined_data = (rx_frame.data[1] << 8) | rx_frame.data[0];
-                dbg_printf("%u %d\r\n", combined_data, bytes_read); // Print combined data[0] and data[1] as uint16
+                //uint16_t combined_data = (rx_frame.data[1] << 8) | rx_frame.data[0];
+                //dbg_printf("%u %d\r\n", combined_data, bytes_read); // Print combined data[0] and data[1] as uint16
                 if (bytes_read == 0) {
                     break;
                 }
