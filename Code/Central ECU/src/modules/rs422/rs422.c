@@ -1,8 +1,10 @@
 #include "rs422.h"
+#include "crc.h"
+#include "config.h"
 
 // Global buffers for DMA operations
 RS422_TxBuffer_t tx_buffer = {0}; // Initialize circular buffer for transmission
-RS422_RxBuffer_t rx_buffer = {0}; // Initialize circular buffer for reception
+static volatile RS422_RxBuffer_t rx_buffer = {0}; // Initialize circular buffer for reception
 
 // UART handle pointer for callbacks
 static UART_HandleTypeDef *rs422_uart_handle = NULL;
@@ -30,7 +32,10 @@ static inline uint8_t len_to_dlc(uint8_t len)
 
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t transferred)
 {
-    if (huart->Instance == USART1) {
+    if (HAL_UARTEx_GetRxEventType(huart) == HAL_UART_RXEVENT_IDLE) {
+        rs422_process_rx_dma(transferred);
+    }
+    else if (huart->Instance->ISR & USART_ISR_IDLE) { // Check if IDLE and happen to be TC or HT
         rs422_process_rx_dma(transferred);
     }
 }
@@ -78,7 +83,9 @@ bool rs422_init(UART_HandleTypeDef *huart)
 
     // Start continuous DMA reception
     HAL_StatusTypeDef status = HAL_UARTEx_ReceiveToIdle_DMA(huart, rx_buffer.buffer, RS422_RX_BUFFER_SIZE);
-    
+    __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
+    //__HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_TC);
+
     // Debug output
     extern void dbg_printf(const char* format, ...);
     if (status == HAL_OK) {
@@ -92,6 +99,7 @@ bool rs422_init(UART_HandleTypeDef *huart)
 
 bool rs422_send(uint8_t *data, uint8_t size, RS422_FrameType_t frame_type)
 {
+    //HAL_GPIO_TogglePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin); // Toggle status LED for debugging
     if (size > RS422_TX_MESSAGE_SIZE - 3) {
         return false; // Data too large for packet
     }
@@ -106,16 +114,22 @@ bool rs422_send(uint8_t *data, uint8_t size, RS422_FrameType_t frame_type)
 
     // Compute Header
     uint8_t header = frame_type << 4; // Shift frame type to the upper nibble
-    header |= size & 0x0F; // Set the lower nibble to the DLC
-
-    // Compute CRC-16 using the HAL of header and data
+    header |= dlc & 0x0F; // Set the lower nibble to the DLC
     
     // Copy data to the next packet in the buffer
     memcpy(&tx_buffer.buffer[tx_buffer.tail].data[0], &header, 1); // Set header byte
     memcpy(&tx_buffer.buffer[tx_buffer.tail].data[1], data, size); // Copy data bytes
 
-    tx_buffer.buffer[tx_buffer.tail].size = size;
+    // Compute CRC-16 using the HAL of header and data
+    uint16_t crc = crc16_compute(tx_buffer.buffer[tx_buffer.tail].data, size + 1); // Include header in CRC calculation
+
+    // Append CRC to the packet
+    memcpy(&tx_buffer.buffer[tx_buffer.tail].data[size + 1], &crc, 2); // Copy CRC after data
+
+    tx_buffer.buffer[tx_buffer.tail].size = size + 3; // Store total size (header + data + CRC)
     tx_buffer.tail = (tx_buffer.tail + 1) % RS422_TX_BUFFER_SIZE;
+
+    //HAL_GPIO_TogglePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin); // Toggle status LED for debugging
     
     // Start DMA transfer if not already in progress
     if (!tx_buffer.is_busy) {
@@ -177,22 +191,41 @@ uint16_t rs422_get_rx_available(void)
     return available;
 }
 
-uint16_t rs422_read(uint8_t *data, uint16_t max_len)
+uint16_t rs422_read(RS422_RxFrame_t *frame)
 {
+    static uint8_t message_buffer[RS422_TX_MESSAGE_SIZE]; // Static buffer for reading data
     uint16_t available = rs422_get_rx_available();
-    uint16_t to_read = (available < max_len) ? available : max_len;
-    uint16_t bytes_read = 0;
-    
-    if (to_read == 0) {
-        return 0;
+    if (available == 0) {
+        return 0; // No data available
     }
-    
+
+    uint8_t header = rx_buffer.buffer[rx_buffer.read_pos]; // Read header byte
+    uint8_t data_length = dlc_to_len(header & 0x0F); // Actual data length
+    if (data_length > available - 3) {
+        return 0; // Not enough data available for a complete packet
+    }
+    frame->size = data_length;
+    frame->frame_type = (header >> 4) & 0x0F; // Extract frame type from header
+
+    uint16_t bytes_read = 0;
+    uint16_t to_read = 1 + data_length + 2; // header + data + CRC
+
     // Read data from circular buffer
     while (bytes_read < to_read) {
-        data[bytes_read] = rx_buffer.buffer[rx_buffer.read_pos];
+        message_buffer[bytes_read] = rx_buffer.buffer[rx_buffer.read_pos];
         rx_buffer.read_pos = (rx_buffer.read_pos + 1) % RS422_RX_BUFFER_SIZE;
         bytes_read++;
     }
-    
+
+    // Check CRC to validate the packet
+    uint16_t crc_received = crc16_compute(message_buffer, data_length+1); // Compute CRC on received data
+    uint16_t crc_in_packet = (uint16_t)message_buffer[1 + data_length] | ((uint16_t)message_buffer[2 + data_length] << 8);
+    if (crc_received != crc_in_packet) {
+        rx_buffer.read_pos = rx_buffer.write_pos; // Discard packet and hope write position isn't part way through a new packet
+        return 0; // CRC mismatch, invalid packet
+    }
+
+    // Copy validated data to the frame
+    memcpy(frame->data, &message_buffer[1], data_length);
     return bytes_read;
 }

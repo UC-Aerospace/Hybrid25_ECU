@@ -9,6 +9,7 @@
 #include "ssd1306_fonts.h"
 #include "can_handler.h"
 #include "rs422.h"
+#include "crc.h"
 
 void app_init(void) {
     // Initialize the application
@@ -48,25 +49,45 @@ void app_init(void) {
     can_init(); // Initialize CAN peripheral
     sd_log_write(SD_LOG_INFO, "ECU initialized");
     rs422_init(&huart1); // Initialize RS422 with DMA
+    crc16_init(); // Initialize CRC peripheral
 }
 
 void app_run(void) {
     HAL_ADC_Start(&hadc1); // Start ADC peripheral
     HAL_Delay(1000);
+    static RS422_RxFrame_t rx_frame;
 
     while (1) {
         batt_check(); // Check battery status
-        if (rs422_get_rx_available() > 0) {
-            uint8_t rx_data[64];
-            uint16_t bytes_read = rs422_read(rx_data, sizeof(rx_data));
-            if (bytes_read > 0) {
-                // Process received data
-                dbg_printf("Received %d bytes: %.*s\r\n", bytes_read, bytes_read, rx_data);
+        char buffer[64];
+        
+        // Profile RS422 speed
+        uint32_t start_time = HAL_GetTick();
+        HAL_GPIO_TogglePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin);
+
+        for (uint32_t i = 0; i < 10; i++) {
+
+            memcpy(buffer, &i, sizeof(i)); // Copy loop index to buffer
+            rs422_send(buffer, 64, RS422_FRAME_HEARTBEAT); // Send test message over RS422
+
+            while (rs422_get_rx_available() == 0) {
+                __NOP();
+            }
+            while (rs422_get_rx_available() > 0) {
+                uint16_t bytes_read = rs422_read(&rx_frame);
+                uint16_t combined_data = (rx_frame.data[1] << 8) | rx_frame.data[0];
+                dbg_printf("%u %d\r\n", combined_data, bytes_read); // Print combined data[0] and data[1] as uint16
+                if (bytes_read == 0) {
+                    break;
+                }
             }
         }
-        rs422_send("Hello6789\n", 10); // Send test message over RS422
-        rs422_send("Bye456789\n", 10); // Send another test message over RS422
         HAL_GPIO_TogglePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin);
+        uint32_t elapsed_time = HAL_GetTick() - start_time;
+        
+        dbg_printf("RS422 speed test completed in %lu ms\r\n", elapsed_time);
+        
+        //HAL_GPIO_TogglePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin);
         HAL_Delay(1300); // Delay for 1 second before the next reading
     }
 }

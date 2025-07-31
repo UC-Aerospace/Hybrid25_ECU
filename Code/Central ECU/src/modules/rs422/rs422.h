@@ -10,7 +10,7 @@
 // Buffer configurations for optimal DMA performance
 #define RS422_TX_BUFFER_SIZE 8
 #define RS422_TX_MESSAGE_SIZE 67
-#define RS422_RX_BUFFER_SIZE 200  // Double buffer for continuous DMA reception
+#define RS422_RX_BUFFER_SIZE 335  // Double buffer for continuous DMA reception
 
 typedef enum {
     RS422_FRAME_HEARTBEAT = 0b0000,
@@ -38,6 +38,12 @@ typedef struct {
 } RS422_packet;
 
 typedef struct {
+    RS422_FrameType_t frame_type; // Type of RS422 frame
+    uint8_t data[RS422_TX_MESSAGE_SIZE - 3]; // Data payload (excluding header and CRC)
+    uint16_t size; // Total size of the packet (header + data + CRC)
+} RS422_RxFrame_t;
+
+typedef struct {
     RS422_packet buffer[RS422_TX_BUFFER_SIZE];
     volatile uint16_t head;
     volatile uint16_t tail;
@@ -56,15 +62,11 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t transferred)
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart);
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart);
 bool rs422_init(UART_HandleTypeDef *huart);
-bool rs422_send(uint8_t *data, uint8_t size);
+bool rs422_send(uint8_t *data, uint8_t size, RS422_FrameType_t frame_type);
 uint16_t rs422_get_tx_buffer_space(void);
 void rs422_process_tx_queue(void);
 uint16_t rs422_get_rx_available(void);
-uint16_t rs422_read(uint8_t *data, uint16_t max_len);
+uint16_t rs422_read(RS422_RxFrame_t *frame);
 void rs422_process_rx_dma(uint16_t transferred);
-
-// External declarations
-extern RS422_TxBuffer_t tx_buffer;  // Circular buffer for transmission
-extern RS422_RxBuffer_t rx_buffer;  // Circular buffer for reception
 
 #endif // RS422_H
