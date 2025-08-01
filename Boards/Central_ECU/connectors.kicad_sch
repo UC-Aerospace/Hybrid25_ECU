@@ -7341,7 +7341,7 @@
 		)
 		(uuid "77ba1de6-00a6-4077-925e-08755fb25437")
 	)
-	(hierarchical_label "422_TX+"
+	(hierarchical_label "422_TX-"
 		(shape input)
 		(at 167.64 236.22 270)
 		(effects
@@ -7385,7 +7385,7 @@
 		)
 		(uuid "94b711b6-ef51-424c-b662-713809c5ab04")
 	)
-	(hierarchical_label "422_TX-"
+	(hierarchical_label "422_TX+"
 		(shape input)
 		(at 170.18 236.22 270)
 		(effects

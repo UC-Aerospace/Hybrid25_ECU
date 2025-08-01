@@ -1,4 +1,5 @@
 #include "rs422_handler.h"
+#include "debug_io.h"
 
 void rs422_handler_init(void) {
     // Initialize RS422 handler
@@ -17,7 +18,6 @@ void rs422_handler_rx_poll(void) {
             case RS422_FRAME_HEARTBEAT:
                 // Handle heartbeat frame
                 dbg_printf("Received heartbeat frame with size %d\r\n", frame.size);
-                rx422_handler_parse_heartbeat(&frame);
                 break;
             case RS422_FRAME_ARM_UPDATE:
                 // Handle arm update frame

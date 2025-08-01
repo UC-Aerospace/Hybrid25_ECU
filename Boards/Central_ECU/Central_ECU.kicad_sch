@@ -9410,7 +9410,7 @@
 		)
 		(uuid "3dc34721-b05c-4f19-b241-ee122da8fccb")
 	)
-	(label "422D_N"
+	(label "422D_P"
 		(at 394.97 128.27 180)
 		(effects
 			(font
@@ -9890,7 +9890,7 @@
 		)
 		(uuid "db74b0b5-f915-4f4c-9792-49333fd62a97")
 	)
-	(label "422D_P"
+	(label "422D_N"
 		(at 394.97 125.73 180)
 		(effects
 			(font
@@ -20561,7 +20561,7 @@
 				(justify right)
 			)
 		)
-		(pin "422_TX+" input
+		(pin "422_TX-" input
 			(at 294.64 210.82 0)
 			(uuid "8ac0dc3e-c13d-4ad1-8832-d08a4988fce2")
 			(effects
@@ -20571,7 +20571,7 @@
 				(justify right)
 			)
 		)
-		(pin "422_TX-" input
+		(pin "422_TX+" input
 			(at 294.64 207.01 0)
 			(uuid "d8529136-74c8-4c65-8354-a5eba04eadd5")
 			(effects
