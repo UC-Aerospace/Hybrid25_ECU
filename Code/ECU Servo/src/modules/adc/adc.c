@@ -1,6 +1,6 @@
 #include "adc.h"
 
-uint16_t adcValues[5];
+static uint16_t adcValues[5];
 
 void startADCSequence()
 {
@@ -16,10 +16,13 @@ void startADCSequence()
     }
 
     HAL_ADC_Stop(&hadc1);  // Stop the ADC (optional in continuous mode)
+
 }
 
 void getServoPositions(uint16_t *positions)
 {
+    startADCSequence();  // Start the ADC sequence to get the latest values
+    
     for (int i = 0; i < 4; i++)
     {
         positions[i] = adcValues[i];
