@@ -1,5 +1,5 @@
-#ifndef CAN_HANDLER_H
-#define CAN_HANDLER_H
+#ifndef CAN_H
+#define CAN_H
 
 #include "stm32g0xx_hal.h"
 #include "peripherals.h"
@@ -50,4 +50,4 @@ static inline CAN_ID unpack_can_id(uint16_t std_id) {
 void can_init(void);
 void can_test_send(void);
 
-#endif // CAN_HANDLER_H
+#endif // CAN_H
