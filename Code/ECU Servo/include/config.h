@@ -39,8 +39,8 @@ static uint8_t BOARD_ID;
 #define PWM_A_GPIO_Port GPIOC
 #define PWM_B_Pin GPIO_PIN_7
 #define PWM_B_GPIO_Port GPIOC
-#define LED_ERROR_Pin GPIO_PIN_9
-#define LED_ERROR_GPIO_Port GPIOC
+#define LED_IND_ERROR_Pin GPIO_PIN_9
+#define LED_IND_ERROR_GPIO_Port GPIOC
 #define LED_STATUS_Pin GPIO_PIN_0
 #define LED_STATUS_GPIO_Port GPIOD
 #define E1_Pin GPIO_PIN_1

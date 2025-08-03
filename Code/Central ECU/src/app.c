@@ -7,7 +7,7 @@
 #include "sd_log.h"
 #include "spicy.h"
 #include "ssd1306_fonts.h"
-#include "can_handler.h"
+#include "can_handlers.h"
 #include "rs422.h"
 #include "crc.h"
 

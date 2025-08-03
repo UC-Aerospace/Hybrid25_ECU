@@ -1,8 +1,7 @@
 #include "can.h"
 #include "debug_io.h"
-#include "frames.h"
-#include "handlers.h"
 #include "filters.h"
+#include "can_handlers.h"
 
 FDCAN_TxHeaderTypeDef TxHeader;
 FDCAN_RxHeaderTypeDef RxHeader;
@@ -19,13 +18,14 @@ void CAN_Error_Handler(void)
 }
 
 // RX FIFO0 is reserved for high priority messages
+// Handle messages in ISR context
 void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 {
   if((RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) != RESET)
   {
-    uint8_t rxData[64];  // support FD CAN
+    CAN_Frame_t frame;
     /* Retreive Rx messages from RX FIFO0 */
-    if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &RxHeader, rxData) != HAL_OK) {
+    if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &RxHeader, frame.data) != HAL_OK) {
         /* Reception Error */
         CAN_Error_Handler();
     }
@@ -34,19 +34,42 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
         CAN_Error_Handler();
     }
 
-    dbg_printf("Received CAN message with ID: %08lX, Data: %02X %02X\r\n", RxHeader.Identifier, rxData[0], rxData[1]);
+    CAN_ID id = unpack_can_id(RxHeader.Identifier);
+    frame.id = id;
+    frame.length = RxHeader.DataLength;
+
+    dbg_printf("Received High Priority CAN message with ID: %08lX\r\n", RxHeader.Identifier);
+
+    if (id.priority == CAN_PRIORITY_HEARTBEAT) {
+        handle_heatbeat((CAN_HeartbeatFrame*)frame.data, id, RxHeader.RxTimestamp);
+        return; // No further processing needed for heartbeat messages
+    }
+
+    switch (id.frameType) {
+        case CAN_TYPE_ERROR:
+            handle_error_warning((CAN_ErrorWarningFrame*)frame.data, id);
+            break;
+        case CAN_TYPE_COMMAND:
+            handle_command((CAN_CommandFrame*)frame.data, id);
+            break;
+        default:
+            dbg_printf("Frame type can't be parsed with high priority: %d\r\n", id.frameType);
+            enqueue_can_frame(&frame);
+            break;
+    }
   }
 }
 
+// RX FIFO1 is reserved for low priority messages
+// Messages should be queued and processed in the main loop
 void HAL_FDCAN_RxFifo1Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo1ITs)
 {
-  if((RxFifo1ITs & FDCAN_IT_RX_FIFO1_NEW_MESSAGE) != RESET)
-  {
+  if((RxFifo1ITs & FDCAN_IT_RX_FIFO1_NEW_MESSAGE) != RESET) {
     test_counter++;
-    uint8_t rxData[64];  // CAN FD max length is 64 bytes
+    CAN_Frame_t frame;
 
     /* Retreive Rx messages from RX FIFO1 */
-    if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO1, &RxHeader, rxData) != HAL_OK) {
+    if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO1, &RxHeader, frame.data) != HAL_OK) {
         /* Reception Error */
         CAN_Error_Handler();
     }
@@ -55,28 +78,14 @@ void HAL_FDCAN_RxFifo1Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo1ITs)
         CAN_Error_Handler();
     }
 
-    dbg_printf("Received CAN message with ID: %08lX, Data: %02X %02X\r\n", RxHeader.Identifier, rxData[0], rxData[1]);
-
     CAN_ID id = unpack_can_id(RxHeader.Identifier);
+    frame.id = id;
+    frame.length = RxHeader.DataLength;
 
-    switch (id.frameType) {
-        case CAN_TYPE_ERROR:
-            handle_error_warning((CAN_ErrorWarningFrame*)rxData, id, RxHeader.DataLength);
-            break;
-        case CAN_TYPE_COMMAND:
-            handle_command((CAN_CommandFrame*)rxData, id, RxHeader.DataLength);
-            break;
-        case CAN_TYPE_STATUS:
-            handle_status((CAN_StatusFrame*)rxData, id, RxHeader.DataLength);
-            break;
-        case CAN_TYPE_SERVO_POS:
-            handle_servo_pos((CAN_ServoFrame*)rxData, id, RxHeader.DataLength);
-            break;
-        case CAN_TYPE_ADC_DATA:
-            handle_adc_data((CAN_ADCFrame*)rxData, id, RxHeader.DataLength);
-            break;
+    enqueue_can_frame(&frame);
+
+    dbg_printf("Queued CAN message with ID: %08lX\r\n", RxHeader.Identifier);
     }
-  }
 }
 
 void HAL_FDCAN_ErrorCallback(FDCAN_HandleTypeDef *hfdcan)
@@ -104,7 +113,7 @@ void can_init(void) {
 
 }
 
-void can_send_command(CAN_ID id, uint8_t *data, uint8_t length) {
+static bool can_send(CAN_ID id, uint8_t *data, uint8_t length) {
     // Prepare and send a CAN command message
     TxHeader.Identifier = pack_can_id(id);
     TxHeader.IdType = FDCAN_STANDARD_ID;
@@ -116,39 +125,12 @@ void can_send_command(CAN_ID id, uint8_t *data, uint8_t length) {
     TxHeader.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
     TxHeader.MessageMarker = 0;
 
-    for (int i = 0; i < length; i++) {
-        TxData[i] = data[i];
-    }
+    dbg_printf("Sending CAN command with ID: %08lX, length: %d\r\n", TxHeader.Identifier, length);
 
-    dbg_printf("Sending CAN command with ID: %08lX, Data: ", TxHeader.Identifier);
-    for (int i = 0; i < length; i++) {
-        dbg_printf("%02X ", TxData[i]);
+    if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &TxHeader, data) != HAL_OK) {
+        return false; // Transmission Error
     }
-    dbg_printf("\r\n");
-
-    if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &TxHeader, TxData) != HAL_OK) {
-        CAN_Error_Handler();
-    }
+    return true; // Transmission Successful
 }
 
-void can_test_send(void) {
-    // Example function to send a test CAN message
-    TxHeader.Identifier = 0b10001000001; // Example ID
-    TxHeader.IdType = FDCAN_STANDARD_ID;
-    TxHeader.TxFrameType = FDCAN_DATA_FRAME;
-    TxHeader.DataLength = FDCAN_DLC_BYTES_2;
-    TxHeader.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
-    TxHeader.BitRateSwitch = FDCAN_BRS_ON;
-    TxHeader.FDFormat = FDCAN_FD_CAN;
-    TxHeader.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
-    TxHeader.MessageMarker = 0;
 
-    TxData[0] = test_counter & 0xFF; // Example data
-    TxData[1] = (test_counter >> 8) & 0xFF;
-
-    dbg_printf("Sending CAN message with ID: %08lX, Data: %02X %02X\r\n", TxHeader.Identifier, TxData[0], TxData[1]);
-
-    if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &TxHeader, TxData) != HAL_OK) {
-        CAN_Error_Handler();
-    }
-}

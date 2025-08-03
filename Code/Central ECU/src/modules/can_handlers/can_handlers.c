@@ -1,7 +1,6 @@
 #include "can_handlers.h"
 #include "debug_io.h"
 #include "can.h"
-#include "servo.h"
 
 static void handle_cmd_set_servo_arm(CAN_CommandFrame* frame, CAN_ID id);
 static void handle_cmd_set_servo_pos(CAN_CommandFrame* frame, CAN_ID id);
@@ -146,16 +145,17 @@ void handle_command(CAN_CommandFrame* frame, CAN_ID id) {
 
 void handle_servo_pos(CAN_ServoFrame* frame, CAN_ID id) {
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
-    dbg_printf("Frame not handled: Servo Position -> initiator=%d\n", initiator);
+    //TODO: Handle this
 }
 
 void handle_adc_data(CAN_ADCFrame* frame, CAN_ID id, uint8_t dataLength) {
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
-    dbg_printf("Frame not handled: ADC Data -> initiator=%d\n", initiator);
+    //TODO: Handle this
 }
 
 void handle_status(CAN_StatusFrame* frame, CAN_ID id) {
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
+    //TODO: Handle this
 }
 
 void handle_heatbeat(CAN_HeartbeatFrame* frame, CAN_ID id, uint32_t timestamp) {
@@ -174,95 +174,25 @@ void handle_heatbeat(CAN_HeartbeatFrame* frame, CAN_ID id, uint32_t timestamp) {
 // ==========================================================
 
 static void handle_cmd_set_servo_arm(CAN_CommandFrame* frame, CAN_ID id) {
-
-    /*
-    Frame format:
-    BYTE 2:
-        Arm change and state
-
-        XXXXYYYY
-
-        X: Bitwise change arm
-        Y: Bitwise arm state
-    */
-
-    uint8_t which_servo = frame->options >> 4; // Bits 0-2 for which servo
-    uint8_t servo_action = frame->options & 0x0F; // Bits 3-5 for action
-    for (int i = 0; i < 4; i++) {
-        if (which_servo & (3-i)) {
-            if (servo_action & (3-i)) {
-                dbg_printf("Servo %d: Arm\n", i+1);
-                servo_arm(servoByIndex[i]);
-            } else {
-                dbg_printf("Servo %d: Disarm\n", i+1);
-                servo_disarm(servoByIndex[i]);
-            }
-        }
-    }
+    // ECU has no reason to handle this
+    uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
+    dbg_printf("Set Servo Arm Command: initiator=%d, options=%d\n", initiator, frame->options);
 }
 
 static void handle_cmd_set_servo_pos(CAN_CommandFrame* frame, CAN_ID id) {
-    
-    /*
-    Frame format:
-    BYTE 2:
-    Servo and position
-
-    XXYZZZZZ
-
-    X: Which servo (0-3)
-    Y: How to set (0 by list, 1 manual)
-    Z: If by List [0-3]
-        0 -> Close
-        1 -> Open
-        2 -> Crack
-        3 -> Safe
-    Z: If by manual [0-20]
-        0 = 0 deg, 10 = 90 deg, 20 = 180 deg
-        Formula will be Z*50+250 to get 250 to 1250 ticks
-    Note: 250 ticks is minimum pulse width, 1250 ticks is maximum pulse width
-    */
-
-    uint8_t servo_index = frame->options >> 6; // Bits 0-1 for which servo
-    uint8_t set_type = (frame->options >> 5) & 0x01; // Bits 2 for how to set
-    uint8_t position = frame->options & 0x1F; // Bits 3-7 for position
-    dbg_printf("Servo Move Command: servo_index=%d, set_type=%d, position=%d\n",
-               servo_index, set_type, position);
-    
-    if (set_type == 0) {
-        // Set by list
-        ServoPosition servo_position;
-        switch (position) {
-            case 0:
-                servo_position = CLOSE;
-                break;
-            case 1:
-                servo_position = OPEN;
-                break;
-            case 2:
-                servo_position = CRACK;
-                break;
-            case 3:
-                servo_queue_position(servoByIndex[servo_index], servoByIndex[servo_index]->safePosition);
-                return; // Safe position, no need to set
-            default:
-                dbg_printf("Invalid position for servo %d: %d\n", servo_index, position);
-                return; // Invalid position
-        }
-        servo_queue_position(servoByIndex[servo_index], servo_position);
-    } else {
-        // Set by manual angle
-        uint16_t angle = position * 50 + 250; // Convert to angle
-        servo_queue_position(servoByIndex[servo_index], angle);
-    }
+    // Also no reason to handle this
+    uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
+    dbg_printf("Set Servo Position Command: initiator=%d, options=%d\n", initiator, frame->options);
 }
 
 static void handle_cmd_get_servo_pos(CAN_CommandFrame* frame, CAN_ID id) {
+    // Likewise
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
     dbg_printf("Get Servo Position Command: initiator=%d\n", initiator);
 }
 
 static void handle_cmd_get_voltage(CAN_CommandFrame* frame, CAN_ID id) {
+    // For now this will be unused on all boards
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
-    dbg_printf("Get Voltage Command: initiator=%d, options=%d\n", initiator, frame->options);
+    dbg_printf("Get Voltage Command: initiator=%d\n", initiator);
 }
