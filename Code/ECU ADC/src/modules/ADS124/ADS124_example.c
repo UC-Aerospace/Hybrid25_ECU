@@ -14,7 +14,7 @@ static ads124_handle_t ads124_handle;
  * @brief Example initialization function
  * Call this from app_init() or main initialization
  */
-void ads124_example_init(void)
+void ads124_example_init_2(void)
 {
     // Initialize the ADS124 module
     if (ads124_init(&ads124_handle, &hspi1) != HAL_OK) {
@@ -56,7 +56,7 @@ void ads124_example_init(void)
  * @brief Example processing function
  * Call this from app_run() main loop
  */
-void ads124_example_process(void)
+void ads124_example_process_2(void)
 {
     // Check for completed data buffers
     ads124_data_buffer_t *completed_buffer = ads124_get_completed_buffer(&ads124_handle);
@@ -91,7 +91,7 @@ void ads124_example_process(void)
  * @brief GPIO EXTI callback function
  * This should be called from the STM32 EXTI callback
  */
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+void HAL_GPIO_EXTI_Callback_2(uint16_t GPIO_Pin)
 {
     // Call the ADS124 data ready callback
     ads124_data_ready_callback(GPIO_Pin);
@@ -100,7 +100,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 /**
  * @brief Example function to change channel configuration at runtime
  */
-void ads124_example_reconfigure_channel(uint8_t channel, ads124_pga_gain_t new_gain, ads124_datarate_t new_rate)
+void ads124_example_reconfigure_channel_2(uint8_t channel, ads124_pga_gain_t new_gain, ads124_datarate_t new_rate)
 {
     // Stop conversions
     ads124_stop_conversion(&ads124_handle);
@@ -120,7 +120,7 @@ void ads124_example_reconfigure_channel(uint8_t channel, ads124_pga_gain_t new_g
 /**
  * @brief Example function to enable/disable channels dynamically
  */
-void ads124_example_toggle_channel(uint8_t channel, bool enable)
+void ads124_example_toggle_channel_2(uint8_t channel, bool enable)
 {
     // Stop conversions
     ads124_stop_conversion(&ads124_handle);
