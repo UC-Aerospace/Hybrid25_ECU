@@ -13,4 +13,6 @@ extern RTC_HandleTypeDef hrtc;
 extern SPI_HandleTypeDef hspi1;
 extern UART_HandleTypeDef huart2;
 extern USBD_HandleTypeDef hUsbDeviceFS;
+extern TIM_HandleTypeDef htim15;
+extern DMA_HandleTypeDef hdma_adc1;
 #endif // PERIPHERALS_H

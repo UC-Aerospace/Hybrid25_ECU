@@ -65,6 +65,8 @@ void Error_Handler(void);
 #define MIPAB_A2_GPIO_Port GPIOA
 #define MIPAC_A3_Pin GPIO_PIN_3
 #define MIPAC_A3_GPIO_Port GPIOA
+#define SPI_CS_Pin GPIO_PIN_4
+#define SPI_CS_GPIO_Port GPIOA
 #define SYNC_Pin GPIO_PIN_4
 #define SYNC_GPIO_Port GPIOC
 #define ADC_RDY_Pin GPIO_PIN_5
@@ -76,8 +78,6 @@ void Error_Handler(void);
 #define REF5V_B1_GPIO_Port GPIOB
 #define V2S_A10_Pin GPIO_PIN_2
 #define V2S_A10_GPIO_Port GPIOB
-#define A11_B10_Pin GPIO_PIN_10
-#define A11_B10_GPIO_Port GPIOB
 #define LED2_Pin GPIO_PIN_9
 #define LED2_GPIO_Port GPIOC
 #define LED1_Pin GPIO_PIN_0

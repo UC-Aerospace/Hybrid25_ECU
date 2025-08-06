@@ -1,456 +1,487 @@
-#include "ADS124.h"
-#include <string.h>
-
-/* Static variables */
-static ads124_handle_t *g_ads124_handle = NULL;
-
-/* Timeout definitions */
-#define ADS124_SPI_TIMEOUT    1000
-#define ADS124_RESET_DELAY    10
-#define ADS124_STARTUP_DELAY  50
-
-/* Data rate to sample rate mapping (in Hz) */
-static const uint16_t ads124_sample_rates[] = {
-    3,    // 2.5 SPS (rounded to 3)
-    5,    // 5 SPS
-    10,   // 10 SPS
-    17,   // 16.6 SPS (rounded to 17)
-    20,   // 20 SPS
-    50,   // 50 SPS
-    60,   // 60 SPS
-    100,  // 100 SPS
-    200,  // 200 SPS
-    400,  // 400 SPS
-    800,  // 800 SPS
-    1000, // 1000 SPS
-    2000, // 2000 SPS
-    4000  // 4000 SPS
-};
-
 /**
- * @brief Initialize the ADS124S08 ADC
- */
-HAL_StatusTypeDef ads124_init(ads124_handle_t *handle, SPI_HandleTypeDef *hspi)
-{
-    if (handle == NULL || hspi == NULL) {
-        return HAL_ERROR;
-    }
+ * 
+ * @file ads124s08.c
+ *
+ * @brief  ADS124S08 Low level routines using TI Drivers
+ * 
+ * @copyright Copyright (C) 2019-22 Texas Instruments Incorporated - http://www.ti.com/
+ * All rights reserved. 
+ * 
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *
+ *    Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ *    Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the
+ *    distribution.
+ *
+ *    Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ *  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ *  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ *  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ *  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ */ 
+#include <stdbool.h>
+#include <stdint.h>
+#include <math.h>
+#include <assert.h>
 
-    // Store global handle for interrupt callback
-    g_ads124_handle = handle;
-    
-    // Initialize handle structure
-    memset(handle, 0, sizeof(ads124_handle_t));
-    handle->hspi = hspi;
-    
-    // Initialize buffers
-    handle->buffer_a.buffer_id = 0;
-    handle->buffer_b.buffer_id = 1;
-    handle->active_buffer = &handle->buffer_a;
-    
-    // Hardware reset
-    HAL_StatusTypeDef status = ads124_reset(handle);
-    if (status != HAL_OK) {
-        return status;
-    }
-    
-    // Verify device ID
-    uint8_t device_id;
-    status = ads124_read_id(handle, &device_id);
-    if (status != HAL_OK) {
-        return status;
-    }
-    
-    // Expected device ID for ADS124S08 (check datasheet for exact value)
-    if ((device_id & 0xF0) != 0x00) {  // Device ID mask
-        return HAL_ERROR;
-    }
-    
-    // Configure default settings
-    // Set internal reference
-    status = ads124_write_register(handle, ADS124_REF_REG, 0x10);  // Internal 2.5V reference
-    if (status != HAL_OK) return status;
-    
-    // Set system settings
-    status = ads124_write_register(handle, ADS124_SYS_REG, 0x10);  // PGA enabled, timeout disabled
-    if (status != HAL_OK) return status;
-    
-    handle->initialized = true;
-    return HAL_OK;
+#include "hal.h"
+#include "ads124.h"
+#include "crc.h"
+
+//****************************************************************************
+//
+// Internal variables
+//
+//****************************************************************************
+
+/* Internal register map array (to recall current configuration) */
+static uint8_t registerMap[NUM_REGISTERS];
+
+//****************************************************************************
+//
+// Functions
+//
+//****************************************************************************
+
+/************************************************************************************//**
+ *
+ * @brief getRegisterValue()
+ *          Getter function to access the registerMap array outside of this module
+ *
+ * @param[in]	address	The 8-bit register address
+ *
+ * @return 		The 8-bit register value
+ */
+uint8_t getRegisterValue( uint8_t address )
+{
+    assert( address < NUM_REGISTERS );
+    return registerMap[address];
 }
 
-/**
- * @brief Configure a differential input channel
+/************************************************************************************//**
+ *
+ * @brief adcStartupRoutine()
+ *          Startup function to be called before communicating with the ADC
+ *
+ * @param[in]   *spiHdl    SPI_Handle pointer for TI Drivers
+ *
+ * @return      true for successful initialization
+ *              false for unsuccessful initialization
  */
-HAL_StatusTypeDef ads124_configure_channel(ads124_handle_t *handle, 
-                                          uint8_t channel_index,
-                                          ads124_input_t pos_input,
-                                          ads124_input_t neg_input,
-                                          ads124_pga_gain_t gain,
-                                          ads124_datarate_t data_rate)
+ bool adcStartupRoutine( SPI_HandleTypeDef *hspi )
 {
-    if (handle == NULL || !handle->initialized || channel_index >= 12) {
-        return HAL_ERROR;
+    uint8_t initRegisterMap[NUM_REGISTERS] = { 0 };
+    uint8_t status, i;
+
+    // Provide additional delay time for power supply settling
+    delay_us( DELAY_2p2MS );
+
+    // Toggle nRESET pin to assure default register settings.
+    toggleRESET();
+
+    // Must wait 4096 tCLK after reset
+    delay_us( DELAY_4096TCLK );
+
+    status = readSingleRegister( hspi, REG_ADDR_STATUS );
+    if ( (status & ADS_nRDY_MASK) ) {
+        return( false );                      // Device not ready
     }
-    
-    // Store channel configuration
-    handle->channels[channel_index].positive_input = pos_input;
-    handle->channels[channel_index].negative_input = neg_input;
-    handle->channels[channel_index].gain = gain;
-    handle->channels[channel_index].data_rate = data_rate;
-    handle->channels[channel_index].enabled = false;  // Enable separately
-    
-    return HAL_OK;
+
+    // Ensure internal register array is initialized
+    restoreRegisterDefaults();
+
+    // Configure initial device register settings here
+    writeSingleRegister( hspi, REG_ADDR_STATUS, 0x00 );    // Reset POR event
+
+    // Create temporary array based on desired configuration
+    for( i = 0 ; i < NUM_REGISTERS ; i++) {
+        initRegisterMap[i] = registerMap[i];
+    }
+
+    // Read back all registers, except for status register.
+    readMultipleRegisters( hspi, REG_ADDR_ID, NUM_REGISTERS );
+    for ( i = REG_ADDR_STATUS; i < REG_ADDR_SYS - REG_ADDR_STATUS + 1; i++ ) {
+        if ( i == REG_ADDR_STATUS )
+            continue;
+        if ( initRegisterMap[i] != registerMap[i] )
+            return( false );
+    }
+    return( true );
 }
 
-/**
- * @brief Enable/disable a channel
+/************************************************************************************//**
+ *
+ * @brief readSingleRegister()
+ *          Reads contents of a single register at the specified address
+ *
+ * @param[in]   spiHdl  SPI_Handle from TI Drivers
+ * @param[in]	address Address of the register to be read
+ *
+ * @return 		8-bit register contents
  */
-HAL_StatusTypeDef ads124_enable_channel(ads124_handle_t *handle, uint8_t channel_index, bool enable)
+uint8_t readSingleRegister( SPI_HandleTypeDef *hspi, uint8_t address )
 {
-    if (handle == NULL || !handle->initialized || channel_index >= 12) {
-        return HAL_ERROR;
-    }
-    
-    handle->channels[channel_index].enabled = enable;
-    return HAL_OK;
+    /* Initialize arrays */
+    uint8_t DataTx[COMMAND_LENGTH + 1] = { OPCODE_RREG | (address & OPCODE_RWREG_MASK), 0, 0 };
+    uint8_t DataRx[COMMAND_LENGTH + 1] = { 0, 0, 0 };
+
+
+    /* Check that the register address is in range */
+    assert( address < NUM_REGISTERS );
+
+    /* Build TX array and send it */
+    spiSendReceiveArrays( hspi, DataTx, DataRx, COMMAND_LENGTH + 1);
+
+    /* Update register array and return read result*/
+    registerMap[address] = DataRx[COMMAND_LENGTH];
+    return DataRx[COMMAND_LENGTH];
 }
 
-/**
- * @brief Start continuous conversion
+/************************************************************************************//**
+ *
+ * @brief readMultipleRegisters()
+ *          Reads a group of registers starting at the specified address
+ *          NOTE: Use getRegisterValue() to retrieve the read values
+ *
+ * @param[in]   spiHdl          SPI_Handle from TI Drivers
+ * @param[in]	startAddress	Register address to start reading
+ * @param[in]	count 			Number of registers to read
+ *
+ * @return 		None
  */
-HAL_StatusTypeDef ads124_start_conversion(ads124_handle_t *handle)
+void readMultipleRegisters( SPI_HandleTypeDef *hspi, uint8_t startAddress, uint8_t count )
 {
-    if (handle == NULL || !handle->initialized) {
-        return HAL_ERROR;
+    uint8_t DataTx[COMMAND_LENGTH + NUM_REGISTERS] = { 0 };
+    uint8_t DataRx[COMMAND_LENGTH + NUM_REGISTERS] = { 0 };
+    uint8_t i;
+
+    /* Check that the register address and count are in range */
+    assert( startAddress + count <= NUM_REGISTERS );
+
+    // Read register data bytes
+    DataTx[0] = OPCODE_RREG | (startAddress & OPCODE_RWREG_MASK);
+    DataTx[1] = count - 1;
+
+    spiSendReceiveArrays( hspi, DataTx, DataRx, COMMAND_LENGTH + count);
+
+    for ( i = 0; i < count; i++ ) {
+        // Store received register data into internal registerMap copy
+        registerMap[i+startAddress] = DataRx[COMMAND_LENGTH + i];
     }
-    
-    // Find first enabled channel
-    handle->current_channel = 255;  // Invalid channel
-    for (uint8_t i = 0; i < 12; i++) {
-        if (handle->channels[i].enabled) {
-            handle->current_channel = i;
-            break;
+}
+
+/************************************************************************************//**
+ *
+ * @brief writeSingleRegister()
+ *          Write data to a single register at the specified address
+ *
+ * @param[in]   spiHdl      SPI_Handle from TI Drivers
+ * @param[in]	address 	Register address to write
+ * @param[in]	data 		8-bit data to write
+ *
+ * @return 		None
+ */
+void writeSingleRegister( SPI_HandleTypeDef *hspi, uint8_t address, uint8_t data )
+{
+    /* Initialize arrays */
+    uint8_t DataTx[COMMAND_LENGTH + 1] = { OPCODE_WREG | (address & OPCODE_RWREG_MASK), 0, data};
+    uint8_t DataRx[COMMAND_LENGTH + 1] = { 0 };
+
+    /* Check that the register address is in range */
+    assert( address < NUM_REGISTERS );
+
+    /* Build TX array and send it */
+    spiSendReceiveArrays( hspi, DataTx, DataRx, COMMAND_LENGTH + 1 );
+
+    /* Update register array */
+    registerMap[address] = DataTx[COMMAND_LENGTH];
+}
+
+/************************************************************************************//**
+ *
+ * @brief writeMultipleRegisters()
+ *          Write data to a group of registers
+ *          NOTES: Use getRegisterValue() to retrieve the written values.
+ *          Registers should be re-read after a write operation to ensure proper configuration.
+ *
+ * @param[in]   spiHdl          SPI_Handle from TI Drivers
+ * @param[in]	startAddress 	Register address to start writing
+ * @param[in]	count 			Number of registers to write
+ * @param[in]	regData			Array that holds the data to write, where element zero 
+ *      						is the data to write to the starting address.
+ *
+ * @return 		None
+ */
+void writeMultipleRegisters( SPI_HandleTypeDef *hspi, uint8_t startAddress, uint8_t count, uint8_t regData[] )
+{
+    uint8_t DataTx[COMMAND_LENGTH + NUM_REGISTERS] = { 0 };
+    uint8_t DataRx[COMMAND_LENGTH + NUM_REGISTERS] = { 0 };
+    uint8_t i, j = 0;
+
+    /* Check that the register address and count are in range */
+    assert( startAddress + count <= NUM_REGISTERS );
+
+    /* Check that regData is not a NULL pointer */
+    assert( regData );
+
+    DataTx[0] = OPCODE_WREG | (startAddress & OPCODE_RWREG_MASK);
+    DataTx[1] = count - 1;
+    for ( i = startAddress; i < startAddress + count; i++ ) {
+        DataTx[COMMAND_LENGTH + j++] = regData[i];
+        registerMap[i] = regData[i];
+    }
+
+    // SPI communication
+    spiSendReceiveArrays( hspi, DataTx, DataRx, COMMAND_LENGTH + count );
+}
+
+/************************************************************************************//**
+ *
+ * @brief sendCommand()
+ *          Sends the specified SPI command to the ADC
+ *
+ * @param[in]   spiHdl      SPI_Handle from TI Drivers
+ * @param[in]	op_code 	SPI command byte
+ *
+ * @return 		None
+ */
+void sendCommand(SPI_HandleTypeDef *hspi, uint8_t op_code)
+{
+    /* Assert if this function is used to send any of the following commands */
+    assert( OPCODE_RREG         != op_code );    /* Use "readSingleRegister()"  or "readMultipleRegisters()"  */
+    assert( OPCODE_WREG         != op_code );    /* Use "writeSingleRegister()" or "writeMultipleRegisters()" */
+
+    /* SPI communication */
+    spiSendReceiveByte( hspi, op_code );
+
+    // Check for RESET command
+    if (OPCODE_RESET == op_code)
+    {
+        // Must wait 4096 tCLK after reset
+        delay_us( DELAY_4096TCLK );
+
+        /* Update register array to keep software in sync with device */
+        restoreRegisterDefaults();
+    }
+}
+
+/************************************************************************************//**
+ *
+ * @brief startConversions()
+ *        	Wakes the device from power-down and starts continuous conversions
+ *            by setting START pin high or sending START Command
+ *
+ * @param[in]   spiHdl      SPI_Handle from TI Drivers
+ *
+ * @return 		None
+ */
+void startConversions( SPI_HandleTypeDef *hspi )
+{
+	// Wakeup device if in POWERDOWN
+    sendWakeup( hspi );
+
+#ifdef START_PIN_CONTROLLED     // If defined in ADS124S08.h
+     /* Begin continuous conversions */
+    setSTART( HIGH );
+#else
+    sendSTART( hspi );
+#endif    
+}
+
+/************************************************************************************//**
+ *
+ * @brief stopConversions()
+ *          Stops continuous conversions by setting START pin low or sending STOP Command
+ *
+ * @param[in]   spiHdl      SPI_Handle from TI Drivers
+ *
+ * @return      None
+ */
+void stopConversions( SPI_HandleTypeDef *hspi )
+{
+     /* Stop continuous conversions */
+#ifdef START_PIN_CONTROLLED     // If defined in ADS124S08.h
+    setSTART( LOW );
+#else
+    sendSTOP( hspi );
+#endif    
+}
+
+/************************************************************************************//**
+ *
+ * @brief resetADC()
+ *          Resets ADC by setting RESET pin low or sending RESET Command
+ *
+ * @param[in]   spiHdl      SPI_Handle from TI Drivers
+ *
+ * @return      None
+ */
+void resetADC( SPI_HandleTypeDef *hspi )
+{
+     /* Reset ADC */
+#ifdef RESET_PIN_CONTROLLED     // If defined in ADS124S08.h
+    toggleRESET();
+#else
+    sendRESET( hspi );
+#endif
+    // Must wait 4096 tCLK after reset
+    delay_us( DELAY_4096TCLK );
+
+    // Update the local copy to say in sync
+    restoreRegisterDefaults();
+}
+
+/************************************************************************************//**
+ *
+ * @brief readConvertedData()
+ *          Sends the read command and retrieves STATUS (if enabled) and data
+ *          NOTE: Call this function after /DRDY goes low and specify the 
+ *          the number of bytes to read and the starting position of data
+ *          
+ * @param[in]   spiHdl      SPI_Handle from TI Drivers
+ * @param[in]	status[] 	Pointer to location where STATUS byte will be stored
+ * @param[in]	mode 		Direct or Command read mode
+ * 
+ * @return 		32-bit sign-extended conversion result (data only)
+ */
+int32_t readConvertedData( SPI_HandleTypeDef *hspi, uint8_t status[], readMode mode )
+{
+    uint8_t DataTx[RDATA_COMMAND_LENGTH + STATUS_LENGTH + DATA_LENGTH + CRC_LENGTH] = { 0 };    // Initialize all array elements to 0
+    uint8_t DataRx[RDATA_COMMAND_LENGTH + STATUS_LENGTH + DATA_LENGTH + CRC_LENGTH] = { 0 };    
+    uint8_t byteLength;
+    uint8_t dataPosition;
+    uint8_t byte_options;
+    uint8_t data[5];
+    bool    status_byte_enabled = 0;
+	int32_t signByte, upperByte, middleByte, lowerByte;
+
+    // Status Byte is sent if SENDSTAT bit of SYS register is set
+    byte_options = IS_SENDSTAT_SET << 1 | IS_CRC_SET;
+    switch ( byte_options ) {
+    	case 0:							// No STATUS and no CRC
+			byteLength   = DATA_LENGTH;
+			dataPosition = 0;
+    		break;
+    	case 1:							// No STATUS and CRC
+    		byteLength 	 = DATA_LENGTH + CRC_LENGTH;
+			dataPosition = 0;
+   			break;
+    	case 2:							// STATUS and no CRC
+    		byteLength   = STATUS_LENGTH + DATA_LENGTH;
+			dataPosition = 1;
+			status_byte_enabled = 1;
+    		break;
+    	case 3:							// STATUS and CRC
+    		byteLength   = STATUS_LENGTH + DATA_LENGTH + CRC_LENGTH;
+			dataPosition = 1;
+			status_byte_enabled = 1;
+   			break;
+    }
+	
+	if ( mode == COMMAND ) {
+        DataTx[0]     = OPCODE_RDATA;
+        byteLength   += 1;
+        dataPosition += 1;
+	}
+    spiSendReceiveArrays( hspi, DataTx, DataRx, byteLength );
+
+    // Parse returned SPI data
+    /* Check if STATUS byte is enabled and if we have a valid "status" memory pointer */
+    if ( status_byte_enabled && status ) {
+        status[0] = DataRx[dataPosition - 1];
+    }
+
+    /* Return the 32-bit sign-extended conversion result */
+    if ( DataRx[dataPosition] & 0x80u ) {
+    	signByte = 0xFF000000; 
+    } else { 
+    	signByte = 0x00000000; 
+    }
+
+    if ( IS_CRC_SET ){
+        if(IS_SENDSTAT_SET){
+            data[0] = DataRx[dataPosition - 1]; // status
+            data[1] = DataRx[dataPosition];     // msb
+            data[2] = DataRx[dataPosition + 1]; // mid
+            data[3] = DataRx[dataPosition + 2]; // lsb
+            data[4] = DataRx[dataPosition + 3]; // crc
+            bool error = (bool) getCRC(data, 5, CRC_INITIAL_SEED);
+
+            if ( error ) {
+                // if error, report and handle the error
+                while (1);
+            }
+        }
+        else {
+            data[0] = DataRx[dataPosition];     // msb
+            data[1] = DataRx[dataPosition + 1]; // mid
+            data[2] = DataRx[dataPosition + 2]; // lsb
+            data[3] = DataRx[dataPosition + 3]; // crc
+            bool error = (bool) getCRC(data, 4, CRC_INITIAL_SEED);
+
+            if ( error ) {
+                // if error, report and handle the error
+                while (1);
+            }
         }
     }
-    
-    if (handle->current_channel == 255) {
-        return HAL_ERROR;  // No channels enabled
-    }
-    
-    // Configure first channel
-    HAL_StatusTypeDef status = ads124_switch_to_channel(handle, handle->current_channel);
-    if (status != HAL_OK) return status;
-    
-    // Start conversions
-    status = ads124_send_command(handle, ADS124_CMD_START);
-    if (status != HAL_OK) return status;
-    
-    // Record start time
-    handle->conversion_start_time = HAL_GetTick();
-    handle->buffer_index = 0;
-    
-    return HAL_OK;
+	upperByte 	= ((int32_t) DataRx[dataPosition] & 0xFF) << 16;
+	middleByte  = ((int32_t) DataRx[dataPosition + 1] & 0xFF) << 8;
+	lowerByte	= ((int32_t) DataRx[dataPosition + 2] & 0xFF);
+
+	return ( signByte + upperByte + middleByte + lowerByte );
 }
 
-/**
- * @brief Stop continuous conversion
+/************************************************************************************//**
+ *
+ * @brief restoreRegisterDefaults()
+ *          Updates the registerMap[] array to its default values
+ *          NOTES: If the MCU keeps a copy of the ADC register settings in memory,
+ *          then it is important to ensure that these values remain in sync with the
+ *          actual hardware settings. In order to help facilitate this, this function
+ *          should be called after powering up or resetting the device (either by
+ *          hardware pin control or SPI software command).
+ *          Reading back all of the registers after resetting the device will
+ *          accomplish the same result.
+ *
+ * @return 		None
  */
-HAL_StatusTypeDef ads124_stop_conversion(ads124_handle_t *handle)
+ void restoreRegisterDefaults( void )
 {
-    if (handle == NULL || !handle->initialized) {
-        return HAL_ERROR;
-    }
-    
-    return ads124_send_command(handle, ADS124_CMD_STOP);
-}
-
-/**
- * @brief Process ADC data ready interrupt
- */
-HAL_StatusTypeDef ads124_process_data_ready(ads124_handle_t *handle)
-{
-    if (handle == NULL || !handle->initialized) {
-        return HAL_ERROR;
-    }
-    
-    // Read conversion data
-    int32_t raw_data;
-    HAL_StatusTypeDef status = ads124_read_data(handle, &raw_data);
-    if (status != HAL_OK) return status;
-    
-    // Convert to 16-bit and store in buffer
-    ads124_channel_config_t *current_config = &handle->channels[handle->current_channel];
-    uint16_t data_16bit = ads124_convert_to_16bit(raw_data, current_config->gain);
-    
-    handle->active_buffer->data[handle->buffer_index] = data_16bit;
-    handle->buffer_index++;
-    
-    // Check if buffer is full
-    if (handle->buffer_index >= 60) {
-        // Mark buffer as ready
-        handle->active_buffer->ready = true;
-        handle->active_buffer->timestamp = handle->conversion_start_time;
-        handle->active_buffer->sample_rate = ads124_sample_rates[current_config->data_rate];
-        
-        // Switch to other buffer
-        if (handle->active_buffer == &handle->buffer_a) {
-            handle->active_buffer = &handle->buffer_b;
-        } else {
-            handle->active_buffer = &handle->buffer_a;
-        }
-        
-        // Reset buffer index and timestamp
-        handle->buffer_index = 0;
-        handle->conversion_start_time = HAL_GetTick();
-        handle->active_buffer->ready = false;
-    }
-    
-    // Switch to next enabled channel for next conversion
-    return ads124_switch_to_next_channel(handle);
-}
-
-/**
- * @brief Get completed data buffer
- */
-ads124_data_buffer_t* ads124_get_completed_buffer(ads124_handle_t *handle)
-{
-    if (handle == NULL || !handle->initialized) {
-        return NULL;
-    }
-    
-    if (handle->buffer_a.ready) {
-        return &handle->buffer_a;
-    } else if (handle->buffer_b.ready) {
-        return &handle->buffer_b;
-    }
-    
-    return NULL;
-}
-
-/**
- * @brief Mark buffer as processed and available for reuse
- */
-HAL_StatusTypeDef ads124_release_buffer(ads124_handle_t *handle, ads124_data_buffer_t *buffer)
-{
-    if (handle == NULL || buffer == NULL) {
-        return HAL_ERROR;
-    }
-    
-    buffer->ready = false;
-    return HAL_OK;
-}
-
-/**
- * @brief Reset the ADS124S08
- */
-HAL_StatusTypeDef ads124_reset(ads124_handle_t *handle)
-{
-    if (handle == NULL) {
-        return HAL_ERROR;
-    }
-    
-    // Hardware reset using GPIO
-    HAL_GPIO_WritePin(ADC_RST_GPIO_Port, ADC_RST_Pin, GPIO_PIN_RESET);
-    HAL_Delay(ADS124_RESET_DELAY);
-    HAL_GPIO_WritePin(ADC_RST_GPIO_Port, ADC_RST_Pin, GPIO_PIN_SET);
-    HAL_Delay(ADS124_STARTUP_DELAY);
-    
-    // Send reset command over SPI as well
-    return ads124_send_command(handle, ADS124_CMD_RESET);
-}
-
-/**
- * @brief Read device ID
- */
-HAL_StatusTypeDef ads124_read_id(ads124_handle_t *handle, uint8_t *device_id)
-{
-    if (handle == NULL || device_id == NULL) {
-        return HAL_ERROR;
-    }
-    
-    return ads124_read_register(handle, ADS124_ID_REG, device_id);
-}
-
-/**
- * @brief GPIO interrupt callback for data ready signal
- */
-void ads124_data_ready_callback(uint16_t GPIO_Pin)
-{
-    if (GPIO_Pin == ADC_RDY_Pin && g_ads124_handle != NULL) {
-        g_ads124_handle->conversion_ready = true;
-        // Process in main loop or call directly if timing allows
-        ads124_process_data_ready(g_ads124_handle);
-    }
-}
-
-/**
- * @brief Write to ADS124 register
- */
-HAL_StatusTypeDef ads124_write_register(ads124_handle_t *handle, uint8_t reg, uint8_t value)
-{
-    if (handle == NULL || handle->hspi == NULL) {
-        return HAL_ERROR;
-    }
-    
-    uint8_t tx_data[3];
-    tx_data[0] = ADS124_CMD_WREG | reg;  // Write register command + address
-    tx_data[1] = 0x00;                   // Number of bytes - 1 (writing 1 byte)
-    tx_data[2] = value;                  // Data to write
-    
-    return HAL_SPI_Transmit(handle->hspi, tx_data, 3, ADS124_SPI_TIMEOUT);
-}
-
-/**
- * @brief Read from ADS124 register
- */
-HAL_StatusTypeDef ads124_read_register(ads124_handle_t *handle, uint8_t reg, uint8_t *value)
-{
-    if (handle == NULL || handle->hspi == NULL || value == NULL) {
-        return HAL_ERROR;
-    }
-    
-    uint8_t tx_data[3];
-    uint8_t rx_data[3];
-    
-    tx_data[0] = ADS124_CMD_RREG | reg;  // Read register command + address
-    tx_data[1] = 0x00;                   // Number of bytes - 1 (reading 1 byte)
-    tx_data[2] = 0x00;                   // Dummy byte
-    
-    HAL_StatusTypeDef status = HAL_SPI_TransmitReceive(handle->hspi, tx_data, rx_data, 3, ADS124_SPI_TIMEOUT);
-    if (status == HAL_OK) {
-        *value = rx_data[2];
-    }
-    
-    return status;
-}
-
-/**
- * @brief Send command to ADS124
- */
-HAL_StatusTypeDef ads124_send_command(ads124_handle_t *handle, uint8_t command)
-{
-    if (handle == NULL || handle->hspi == NULL) {
-        return HAL_ERROR;
-    }
-    
-    return HAL_SPI_Transmit(handle->hspi, &command, 1, ADS124_SPI_TIMEOUT);
-}
-
-/**
- * @brief Read conversion data
- */
-HAL_StatusTypeDef ads124_read_data(ads124_handle_t *handle, int32_t *data)
-{
-    if (handle == NULL || handle->hspi == NULL || data == NULL) {
-        return HAL_ERROR;
-    }
-    
-    uint8_t tx_data[4] = {ADS124_CMD_RDATA, 0x00, 0x00, 0x00};
-    uint8_t rx_data[4];
-    
-    HAL_StatusTypeDef status = HAL_SPI_TransmitReceive(handle->hspi, tx_data, rx_data, 4, ADS124_SPI_TIMEOUT);
-    if (status == HAL_OK) {
-        // Combine 24-bit result (sign extend to 32-bit)
-        *data = ((int32_t)rx_data[1] << 16) | ((int32_t)rx_data[2] << 8) | rx_data[3];
-        
-        // Sign extend from 24-bit to 32-bit
-        if (*data & 0x800000) {
-            *data |= 0xFF000000;
-        }
-    }
-    
-    return status;
-}
-
-/**
- * @brief Switch to specific channel
- */
-HAL_StatusTypeDef ads124_switch_to_channel(ads124_handle_t *handle, uint8_t channel_index)
-{
-    if (handle == NULL || !handle->initialized || channel_index >= 12) {
-        return HAL_ERROR;
-    }
-    
-    ads124_channel_config_t *config = &handle->channels[channel_index];
-    if (!config->enabled) {
-        return HAL_ERROR;
-    }
-    
-    HAL_StatusTypeDef status;
-    
-    // Configure input multiplexer
-    uint8_t inpmux_value = (config->positive_input << 4) | config->negative_input;
-    status = ads124_write_register(handle, ADS124_INPMUX_REG, inpmux_value);
-    if (status != HAL_OK) return status;
-    
-    // Configure PGA
-    uint8_t pga_value = 0x08 | config->gain;  // PGA enabled + gain setting
-    status = ads124_write_register(handle, ADS124_PGA_REG, pga_value);
-    if (status != HAL_OK) return status;
-    
-    // Configure data rate
-    status = ads124_write_register(handle, ADS124_DATARATE_REG, config->data_rate);
-    if (status != HAL_OK) return status;
-    
-    return HAL_OK;
-}
-
-/**
- * @brief Switch to next enabled channel
- */
-HAL_StatusTypeDef ads124_switch_to_next_channel(ads124_handle_t *handle)
-{
-    if (handle == NULL || !handle->initialized) {
-        return HAL_ERROR;
-    }
-    
-    // Find next enabled channel
-    uint8_t start_channel = handle->current_channel;
-    uint8_t next_channel = start_channel;
-    
-    do {
-        next_channel = (next_channel + 1) % 12;
-        if (handle->channels[next_channel].enabled) {
-            handle->current_channel = next_channel;
-            return ads124_switch_to_channel(handle, next_channel);
-        }
-    } while (next_channel != start_channel);
-    
-    // No other enabled channels found, stay on current
-    return HAL_OK;
-}
-
-/**
- * @brief Convert 24-bit raw data to 16-bit
- */
-uint16_t ads124_convert_to_16bit(int32_t raw_data, ads124_pga_gain_t gain)
-{
-    // ADS124S08 provides 24-bit signed data
-    // Scale down to 16-bit while preserving sign and relative magnitude
-    
-    // For 24-bit signed: range is -8,388,608 to +8,388,607
-    // For 16-bit signed: range is -32,768 to +32,767
-    
-    // Simple approach: shift right by 8 bits (divide by 256)
-    int16_t result = (int16_t)(raw_data >> 8);
-    
-    return (uint16_t)result;
-}
-
-/**
- * @brief Convert raw data to voltage
- */
-float ads124_convert_to_voltage(int32_t raw_data, ads124_pga_gain_t gain, float vref)
-{
-    // Calculate gain multiplier
-    uint8_t gain_multiplier = 1 << gain;  // 2^gain
-    
-    // ADS124S08 is 24-bit
-    float full_scale = 8388607.0f;  // 2^23 - 1
-    
-    // Convert to voltage
-    float voltage = (float)raw_data * vref / (full_scale * gain_multiplier);
-    
-    return voltage;
+	/* Default register settings */
+	registerMap[REG_ADDR_ID]       = ID_DEFAULT;
+	registerMap[REG_ADDR_STATUS]   = STATUS_DEFAULT;
+	registerMap[REG_ADDR_INPMUX]   = INPMUX_DEFAULT;
+	registerMap[REG_ADDR_PGA]      = PGA_DEFAULT;
+	registerMap[REG_ADDR_DATARATE] = DATARATE_DEFAULT;
+	registerMap[REG_ADDR_REF]      = REF_DEFAULT;
+	registerMap[REG_ADDR_IDACMAG]  = IDACMAG_DEFAULT;
+	registerMap[REG_ADDR_IDACMUX]  = IDACMUX_DEFAULT;
+	registerMap[REG_ADDR_VBIAS]    = VBIAS_DEFAULT;
+	registerMap[REG_ADDR_SYS]      = SYS_DEFAULT;
+	registerMap[REG_ADDR_OFCAL0]   = OFCAL0_DEFAULT;
+	registerMap[REG_ADDR_OFCAL1]   = OFCAL1_DEFAULT;
+	registerMap[REG_ADDR_OFCAL2]   = OFCAL2_DEFAULT;
+	registerMap[REG_ADDR_FSCAL0]   = FSCAL0_DEFAULT;
+	registerMap[REG_ADDR_FSCAL1]   = FSCAL1_DEFAULT;
+	registerMap[REG_ADDR_FSCAL2]   = FSCAL2_DEFAULT;
+	registerMap[REG_ADDR_GPIODAT]  = GPIODAT_DEFAULT;
+	registerMap[REG_ADDR_GPIOCON]  = GPIOCON_DEFAULT;
 }

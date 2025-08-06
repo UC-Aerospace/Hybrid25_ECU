@@ -1,177 +1,212 @@
-#include "ADS124.h"
-#include "app.h"
-
-/* Example usage of ADS124 module
+/**
+ * @file ads124_example.c
+ * @brief Example implementation of ADS124S08 driver with STM32 HAL
  * 
- * This file demonstrates how to configure and use the ADS124S08 ADC
- * for differential signal measurement with dual buffering for CAN transmission.
+ * This file demonstrates how to use the converted ADS124S08 HAL functions
+ * with the STM32 HAL library.
  */
 
-// Global ADS124 handle
-static ads124_handle_t ads124_handle;
+#include "ads124_example.h"
+#include "peripherals.h"
+#include "main.h"
+
+// External SPI handle (defined in main.c)
+extern SPI_HandleTypeDef hspi1;
 
 /**
- * @brief Example initialization function
- * Call this from app_init() or main initialization
+ * @brief Initialize the ADS124S08 ADC
+ * @return HAL_OK on success, HAL_ERROR on failure
  */
-void ads124_example_init_2(void)
+HAL_StatusTypeDef ads124_init(void)
 {
-    // Initialize the ADS124 module
-    if (ads124_init(&ads124_handle, &hspi1) != HAL_OK) {
-        // Handle initialization error
-        return;
+    // Initialize the ADC peripherals
+    if (!InitADCPeripherals(&hspi1)) {
+        return HAL_ERROR;
     }
     
-    // Configure Channel 0: AIN0(+) to AIN1(-) differential
-    // High gain (64x) for small signals, medium sample rate (100 SPS)
-    ads124_configure_channel(&ads124_handle, 0, 
-                            ADS124_AIN0, ADS124_AIN1, 
-                            ADS124_PGA_GAIN_64, ADS124_DATARATE_100SPS);
-    
-    // Configure Channel 1: AIN2(+) to AIN3(-) differential  
-    // Medium gain (16x), higher sample rate (400 SPS)
-    ads124_configure_channel(&ads124_handle, 1,
-                            ADS124_AIN2, ADS124_AIN3,
-                            ADS124_PGA_GAIN_16, ADS124_DATARATE_400SPS);
-    
-    // Configure Channel 2: AIN4(+) to AIN5(-) differential
-    // Low gain (4x) for larger signals, fast sample rate (1000 SPS)
-    ads124_configure_channel(&ads124_handle, 2,
-                            ADS124_AIN4, ADS124_AIN5,
-                            ADS124_PGA_GAIN_4, ADS124_DATARATE_1000SPS);
-    
-    // Enable the configured channels
-    ads124_enable_channel(&ads124_handle, 0, true);
-    ads124_enable_channel(&ads124_handle, 1, true);
-    ads124_enable_channel(&ads124_handle, 2, true);
-    
-    // Start continuous conversions
-    if (ads124_start_conversion(&ads124_handle) != HAL_OK) {
-        // Handle start error
-        return;
+    // Configure initial settings
+    // Example: Set to differential mode with AIN0 as positive and AIN1 as negative
+    if (ads124_configure_channel(ADS_P_AIN0, ADS_N_AIN1) != HAL_OK) {
+        return HAL_ERROR;
     }
+
+    // Enable VBIAS on AIN1 at VDD/12
+    if (ads124_set_vbias(ADS_VB_AIN1, ADS_VBIAS_LVL_DIV12) != HAL_OK) {
+        return HAL_ERROR;
+    }
+
+    // Set internal reference
+    if (ads124_set_reference(ADS_REFSEL_INT) != HAL_OK) {
+        return HAL_ERROR;
+    }
+
+    // Set PGA gain to 32
+    if (ads124_set_pga_gain(ADS_GAIN_32) != HAL_OK) {
+        return HAL_ERROR;
+    }
+    
+    return HAL_OK;
 }
 
 /**
- * @brief Example processing function
- * Call this from app_run() main loop
+ * @brief Start continuous ADC conversions
+ * @return HAL_OK on success, HAL_ERROR on failure
  */
-void ads124_example_process_2(void)
+HAL_StatusTypeDef ads124_start_conversion(void)
 {
-    // Check for completed data buffers
-    ads124_data_buffer_t *completed_buffer = ads124_get_completed_buffer(&ads124_handle);
+    // Start conversions
+    startConversions(&hspi1);
     
-    if (completed_buffer != NULL) {
-        // Buffer is ready for transmission
-        // Here you would typically:
-        // 1. Package the data for CAN transmission
-        // 2. Send over CAN bus
-        // 3. Release the buffer
-        
-        // Example: Print buffer info (replace with CAN transmission)
-        printf("Buffer %d ready: %d samples at %d Hz, timestamp: %lu\\n",
-               completed_buffer->buffer_id,
-               60, // Always 60 samples
-               completed_buffer->sample_rate,
-               completed_buffer->timestamp);
-        
-        // Example: Access the data
-        for (int i = 0; i < 60; i++) {
-            uint16_t sample = completed_buffer->data[i];
-            // Process sample data here
-            // Convert back to voltage if needed using ads124_convert_to_voltage()
+    // Enable DRDY interrupt
+    enableDRDYinterrupt(true);
+    
+    return HAL_OK;
+}
+
+/**
+ * @brief Configures VBIAS for a specific channel
+ * @param channel The channel to configure (ADS_VBIAS_AIN0, ADS_VBIAS_AIN1, etc.)
+ * @param bias Voltage level for VBIAS (ADS_VBIAS_VDD12, ADS_VBIAS_VDD24, etc.)
+ * @return HAL_OK on success, HAL_ERROR on failure
+ */
+HAL_StatusTypeDef ads124_set_vbias(uint8_t channel, uint8_t bias)
+{
+    uint8_t vbias_config = 0;
+
+    if (bias == VBIAS_DEFAULT) {
+        // Reset VBIAS to default
+        vbias_config = 0x00; // Default value for VBIAS register
+    } else {
+        // Validate arguments
+        if (channel != ADS_VB_AINC && channel != ADS_VB_AIN0 &&
+            channel != ADS_VB_AIN1 && channel != ADS_VB_AIN2 &&
+            channel != ADS_VB_AIN3 && channel != ADS_VB_AIN4 &&
+            channel != ADS_VB_AIN5) {
+            return HAL_ERROR; // Invalid channel
         }
-        
-        // Mark buffer as processed
-        ads124_release_buffer(&ads124_handle, completed_buffer);
+
+        // Validate bias voltage
+        if (bias != ADS_VBIAS_LVL_DIV2 && bias != ADS_VBIAS_LVL_DIV12) {
+            return HAL_ERROR; // Invalid bias voltage
+        }
+
+        // Configure VBIAS
+        vbias_config |= (channel | bias);
     }
+    writeSingleRegister(&hspi1, REG_ADDR_VBIAS, vbias_config);
+
+    return HAL_OK;
 }
 
 /**
- * @brief GPIO EXTI callback function
- * This should be called from the STM32 EXTI callback
+ * @brief Set the PGA gain
+ * @param gain The desired gain (ADS_PGA_GAIN_1, ADS_PGA_GAIN_2, etc.)
+ * @return HAL_OK on success, HAL_ERROR on failure
  */
-void HAL_GPIO_EXTI_Callback_2(uint16_t GPIO_Pin)
+HAL_StatusTypeDef ads124_set_pga_gain(uint8_t gain)
 {
-    // Call the ADS124 data ready callback
-    ads124_data_ready_callback(GPIO_Pin);
+    uint8_t pga_config = 0;
+
+    // Validate gain argument
+    if (gain != ADS_GAIN_1 && gain != ADS_GAIN_2 &&
+        gain != ADS_GAIN_4 && gain != ADS_GAIN_8 &&
+        gain != ADS_GAIN_16 && gain != ADS_GAIN_32 &&
+        gain != ADS_GAIN_64) {
+        return HAL_ERROR; // Invalid gain
+    }
+
+    // Enable the PGA if gain not 1
+    if (gain != ADS_GAIN_1) {
+        pga_config |= ADS_PGA_ENABLED; // Enable PGA
+    }
+
+    // Configure PGA gain
+    pga_config |= gain;
+
+    writeSingleRegister(&hspi1, REG_ADDR_PGA, pga_config);
+
+    return HAL_OK;
 }
 
 /**
- * @brief Example function to change channel configuration at runtime
+ * @brief Stop ADC conversions
+ * @return HAL_OK on success, HAL_ERROR on failure
  */
-void ads124_example_reconfigure_channel_2(uint8_t channel, ads124_pga_gain_t new_gain, ads124_datarate_t new_rate)
+HAL_StatusTypeDef ads124_stop_conversion(void)
 {
     // Stop conversions
-    ads124_stop_conversion(&ads124_handle);
+    stopConversions(&hspi1);
     
-    // Get current configuration
-    ads124_channel_config_t *config = &ads124_handle.channels[channel];
+    // Disable DRDY interrupt
+    enableDRDYinterrupt(false);
     
-    // Update configuration
-    ads124_configure_channel(&ads124_handle, channel,
-                            config->positive_input, config->negative_input,
-                            new_gain, new_rate);
-    
-    // Restart conversions
-    ads124_start_conversion(&ads124_handle);
+    return HAL_OK;
 }
 
 /**
- * @brief Example function to enable/disable channels dynamically
+ * @brief Read a conversion result
+ * @param data Pointer to store the 24-bit conversion result (sign-extended to 32-bit)
+ * @param status Pointer to store the status byte (if enabled)
+ * @return HAL_OK on success, HAL_ERROR on failure
  */
-void ads124_example_toggle_channel_2(uint8_t channel, bool enable)
+HAL_StatusTypeDef ads124_read_conversion(int32_t *data, uint8_t *status)
 {
-    // Stop conversions
-    ads124_stop_conversion(&ads124_handle);
-    
-    // Enable/disable channel
-    ads124_enable_channel(&ads124_handle, channel, enable);
-    
-    // Restart conversions if any channels are enabled
-    bool any_enabled = false;
-    for (int i = 0; i < 12; i++) {
-        if (ads124_handle.channels[i].enabled) {
-            any_enabled = true;
-            break;
-        }
+    if (data == NULL) {
+        return HAL_ERROR;
     }
     
-    if (any_enabled) {
-        ads124_start_conversion(&ads124_handle);
+    // Wait for conversion to complete with timeout
+    if (!waitForDRDYHtoL(1000)) { // 1 second timeout
+        return HAL_TIMEOUT;
     }
+    
+    // Read the conversion data
+    *data = readConvertedData(&hspi1, status, DIRECT);
+    
+    return HAL_OK;
 }
 
-/* Usage Notes:
- * 
- * 1. GPIO Configuration Required:
- *    - ADC_RDY_Pin (PC5) must be configured as EXTI input with falling edge trigger
- *    - ADC_RST_Pin (PB0) must be configured as GPIO output
- *    - SPI1 pins must be properly configured
- * 
- * 2. SPI Configuration:
- *    - The current SPI configuration in main.c needs adjustment:
- *      - DataSize should be SPI_DATASIZE_8BIT (not 4BIT)
- *      - BaudRatePrescaler may need adjustment based on required speed
- *      - CLKPolarity and CLKPhase should match ADS124S08 requirements
- * 
- * 3. Interrupt Priority:
- *    - EXTI interrupt for ADC_RDY should have appropriate priority
- *    - Consider using HAL_NVIC_SetPriority() to set priority
- * 
- * 4. Buffer Management:
- *    - Each buffer holds 60 samples of 16-bit data
- *    - Timestamp is recorded at start of buffer filling
- *    - Sample rate is stored with each buffer
- *    - Dual buffering allows continuous operation
- * 
- * 5. Channel Switching:
- *    - Channels are switched automatically between conversions
- *    - Only enabled channels are measured
- *    - Each channel can have different gain and sample rate
- * 
- * 6. Data Format:
- *    - 24-bit ADC data is decimated to 16-bit for storage
- *    - Original precision can be maintained by adjusting decimation
- *    - Conversion to voltage available via ads124_convert_to_voltage()
+/**
+ * @brief Configure the input channel multiplexer
+ * @param pos_ch Positive input channel (ADS_P_AIN0, ADS_P_AIN1, etc.)
+ * @param neg_ch Negative input channel (ADS_N_AIN0, ADS_N_AINCOM, etc.)
+ * @return HAL_OK on success, HAL_ERROR on failure
  */
+HAL_StatusTypeDef ads124_configure_channel(uint8_t pos_ch, uint8_t neg_ch)
+{
+    uint8_t mux_config = pos_ch | neg_ch;
+    
+    // Write to INPMUX register
+    writeSingleRegister(&hspi1, REG_ADDR_INPMUX, mux_config);
+    
+    return HAL_OK;
+}
+
+HAL_StatusTypeDef ads124_set_reference(uint8_t refsel)
+{
+    uint8_t ref_reg;
+
+    // Validate argument (external P0/P1 or internal)
+    if (refsel != ADS_REFSEL_P0 && refsel != ADS_REFSEL_P1 && refsel != ADS_REFSEL_INT) {
+        return HAL_ERROR;
+    }
+
+    // Read current REF register
+    ref_reg = readSingleRegister(&hspi1, REG_ADDR_REF);
+
+    // Clear old REFSEL (bits 3:2) and REFCON (bits 1:0)
+    ref_reg &= ~(ADS_REFSEL_P1 | ADS_REFSEL_INT | ADS_REFINT_ON_PDWN | ADS_REFINT_ON_ALWAYS);
+
+    // Set new reference selection
+    ref_reg |= refsel;
+
+    // If internal reference selected, enable it always
+    if (refsel == ADS_REFSEL_INT) {
+        ref_reg |= ADS_REFINT_ON_ALWAYS;
+    }
+
+    // Write back to REF register
+    writeSingleRegister(&hspi1, REG_ADDR_REF, ref_reg);
+
+    return HAL_OK;
+}

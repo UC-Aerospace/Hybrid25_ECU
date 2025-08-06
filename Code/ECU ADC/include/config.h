@@ -13,6 +13,8 @@
 #define MIPAB_A2_GPIO_Port GPIOA
 #define MIPAC_A3_Pin GPIO_PIN_3
 #define MIPAC_A3_GPIO_Port GPIOA
+#define SPI_CS_Pin GPIO_PIN_4
+#define SPI_CS_GPIO_Port GPIOA
 #define SYNC_Pin GPIO_PIN_4
 #define SYNC_GPIO_Port GPIOC
 #define ADC_RDY_Pin GPIO_PIN_5
