@@ -14,7 +14,7 @@ typedef enum {
     CAN_TYPE_COMMAND = 0b001,
     CAN_TYPE_STATUS = 0b010,
     CAN_TYPE_SERVO_POS = 0b011,
-    // 0b100
+    CAN_TYPE_HEARTBEAT = 0b100,
     // 0b101
     // 0b110
     CAN_TYPE_ADC_DATA = 0b111
@@ -40,6 +40,12 @@ typedef enum {
     CAN_NODE_ADDR_ADC_1 = 0b011, // ADC1 node address
     CAN_NODE_ADDR_ADC_2 = 0b100, // ADC2 node address
 } CAN_NodeAddr;
+
+typedef enum {
+    CAN_ERROR_ACTION_SHUTDOWN = 0b00, // Shutdown action
+    CAN_ERROR_ACTION_ERROR = 0b01, // Error action
+    CAN_ERROR_ACTION_WARNING = 0b10, // Warning action
+} CAN_ErrorAction;
 
 typedef struct {
     uint8_t priority    : 2;
@@ -77,7 +83,7 @@ typedef struct __attribute__((packed)) {
     uint8_t what;
     uint8_t pos[4];      // Up to 4 servos
     uint8_t timestamp[3];
-} CAN_ServoFrame;
+} CAN_ServoPosFrame;
 
 typedef struct __attribute__((packed)) {
     uint8_t what;      

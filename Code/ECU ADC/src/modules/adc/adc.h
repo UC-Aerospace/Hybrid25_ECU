@@ -15,7 +15,7 @@
 
 
 typedef enum {
-    ADC_CHANNEL_CJT,
+    ADC_CHANNEL_CJT = 0,
     ADC_CHANNEL_MIPAA,
     ADC_CHANNEL_MIPAB,
     ADC_CHANNEL_REF5V,
@@ -24,7 +24,8 @@ typedef enum {
 
 void adc_start();
 void adc_stop();
-
+uint16_t adc_get_batt_voltage();
+int16_t adc_get_NTC_temp();
 
 
 #endif

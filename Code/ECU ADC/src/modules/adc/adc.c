@@ -1,10 +1,11 @@
 #include "adc.h"
 #include "debug_io.h"
+#include "can.h"
 
 static uint16_t adc_buffer[ADC_DOUBLE_BUFFER_SIZE][ADC_NUMBER_CHANNELS];
 static bool buffer_write_first_half = true;
 
-void process_adc_data(uint16_t (*data)[ADC_NUMBER_CHANNELS]);
+static void process_adc_data(uint16_t (*data)[ADC_NUMBER_CHANNELS]);
 
 void adc_start()
 {
@@ -31,7 +32,7 @@ uint16_t adc_get_batt_voltage()
     }
 }
 
-uint16_t adc_get_NTC_temp()
+int16_t adc_get_NTC_temp()
 {
     float miliVolts;
     if (buffer_write_first_half) {
@@ -40,7 +41,7 @@ uint16_t adc_get_NTC_temp()
         miliVolts = adc_buffer[0][ADC_CHANNEL_CJT] * ADC_mV_FACTOR;
     }
     // Convert mV to temperature in 100*Celsius
-    return (uint16_t)(5604.29 - 1.8764 * miliVolts);
+    return (int16_t)(5604.29 - 1.8764 * miliVolts);
 
 }
 
@@ -62,18 +63,19 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
     }
 }
 
-void process_adc_data(uint16_t (*data)[ADC_NUMBER_CHANNELS])
+static void process_adc_data(uint16_t (*data)[ADC_NUMBER_CHANNELS])
 {
     uint16_t MIPA_A_Frame[ADC_DOUBLE_BUFFER_SIZE / 2 + 1];
     uint16_t MIPA_B_Frame[ADC_DOUBLE_BUFFER_SIZE / 2 + 1];
     for (uint8_t i = 0; i < ADC_DOUBLE_BUFFER_SIZE / 2; i++) {
-        MIPA_A_Frame[i] = data[i][0];
-        MIPA_B_Frame[i] = data[i][1];
+        MIPA_A_Frame[i] = data[i][ADC_CHANNEL_MIPAA];
+        MIPA_B_Frame[i] = data[i][ADC_CHANNEL_MIPAB];
     }
 
-    MIPA_A_Frame[ADC_DOUBLE_BUFFER_SIZE / 2] = data[0][3]; // Add REF5V to end of MIPA_A_Frame
-    MIPA_B_Frame[ADC_DOUBLE_BUFFER_SIZE / 2] = data[0][3]; // And MIPA_B_Frame
+    MIPA_A_Frame[ADC_DOUBLE_BUFFER_SIZE / 2] = data[0][ADC_CHANNEL_REF5V]; // Add REF5V to end of MIPA_A_Frame
+    MIPA_B_Frame[ADC_DOUBLE_BUFFER_SIZE / 2] = data[0][ADC_CHANNEL_REF5V]; // And MIPA_B_Frame
 
     // TODO: TX both frames over CAN
-    
+    can_send_data(SID_SENSOR_MIPA_A, (uint8_t*)MIPA_A_Frame, ADC_DOUBLE_BUFFER_SIZE + 2); // ADC_DOUBLE_BUFFER_SIZE * 2 (uint16_t) / 2 (half buffer) + 2 (for REF5V)
+    can_send_data(SID_SENSOR_MIPA_B, (uint8_t*)MIPA_B_Frame, ADC_DOUBLE_BUFFER_SIZE + 2);
 }

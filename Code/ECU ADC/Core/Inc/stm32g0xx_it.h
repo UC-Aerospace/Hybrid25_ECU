@@ -55,6 +55,7 @@ void EXTI4_15_IRQHandler(void);
 void USB_UCPD1_2_IRQHandler(void);
 void DMA1_Channel1_IRQHandler(void);
 void ADC1_COMP_IRQHandler(void);
+void TIM14_IRQHandler(void);
 void TIM15_IRQHandler(void);
 /* USER CODE BEGIN EFP */
 

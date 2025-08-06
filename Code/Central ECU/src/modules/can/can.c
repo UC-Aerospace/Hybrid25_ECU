@@ -1,7 +1,6 @@
 #include "can.h"
 #include "debug_io.h"
-#include "filters.h"
-#include "can_handlers.h"
+
 
 FDCAN_TxHeaderTypeDef TxHeader;
 FDCAN_RxHeaderTypeDef RxHeader;
@@ -133,4 +132,125 @@ static bool can_send(CAN_ID id, uint8_t *data, uint8_t length) {
     return true; // Transmission Successful
 }
 
+bool can_send_error_warning(CAN_NodeType nodeType, CAN_NodeAddr nodeAddr, CAN_ErrorAction action, uint8_t errorCode) {
+    CAN_ID id = {
+        .priority = CAN_PRIORITY_CRITICAL,
+        .nodeType = nodeType, // Use the provided node type
+        .nodeAddr = nodeAddr, // Use the provided node address
+        .frameType = CAN_TYPE_ERROR // Error is a warning message
+    };
+    uint32_t tick = HAL_GetTick();
+    CAN_ErrorWarningFrame frame = {
+        .what = action<<6 | BOARD_ID, // Use the action and board ID
+        .why = errorCode, // Use the provided error code
+        .timestamp = {
+            (uint8_t)((tick >> 16) & 0xFF),
+            (uint8_t)((tick >> 8) & 0xFF),
+            (uint8_t)(tick & 0xFF)
+        }
+    };
+    // Send the error warning frame
+    return can_send(id, (uint8_t*)&frame, sizeof(frame));
+}
 
+bool can_send_command(CAN_NodeType nodeType, CAN_NodeAddr nodeAddr, CAN_CMDType commandType, uint8_t command) {
+    CAN_ID id = {
+        .priority = CAN_PRIORITY_COMMAND,
+        .nodeType = nodeType, // Use the provided node type
+        .nodeAddr = nodeAddr, // Use the provided node address
+        .frameType = CAN_TYPE_COMMAND
+    };
+    uint32_t tick = HAL_GetTick();
+    CAN_CommandFrame frame = {
+        .what = commandType<<3 | BOARD_ID, // Use the command type and board ID
+        .options = command, // Use the provided command
+        .timestamp = {
+            (uint8_t)((tick >> 16) & 0xFF),
+            (uint8_t)((tick >> 8) & 0xFF),
+            (uint8_t)(tick & 0xFF)
+        }
+    };
+    return can_send(id, (uint8_t*)&frame, sizeof(frame));
+}
+
+bool can_send_status(CAN_NodeType nodeType, CAN_NodeAddr nodeAddr, uint8_t status, uint8_t substatus) {
+    CAN_ID id = {
+        .priority = CAN_PRIORITY_DATA,
+        .nodeType = nodeType, // Use the provided node type
+        .nodeAddr = nodeAddr, // Use the provided node address
+        .frameType = CAN_TYPE_STATUS // Status is a data message
+    };
+    uint32_t tick = HAL_GetTick();
+    CAN_StatusFrame frame = {
+        .what = BOARD_ID,
+        .state = status,
+        .substate = substatus,
+        .timestamp = {
+            (uint8_t)((tick >> 16) & 0xFF),
+            (uint8_t)((tick >> 8) & 0xFF),
+            (uint8_t)(tick & 0xFF)
+        }
+    };
+    return can_send(id, (uint8_t*)&frame, sizeof(frame));
+}
+
+bool can_send_servo_position(CAN_NodeType nodeType, CAN_NodeAddr nodeAddr, uint8_t connected, uint8_t position[4]) {
+    CAN_ID id = {
+        .priority = CAN_PRIORITY_DATA,
+        .nodeType = nodeType, // Use the provided node type
+        .nodeAddr = nodeAddr, // Use the provided node address
+        .frameType = CAN_TYPE_SERVO_POS // Servo position is a data message
+    };
+    uint32_t tick = HAL_GetTick();
+    CAN_ServoPosFrame frame = {
+        .what = (connected & 0x0F) << 3 | BOARD_ID,
+        .pos = {0}, // Initialize position array
+        .timestamp = {
+            (uint8_t)((tick >> 16) & 0xFF),
+            (uint8_t)((tick >> 8) & 0xFF),
+            (uint8_t)(tick & 0xFF)
+        }
+    };
+    // Copy the position data into the frame
+    memcpy(frame.pos, position, sizeof(frame.pos));
+    return can_send(id, (uint8_t*)&frame, sizeof(frame));
+}
+
+bool can_send_heartbeat(CAN_NodeAddr nodeAddr) {
+    CAN_ID id = {
+        .priority = CAN_PRIORITY_HEARTBEAT,
+        .nodeType = CAN_NODE_TYPE_CENTRAL, // Assuming this is the central node
+        .nodeAddr = nodeAddr, // Use the provided node address
+        .frameType = CAN_TYPE_HEARTBEAT // Heartbeat is a status message
+    };
+    uint32_t tick = HAL_GetTick();
+    CAN_HeartbeatFrame frame = {
+        .what = BOARD_ID,
+        .timestamp = {
+            (uint8_t)((tick >> 16) & 0xFF),
+            (uint8_t)((tick >> 8) & 0xFF),
+            (uint8_t)(tick & 0xFF)
+        }
+    };
+    return can_send(id, (uint8_t*)&frame, sizeof(frame));
+}
+
+bool can_send_data(uint8_t sensorID, uint8_t *data, uint8_t length) {
+    CAN_ID id = {
+        .priority = CAN_PRIORITY_DATA,
+        .nodeType = CAN_NODE_TYPE_CENTRAL, // Use the provided node type
+        .nodeAddr = CAN_NODE_ADDR_CENTRAL, // Use the provided node address
+        .frameType = CAN_TYPE_ADC_DATA // Data is a data message
+    };
+    uint32_t tick = HAL_GetTick();
+    CAN_ADCFrame frame = {
+        .what = BOARD_ID,
+        .timestamp = {
+            (uint8_t)((tick >> 16) & 0xFF),
+            (uint8_t)((tick >> 8) & 0xFF),
+            (uint8_t)(tick & 0xFF)
+        }
+    };
+    memcpy(frame.data, data, length < sizeof(frame.data) ? length : sizeof(frame.data));
+    return can_send(id, (uint8_t*)&frame, sizeof(frame));
+}

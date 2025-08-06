@@ -3,6 +3,12 @@
 
 #include "stm32g0xx_hal.h"
 
+// WHOAMI
+
+// Board types: _SERVO, _CENTRAL, _ADC
+#define BOARD_TYPE_ADC
+extern uint8_t BOARD_ID;
+
 // Pinout configuration
 
 #define CJT_A0_Pin GPIO_PIN_0
@@ -27,10 +33,10 @@
 #define V2S_A10_GPIO_Port GPIOB
 #define A11_B10_Pin GPIO_PIN_10
 #define A11_B10_GPIO_Port GPIOB
-#define LED2_Pin GPIO_PIN_9
-#define LED2_GPIO_Port GPIOC
-#define LED1_Pin GPIO_PIN_0
-#define LED1_GPIO_Port GPIOD
+#define LED_IND_ERROR_Pin GPIO_PIN_9
+#define LED_IND_ERROR_GPIO_Port GPIOC
+#define LED_IND_STATUS_Pin GPIO_PIN_0
+#define LED_IND_STATUS_GPIO_Port GPIOD
 #define E1_Pin GPIO_PIN_1
 #define E1_GPIO_Port GPIOD
 #define E2_Pin GPIO_PIN_2
@@ -49,5 +55,22 @@ extern ADC_ChannelConfTypeDef ADC_2S_Config;
 #define ADC_2S_FACTOR 2.0298f 
 #define VOLTAGE_2S_FLAT 6.5f // 3.25*2
 #define VOLTAGE_2S_MAX 8.2f // 4.1*2
+
+// Sensor ID config
+
+#define SID_SENSOR_MIPA_A (0b00 << 6) | (0b000) << 2 | (0b111) // MIPA A ID at 1000Hz
+#define SID_SENSOR_MIPA_B (0b00 << 6) | (0b001) << 2 | (0b111) // MIPA B ID at 1000Hz
+
+#define SID_SENSOR_LC_Thrust (0b11 << 6) | (0b001) << 2 | (0b100) // LC Thrust ID at 100Hz
+#define SID_SENSOR_LC_N2O_A (0b11 << 6) | (0b010) << 2 | (0b001) // LC N2O A ID at 10Hz
+#define SID_SENSOR_LC_N2O_B (0b11 << 6) | (0b011) << 2 | (0b001) // LC N2O B ID at 10Hz
+
+#define SID_SENSOR_PT_A (0b10 << 6) | (0b001) << 2 | (0b100) // PT A ID at 100Hz
+#define SID_SENSOR_PT_B (0b10 << 6) | (0b010) << 2 | (0b100) // PT B ID at 100Hz
+#define SID_SENSOR_PT_C (0b10 << 6) | (0b011) << 2 | (0b100) // PT C ID at 100Hz
+
+#define SID_SENSOR_THERMO_A (0b01 << 6) | (0b000) << 2 | (0b001) // Thermo A ID at 10Hz
+#define SID_SENSOR_THERMO_B (0b01 << 6) | (0b001) << 2 | (0b001) // Thermo B ID at 10Hz
+#define SID_SENSOR_THERMO_C (0b01 << 6) | (0b010) << 2 | (0b001) // Thermo C ID at 10Hz
 
 #endif // CONFIG_H
