@@ -222,3 +222,11 @@ static void handle_cmd_get_voltage(CAN_CommandFrame* frame, CAN_ID id) {
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
     dbg_printf("Get Voltage Command: initiator=%d, options=%d\n", initiator, frame->options);
 }
+
+static void handle_cmd_restart_mcu(CAN_CommandFrame* frame, CAN_ID id) {
+    uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
+    dbg_printf("Restart MCU Command: initiator=%d\n", initiator);
+    
+    // Perform a software reset
+    NVIC_SystemReset();
+}

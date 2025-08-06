@@ -1,6 +1,7 @@
 {
     "cmake.useCMakePresets": "always",
     "files.associations": {
-        "lps22hh_reg.h": "c"
+        "lps22hh_reg.h": "c",
+        "can_buffer.h": "c"
     }
 }

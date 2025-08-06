@@ -1,5 +1,5 @@
 #include "ads124_handler.h"
-#include "ads124_buffers.h"
+#include "can_buffer.h"
 
 static void ads124_conversion_tick(void);
 static HAL_StatusTypeDef ads124_init_buffers(void);
@@ -20,12 +20,12 @@ ads124_channel_conf_t scan_seq[10] = {
 };
 
 // Define buffers for each sensor
-ads124_buffer_t load_cell_a_buffer;
-ads124_buffer_t load_cell_b_buffer;
-ads124_buffer_t load_cell_c_buffer;
-ads124_buffer_t thermo_a_buffer;
-ads124_buffer_t thermo_b_buffer;
-ads124_buffer_t thermo_c_buffer;
+can_buffer_t load_cell_a_buffer;
+can_buffer_t load_cell_b_buffer;
+can_buffer_t load_cell_c_buffer;
+can_buffer_t thermo_a_buffer;
+can_buffer_t thermo_b_buffer;
+can_buffer_t thermo_c_buffer;
 
 /**
  * @brief Initialize the ADS124S08 ADC
@@ -84,12 +84,12 @@ HAL_StatusTypeDef ads124_init(void)
 static HAL_StatusTypeDef ads124_init_buffers(void)
 {
     // Initialize buffers for each sensor
-    ads124_buffer_init(&load_cell_a_buffer, SID_SENSOR_LC_Thrust);
-    ads124_buffer_init(&load_cell_b_buffer, SID_SENSOR_LC_N2O_A);
-    ads124_buffer_init(&load_cell_c_buffer, SID_SENSOR_LC_N2O_B);
-    ads124_buffer_init(&thermo_a_buffer, SID_SENSOR_THERMO_A);
-    ads124_buffer_init(&thermo_b_buffer, SID_SENSOR_THERMO_B);
-    ads124_buffer_init(&thermo_c_buffer, SID_SENSOR_THERMO_C);
+    can_buffer_init(&load_cell_a_buffer, SID_SENSOR_LC_Thrust, CAN_BUFFER_SIZE);
+    can_buffer_init(&load_cell_b_buffer, SID_SENSOR_LC_N2O_A, CAN_BUFFER_SIZE);
+    can_buffer_init(&load_cell_c_buffer, SID_SENSOR_LC_N2O_B, CAN_BUFFER_SIZE);
+    can_buffer_init(&thermo_a_buffer, SID_SENSOR_THERMO_A, CAN_BUFFER_SIZE);
+    can_buffer_init(&thermo_b_buffer, SID_SENSOR_THERMO_B, CAN_BUFFER_SIZE);
+    can_buffer_init(&thermo_c_buffer, SID_SENSOR_THERMO_C, CAN_BUFFER_SIZE);
 
     return HAL_OK;
 }

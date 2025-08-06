@@ -7,6 +7,7 @@
 #include "hal.h"
 #include "ads124.h"
 #include "peripherals.h"
+#include "config.h"
 
 typedef struct {
     uint8_t pos_ch;
