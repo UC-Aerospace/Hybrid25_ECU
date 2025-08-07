@@ -53,6 +53,7 @@
 #include "stm32g0xx_hal.h"
 #include "main.h"
 #include "peripherals.h"
+#include "config.h"
 #include "ads124.h"
 
 //****************************************************************************
@@ -119,10 +120,7 @@ void sendWakeup( SPI_HandleTypeDef *hspi );
 void spiSendReceiveArrays( SPI_HandleTypeDef *hspi, uint8_t DataTx[], uint8_t DataRx[], uint8_t byteLength );
 uint8_t spiSendReceiveByte( SPI_HandleTypeDef *hspi, uint8_t dataTx );
 bool waitForDRDYHtoL( uint32_t timeout_ms );
-bool getDRDYinterruptStatus(void);
-void setDRDYinterruptStatus(const bool value);
-void enableDRDYinterrupt(const bool intEnable);
-//void ads124_gpio_exti_callback(uint16_t GPIO_Pin);
+
 
 //*****************************************************************************
 //

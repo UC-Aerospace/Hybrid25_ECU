@@ -69,7 +69,6 @@ void Error_Handler(void);
 #define SYNC_GPIO_Port GPIOC
 #define ADC_RDY_Pin GPIO_PIN_5
 #define ADC_RDY_GPIO_Port GPIOC
-#define ADC_RDY_EXTI_IRQn EXTI4_15_IRQn
 #define ADC_RST_Pin GPIO_PIN_0
 #define ADC_RST_GPIO_Port GPIOB
 #define REF5V_B1_Pin GPIO_PIN_1

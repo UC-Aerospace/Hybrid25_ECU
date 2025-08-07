@@ -16,13 +16,17 @@ uint16_t voltage;
 uint16_t cjt_temp;
 
 void app_init(void) {
+
+    //__HAL_DBGMCU_FREEZE_TIM14();
+    //__HAL_DBGMCU_FREEZE_TIM15();
+
     // Initialize the application
     uint32_t uid[3];
 
     uid[0] = HAL_GetUIDw0();
     uid[1] = HAL_GetUIDw1();
     uid[2] = HAL_GetUIDw2();
-    if (uid[0] == 0x00130041 && uid[1] == 0x5442500C && uid[2] == 0x20373357) {
+    if (uid[0] == 0x00170041 && uid[1] == 0x5442500C && uid[2] == 0x20373357) {
         // Device is recognized, proceed with initialization
         dbg_printf("Device recognized: UID %08lX %08lX %08lX\r\n", uid[0], uid[1], uid[2]);
         BOARD_ID = CAN_NODE_ADDR_ADC_1; // ADC A
@@ -40,9 +44,12 @@ void app_init(void) {
     }
 
     // Initialise the PTE7300 Pressure Sensors
-    PTE7300_Init(&hpte7300_A, &hi2c1, SID_SENSOR_PT_A);
-    PTE7300_Init(&hpte7300_B, &hi2c2, SID_SENSOR_PT_B);
-    PTE7300_Init(&hpte7300_C, &hi2c3, SID_SENSOR_PT_C);
+    //PTE7300_Init(&hpte7300_A, &hi2c1, SID_SENSOR_PT_A);
+    //PTE7300_Init(&hpte7300_B, &hi2c2, SID_SENSOR_PT_B);
+    //PTE7300_Init(&hpte7300_C, &hi2c3, SID_SENSOR_PT_C);
+
+    // Start conversions
+    adc_start();
 }
 
 void task_toggle_status_led(void) {
@@ -75,16 +82,13 @@ void task_poll_can_hanlers(void) {
 }
 
 void app_run(void) {
-    // Start conversions
-    adc_start();
-    
     // Define tasks
     Task tasks[] = {
         {0, 1000, task_update_battery_voltage},    // Battery voltage reading every 1000 ms
         {0, 500, task_update_NTC_temperature},         // Temperature reading every 500 ms
         {0, 500, task_toggle_status_led},         // LED toggle every 500 ms
-        {0, 100, task_sample_pte7300},            // Sample PTE7300 sensors every 100 ms
-        {0, 300, task_poll_can_hanlers}            // Poll CAN handlers every 300 ms
+        //{0, 100, task_sample_pte7300},            // Sample PTE7300 sensors every 100 ms
+        //{0, 300, task_poll_can_hanlers}            // Poll CAN handlers every 300 ms
     };
 
     while (1) {

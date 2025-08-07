@@ -1,23 +1,7 @@
 #include "ads124_handler.h"
-#include "can_buffer.h"
 
 static void ads124_conversion_tick(void);
 static HAL_StatusTypeDef ads124_init_buffers(void);
-
-// Setup the scanning sequence
-ads124_channel_conf_t scan_seq[10] = {
-    // Positive Channel, Negative Channel, Use Internal Reference, Use VBIAS
-    {ADS_P_AIN6, ADS_N_AIN7, false, false}, // Load cell A
-    {ADS_P_AIN2, ADS_N_AIN3, false, false}, // Load cell B
-    {ADS_P_AIN6, ADS_N_AIN7, false, false}, // Load cell A
-    {ADS_P_AIN2, ADS_N_AIN3, true, false}, // Load cell C
-    {ADS_P_AIN6, ADS_N_AIN7, false, false}, // Load cell A
-    {ADS_P_AIN4, ADS_N_AIN5, true, false}, // Thermocouple A
-    {ADS_P_AIN6, ADS_N_AIN7, false, false}, // Load cell A
-    {ADS_P_AIN8, ADS_N_AIN9, true, false}, // Thermocouple B
-    {ADS_P_AIN6, ADS_N_AIN7, false, false}, // Load cell A
-    {ADS_P_AIN10, ADS_N_AIN11, true, false} // Thermocouple C
-};
 
 // Define buffers for each sensor
 can_buffer_t load_cell_a_buffer;
@@ -27,12 +11,30 @@ can_buffer_t thermo_a_buffer;
 can_buffer_t thermo_b_buffer;
 can_buffer_t thermo_c_buffer;
 
+
+// Setup the scanning sequence
+ads124_channel_conf_t scan_seq[10] = {
+    // Positive Channel, Negative Channel, Use Internal Reference, Use VBIAS
+    {ADS_P_AIN6, ADS_N_AIN7, false, false, &load_cell_a_buffer}, // Load cell A
+    {ADS_P_AIN2, ADS_N_AIN3, false, false, &load_cell_b_buffer}, // Load cell B
+    {ADS_P_AIN6, ADS_N_AIN7, false, false, &load_cell_a_buffer}, // Load cell A
+    {ADS_P_AIN4, ADS_N_AIN5, false, false, &load_cell_c_buffer}, // Load cell C
+    {ADS_P_AIN6, ADS_N_AIN7, false, false, &load_cell_a_buffer}, // Load cell A
+    {ADS_P_AIN0, ADS_N_AIN1, true, true, &thermo_a_buffer}, // Thermocouple A
+    {ADS_P_AIN6, ADS_N_AIN7, false, false, &load_cell_a_buffer}, // Load cell A
+    {ADS_P_AIN8, ADS_N_AIN9, true, false, &thermo_b_buffer}, // Thermocouple B
+    {ADS_P_AIN6, ADS_N_AIN7, false, false, &load_cell_a_buffer}, // Load cell A
+    {ADS_P_AIN10, ADS_N_AIN11, true, false, &thermo_c_buffer} // Thermocouple C
+};
+
 /**
  * @brief Initialize the ADS124S08 ADC
  * @return HAL_OK on success, HAL_ERROR on failure
  */
 HAL_StatusTypeDef ads124_init(void)
 {
+    resetADC(&hspi1);
+
     // Initialize the ADC peripherals
     if (!InitADCPeripherals(&hspi1)) {
         return HAL_ERROR;
@@ -109,14 +111,24 @@ static void ads124_conversion_tick(void)
     uint8_t status_byte;
 
     if (ads124_read_conversion(&conversion_result, &status_byte) != HAL_OK) {
-        conversion_result = 0; // Default to 0 on error
+        conversion_result = -1; // Default to -1 on error
     }
+
+    // Concatenate the result to 16 bits
+    conversion_result = (conversion_result >> 8) & 0xFFFF; // Keep only the 16 MSBits
+
+    // Put result onto the buffer based on the current channel
+    can_buffer_push(scan_seq[current_conv_index].buffer, (int16_t)conversion_result);
 
     // Update the index for the next conversion
     current_conv_index++;
     if (current_conv_index >= 10) {
         current_conv_index = 0;
     }
+
+    // Stop the current conversion
+    // This is necessary to ensure we can configure the next channel
+    ads124_stop_conversion();
 
     // Configure the next channel
     ads124_configure_channel(scan_seq[current_conv_index].pos_ch, scan_seq[current_conv_index].neg_ch);
@@ -151,9 +163,6 @@ HAL_StatusTypeDef ads124_start_conversion(void)
     // Start conversions
     startConversions(&hspi1);
     
-    // Enable DRDY interrupt
-    enableDRDYinterrupt(true);
-    
     return HAL_OK;
 }
 
@@ -166,8 +175,6 @@ HAL_StatusTypeDef ads124_stop_conversion(void)
     // Stop conversions
     stopConversions(&hspi1);
     
-    // Disable DRDY interrupt
-    enableDRDYinterrupt(false);
     
     return HAL_OK;
 }
@@ -250,7 +257,7 @@ HAL_StatusTypeDef ads124_read_conversion(int32_t *data, uint8_t *status)
     }
     
     // Wait for conversion to complete with timeout
-    if (!waitForDRDYHtoL(1)) { // 1 second timeout
+    if (!waitForDRDYHtoL(0)) { // 1 second timeout
         return HAL_TIMEOUT;
     }
     
@@ -317,14 +324,14 @@ HAL_StatusTypeDef ads124_set_conversion_mode(uint8_t mode)
     if (mode != ADS_CONVMODE_SS && mode != ADS_CONVMODE_CONT) {
         return HAL_ERROR; // Invalid mode
     }
-    // Read current STATUS register
-    status_reg = readSingleRegister(&hspi1, REG_ADDR_STATUS);
+    // Read current DATARATE register
+    status_reg = readSingleRegister(&hspi1, REG_ADDR_DATARATE);
     // Clear old conversion mode bits
     status_reg &= ~(ADS_CONVMODE_SS | ADS_CONVMODE_CONT);
     // Set new conversion mode
     status_reg |= mode;
-    // Write back to STATUS register
-    writeSingleRegister(&hspi1, REG_ADDR_STATUS, status_reg);
+    // Write back to DATARATE register
+    writeSingleRegister(&hspi1, REG_ADDR_DATARATE, status_reg);
     return HAL_OK;
 }
 

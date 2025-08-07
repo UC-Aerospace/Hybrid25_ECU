@@ -57,8 +57,7 @@ static uint32_t getSysClockHz(void)
 // Internal variables
 //
 //****************************************************************************
-// Flag to indicate if a /DRDY interrupt has occurred
-static volatile bool flag_nDRDY_INTERRUPT = false;
+
 
 //****************************************************************************
 //
@@ -75,54 +74,7 @@ void GPIO_DRDY_IRQHandler(uint_least8_t index);
 //
 //****************************************************************************
 
-/************************************************************************************//**
- * @brief getDRDYinterruptStatus()
- *          Gets the current status of nDRDY interrupt flag.
- *
- * @ return boolean status of flag_nDRDY_INTERRUPT
- */
-bool getDRDYinterruptStatus(void)
-{
-   return flag_nDRDY_INTERRUPT;
-}
 
-/************************************************************************************//**
- * @brief setDRDYinterruptStatus()
- *          Sets the value of the nDRDY interrupt flag.
- *
- * @param[in] value where status is set with true; false clears the status.
- *
- * @return None
- */
-void setDRDYinterruptStatus(const bool value)
-{
-    flag_nDRDY_INTERRUPT = value;
-}
-/************************************************************************************//**
- *
- * @brief enableDRDYinterrupt()
- *          Enables or disables the nDRDY interrupt.
- *
- * @param[in] intEnable Where interrupt is enabled with true; false disables the interrupt.
- *
- * @return None
- */
-void enableDRDYinterrupt(const bool intEnable)
-{
-    if(intEnable)
-    {
-        flag_nDRDY_INTERRUPT = false;
-        // Clear any pending interrupt
-        __HAL_GPIO_EXTI_CLEAR_IT(DRDY_PIN);
-        // Enable the interrupt
-        HAL_NVIC_EnableIRQ(ADC_RDY_EXTI_IRQn);
-    }
-    else 
-    {
-        // Disable the interrupt
-        HAL_NVIC_DisableIRQ(ADC_RDY_EXTI_IRQn);
-    }
-}
 
 //****************************************************************************
 //
@@ -190,33 +142,6 @@ void InitGPIO(void)
     // Set START pin low initially  
     HAL_GPIO_WritePin(START_PORT, START_PIN, GPIO_PIN_RESET);
     
-    // The DRDY interrupt is configured in main.c via STM32CubeMX
-    // Ensure it's enabled
-    enableDRDYinterrupt(true);
-}
-
-//*****************************************************************************
-//
-// Interrupt handler for nDRDY GPIO
-//*****************************************************************************
-
-/************************************************************************************//**
- *
- * @brief ads124_gpio_exti_callback()
- *          Interrupt handler for nDRDY falling edge interrupt.
- *          This function should be called from HAL_GPIO_EXTI_Callback() in main.c
- *
- * @param[in] GPIO_Pin Pin that triggered the interrupt
- *
- * @return None
- */
-void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
-{
-    if(GPIO_Pin == ADC_RDY_Pin)
-    {
-        // nDRDY interrupt occurred - set flag
-        flag_nDRDY_INTERRUPT = true;
-    }
 }
 
 
@@ -532,16 +457,23 @@ bool getCS( void )
  */
 bool waitForDRDYHtoL( uint32_t timeout_ms )
 {
-    uint32_t timeoutCounter = timeout_ms * 8000;   // convert to # of loop iterations;
+    // uint32_t timeoutCounter = timeout_ms * 8000;   // convert to # of loop iterations;
 
-    do {
-    } while ( !(flag_nDRDY_INTERRUPT) && (--timeoutCounter) );
+    // do {
+    // } while ( !HAL_GPIO_ReadPin(ADC_RDY_GPIO_Port, ADC_RDY_Pin) && (--timeoutCounter) );
 
-    if ( !timeoutCounter ) {
-        return false;
-    } else {
-        flag_nDRDY_INTERRUPT = false; // Reset flag
+    // if ( !timeoutCounter ) {
+    //     return false;
+    // } else {
+    //     return true;
+    // }
+
+    if (!HAL_GPIO_ReadPin(ADC_RDY_GPIO_Port, ADC_RDY_Pin)) {
+        // DRDY is already low, no need to wait
         return true;
+    } else {
+        // Don't wait
+        return false;
     }
 }
 

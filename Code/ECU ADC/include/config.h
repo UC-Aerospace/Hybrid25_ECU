@@ -52,7 +52,7 @@ extern uint8_t BOARD_ID;
 
 extern ADC_ChannelConfTypeDef ADC_2S_Config;
 
-#define ADC_2S_FACTOR 2.0298f 
+#define ADC_2S_FACTOR 0.12594f 
 #define VOLTAGE_2S_FLAT 6.5f // 3.25*2
 #define VOLTAGE_2S_MAX 8.2f // 4.1*2
 

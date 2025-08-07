@@ -74,8 +74,8 @@ extern bool converting;
 #define INT_VREF			2.5
 
 
-//#define START_PIN_CONTROLLED      // Conversion START/STOP functions are pin controlled through the START/SYNC pin
-//#define RESET_PIN_CONTROLLED      // Device RESET is controlled by the RESET pin
+#define START_PIN_CONTROLLED      // Conversion START/STOP functions are pin controlled through the START/SYNC pin
+#define RESET_PIN_CONTROLLED      // Device RESET is controlled by the RESET pin
 
 //Fixed timing delays
 #define DELAY_4TCLK   	(uint32_t) (1) // 1usec ~= (4.0 /ADS124S08_FCLK) which is the minimum required low time for RESET or START/SYNC.

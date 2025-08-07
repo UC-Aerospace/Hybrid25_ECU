@@ -8,12 +8,14 @@
 #include "ads124.h"
 #include "peripherals.h"
 #include "config.h"
+#include "can_buffer.h"
 
 typedef struct {
     uint8_t pos_ch;
     uint8_t neg_ch;
     bool use_internal_ref;
     bool use_vbias;
+    can_buffer_t *buffer; // Pointer to the CAN buffer for this channel
 } ads124_channel_conf_t;
 
 // Example function prototypes
