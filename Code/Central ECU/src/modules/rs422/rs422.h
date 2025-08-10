@@ -62,9 +62,9 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t transferred)
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart);
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart);
 bool rs422_init(UART_HandleTypeDef *huart);
-bool rs422_send(uint8_t *data, uint8_t size, RS422_FrameType_t frame_type);
+HAL_StatusTypeDef rs422_send(uint8_t *data, uint8_t size, RS422_FrameType_t frame_type);
 uint16_t rs422_get_tx_buffer_space(void);
-void rs422_process_tx_queue(void);
+HAL_StatusTypeDef rs422_process_tx_queue(void);
 uint16_t rs422_get_rx_available(void);
 uint16_t rs422_read(RS422_RxFrame_t *frame);
 void rs422_process_rx_dma(uint16_t transferred);

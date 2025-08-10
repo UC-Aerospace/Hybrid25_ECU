@@ -9,6 +9,13 @@
 #include "peripherals.h"
 #include "config.h"
 
+// Define a struct for tasks
+typedef struct {
+    uint32_t last_run_time; // Last time the task was run
+    uint32_t interval;       // Interval in milliseconds
+    void (*task_function)(void); // Pointer to the task function
+} Task;
+
 void app_init(void);
 void app_run(void);
 

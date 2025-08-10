@@ -154,6 +154,7 @@ void handle_adc_data(CAN_ADCFrame* frame, CAN_ID id, uint8_t dataLength) {
 
 void handle_status(CAN_StatusFrame* frame, CAN_ID id) {
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
+    // TODO: Handle Status Frames
 }
 
 void handle_heatbeat(CAN_HeartbeatFrame* frame, CAN_ID id, uint32_t timestamp) {
@@ -162,7 +163,7 @@ void handle_heatbeat(CAN_HeartbeatFrame* frame, CAN_ID id, uint32_t timestamp) {
     // Remote timestamp good upto ~4 hours
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
     uint32_t remote_timestamp = (frame->timestamp[0] << 16) | (frame->timestamp[1] << 8) | frame->timestamp[2];
-    uint32_t local_timestamp = SysTick->VAL;
+    uint32_t local_timestamp = HAL_GetTick();
     dbg_printf("Heartbeat Frame: initiator=%d, remote timestamp=%lu, local timestamp=%lu\n", initiator, remote_timestamp, local_timestamp);
     
 }

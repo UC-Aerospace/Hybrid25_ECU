@@ -1,1 +1,4 @@
 **/*backups/
+**/cmake/
+**/CMakeFiles/
+**/build/

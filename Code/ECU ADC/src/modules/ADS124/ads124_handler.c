@@ -111,7 +111,7 @@ static void ads124_conversion_tick(void)
     uint8_t status_byte;
 
     if (ads124_read_conversion(&conversion_result, &status_byte) != HAL_OK) {
-        conversion_result = -1; // Default to -1 on error
+        conversion_result = 0; // Default to 0 on error
     }
 
     // Concatenate the result to 16 bits

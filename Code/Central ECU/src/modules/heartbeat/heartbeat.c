@@ -1,0 +1,41 @@
+#include "heartbeat.h"
+#include "debug_io.h"
+
+RemoteHeartbeat_t heartbeat[MAX_COUNT] = {0};
+
+void heartbeat_reload(uint8_t BOARD_ID) {
+    // Check if BOARD_ID is valid
+    if (BOARD_ID >= MAX_COUNT) {
+        dbg_printf("Invalid BOARD_ID %d for heartbeat reload\n", BOARD_ID);
+        return;
+    }
+
+    // Clear the heartbeat for the specified board
+    heartbeat[BOARD_ID].is_active = true;
+    heartbeat[BOARD_ID].cleared = true;
+
+    // Check if timer is running, else start it
+    if (HAL_TIM_Base_GetState(&htim14) != HAL_TIM_STATE_READY) {
+        if (HAL_TIM_Base_Start_IT(&htim14) != HAL_OK) {
+            dbg_printf("Failed to start heartbeat timer.\n");
+            return;
+        }
+    }
+}
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+    if (htim->Instance == TIM14) {
+        for (uint8_t i = 0; i < MAX_COUNT; i++) {
+            if (heartbeat[i].is_active) {
+                if (heartbeat[i].cleared) {
+                    heartbeat[i].cleared = false;  // Reset clear flag
+                } else {
+                    // If not cleared, mark as inactive
+                    heartbeat[i].is_active = false;
+                    dbg_printf("Heartbeat for board %d is inactive\n", i);
+                    // TODO: Abort in state machine once done
+                }
+            }
+        }
+    }
+}

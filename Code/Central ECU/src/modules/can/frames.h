@@ -35,6 +35,7 @@ typedef enum {
 } CAN_NodeType;
 
 typedef enum {
+    CAN_NODE_ADDR_BROADCAST = 0b000, // Broadcast address
     CAN_NODE_ADDR_CENTRAL = 0b001, // Central node address
     CAN_NODE_ADDR_SERVO = 0b010, // Servo node address
     CAN_NODE_ADDR_ADC_1 = 0b011, // ADC1 node address
@@ -81,7 +82,8 @@ typedef struct __attribute__((packed)) {
 
 typedef struct __attribute__((packed)) {
     uint8_t what;
-    uint8_t pos[4];      // Up to 4 servos
+    uint8_t set_pos[4];      // Up to 4 servos
+    uint8_t current_pos[4];
     uint8_t timestamp[3];
 } CAN_ServoPosFrame;
 

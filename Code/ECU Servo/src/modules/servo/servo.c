@@ -1,15 +1,30 @@
 #include "servo.h"
 #include "adc.h"
 #include "debug_io.h"
+#include "can.h"
 
 static ServoQueue servoQueue = {
     .items = {0},
     .head = 0,
     .tail = 0
 };
+
 static uint16_t servoPositions[4];
 
+/************
+ * Private functions
+ ************/
+
+// Sets the position of the servo as a fraction of 1000 steps (0 to 1000)
 static void servo_set_angle(Servo *servo, uint16_t angle);
+// Internal helper: remove all queued items for a servo
+static void servo_queue_remove_for_servo(Servo *servo);
+// Internal helper: queue a position for a servo
+static void servo_queue_position(Servo *servo, ServoPosition position);
+
+/************
+ * Servo instances
+ ************/
 
 // Servo Channel 1
 Servo servoVent = {
@@ -18,7 +33,9 @@ Servo servoVent = {
     .state = SERVO_STATE_DISARMED,
     .safePosition = CRACK,
     .targetPosition = CRACK,
-    .currentPosition = 0
+    .currentPosition = 0,
+    .nrstPin = GPIO_PIN_1, // NRST pin for servo 1
+    .nrstPort = GPIOD // NRST port for servo 1
 };
 
 // Servo Channel 2
@@ -28,7 +45,9 @@ Servo servoNitrogen = {
     .state = SERVO_STATE_DISARMED,
     .safePosition = CLOSE,
     .targetPosition = CLOSE,
-    .currentPosition = 0
+    .currentPosition = 0,
+    .nrstPin = GPIO_PIN_2, // NRST pin for servo 2
+    .nrstPort = GPIOD // NRST port for servo 2
 };
 
 // Servo Channel 3
@@ -38,7 +57,9 @@ Servo servoNitrousA = {
     .state = SERVO_STATE_DISARMED,
     .safePosition = CLOSE,
     .targetPosition = CLOSE,
-    .currentPosition = 0
+    .currentPosition = 0,
+    .nrstPin = GPIO_PIN_3, // NRST pin for servo 3
+    .nrstPort = GPIOD // NRST port for servo 3
 };
 
 // Servo Channel 4
@@ -48,7 +69,9 @@ Servo servoNitrousB = {
     .state = SERVO_STATE_DISARMED,
     .safePosition = CLOSE,
     .targetPosition = CLOSE,
-    .currentPosition = 0
+    .currentPosition = 0,
+    .nrstPin = GPIO_PIN_4, // NRST pin for servo 4
+    .nrstPort = GPIOD // NRST port for servo 4
 };
 
 Servo* servoByIndex[4] = {
@@ -58,32 +81,55 @@ Servo* servoByIndex[4] = {
     &servoNitrousB
 };
 
+/************
+ * Public functions
+ ************/
+
 void servo_init(void) {
     servo_update_positions(); // Initialize servo positions from ADC
+    servo_queue_clear();
 }
 
-void servo_update_positions() {
-    // Get the latest servo positions from the ADC
-    getServoPositions(servoPositions);
+void servo_send_can_positions(void) 
+{
+    servo_update_positions();
 
-    // Update the servo current positions based on the ADC values
-    servoVent.currentPosition = servoPositions[0];
-    servoNitrogen.currentPosition = servoPositions[1];
-    servoNitrousA.currentPosition = servoPositions[2];
-    servoNitrousB.currentPosition = servoPositions[3];
+    uint8_t setPos[4] = {0};
+    for (int i = 0; i < 4; i++) {
+        setPos[i] = servoByIndex[i]->targetPosition / 4;
+    }
+    uint8_t currentPos[4] = {0};
+    for (int i = 0; i < 4; i++) {
+        currentPos[i] = servoByIndex[i]->currentPosition / 4;
+    }
+    can_send_servo_position(CAN_NODE_TYPE_CENTRAL, CAN_NODE_ADDR_CENTRAL, 0b1111, setPos, currentPos); // Assume all are connected
 }
 
-void servo_arm(Servo *servo) {
+void servo_arm(Servo *servo) 
+{
     // Enable the servo
     servo->state = SERVO_STATE_ARMED;
+    HAL_GPIO_WritePin(servo->nrstPort, servo->nrstPin, GPIO_PIN_SET); // Set NRST pin high to enable servo
 }
 
 void servo_disarm(Servo *servo) {
-    // Disable the servo
+    // Disable the servo and stop PWM
     servo->state = SERVO_STATE_DISARMED;
+    HAL_TIM_PWM_Stop(servo->tim, servo->channel);
+    HAL_GPIO_WritePin(servo->nrstPort, servo->nrstPin, GPIO_PIN_RESET); // Set NRST pin low to reset servo
+    // Return to safe target and clear any queued moves for this servo
+    // servo->targetPosition = servo->safePosition; // 
+    servo_queue_remove_for_servo(servo);
+}
+
+void servo_disarm_all(void) {
+    for (uint8_t i = 0; i < 4; i++) {
+        servo_disarm(servoByIndex[i]);
+    }
 }
 
 // Sets the position of the servo, will queue if armed or moving
+// This can be done externally
 void servo_set_position(Servo *servo, ServoPosition position) {
     if (servo->state == SERVO_STATE_ERROR) {
         dbg_printf("Error: Servo is in error state, cannot set position.\r\n");
@@ -97,7 +143,8 @@ void servo_set_position(Servo *servo, ServoPosition position) {
     }
 }
 
-bool servo_queue_start() 
+// Poll the servo queue for the next item to process
+bool servo_queue_poll() 
 {
     // Process the servo queue
     if (servoQueue.head != servoQueue.tail) {
@@ -105,7 +152,8 @@ bool servo_queue_start()
 
         // Set the servo position
         servo_set_angle(item.servo, item.position);
-        item.servo->state = SERVO_STATE_MOVING; // Set state to moving
+        // Set state to moving and start the PWM
+        item.servo->state = SERVO_STATE_MOVING; 
         HAL_TIM_PWM_Start(item.servo->tim, item.servo->channel);
 
         return true; // Successfully processed an item
@@ -118,46 +166,68 @@ bool servo_queue_check_complete()
     servo_update_positions(); // Update current positions from ADC
     if (servoQueue.head != servoQueue.tail) {
         ServoQueueItem *item = &servoQueue.items[servoQueue.head];
-        uint8_t coarsePosition = item->servo->currentPosition; // Placeholder, do the maths later to convert into same format.
-        if (coarsePosition == item->position) {
+        int16_t delta = (int16_t)item->position - item->servo->currentPosition;
+        if (delta < 0) delta = -delta;
+        if (delta <= SERVO_POSITION_TOLERANCE) {
             return true; // Item is complete
         }
     }
     return false; // No complete items
 }
 
+// On completion of the current servo movement move it to ERROR if failed and move to ARMED if successful
 void servo_queue_complete(bool wasSuccess)
 {
     // Mark the current item as complete
     if (servoQueue.head != servoQueue.tail) {
         ServoQueueItem *item = &servoQueue.items[servoQueue.head];
         HAL_TIM_PWM_Stop(item->servo->tim, item->servo->channel);
+        HAL_GPIO_WritePin(item->servo->nrstPort, item->servo->nrstPin, GPIO_PIN_RESET); // Set NRST pin low to reset servo
+
         if (wasSuccess) {
             item->servo->state = SERVO_STATE_ARMED; // Set back to armed state
         } else {
             item->servo->state = SERVO_STATE_ERROR; // Set to error state if failed
+            // TODO: Send a CAN error message
+            dbg_printf("Error: Servo number %d movement failed, setting to ERROR state.\r\n", item->servo->channel);
         }
-        servoQueue.head = (servoQueue.head + 1) % 4; // Move head forward
+        servoQueue.head = (servoQueue.head + 1) % SERVO_QUEUE_SIZE; // Move head forward
+        // Delay for a period to allow the servo to reset
+        for (volatile int i = 0; i < 500; i++) {
+            __NOP(); // NOP for 50us delay
+        }
+        HAL_GPIO_WritePin(item->servo->nrstPort, item->servo->nrstPin, GPIO_PIN_SET); // Set NRST pin high to enable servo
     }
 }
 
-void servo_queue_position(Servo *servo, ServoPosition position) 
-{
-    if (servo->state == SERVO_STATE_ERROR) {
-        dbg_printf("Error: Servo is in error state, cannot queue position.\r\n");
-        return;
-    }
-
-    // Add to circular queue
-    if ((servoQueue.tail + 1) % 4 == servoQueue.head) {
-        dbg_printf("Error: Servo queue is full, cannot queue position.\r\n");
-        return;
-    }
-
-    servoQueue.items[servoQueue.tail].servo = servo;
-    servoQueue.items[servoQueue.tail].position = position;
-    servoQueue.tail = (servoQueue.tail + 1) % 4;
+// Clear the servo queue
+void servo_queue_clear() {
+    servoQueue.head = 0;
+    servoQueue.tail = 0;
 }
+
+void servo_queue_clear_for_servo(Servo *servo) {
+    servo_queue_remove_for_servo(servo);
+}
+
+void servo_update_positions() {
+    // Get the latest servo positions from the ADC as uint16_t array
+    adc_get_servo_positions(servoPositions);
+
+    // Convert from 12 bit ADC values to 0-1000 servo positions and set current positions
+    servoVent.currentPosition = (int16_t)(-5.0/16.0*(servoPositions[0] - 3620));
+    servoPositions[0] = servoVent.currentPosition; // Update servoPositions array
+    servoNitrogen.currentPosition = (int16_t)(-5.0/16.0*(servoPositions[1] - 3620));
+    servoPositions[1] = servoNitrogen.currentPosition; // Update servoPositions array
+    servoNitrousA.currentPosition = (int16_t)(-5.0/16.0*(servoPositions[2] - 3620));
+    servoPositions[2] = servoNitrousA.currentPosition; // Update servoPositions array
+    servoNitrousB.currentPosition = (int16_t)(-5.0/16.0*(servoPositions[3] - 3620));
+    servoPositions[3] = servoNitrousB.currentPosition; // Update servoPositions array
+}
+
+/************
+ * Private functions
+ ************/
 
 // Sets position of the servo as a fraction of 1000 steps (0 to 1000)
 static void servo_set_angle(Servo *servo, uint16_t angle) {
@@ -173,4 +243,43 @@ static void servo_set_angle(Servo *servo, uint16_t angle) {
 
     // Assuming the timer is configured for PWM mode and the pulse width is set in ticks
     __HAL_TIM_SET_COMPARE(servo->tim, servo->channel, pulseTicks);
+}
+
+// Add a position to the servo queue, will queue if armed or moving
+static void servo_queue_position(Servo *servo, ServoPosition position) 
+{
+    if (servo->state == SERVO_STATE_ERROR) {
+        dbg_printf("Error: Servo is in error state, cannot queue position.\r\n");
+        return;
+    }
+    if (!(servo->state == SERVO_STATE_ARMED || servo->state == SERVO_STATE_MOVING)) {
+        dbg_printf("Warn: Servo is not armed, ignoring queued position.\r\n");
+        return;
+    }
+
+    // Add to circular queue
+    if ((servoQueue.tail + 1) % SERVO_QUEUE_SIZE == servoQueue.head) {
+        dbg_printf("Error: Servo queue is full, cannot queue position.\r\n");
+        return;
+    }
+
+    servoQueue.items[servoQueue.tail].servo = servo;
+    servoQueue.items[servoQueue.tail].position = position;
+    servoQueue.tail = (servoQueue.tail + 1) % SERVO_QUEUE_SIZE;
+}
+
+static void servo_queue_remove_for_servo(Servo *servo) {
+    if (servoQueue.head == servoQueue.tail) {
+        return; // empty
+    }
+    ServoQueue newQueue = { .items = {0}, .head = 0, .tail = 0 };
+    while (servoQueue.head != servoQueue.tail) {
+        ServoQueueItem item = servoQueue.items[servoQueue.head];
+        servoQueue.head = (servoQueue.head + 1) % SERVO_QUEUE_SIZE;
+        if (item.servo != servo) {
+            newQueue.items[newQueue.tail] = item;
+            newQueue.tail = (newQueue.tail + 1) % SERVO_QUEUE_SIZE;
+        }
+    }
+    servoQueue = newQueue;
 }

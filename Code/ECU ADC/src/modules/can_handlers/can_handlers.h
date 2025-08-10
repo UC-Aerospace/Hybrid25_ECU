@@ -3,8 +3,9 @@
 
 #include "stm32g0xx_hal.h"
 #include "frames.h"
+#include "can.h"
 
-#define CAN_RX_QUEUE_LENGTH 5
+#define CAN_RX_QUEUE_LENGTH 10
 
 void handle_error_warning(CAN_ErrorWarningFrame* frame, CAN_ID id);
 void handle_command(CAN_CommandFrame* frame, CAN_ID id);
@@ -23,21 +24,5 @@ typedef struct {
 } CAN_RxQueue;
 
 extern CAN_RxQueue can_rx_queue;
-
-// Command enum
-typedef enum {
-    CAN_CMD_SET_STATE = 0b0000,
-    CAN_CMD_SET_SERVO_ARM = 0b0001,
-    CAN_CMD_SET_SERVO_POS = 0b0010,
-    CAN_CMD_GET_SERVO_POS = 0b0011,
-    CAN_CMD_GET_VOLTAGE = 0b0100,
-    CAN_CMD_RESTART_MCU = 0b0101,
-    CAN_CMD_SET_SENSOR_STATE = 0b0110,
-    CAN_CMD_SET_SENSOR_RATE = 0b0111,
-    
-    // Add more commands as needed
-} CAN_CMDType;
-
-
 
 #endif // CAN_HANDLERS_H

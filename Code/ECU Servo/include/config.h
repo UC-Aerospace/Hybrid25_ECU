@@ -5,8 +5,9 @@
 
 // WHOAMI
 
-// Board types: _SERVO, _CENTRAL, _ECU
+// Board types: _SERVO, _CENTRAL, _ADC
 #define BOARD_TYPE_SERVO
+
 static uint8_t BOARD_ID;
 
 // Pinout configuration
@@ -41,16 +42,16 @@ static uint8_t BOARD_ID;
 #define PWM_B_GPIO_Port GPIOC
 #define LED_IND_ERROR_Pin GPIO_PIN_9
 #define LED_IND_ERROR_GPIO_Port GPIOC
-#define LED_STATUS_Pin GPIO_PIN_0
-#define LED_STATUS_GPIO_Port GPIOD
-#define E1_Pin GPIO_PIN_1
-#define E1_GPIO_Port GPIOD
-#define E2_Pin GPIO_PIN_2
-#define E2_GPIO_Port GPIOD
-#define E3_Pin GPIO_PIN_3
-#define E3_GPIO_Port GPIOD
-#define E4_Pin GPIO_PIN_4
-#define E4_GPIO_Port GPIOD
+#define LED_IND_STATUS_Pin GPIO_PIN_0
+#define LED_IND_STATUS_GPIO_Port GPIOD
+#define Servo_A_NRST_Pin GPIO_PIN_1
+#define Servo_A_NRST_GPIO_Port GPIOD
+#define Servo_B_NRST_Pin GPIO_PIN_2
+#define Servo_B_NRST_GPIO_Port GPIOD
+#define Servo_C_NRST_Pin GPIO_PIN_3
+#define Servo_C_NRST_GPIO_Port GPIOD
+#define Servo_D_NRST_Pin GPIO_PIN_4
+#define Servo_D_NRST_GPIO_Port GPIOD
 #define CAN2_AUX_Pin GPIO_PIN_7
 #define CAN2_AUX_GPIO_Port GPIOB
 #define CAN1_AUX_Pin GPIO_PIN_10

@@ -2,6 +2,7 @@
 #include "debug_io.h"
 #include "can.h"
 #include "servo.h"
+#include "heartbeat.h"
 
 static void handle_cmd_set_servo_arm(CAN_CommandFrame* frame, CAN_ID id);
 static void handle_cmd_set_servo_pos(CAN_CommandFrame* frame, CAN_ID id);
@@ -22,7 +23,7 @@ CAN_RxQueue can_rx_queue = {
 
 void enqueue_can_frame(CAN_Frame_t* frame) {
     if (can_rx_queue.count >= CAN_RX_QUEUE_LENGTH) {
-        dbg_printf("CAN RX Queue is full, dropping frame\n");
+        dbg_printf("CAN RX Queue is full, dropping frame\r\n");
         return; // Queue is full, drop the frame
     }
     
@@ -30,12 +31,11 @@ void enqueue_can_frame(CAN_Frame_t* frame) {
     can_rx_queue.tail = (can_rx_queue.tail + 1) % CAN_RX_QUEUE_LENGTH;
     can_rx_queue.count++;
     
-    dbg_printf("Enqueued CAN frame with ID: %08lX, count: %d\n", frame->id, can_rx_queue.count);
+    dbg_printf("Enqueued CAN frame with ID: %08lX, count: %d\r\n", frame->id, can_rx_queue.count);
 }
 
 void can_handler_poll(void) {
     if (can_rx_queue.count == 0) {
-        dbg_printf("No CAN frames to process\n");
         return; // No frames to process
     }
 
@@ -43,7 +43,7 @@ void can_handler_poll(void) {
     can_rx_queue.head = (can_rx_queue.head + 1) % CAN_RX_QUEUE_LENGTH;
     can_rx_queue.count--;
 
-    dbg_printf("Processing CAN frame with ID: %08lX, count: %d\n", frame->id, can_rx_queue.count);
+    dbg_printf("Processing CAN frame with ID: %08lX, count: %d\r\n", frame->id, can_rx_queue.count);
 
     switch (frame->id.frameType) {
         case CAN_TYPE_ERROR:
@@ -53,7 +53,7 @@ void can_handler_poll(void) {
             handle_command((CAN_CommandFrame*)frame->data, frame->id);
             break;
         case CAN_TYPE_SERVO_POS:
-            handle_servo_pos((CAN_ServoFrame*)frame->data, frame->id);
+            handle_servo_pos((CAN_ServoPosFrame*)frame->data, frame->id);
             break;
         case CAN_TYPE_ADC_DATA:
             handle_adc_data((CAN_ADCFrame*)frame->data, frame->id, frame->length);
@@ -62,7 +62,7 @@ void can_handler_poll(void) {
             handle_status((CAN_StatusFrame*)frame->data, frame->id);
             break;
         default:
-            dbg_printf("Unknown CAN frame type: %d\n", frame->id.frameType);
+            dbg_printf("Unknown CAN frame type: %d\r\n", frame->id.frameType);
             break;
     }
 }
@@ -72,7 +72,7 @@ void can_handler_poll(void) {
 // =========================================================
 
 void handle_error_warning(CAN_ErrorWarningFrame* frame, CAN_ID id) {
-    dbg_printf("Error Warning: what=%d, why=%d, timestamp=%02X%02X%02X\n",
+    dbg_printf("Error Warning: what=%d, why=%d, timestamp=%02X%02X%02X\r\n",
                frame->what, frame->why, frame->timestamp[0], frame->timestamp[1], frame->timestamp[2]);
 
     uint8_t actionType = frame->what >> 6; // Bits 6-7 for action type
@@ -80,19 +80,19 @@ void handle_error_warning(CAN_ErrorWarningFrame* frame, CAN_ID id) {
     
     switch (actionType) {
         case 0b00: // Immediate shutdown
-            dbg_printf("Immediate Shutdown: initiator=%d, why=%d\n", initiator, frame->why);
+            dbg_printf("Immediate Shutdown: initiator=%d, why=%d\r\n", initiator, frame->why);
             // Handle immediate shutdown
             break;
         case 0b01: // Error Notification
-            dbg_printf("Error Notification: initiator=%d, why=%d\n", initiator, frame->why);
+            dbg_printf("Error Notification: initiator=%d, why=%d\r\n", initiator, frame->why);
             // Handle error notification
             break;
         case 0b10: // Warning Notification
-            dbg_printf("Warning Notification: initiator=%d, why=%d\n", initiator, frame->why);
+            dbg_printf("Warning Notification: initiator=%d, why=%d\r\n", initiator, frame->why);
             // Handle warning notification
             break;
         case 0b11: // Reserved
-            dbg_printf("Error Warning 0b11: initiator=%d, why=%d\n", initiator, frame->why);
+            dbg_printf("Error Warning 0b11: initiator=%d, why=%d\r\n", initiator, frame->why);
             // Handle reserved message
             break;
     }
@@ -100,14 +100,13 @@ void handle_error_warning(CAN_ErrorWarningFrame* frame, CAN_ID id) {
 }
 
 void handle_command(CAN_CommandFrame* frame, CAN_ID id) {
-    dbg_printf("Command: cmd=%d, param=%d\n", frame->what, frame->options);
 
     uint8_t command = frame->what >> 3;
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
 
     switch (command) {
         case CAN_CMD_SET_STATE:
-            dbg_printf("Update State Command: initiator=%d, options=%d\n",
+            dbg_printf("Update State Command: initiator=%d, options=%d\r\n",
                        initiator, frame->options);
             // Handle update state command
             break;
@@ -133,25 +132,25 @@ void handle_command(CAN_CommandFrame* frame, CAN_ID id) {
             break;
 
         case CAN_CMD_SET_SENSOR_RATE:
-            dbg_printf("Set Sensor Rate Command: initiator=%d, options=%d\n",
+            dbg_printf("Set Sensor Rate Command: initiator=%d, options=%d\r\n",
                        initiator, frame->options);
             break;
 
         case CAN_CMD_SET_SENSOR_STATE:
-            dbg_printf("Set Sensor State Command: initiator=%d, options=%d\n",
+            dbg_printf("Set Sensor State Command: initiator=%d, options=%d\r\n",
                        initiator, frame->options);
             break;
     }
 }
 
-void handle_servo_pos(CAN_ServoFrame* frame, CAN_ID id) {
+void handle_servo_pos(CAN_ServoPosFrame* frame, CAN_ID id) {
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
-    dbg_printf("Frame not handled: Servo Position -> initiator=%d\n", initiator);
+    dbg_printf("Frame not handled: Servo Position -> initiator=%d\r\n", initiator);
 }
 
 void handle_adc_data(CAN_ADCFrame* frame, CAN_ID id, uint8_t dataLength) {
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
-    dbg_printf("Frame not handled: ADC Data -> initiator=%d\n", initiator);
+    dbg_printf("Frame not handled: ADC Data -> initiator=%d\r\n", initiator);
 }
 
 void handle_status(CAN_StatusFrame* frame, CAN_ID id) {
@@ -164,9 +163,9 @@ void handle_heatbeat(CAN_HeartbeatFrame* frame, CAN_ID id, uint32_t timestamp) {
     // Remote timestamp good upto ~4 hours
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
     uint32_t remote_timestamp = (frame->timestamp[0] << 16) | (frame->timestamp[1] << 8) | frame->timestamp[2];
-    uint32_t local_timestamp = SysTick->VAL;
-    dbg_printf("Heartbeat Frame: initiator=%d, remote timestamp=%lu, local timestamp=%lu\n", initiator, remote_timestamp, local_timestamp);
-    
+    uint32_t local_timestamp = HAL_GetTick();
+    heartbeat_reload();
+    dbg_printf("Heartbeat Frame: initiator=%d, remote timestamp=%lu, local timestamp=%lu\r\n", initiator, remote_timestamp, local_timestamp);
 }
 
 // ==========================================================
@@ -186,15 +185,16 @@ static void handle_cmd_set_servo_arm(CAN_CommandFrame* frame, CAN_ID id) {
         Y: Bitwise arm state
     */
 
-    uint8_t which_servo = frame->options >> 4; // Bits 0-2 for which servo
-    uint8_t servo_action = frame->options & 0x0F; // Bits 3-5 for action
+    uint8_t which_servo = frame->options >> 4; // Bits 4-7: which servos to change
+    uint8_t servo_action = frame->options & 0x0F; // Bits 0-3: new arm state for those bits
     for (int i = 0; i < 4; i++) {
-        if (which_servo & (3-i)) {
-            if (servo_action & (3-i)) {
-                dbg_printf("Servo %d: Arm\n", i+1);
+        uint8_t mask = (1u << i);
+        if (which_servo & mask) {
+            if (servo_action & mask) {
+                dbg_printf("Servo %d: Arm\r\n", i+1);
                 servo_arm(servoByIndex[i]);
             } else {
-                dbg_printf("Servo %d: Disarm\n", i+1);
+                dbg_printf("Servo %d: Disarm\r\n", i+1);
                 servo_disarm(servoByIndex[i]);
             }
         }
@@ -226,8 +226,8 @@ static void handle_cmd_set_servo_pos(CAN_CommandFrame* frame, CAN_ID id) {
     uint8_t servo_index = frame->options >> 6; // Bits 0-1 for which servo
     uint8_t set_type = (frame->options >> 5) & 0x01; // Bits 2 for how to set
     uint8_t position = frame->options & 0x1F; // Bits 3-7 for position
-    dbg_printf("Servo Move Command: servo_index=%d, set_type=%d, position=%d\n",
-               servo_index, set_type, position);
+    dbg_printf("Servo Move Command: servo=%d, set_type=%d, position=%d\r\n",
+               servo_index+1, set_type, position);
     
     if (set_type == 0) {
         // Set by list
@@ -243,26 +243,33 @@ static void handle_cmd_set_servo_pos(CAN_CommandFrame* frame, CAN_ID id) {
                 servo_position = CRACK;
                 break;
             case 3:
-                servo_queue_position(servoByIndex[servo_index], servoByIndex[servo_index]->safePosition);
-                return; // Safe position, no need to set
+                servo_position = servoByIndex[servo_index]->safePosition;
+                break;
             default:
-                dbg_printf("Invalid position for servo %d: %d\n", servo_index, position);
+                dbg_printf("Invalid position for servo %d: %d\r\n", servo_index, position);
                 return; // Invalid position
         }
-        servo_queue_position(servoByIndex[servo_index], servo_position);
+        servo_set_position(servoByIndex[servo_index], servo_position);
     } else {
-        // Set by manual angle
-        uint16_t angle = position * 50 + 250; // Convert to angle
-        servo_queue_position(servoByIndex[servo_index], angle);
+        // Set by manual angle -> scale to 0..1000 units (servo module converts to ticks internally)
+        uint16_t angle = position * 50; // 0..1000
+        servo_set_position(servoByIndex[servo_index], angle);
     }
 }
 
 static void handle_cmd_get_servo_pos(CAN_CommandFrame* frame, CAN_ID id) {
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
-    dbg_printf("Get Servo Position Command: initiator=%d\n", initiator);
+    dbg_printf("Get Servo Position Command: initiator=%d\r\n", initiator);
+    servo_send_can_positions();
 }
 
 static void handle_cmd_get_voltage(CAN_CommandFrame* frame, CAN_ID id) {
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
-    dbg_printf("Get Voltage Command: initiator=%d, options=%d\n", initiator, frame->options);
+    dbg_printf("Get Voltage Command: initiator=%d, options=%d\r\n", initiator, frame->options);
+}
+
+static void handle_cmd_restart_mcu(CAN_CommandFrame* frame, CAN_ID id) {
+    (void)frame; (void)id;
+    dbg_printf("Restart MCU command received. System resetting...\r\n");
+    NVIC_SystemReset();
 }

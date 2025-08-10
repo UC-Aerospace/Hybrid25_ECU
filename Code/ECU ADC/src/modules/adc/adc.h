@@ -22,7 +22,7 @@ typedef enum {
     ADC_CHANNEL_V2S
 } adc_channel_t;
 
-void adc_start();
+bool adc_start();
 void adc_stop();
 uint16_t adc_get_batt_voltage();
 int16_t adc_get_NTC_temp();

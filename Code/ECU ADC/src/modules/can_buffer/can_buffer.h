@@ -12,6 +12,7 @@ typedef struct {
     uint8_t head;
     uint8_t length;
     uint8_t SID;
+    uint32_t first_sample_timestamp; // Timestamp of the first sample
 } can_buffer_t;
 
 void can_buffer_init(can_buffer_t *buffer, uint8_t SID, uint8_t length);

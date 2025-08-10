@@ -1,0 +1,68 @@
+# ninja log v5
+4	94	1754692383495585000	/Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/CMakeFiles/cmake.verify_globs	9bd46cd63429a7db
+97	157	1754692383557889452	build.ninja	3528ab1e53f197d6
+97	157	1754692383557889452	/Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/cmake_install.cmake	3528ab1e53f197d6
+97	157	1754692383557889452	/Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/cmake/stm32cubemx/cmake_install.cmake	3528ab1e53f197d6
+1	10	0	/Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/CMakeFiles/cmake.verify_globs	9bd46cd63429a7db
+14	251	1754692383811656225	CMakeFiles/ECU_Mainboard.dir/startup_stm32g0b1xx.s.obj	2e8839e4785219
+13	253	1754692383813411995	CMakeFiles/ECU_Mainboard.dir/Core/Src/sysmem.c.obj	716f96e60649cf9b
+13	255	1754692383815988923	CMakeFiles/ECU_Mainboard.dir/Core/Src/syscalls.c.obj	10406e2d2d42f2c9
+11	505	1754692384064730999	CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_cdc_if.c.obj	49bf341c3fd4d7b3
+11	528	1754692384087272604	CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_it.c.obj	7a310fe795f36dd9
+12	531	1754692384088845968	CMakeFiles/ECU_Mainboard.dir/Core/Src/stm32g0xx_hal_msp.c.obj	9bb79f4de0811da9
+11	536	1754692384094852191	CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usb_device.c.obj	56cb026075f65239
+11	541	1754692384100472646	CMakeFiles/ECU_Mainboard.dir/Core/Src/main.c.obj	14e402f8ed445d86
+253	542	1754692384101596412	CMakeFiles/ECU_Mainboard.dir/src/modules/adc/adc.c.obj	d4798c883133f821
+11	543	1754692384102370740	CMakeFiles/ECU_Mainboard.dir/USB_Device/App/usbd_desc.c.obj	ed8591c704093bde
+10	545	1754692384105217819	CMakeFiles/ECU_Mainboard.dir/USB_Device/Target/usbd_conf.c.obj	32c49569f5a945c0
+2	32	0	/Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/CMakeFiles/cmake.verify_globs	9bd46cd63429a7db
+35	356	1754692483830595330	CMakeFiles/ECU_Mainboard.dir/src/modules/rtc_helper/rtc_helper.c.obj	e1d117149e382649
+37	363	1754692483838444318	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32g0xx.c.obj	a26378c33ce43ea7
+34	371	1754692483843890907	CMakeFiles/ECU_Mainboard.dir/src/modules/fsm/fsm.c.obj	8031b3fef9138ef8
+33	371	1754692483847245456	CMakeFiles/ECU_Mainboard.dir/src/modules/can/filters.c.obj	6c95306427e3bccd
+35	374	1754692483849780762	CMakeFiles/ECU_Mainboard.dir/src/modules/heartbeat/heartbeat.c.obj	49b78ef7088aafc3
+33	383	1754692483857751701	CMakeFiles/ECU_Mainboard.dir/src/modules/can/can.c.obj	652255f22738e51c
+34	391	1754692483866023954	CMakeFiles/ECU_Mainboard.dir/src/modules/debug_io/debug_io.c.obj	dc0cd874efc09242
+36	392	1754692483867475784	CMakeFiles/ECU_Mainboard.dir/src/modules/servo/servo.c.obj	82cadd0de1231e2f
+2	44	0	/Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/CMakeFiles/cmake.verify_globs	9bd46cd63429a7db
+48	254	1754692543083235269	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_ll_rcc.c.obj	c226d70c0ff9452b
+49	480	1754692543307612014	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_flash.c.obj	2532c0ede9e2f5ca
+45	487	1754692543314846955	CMakeFiles/ECU_Mainboard.dir/src/app.c.obj	5f5dd63411437c06
+254	521	1754692543347569325	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_flash_ex.c.obj	cde3d892067a92b8
+48	521	1754692543348662051	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_rcc_ex.c.obj	cabf6aad66d925b4
+46	535	1754692543360974729	CMakeFiles/ECU_Mainboard.dir/src/modules/can_handlers/can_handlers.c.obj	564d316811f251d8
+46	540	1754692543367590790	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_pcd_ex.c.obj	7cabe96e6a912370
+47	552	1754692543380402105	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_rcc.c.obj	c03113515a4b397f
+46	590	1754692543417521919	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_ll_usb.c.obj	66d5174222c2e50d
+46	627	1754692543454526907	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_pcd.c.obj	771bc034509f8c7a
+488	712	1754692543539995404	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_dma.c.obj	23989312886b4bbe
+480	727	1754692543555058833	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_gpio.c.obj	86d4d381547dece6
+521	729	1754692543556617990	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_pwr.c.obj	5a93e76cbbe066c5
+521	740	1754692543569006663	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_dma_ex.c.obj	40d4fe9a54f62c14
+552	753	1754692543581204556	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal.c.obj	8554e28510b14f28
+535	753	1754692543581967594	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_pwr_ex.c.obj	467a616b87b78692
+540	758	1754692543587275067	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_cortex.c.obj	b9b7020c9ee4c710
+590	786	1754692543615217432	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_exti.c.obj	b697885c2f97cf47
+1	13	0	/Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/CMakeFiles/cmake.verify_globs	9bd46cd63429a7db
+14	85	1754692571648312290	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_ll_adc.c.obj	78a825e48547d125
+14	322	1754692571889876879	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc_ex.c.obj	bdbc7150565570d1
+16	334	1754692571902286676	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_i2c_ex.c.obj	a9b2fd3afac83e2e
+14	377	1754692571945040069	CMakeFiles/ECU_Mainboard.dir/src/modules/can/can.c.obj	652255f22738e51c
+17	399	1754692571967273902	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_rtc_ex.c.obj	e2b65d54aff6cc5c
+86	418	1754692571985930574	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_spi_ex.c.obj	7dad55b64cd9f677
+17	423	1754692571990133780	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_rtc.c.obj	34afb1e25ffd466a
+14	511	1754692572079052070	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_fdcan.c.obj	6e5afcea72878b1f
+14	515	1754692572082578192	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_adc.c.obj	4f0b59ee48f42705
+423	601	1754692572169088168	cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c.obj	38640882a3d77589
+418	626	1754692572193172847	cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c.obj	d2141540713291c9
+399	641	1754692572208637503	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart_ex.c.obj	cc32e4b401f02dcc
+18	661	1754692572229026321	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_spi.c.obj	a998d9bb22481e70
+511	711	1754692572277782771	cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c.obj	18fd184db222eb6
+335	712	1754692572280102590	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_tim_ex.c.obj	2dc34a640ae86c74
+515	713	1754692572280563229	cmake/stm32cubemx/CMakeFiles/USB_Device_Library.dir/__/__/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c.obj	c5a9df7f3323cc9d
+15	738	1754692572306560044	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_i2c.c.obj	bac971a7e5635169
+377	767	1754692572335753292	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_uart.c.obj	b426f73c4b386621
+322	808	1754692572376673795	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G0xx_HAL_Driver/Src/stm32g0xx_hal_tim.c.obj	6a1e79c2e7e66a6
+5	39	0	/Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/CMakeFiles/cmake.verify_globs	9bd46cd63429a7db
+40	358	1754692634098498909	CMakeFiles/ECU_Mainboard.dir/src/modules/can_handlers/can_handlers.c.obj	564d316811f251d8
+359	625	1754692634362122716	ECU_Mainboard.elf	8861b90454cebf3f

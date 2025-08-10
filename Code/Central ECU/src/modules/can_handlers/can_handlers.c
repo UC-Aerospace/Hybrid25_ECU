@@ -1,6 +1,7 @@
 #include "can_handlers.h"
 #include "debug_io.h"
 #include "can.h"
+#include "sd_log.h"
 
 static void handle_cmd_set_servo_arm(CAN_CommandFrame* frame, CAN_ID id);
 static void handle_cmd_set_servo_pos(CAN_CommandFrame* frame, CAN_ID id);
@@ -28,41 +29,39 @@ void enqueue_can_frame(CAN_Frame_t* frame) {
     can_rx_queue.frames[can_rx_queue.tail] = *frame;
     can_rx_queue.tail = (can_rx_queue.tail + 1) % CAN_RX_QUEUE_LENGTH;
     can_rx_queue.count++;
-    
-    dbg_printf("Enqueued CAN frame with ID: %08lX, count: %d\n", frame->id, can_rx_queue.count);
 }
 
 void can_handler_poll(void) {
-    if (can_rx_queue.count == 0) {
-        dbg_printf("No CAN frames to process\n");
-        return; // No frames to process
-    }
+    for (uint8_t i = 0; i < CAN_MAX_QUEUE_PROCESS; i++) {
+        
+        if (can_rx_queue.count == 0) {
+            return; // No frames to process
+        }
 
-    CAN_Frame_t *frame = &can_rx_queue.frames[can_rx_queue.head];
-    can_rx_queue.head = (can_rx_queue.head + 1) % CAN_RX_QUEUE_LENGTH;
-    can_rx_queue.count--;
+        CAN_Frame_t *frame = &can_rx_queue.frames[can_rx_queue.head];
+        can_rx_queue.head = (can_rx_queue.head + 1) % CAN_RX_QUEUE_LENGTH;
+        can_rx_queue.count--;
 
-    dbg_printf("Processing CAN frame with ID: %08lX, count: %d\n", frame->id, can_rx_queue.count);
-
-    switch (frame->id.frameType) {
-        case CAN_TYPE_ERROR:
-            handle_error_warning((CAN_ErrorWarningFrame*)frame->data, frame->id);
-            break;
-        case CAN_TYPE_COMMAND:
-            handle_command((CAN_CommandFrame*)frame->data, frame->id);
-            break;
-        case CAN_TYPE_SERVO_POS:
-            handle_servo_pos((CAN_ServoFrame*)frame->data, frame->id);
-            break;
-        case CAN_TYPE_ADC_DATA:
-            handle_adc_data((CAN_ADCFrame*)frame->data, frame->id, frame->length);
-            break;
-        case CAN_TYPE_STATUS:
-            handle_status((CAN_StatusFrame*)frame->data, frame->id);
-            break;
-        default:
-            dbg_printf("Unknown CAN frame type: %d\n", frame->id.frameType);
-            break;
+        switch (frame->id.frameType) {
+            case CAN_TYPE_ERROR:
+                handle_error_warning((CAN_ErrorWarningFrame*)frame->data, frame->id);
+                break;
+            case CAN_TYPE_COMMAND:
+                handle_command((CAN_CommandFrame*)frame->data, frame->id);
+                break;
+            case CAN_TYPE_SERVO_POS:
+                handle_servo_pos((CAN_ServoPosFrame*)frame->data, frame->id);
+                break;
+            case CAN_TYPE_ADC_DATA:
+                handle_adc_data((CAN_ADCFrame*)frame->data, frame->id, frame->length);
+                break;
+            case CAN_TYPE_STATUS:
+                handle_status((CAN_StatusFrame*)frame->data, frame->id);
+                break;
+            default:
+                dbg_printf("Unknown CAN frame type: %d\n", frame->id.frameType);
+                break;
+        }
     }
 }
 
@@ -143,14 +142,52 @@ void handle_command(CAN_CommandFrame* frame, CAN_ID id) {
     }
 }
 
-void handle_servo_pos(CAN_ServoFrame* frame, CAN_ID id) {
+void handle_servo_pos(CAN_ServoPosFrame* frame, CAN_ID id) {
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
     //TODO: Handle this
 }
 
+static uint8_t can_dlc_to_bytes(uint8_t dlc_code) {
+    // Convert CAN-FD DLC code (0..15) to number of bytes
+    if (dlc_code <= 8) return dlc_code;
+    switch (dlc_code) {
+        case 9:  return 12;
+        case 10: return 16;
+        case 11: return 20;
+        case 12: return 24;
+        case 13: return 32;
+        case 14: return 48;
+        case 15: return 64;
+        default: return 0;
+    }
+}
+
 void handle_adc_data(CAN_ADCFrame* frame, CAN_ID id, uint8_t dataLength) {
-    uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
-    //TODO: Handle this
+    // Bits 3-7 for sensor ID. Bits 6-7 are sensor type and bits 3-5 for sub ID.
+    // Sensor types:
+    //  00 - Pressure
+    //  01 - Temperature
+    //  10 - Pressure + Temperature
+    //  11 - Load cell
+    uint8_t sensorID = frame->what >> 3;
+    // Sample rate, 3 bits. (0-7) = 1, 10, 20, 50, 100, 200, 500, 1000Hz
+    uint8_t sampleRate = frame->what & 0x07;
+
+    // Determine actual payload length in bytes from DLC and fixed header (what+timestamp)
+    uint8_t total_len = can_dlc_to_bytes(dataLength);
+    uint16_t payload_len = 0;
+    if (total_len >= 4) {
+        payload_len = (uint16_t)(total_len - 4); // subtract what(1) + timestamp(3)
+        if (payload_len > sizeof(frame->data)) payload_len = sizeof(frame->data);
+    }
+
+    // Write chunk to per-sensor file with delimiter header
+    bool status = sd_log_write_sensor_chunk(sensorID, sampleRate, frame->data, payload_len, frame->timestamp);
+    if (!status) {
+        dbg_printf("SD Card failed write for sensor %d\n", sensorID);
+        // TODO: Issue a warning over RS422
+        return;
+    }
 }
 
 void handle_status(CAN_StatusFrame* frame, CAN_ID id) {
@@ -195,4 +232,16 @@ static void handle_cmd_get_voltage(CAN_CommandFrame* frame, CAN_ID id) {
     // For now this will be unused on all boards
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
     dbg_printf("Get Voltage Command: initiator=%d\n", initiator);
+}
+
+static void handle_cmd_restart_mcu(CAN_CommandFrame* frame, CAN_ID id) {
+    uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
+    dbg_printf("Restart MCU Command: initiator=%d\n", initiator);
+    
+    // Perform a software reset
+    // TODO: To implement this must tie in with state machine
+    // Should flush the SD card and issue an abort to peripheral boards
+    // Also really the central ECU shouldn't be being reset by peripheral boards
+    // Should implement on RS422 though
+    //NVIC_SystemReset();
 }

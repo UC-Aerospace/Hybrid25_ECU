@@ -5,7 +5,7 @@
 #include "config.h"
 #include "peripherals.h"
 
-#define MAX_MOVE_DURATION 1000 // Maximum duration for a move in milliseconds
+#define MAX_MOVE_DURATION 2000 // Maximum duration for a move in milliseconds
 
 typedef enum {
     STATE_INIT,

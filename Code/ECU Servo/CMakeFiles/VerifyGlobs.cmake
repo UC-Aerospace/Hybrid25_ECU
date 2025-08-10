@@ -5,9 +5,12 @@
 file(GLOB_RECURSE NEW_GLOB FOLLOW_SYMLINKS LIST_DIRECTORIES false "/Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/src/modules/*.c")
 set(OLD_GLOB
   "/Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/src/modules/adc/adc.c"
-  "/Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/src/modules/can_handler/can_handler.c"
-  "/Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/src/modules/can_handler/handlers.c"
+  "/Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/src/modules/can/can.c"
+  "/Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/src/modules/can/filters.c"
+  "/Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/src/modules/can_handlers/can_handlers.c"
   "/Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/src/modules/debug_io/debug_io.c"
+  "/Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/src/modules/fsm/fsm.c"
+  "/Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/src/modules/heartbeat/heartbeat.c"
   "/Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/src/modules/rtc_helper/rtc_helper.c"
   "/Users/bradr/Uni/FYP/Hybrid25_ECU/Code/ECU Servo/src/modules/servo/servo.c"
   )

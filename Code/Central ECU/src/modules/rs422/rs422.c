@@ -97,16 +97,16 @@ bool rs422_init(UART_HandleTypeDef *huart)
     return (status == HAL_OK);
 }
 
-bool rs422_send(uint8_t *data, uint8_t size, RS422_FrameType_t frame_type)
+HAL_StatusTypeDef rs422_send(uint8_t *data, uint8_t size, RS422_FrameType_t frame_type)
 {
     //HAL_GPIO_TogglePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin); // Toggle status LED for debugging
     if (size > RS422_TX_MESSAGE_SIZE - 3) {
-        return false; // Data too large for packet
+        return HAL_ERROR; // Data too large for packet
     }
     
     // Check if there's space in the buffer
     if (rs422_get_tx_buffer_space() == 0) {
-        return false; // Buffer full
+        return HAL_BUSY; // Buffer full
     }
 
     uint8_t dlc = len_to_dlc(size); // Convert length to DLC format
@@ -133,10 +133,10 @@ bool rs422_send(uint8_t *data, uint8_t size, RS422_FrameType_t frame_type)
     
     // Start DMA transfer if not already in progress
     if (!tx_buffer.is_busy) {
-        rs422_process_tx_queue();
+        return rs422_process_tx_queue();
     }
-    
-    return true;
+
+    return HAL_OK;
 }
 
 uint16_t rs422_get_tx_buffer_space(void)
@@ -144,22 +144,22 @@ uint16_t rs422_get_tx_buffer_space(void)
     return RS422_TX_BUFFER_SIZE - ((tx_buffer.tail - tx_buffer.head + RS422_TX_BUFFER_SIZE) % RS422_TX_BUFFER_SIZE);
 }
 
-void rs422_process_tx_queue(void)
+HAL_StatusTypeDef rs422_process_tx_queue(void)
 {
     if (tx_buffer.is_busy) {
-        return; // DMA transfer already in progress
+        return HAL_BUSY;
     }
     
     // Check if there are packets to send
     if (tx_buffer.head == tx_buffer.tail) {
-        return; // No packets to send
+        return HAL_OK;
     }
     
     // Start DMA transfer for the next packet with actual data size
     tx_buffer.is_busy = true;
-    HAL_UART_Transmit_DMA(rs422_uart_handle, 
-                         tx_buffer.buffer[tx_buffer.head].data, 
-                         tx_buffer.buffer[tx_buffer.head].size);
+    return HAL_UART_Transmit_DMA(rs422_uart_handle, 
+                                 tx_buffer.buffer[tx_buffer.head].data, 
+                                 tx_buffer.buffer[tx_buffer.head].size);
 }
 
 void rs422_process_rx_dma(uint16_t transferred)

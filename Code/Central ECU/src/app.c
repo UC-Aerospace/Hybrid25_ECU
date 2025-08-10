@@ -8,8 +8,24 @@
 #include "spicy.h"
 #include "ssd1306_fonts.h"
 #include "can_handlers.h"
+#include "rs422_handler.h"
 #include "rs422.h"
 #include "crc.h"
+#include "test_servo.h"
+
+void setup_panic(uint8_t err_code)
+{
+    // Initialize panic mode
+    __disable_irq();
+    dbg_printf("Panic mode initialized\n");
+    while (1) {
+        for (uint8_t i = 0; i < err_code; i++) {
+            HAL_GPIO_TogglePin(LED_IND_STATUS_GPIO_Port, LED_IND_STATUS_Pin); // Toggle status LED
+            HAL_Delay(100);
+        }
+        HAL_Delay(2000);
+    }
+}
 
 void app_init(void) {
     // Initialize the application
@@ -24,104 +40,97 @@ void app_init(void) {
     } else {
         // Unrecognized device, handle error
         dbg_printf("Unrecognized device UID: %08lX %08lX %08lX\r\n", uid[0], uid[1], uid[2]);
-        while (1); // Halt execution
+        setup_panic(1);
     }
 
     HAL_ADCEx_Calibration_Start(&hadc1);
     ssd1306_Init();
-    /*
-    bool rs422_ok = rs422_init(&huart1); // Initialize RS422 communication
-    if (!rs422_ok) {
-        dbg_printf("RS422 initialization failed!\r\n");
-    } else {
-        dbg_printf("RS422 initialization successful\r\n");
-    }
-    */
-
-    // char receive_buffer[256];
-    // int received = dbg_recv(receive_buffer, sizeof(receive_buffer));
-    // if (received > 0) {
-    //     rtc_helper_set_from_string(receive_buffer);
-    // }
-
     batt_check();
-    sd_log_init();
+    if (!sd_log_init()) {
+        dbg_printf("Failed to initialize SD log\n");
+        setup_panic(2);
+    }
     can_init(); // Initialize CAN peripheral
-    sd_log_write(SD_LOG_INFO, "ECU initialized");
-    rs422_init(&huart1); // Initialize RS422 with DMA
+    if (!sd_log_write(SD_LOG_INFO, "ECU initialized")) {
+        dbg_printf("Failed to write SD log\n");
+        setup_panic(3);
+    }
+    if (!rs422_init(&huart1)) { // Initialize RS422 with DMA
+        dbg_printf("Failed to initialize RS422\n");
+        setup_panic(4);
+    }
     crc16_init(); // Initialize CRC peripheral
+    if (HAL_ADC_Start(&hadc1) != HAL_OK) { // Start ADC peripheral
+        dbg_printf("Failed to start ADC\n");
+        setup_panic(5);
+    }
+    test_servo_init();
+}
+
+void task_poll_can_handlers(void) {
+    // Poll CAN handlers for incoming messages
+    can_handler_poll();
+}
+
+void task_poll_rs422(void) {
+    // Poll RS422 for incoming messages
+    rs422_handler_rx_poll();
+}
+
+void task_toggle_status_led(void) {
+    // Toggle the status LED
+    HAL_GPIO_TogglePin(LED_IND_STATUS_GPIO_Port, LED_IND_STATUS_Pin);
+}
+
+void task_flush_sd_card(void) {
+    // Flush SD card to ensure all data is written
+    sd_log_flush();
+}
+
+void task_poll_battery(void) {
+    // Poll battery status
+    batt_check();
+}
+
+void task_send_heartbeat(void) 
+{
+    // Send a heartbeat message over CAN
+    can_send_heartbeat(CAN_NODE_TYPE_BROADCAST, CAN_NODE_ADDR_BROADCAST);
+}
+
+void task_rs422_test_send(void)
+{
+    // Test sending a message over RS422
+    uint8_t data[] = {0x01, 0x05};
+    if (rs422_send(data, sizeof(data), RS422_FRAME_HEARTBEAT) == HAL_OK) {
+        dbg_printf("RS422 test message sent successfully\r\n");
+    } else {
+        dbg_printf("Failed to send RS422 test message\r\n");
+    }
 }
 
 void app_run(void) {
-    HAL_ADC_Start(&hadc1); // Start ADC peripheral
-    HAL_Delay(1000);
-    static RS422_RxFrame_t rx_frame;
+    // Define tasks
+    Task tasks[] = {
+        {0, 500, task_toggle_status_led},    // LED toggle every 500 ms
+        {0, 20,  task_poll_can_handlers},     // Poll CAN handlers every 20 ms
+        {0, 100, task_poll_rs422},            // Poll RS422 every 100 ms
+        {0, 1000, task_poll_battery},         // Poll battery every 1000 ms
+        {0, 100, test_servo_poll},            // Poll test servo interface
+        {0, 1000, task_flush_sd_card},        // Flush SD card every 1000 ms
+        //{0, 500, task_send_heartbeat}         // Send heartbeat every 500 ms
+        {0, 1000, task_rs422_test_send}       // Test RS422 send every 1000 ms
+    };
 
     while (1) {
-        batt_check(); // Check battery status
-        char buffer[64];
-        
-        // Using the debug read function get a number and send it over RS422 as an int
-        int i = 0;
-        int received = dbg_recv(buffer, sizeof(buffer));
+        uint32_t now = HAL_GetTick();
 
-        if (received > 0) {
-            // Convert received string to integer
-            i = atoi(buffer);
-            dbg_printf("Sending number: %d\r\n", i);
-            memcpy(buffer, &i, sizeof(i)); // Copy loop index to buffer
-            rs422_send(buffer, 2, RS422_FRAME_HEARTBEAT); // Send test message over RS422
-        } else {
-            dbg_printf("No input received, using default value: %d\r\n", i);
-        }
-
-        if (rs422_get_rx_available() > 0) {
-            uint16_t bytes_read = rs422_read(&rx_frame);
-            if (bytes_read > 0) {
-                dbg_printf("Received RS422 frame: Type %d, Size %d\r\n", rx_frame.frame_type, rx_frame.size);
-                // Process the received frame based on its type
-                switch (rx_frame.frame_type) {
-                    case RS422_FRAME_HEARTBEAT:
-                        dbg_printf("Heartbeat frame received with size %d\r\n", rx_frame.size);
-                        break;
-                    case RS422_FRAME_ARM_UPDATE:
-                        dbg_printf("Arm update frame received with size %d\r\n", rx_frame.size);
-                        break;
-                    case RS422_FRAME_VALVE_UPDATE:
-                        dbg_printf("Valve update frame received with size %d\r\n", rx_frame.size);
-                        break;
-                    case RS422_FRAME_TIME_SYNC:
-                        dbg_printf("Time sync frame received with size %d\r\n", rx_frame.size);
-                        break;
-                    case RS422_FRAME_PRESSURE:
-                        dbg_printf("Pressure frame received with size %d\r\n", rx_frame.size);
-                        break;
-                    case RS422_FRAME_PRESSURE_TEMPERATURE:
-                        dbg_printf("Pressure and temperature frame received with size %d\r\n", rx_frame.size);
-                        break;
-                    case RS422_FRAME_TEMPERATURE:
-                        dbg_printf("Temperature frame received with size %d\r\n", rx_frame.size);
-                        break;
-                    case RS422_FRAME_LOAD_CELL:
-                        dbg_printf("Load cell frame received with size %d\r\n", rx_frame.size);
-                        break;
-                    case RS422_FRAME_ABORT:
-                        dbg_printf("Abort frame received with size %d\r\n", rx_frame.size);
-                        break;
-                    case RS422_FRAME_WARNING:
-                        dbg_printf("Warning frame received with size %d\r\n", rx_frame.size);
-                        break;
-                    case RS422_FRAME_FIRE:
-                        dbg_printf("Fire frame received with size %d\r\n", rx_frame.size);
-                        break;
-                    default:
-                        dbg_printf("Unknown frame type: %d\r\n", rx_frame.frame_type);
-                }
+        for (int i = 0; i < sizeof(tasks) / sizeof(Task); i++) {
+            if (now - tasks[i].last_run_time >= tasks[i].interval) {
+                tasks[i].last_run_time = now;
+                tasks[i].task_function();
             }
         }
-        
-        
-        HAL_GPIO_TogglePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin);
-        HAL_Delay(4000); // Delay for 1 second before the next reading
+        HAL_Delay(5); // 5ms delay to avoid busy-waiting
     }
 }

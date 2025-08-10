@@ -16,4 +16,5 @@ extern UART_HandleTypeDef huart1;
 extern UART_HandleTypeDef huart2;
 extern USBD_HandleTypeDef hUsbDeviceFS;
 extern CRC_HandleTypeDef hcrc;
+extern TIM_HandleTypeDef htim14;
 #endif // PERIPHERALS_H

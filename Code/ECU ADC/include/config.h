@@ -58,19 +58,20 @@ extern ADC_ChannelConfTypeDef ADC_2S_Config;
 
 // Sensor ID config
 
-#define SID_SENSOR_MIPA_A (0b00 << 6) | (0b000) << 2 | (0b111) // MIPA A ID at 1000Hz
-#define SID_SENSOR_MIPA_B (0b00 << 6) | (0b001) << 2 | (0b111) // MIPA B ID at 1000Hz
+#define SID_SENSOR_MIPA_A (0b00 << 6) | (0b000) << 3 | (0b111) // MIPA A ID at 1000Hz
+#define SID_SENSOR_MIPA_B (0b00 << 6) | (0b001) << 3 | (0b111) // MIPA B ID at 1000Hz
 
-#define SID_SENSOR_LC_Thrust (0b11 << 6) | (0b001) << 2 | (0b100) // LC Thrust ID at 100Hz
-#define SID_SENSOR_LC_N2O_A (0b11 << 6) | (0b010) << 2 | (0b001) // LC N2O A ID at 10Hz
-#define SID_SENSOR_LC_N2O_B (0b11 << 6) | (0b011) << 2 | (0b001) // LC N2O B ID at 10Hz
+#define SID_SENSOR_LC_Thrust (0b11 << 6) | (0b001) << 3 | (0b100) // LC Thrust ID at 100Hz
+#define SID_SENSOR_LC_N2O_A (0b11 << 6) | (0b010) << 3 | (0b001) // LC N2O A ID at 10Hz
+#define SID_SENSOR_LC_N2O_B (0b11 << 6) | (0b011) << 3 | (0b001) // LC N2O B ID at 10Hz
 
-#define SID_SENSOR_PT_A (0b10 << 6) | (0b001) << 2 | (0b100) // PT A ID at 100Hz
-#define SID_SENSOR_PT_B (0b10 << 6) | (0b010) << 2 | (0b100) // PT B ID at 100Hz
-#define SID_SENSOR_PT_C (0b10 << 6) | (0b011) << 2 | (0b100) // PT C ID at 100Hz
+#define SID_SENSOR_PT_A (0b10 << 6) | (0b001) << 3 | (0b100) // PT A ID at 100Hz
+#define SID_SENSOR_PT_B (0b10 << 6) | (0b010) << 3 | (0b100) // PT B ID at 100Hz
+#define SID_SENSOR_PT_C (0b10 << 6) | (0b011) << 3 | (0b100) // PT C ID at 100Hz
 
-#define SID_SENSOR_THERMO_A (0b01 << 6) | (0b000) << 2 | (0b001) // Thermo A ID at 10Hz
-#define SID_SENSOR_THERMO_B (0b01 << 6) | (0b001) << 2 | (0b001) // Thermo B ID at 10Hz
-#define SID_SENSOR_THERMO_C (0b01 << 6) | (0b010) << 2 | (0b001) // Thermo C ID at 10Hz
+#define SID_SENSOR_THERMO_A (0b01 << 6) | (0b000) << 3 | (0b001) // Thermo A ID at 10Hz
+#define SID_SENSOR_THERMO_B (0b01 << 6) | (0b001) << 3 | (0b001) // Thermo B ID at 10Hz
+#define SID_SENSOR_THERMO_C (0b01 << 6) | (0b010) << 3 | (0b001) // Thermo C ID at 10Hz
+#define SID_SENSOR_CJT (0b01 << 6) | (0b011) << 3 | (0b000) // CJT ID at 2Hz
 
 #endif // CONFIG_H

@@ -73,6 +73,7 @@ uint8_t batt_volt_to_soc(uint16_t voltage_mV, uint8_t cell_count) {
 }
 
 void batt_check(void) {
+    static uint8_t serial_limiter = 10; // Limit serial output to every 10th call
     BatteryStatus status = batt_get_volt();
     char buffer[16]; // Buffer to hold the formatted string
     // Calculate 6S battery percentage as an integer
@@ -82,12 +83,6 @@ void batt_check(void) {
     sprintf(buffer, "6S : %d%%   ", percentage_6s);
     ssd1306_WriteString(buffer, Font_16x15, White);
 
-    if (percentage_6s <= 20) {
-        dbg_printf("6S Battery: %d%% (WARN)\r\n", percentage_6s);
-    } else {
-        dbg_printf("6S Battery: %d%%\r\n", percentage_6s);
-    }
-
     // Calculate 2S battery percentage as an integer
     uint8_t percentage_2s = batt_volt_to_soc(status.voltage_2s, 2);
     if (percentage_2s > 100) percentage_2s = 100; // Clamp to 100%
@@ -95,11 +90,20 @@ void batt_check(void) {
     sprintf(buffer, "2S : %d%%   ", percentage_2s);
     ssd1306_WriteString(buffer, Font_16x15, White);
 
-    if (percentage_2s <= 20) {
-        dbg_printf("2S Battery: %d%% (WARN)\r\n", percentage_2s);
-    } else {
-        dbg_printf("2S Battery: %d%%\r\n", percentage_2s);
+    if (serial_limiter++ % 10 == 0) {
+        if (percentage_2s <= 20) {
+            dbg_printf("2S Battery: %d%% (WARN)\r\n", percentage_2s);
+        } else {
+            dbg_printf("2S Battery: %d%%\r\n", percentage_2s);
+        }
+        if (percentage_6s <= 20) {
+            dbg_printf("6S Battery: %d%% (WARN)\r\n", percentage_6s);
+        } else {
+            dbg_printf("6S Battery: %d%%\r\n", percentage_6s);
+        }
     }
+
+    
 
     ssd1306_UpdateScreen();
 }

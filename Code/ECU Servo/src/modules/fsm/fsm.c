@@ -1,8 +1,9 @@
 #include "fsm.h"
 #include "servo.h"
+#include "debug_io.h"
 
 static fsm_state_t currentState = STATE_INIT;
-uint32_t move_start_tick = 0;
+static uint32_t move_start_ms = 0;
 
 void fsm_init(void) {
     currentState = STATE_INIT;
@@ -12,22 +13,25 @@ void fsm_run(void) {
     switch (currentState) {
         case STATE_INIT:
             // Wait for state update frame from ECU
+            // For now immediately move to READY state
+            currentState = STATE_READY;
+            dbg_printf("FSM initialized, moving to READY state.\r\n");
             break;
         case STATE_READY:
-            bool servo_to_move = servo_queue_start();
-            if (servo_to_move) {
+            if (servo_queue_poll()) {
                 currentState = STATE_MOVING;
-                move_start_tick = SysTick->VAL; // Record the start time of the movement
+                move_start_ms = HAL_GetTick(); // Record the start time of the movement
             }
             break;
         case STATE_MOVING:
             // Moving state logic
-            uint32_t move_duration = SysTick->VAL - move_start_tick;
             if (servo_queue_check_complete()) {
                 servo_queue_complete(true); // Movement completed successfully
                 currentState = STATE_READY; // Return to ready state
+                break;
             }
-            if (move_duration > MAX_MOVE_DURATION) {
+            uint32_t elapsed = HAL_GetTick() - move_start_ms;
+            if (elapsed > MAX_MOVE_DURATION) {
                 servo_queue_complete(false); // Movement failed, timeout
                 // TODO: Send a CAN error message
                 currentState = STATE_READY; // Return to ready state

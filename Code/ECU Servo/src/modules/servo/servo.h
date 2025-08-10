@@ -6,6 +6,10 @@
 #include "config.h"
 #include <stdbool.h>
 
+#define SERVO_QUEUE_SIZE 4
+// Tolerance (in 0-1000 units) when checking if a servo has reached its target
+#define SERVO_POSITION_TOLERANCE 50
+
 // Actual tick values for servo positions. Full rotation is larger than 180 degrees.
 // Based on 10000 ticks per 20ms period (50 Hz PWM frequency).
 // 250 -> Minimum pulse width (0.5 ms)
@@ -33,7 +37,9 @@ typedef struct {
     servo_state_t state;
     ServoPosition safePosition;
     ServoPosition targetPosition;
-    uint16_t currentPosition;
+    int16_t currentPosition;
+    GPIO_TypeDef *nrstPort; // GPIO port for NRST pin
+    uint16_t nrstPin;       // GPIO pin for NRST
 } Servo;
 
 typedef struct {
@@ -42,7 +48,7 @@ typedef struct {
 } ServoQueueItem;
 
 typedef struct {
-    ServoQueueItem items[4];
+    ServoQueueItem items[SERVO_QUEUE_SIZE];
     uint8_t head;
     uint8_t tail;
 } ServoQueue;
@@ -56,15 +62,23 @@ extern Servo* servoByIndex[4];
 void servo_init(void);
 void servo_arm(Servo *servo);
 void servo_disarm(Servo *servo);
-// Sets position of the servo as a ServoPosition argument
-void servo_queue_position(Servo *servo, ServoPosition position);
-// Takes angle as fraction of 1000 steps (0 to 1000)
-void servo_update_positions(void);
+// Disarm all servos and stop PWM
+void servo_disarm_all(void);
 // Processes queued movements one at a time
-bool servo_queue_start(void);
+bool servo_queue_poll(void);
 // Completes the current queued item, setting servo state back to armed
 void servo_queue_complete(bool wasSuccess);
 // Checks if the current queued item is complete
 bool servo_queue_check_complete(void);
+// Clear the servo queue
+void servo_queue_clear(void);
+// Remove all queued items for a specific servo
+void servo_queue_clear_for_servo(Servo *servo);
+// Sets the position of the servo, will queue if armed or moving
+void servo_set_position(Servo *servo, ServoPosition position);
+// Updates the current positions of the servos from the ADC
+void servo_update_positions(void);
+// Sends the current servo positions over CAN
+void servo_send_can_positions(void);
 
 #endif

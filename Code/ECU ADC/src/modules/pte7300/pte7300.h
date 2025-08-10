@@ -28,7 +28,7 @@ typedef struct {
     can_buffer_t buffer;
 } PTE7300_HandleTypeDef;
 
-void PTE7300_Init(PTE7300_HandleTypeDef *hpte7300, I2C_HandleTypeDef *hi2c, uint8_t SID);
+bool PTE7300_Init(PTE7300_HandleTypeDef *hpte7300, I2C_HandleTypeDef *hi2c, uint8_t SID);
 void PTE7300_sample_to_buffer(PTE7300_HandleTypeDef *hpte7300);
 
 #endif // PTE7300_H

@@ -1,12 +1,28 @@
 #include "can.h"
 #include "debug_io.h"
-
+#include "can_handlers.h"
 
 FDCAN_TxHeaderTypeDef TxHeader;
 FDCAN_RxHeaderTypeDef RxHeader;
 
 uint8_t TxData[64];
 uint16_t test_counter = 0;
+
+// Convert FDCAN Data Length Code (DLC) to byte count
+static const uint8_t DLCtoBytes[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 12, 16, 20, 24, 32, 48, 64};
+// Convert byte count to FDCAN Data Length Code (DLC)
+static inline uint8_t bytesToDLC(uint8_t bytes) {
+    if (bytes <= 8) return bytes;
+    if (bytes <= 12) return 9;
+    if (bytes <= 16) return 10;
+    if (bytes <= 20) return 11;
+    if (bytes <= 24) return 12;
+    if (bytes <= 32) return 13;
+    if (bytes <= 48) return 14;
+    if (bytes <= 64) return 15;
+    return 0; // Invalid length
+}
+
 
 void CAN_Error_Handler(void)
 {
@@ -82,8 +98,6 @@ void HAL_FDCAN_RxFifo1Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo1ITs)
     frame.length = RxHeader.DataLength;
 
     enqueue_can_frame(&frame);
-
-    dbg_printf("Queued CAN message with ID: %08lX\r\n", RxHeader.Identifier);
     }
 }
 
@@ -113,6 +127,7 @@ void can_init(void) {
 }
 
 static bool can_send(CAN_ID id, uint8_t *data, uint8_t length) {
+    length = bytesToDLC(length);
     // Prepare and send a CAN command message
     TxHeader.Identifier = pack_can_id(id);
     TxHeader.IdType = FDCAN_STANDARD_ID;
@@ -124,7 +139,7 @@ static bool can_send(CAN_ID id, uint8_t *data, uint8_t length) {
     TxHeader.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
     TxHeader.MessageMarker = 0;
 
-    dbg_printf("Sending CAN command with ID: %08lX, length: %d\r\n", TxHeader.Identifier, length);
+    //dbg_printf("Sending CAN command with ID: %08lX, length: %d\r\n", TxHeader.Identifier, length);
 
     if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &TxHeader, data) != HAL_OK) {
         return false; // Transmission Error
@@ -153,7 +168,7 @@ bool can_send_error_warning(CAN_NodeType nodeType, CAN_NodeAddr nodeAddr, CAN_Er
     return can_send(id, (uint8_t*)&frame, sizeof(frame));
 }
 
-bool can_send_command(CAN_NodeType nodeType, CAN_NodeAddr nodeAddr, CAN_CMDType commandType, uint8_t command) {
+bool can_send_command(CAN_NodeType nodeType, CAN_NodeAddr nodeAddr, CommandType commandType, uint8_t command) {
     CAN_ID id = {
         .priority = CAN_PRIORITY_COMMAND,
         .nodeType = nodeType, // Use the provided node type
@@ -194,7 +209,7 @@ bool can_send_status(CAN_NodeType nodeType, CAN_NodeAddr nodeAddr, uint8_t statu
     return can_send(id, (uint8_t*)&frame, sizeof(frame));
 }
 
-bool can_send_servo_position(CAN_NodeType nodeType, CAN_NodeAddr nodeAddr, uint8_t connected, uint8_t position[4]) {
+bool can_send_servo_position(CAN_NodeType nodeType, CAN_NodeAddr nodeAddr, uint8_t connected, uint8_t set_position[4], uint8_t actual_position[4]) {
     CAN_ID id = {
         .priority = CAN_PRIORITY_DATA,
         .nodeType = nodeType, // Use the provided node type
@@ -204,7 +219,8 @@ bool can_send_servo_position(CAN_NodeType nodeType, CAN_NodeAddr nodeAddr, uint8
     uint32_t tick = HAL_GetTick();
     CAN_ServoPosFrame frame = {
         .what = (connected & 0x0F) << 3 | BOARD_ID,
-        .pos = {0}, // Initialize position array
+        .set_pos = {0}, // Initialize position array
+        .current_pos = {0},
         .timestamp = {
             (uint8_t)((tick >> 16) & 0xFF),
             (uint8_t)((tick >> 8) & 0xFF),
@@ -212,16 +228,17 @@ bool can_send_servo_position(CAN_NodeType nodeType, CAN_NodeAddr nodeAddr, uint8
         }
     };
     // Copy the position data into the frame
-    memcpy(frame.pos, position, sizeof(frame.pos));
+    memcpy(frame.set_pos, set_position, sizeof(frame.set_pos));
+    memcpy(frame.current_pos, actual_position, sizeof(frame.current_pos));
     return can_send(id, (uint8_t*)&frame, sizeof(frame));
 }
 
-bool can_send_heartbeat(CAN_NodeAddr nodeAddr) {
+bool can_send_heartbeat(CAN_NodeType nodeType, CAN_NodeAddr nodeAddr) {
     CAN_ID id = {
         .priority = CAN_PRIORITY_HEARTBEAT,
-        .nodeType = CAN_NODE_TYPE_CENTRAL, // Assuming this is the central node
-        .nodeAddr = nodeAddr, // Use the provided node address
-        .frameType = CAN_TYPE_HEARTBEAT // Heartbeat is a status message
+        .nodeType = nodeType,
+        .nodeAddr = nodeAddr,
+        .frameType = CAN_TYPE_HEARTBEAT
     };
     uint32_t tick = HAL_GetTick();
     CAN_HeartbeatFrame frame = {
@@ -235,20 +252,20 @@ bool can_send_heartbeat(CAN_NodeAddr nodeAddr) {
     return can_send(id, (uint8_t*)&frame, sizeof(frame));
 }
 
-bool can_send_data(uint8_t sensorID, uint8_t *data, uint8_t length) {
+bool can_send_data(uint8_t sensorID, uint8_t *data, uint8_t length, uint32_t timestamp) {
     CAN_ID id = {
         .priority = CAN_PRIORITY_DATA,
         .nodeType = CAN_NODE_TYPE_CENTRAL, // Use the provided node type
         .nodeAddr = CAN_NODE_ADDR_CENTRAL, // Use the provided node address
         .frameType = CAN_TYPE_ADC_DATA // Data is a data message
     };
-    uint32_t tick = HAL_GetTick();
+
     CAN_ADCFrame frame = {
-        .what = BOARD_ID,
+        .what = sensorID,
         .timestamp = {
-            (uint8_t)((tick >> 16) & 0xFF),
-            (uint8_t)((tick >> 8) & 0xFF),
-            (uint8_t)(tick & 0xFF)
+            (uint8_t)((timestamp >> 16) & 0xFF),
+            (uint8_t)((timestamp >> 8) & 0xFF),
+            (uint8_t)(timestamp & 0xFF)
         }
     };
     memcpy(frame.data, data, length < sizeof(frame.data) ? length : sizeof(frame.data));
