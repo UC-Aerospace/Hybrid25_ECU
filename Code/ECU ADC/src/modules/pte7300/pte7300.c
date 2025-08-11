@@ -4,7 +4,7 @@
 bool PTE7300_Init(PTE7300_HandleTypeDef *hpte7300, I2C_HandleTypeDef *hi2c, uint8_t SID) {
     hpte7300->hi2c = *hi2c;
     hpte7300->SID = SID;
-    can_buffer_init(&hpte7300->buffer, SID, 28); // 28 as multiple of 2 for pressure and temperature samples
+    can_buffer_init(&hpte7300->buffer, SID, BUFF_SIZE_PT); // 28 as multiple of 2 for pressure and temperature samples
 
     // Start the PTE7300 Pressure Sensor
     uint8_t cmd[2];

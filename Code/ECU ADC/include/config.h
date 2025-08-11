@@ -74,4 +74,17 @@ extern ADC_ChannelConfTypeDef ADC_2S_Config;
 #define SID_SENSOR_THERMO_C (0b01 << 6) | (0b010) << 3 | (0b001) // Thermo C ID at 10Hz
 #define SID_SENSOR_CJT (0b01 << 6) | (0b011) << 3 | (0b000) // CJT ID at 2Hz
 
+// Sensor Buffer Size Config
+// MIPA is fixed as part of ADC scheduling to 28
+
+#define BUFF_SIZE_LC_Thrust 29
+#define BUFF_SIZE_LC_N2O_A 29
+#define BUFF_SIZE_LC_N2O_B 29
+
+#define BUFF_SIZE_THERMO_A 29
+#define BUFF_SIZE_THERMO_B 29
+#define BUFF_SIZE_THERMO_C 29
+
+#define BUFF_SIZE_PT 28
+
 #endif // CONFIG_H

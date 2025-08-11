@@ -34,11 +34,12 @@ void fsm_run(void) {
             if (elapsed > MAX_MOVE_DURATION) {
                 servo_queue_complete(false); // Movement failed, timeout
                 // TODO: Send a CAN error message
-                currentState = STATE_READY; // Return to ready state
+                currentState = STATE_ERROR; // Enter error state
             }
             break;
         case STATE_ERROR:
-            // Error handling logic
+            servo_disarm_all();
+            servo_queue_clear();
             break;
         default:
             // Handle unexpected state

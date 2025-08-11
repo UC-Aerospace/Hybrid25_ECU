@@ -3,6 +3,7 @@
 
 #include "stm32g0xx_hal.h"
 #include "can_buffer.h"
+#include "config.h"
 #include <stdbool.h>
 
 // PTE7300 ADC I2C address

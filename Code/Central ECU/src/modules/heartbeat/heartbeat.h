@@ -16,5 +16,7 @@ typedef struct {
 
 // Note: BOARD_ID is as in config.h and CAN messages. The RIU is id 0x00
 void heartbeat_reload(uint8_t BOARD_ID);
+// TODO: This seems pretty bodgy but oh well
+bool heartbeat_all_started(void);
 
 #endif // HEARTBEAT_H

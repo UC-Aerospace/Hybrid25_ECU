@@ -26,10 +26,7 @@ static inline uint8_t bytesToDLC(uint8_t bytes) {
 
 void CAN_Error_Handler(void)
 {
-  __disable_irq();
-  while (1)
-  {
-  }
+  dbg_printf("CAN Error occurred!\r\n");
 }
 
 // RX FIFO0 is reserved for high priority messages
@@ -52,8 +49,6 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
     CAN_ID id = unpack_can_id(RxHeader.Identifier);
     frame.id = id;
     frame.length = RxHeader.DataLength;
-
-    dbg_printf("Received High Priority CAN message with ID: %08lX\r\n", RxHeader.Identifier);
 
     if (id.priority == CAN_PRIORITY_HEARTBEAT) {
         handle_heatbeat((CAN_HeartbeatFrame*)frame.data, id, RxHeader.RxTimestamp);

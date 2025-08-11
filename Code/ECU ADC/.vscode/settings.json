@@ -2,6 +2,7 @@
     "cmake.useCMakePresets": "always",
     "files.associations": {
         "lps22hh_reg.h": "c",
-        "can_buffer.h": "c"
+        "can_buffer.h": "c",
+        "debug_io.h": "c"
     }
 }

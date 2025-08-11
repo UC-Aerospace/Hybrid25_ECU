@@ -2,6 +2,8 @@
 #define RS422_HANDLER_H
 
 #include "rs422.h"
+#include "peripherals.h"
+#include "config.h"
 
 // Function declarations
 void rs422_handler_init(void);

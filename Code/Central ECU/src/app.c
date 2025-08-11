@@ -119,7 +119,7 @@ void app_run(void) {
         {0, 100, test_servo_poll},            // Poll test servo interface
         {0, 1000, task_flush_sd_card},        // Flush SD card every 1000 ms
         //{0, 500, task_send_heartbeat}         // Send heartbeat every 500 ms
-        {0, 1000, task_rs422_test_send}       // Test RS422 send every 1000 ms
+        //{0, 1000, task_rs422_test_send}       // Test RS422 send every 1000 ms
     };
 
     while (1) {

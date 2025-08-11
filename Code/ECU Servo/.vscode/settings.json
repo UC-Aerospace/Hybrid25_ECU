@@ -4,6 +4,7 @@
         "lps22hh_reg.h": "c",
         "servo.h": "c",
         "stdbool.h": "c",
-        "can_handler.h": "c"
+        "can_handler.h": "c",
+        "stm32g0xx_hal.h": "c"
     }
 }

@@ -86,12 +86,12 @@ HAL_StatusTypeDef ads124_init(void)
 static HAL_StatusTypeDef ads124_init_buffers(void)
 {
     // Initialize buffers for each sensor
-    can_buffer_init(&load_cell_a_buffer, SID_SENSOR_LC_Thrust, CAN_BUFFER_SIZE);
-    can_buffer_init(&load_cell_b_buffer, SID_SENSOR_LC_N2O_A, CAN_BUFFER_SIZE);
-    can_buffer_init(&load_cell_c_buffer, SID_SENSOR_LC_N2O_B, CAN_BUFFER_SIZE);
-    can_buffer_init(&thermo_a_buffer, SID_SENSOR_THERMO_A, CAN_BUFFER_SIZE);
-    can_buffer_init(&thermo_b_buffer, SID_SENSOR_THERMO_B, CAN_BUFFER_SIZE);
-    can_buffer_init(&thermo_c_buffer, SID_SENSOR_THERMO_C, CAN_BUFFER_SIZE);
+    can_buffer_init(&load_cell_a_buffer, SID_SENSOR_LC_Thrust, BUFF_SIZE_LC_Thrust);
+    can_buffer_init(&load_cell_b_buffer, SID_SENSOR_LC_N2O_A, BUFF_SIZE_LC_N2O_A);
+    can_buffer_init(&load_cell_c_buffer, SID_SENSOR_LC_N2O_B, BUFF_SIZE_LC_N2O_B);
+    can_buffer_init(&thermo_a_buffer, SID_SENSOR_THERMO_A, BUFF_SIZE_THERMO_A);
+    can_buffer_init(&thermo_b_buffer, SID_SENSOR_THERMO_B, BUFF_SIZE_THERMO_B);
+    can_buffer_init(&thermo_c_buffer, SID_SENSOR_THERMO_C, BUFF_SIZE_THERMO_C);
 
     return HAL_OK;
 }

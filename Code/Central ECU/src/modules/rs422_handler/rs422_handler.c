@@ -1,5 +1,6 @@
 #include "rs422_handler.h"
 #include "debug_io.h"
+#include "heartbeat.h"
 
 void rs422_handler_init(void) {
     // Initialize RS422 handler
@@ -17,19 +18,26 @@ void rs422_handler_rx_poll(void) {
         switch (frame.frame_type) {
             case RS422_FRAME_HEARTBEAT:
                 // Handle heartbeat frame
-                dbg_printf("Received heartbeat frame with size %d\r\n", frame.size);
+                dbg_printf("Heartbeat from RUI, contents %d\r\n", frame.data[0]);
+                heartbeat_reload(BOARD_ID_RIU);
                 break;
-            case RS422_FRAME_ARM_UPDATE:
-                // Handle arm update frame
-                dbg_printf("Received arm update frame with size %d\r\n", frame.size);
+            case RS422_FRAME_SWITCH_CHANGE:
+                // Handle switch change frame
+                uint16_t switches = frame.data[0] << 8 | (frame.data[1]);
+                dbg_printf("Received switch change frame, data: %04X\r\n", switches);
+                stager_set_switches(switches);
                 break;
             case RS422_FRAME_VALVE_UPDATE:
                 // Handle valve update frame
                 dbg_printf("Received valve update frame with size %d\r\n", frame.size);
                 break;
-            case RS422_FRAME_TIME_SYNC:
-                // Handle time sync frame
-                dbg_printf("Received time sync frame with size %d\r\n", frame.size);
+            case RS422_FRAME_LED_UPDATE:
+                // Handle LED update frame
+                dbg_printf("Received LED update frame with size %d\r\n", frame.size);
+                break;
+            case RS422_BATTERY_VOLTAGE_FRAME:
+                // Handle battery voltage frame
+                dbg_printf("Received battery voltage frame with size %d\r\n", frame.size);
                 break;
             case RS422_FRAME_PRESSURE:
                 // Handle pressure frame
@@ -47,13 +55,13 @@ void rs422_handler_rx_poll(void) {
                 // Handle load cell frame
                 dbg_printf("Received load cell frame with size %d\r\n", frame.size);
                 break;
+            case RS422_FRAME_COUNTDOWN:
+                // Handle countdown frame
+                dbg_printf("Received countdown frame with size %d\r\n", frame.size);
+                break;
             case RS422_FRAME_ABORT:
                 // Handle abort frame
                 dbg_printf("Received abort frame with size %d\r\n", frame.size);
-                break;
-            case RS422_FRAME_WARNING:
-                // Handle warning frame
-                dbg_printf("Received warning frame with size %d\r\n", frame.size);
                 break;
             case RS422_FRAME_FIRE:
                 // Handle fire frame

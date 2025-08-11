@@ -131,7 +131,7 @@ int main(void)
   MX_TIM3_Init();
   MX_TIM15_Init();
   MX_I2C3_Init();
-  MX_USB_Device_Init();
+  //MX_USB_Device_Init();
   MX_TIM14_Init();
   /* USER CODE BEGIN 2 */
   app_init(); // Initialize the application

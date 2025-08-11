@@ -3,7 +3,8 @@
 
 RemoteHeartbeat_t heartbeat[MAX_COUNT] = {0};
 
-void heartbeat_reload(uint8_t BOARD_ID) {
+void heartbeat_reload(uint8_t BOARD_ID) 
+{
     // Check if BOARD_ID is valid
     if (BOARD_ID >= MAX_COUNT) {
         dbg_printf("Invalid BOARD_ID %d for heartbeat reload\n", BOARD_ID);
@@ -21,6 +22,10 @@ void heartbeat_reload(uint8_t BOARD_ID) {
             return;
         }
     }
+}
+
+bool heartbeat_all_started(void) {
+    return (heartbeat[BOARD_ID_RIU].is_active && heartbeat[BOARD_ID_SERVO].is_active && heartbeat[BOARD_ID_ADC_A].is_active);
 }
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
