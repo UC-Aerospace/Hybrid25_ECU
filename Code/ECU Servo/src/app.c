@@ -35,7 +35,7 @@ void app_init(void)
 void task_poll_servo_fsm(void) 
 {
     // Poll servo FSM
-    fsm_run();
+    fsm_tick();
 }
 
 void task_poll_can_handlers(void) 

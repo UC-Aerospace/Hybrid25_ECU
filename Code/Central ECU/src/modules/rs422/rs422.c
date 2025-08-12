@@ -2,6 +2,7 @@
 #include "crc.h"
 #include "config.h"
 #include "debug_io.h"
+#include "spicy.h"
 
 // Global buffers for DMA operations
 RS422_TxBuffer_t tx_buffer = {0}; // Initialize circular buffer for transmission
@@ -229,4 +230,11 @@ uint16_t rs422_read(RS422_RxFrame_t *frame)
     // Copy validated data to the frame
     memcpy(frame->data, &message_buffer[1], data_length);
     return bytes_read;
+}
+
+// Needs a uint8_t in the form [Servo A Pos, Servo B Pos, Servo C Pos, Servo D Pos, Servos Armed, Any Servos Error, 0 (Solenoid Position), 0 (Pyro Armed)]
+bool rs422_send_valve_position(uint8_t valve_pos)
+{
+    valve_pos = (valve_pos | spicy_get_ox() << 1 | spicy_get_arm()); // Add solenoid and pyro armed states
+    return (rs422_send(&valve_pos, 1, RS422_FRAME_VALVE_UPDATE) == HAL_OK);
 }

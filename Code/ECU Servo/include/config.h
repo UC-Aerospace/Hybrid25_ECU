@@ -7,7 +7,7 @@
 
 // Board types: _SERVO, _CENTRAL, _ADC
 #define BOARD_TYPE_SERVO
-
+#define DEBUG // TODO: !!Remove this!!
 static uint8_t BOARD_ID;
 
 // Pinout configuration

@@ -4,6 +4,7 @@
 #include "rs422.h"
 #include "peripherals.h"
 #include "config.h"
+#include "stager.h"
 
 // Function declarations
 void rs422_handler_init(void);

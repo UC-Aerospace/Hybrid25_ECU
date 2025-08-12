@@ -48,6 +48,10 @@ typedef enum {
     CAN_ERROR_ACTION_WARNING = 0b10, // Warning action
 } CAN_ErrorAction;
 
+typedef enum {
+    CAN_ERROR_SERVO_MOVE_FAILED = 0b000
+} CAN_ErrorCode;
+
 typedef struct {
     uint8_t priority    : 2;
     uint8_t nodeType    : 3;

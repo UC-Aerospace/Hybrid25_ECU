@@ -2,6 +2,7 @@
 #include "adc.h"
 #include "debug_io.h"
 #include "can.h"
+#include "fsm.h"
 
 static ServoQueue servoQueue = {
     .items = {0},
@@ -20,7 +21,7 @@ static void servo_set_angle(Servo *servo, uint16_t angle);
 // Internal helper: remove all queued items for a servo
 static void servo_queue_remove_for_servo(Servo *servo);
 // Internal helper: queue a position for a servo
-static void servo_queue_position(Servo *servo, ServoPosition position);
+static void servo_queue_position(Servo *servo, uint16_t position);
 
 /************
  * Servo instances
@@ -31,8 +32,9 @@ Servo servoVent = {
     .tim = &htim3,
     .channel = TIM_CHANNEL_1,
     .state = SERVO_STATE_DISARMED,
-    .safePosition = CRACK,
-    .targetPosition = CRACK,
+    .closePosition = 500,
+    .openPosition = 150,
+    .targetPosition = 500,
     .currentPosition = 0,
     .nrstPin = GPIO_PIN_1, // NRST pin for servo 1
     .nrstPort = GPIOD // NRST port for servo 1
@@ -43,8 +45,9 @@ Servo servoNitrogen = {
     .tim = &htim3,
     .channel = TIM_CHANNEL_2,
     .state = SERVO_STATE_DISARMED,
-    .safePosition = CLOSE,
-    .targetPosition = CLOSE,
+    .closePosition = 500,
+    .openPosition = 150,
+    .targetPosition = 500,
     .currentPosition = 0,
     .nrstPin = GPIO_PIN_2, // NRST pin for servo 2
     .nrstPort = GPIOD // NRST port for servo 2
@@ -55,8 +58,9 @@ Servo servoNitrousA = {
     .tim = &htim1,
     .channel = TIM_CHANNEL_1,
     .state = SERVO_STATE_DISARMED,
-    .safePosition = CLOSE,
-    .targetPosition = CLOSE,
+    .closePosition = 500,
+    .openPosition = 150,
+    .targetPosition = 500,
     .currentPosition = 0,
     .nrstPin = GPIO_PIN_3, // NRST pin for servo 3
     .nrstPort = GPIOD // NRST port for servo 3
@@ -67,8 +71,9 @@ Servo servoNitrousB = {
     .tim = &htim15,
     .channel = TIM_CHANNEL_1,
     .state = SERVO_STATE_DISARMED,
-    .safePosition = CLOSE,
-    .targetPosition = CLOSE,
+    .closePosition = 500,
+    .openPosition = 150,
+    .targetPosition = 500,
     .currentPosition = 0,
     .nrstPin = GPIO_PIN_4, // NRST pin for servo 4
     .nrstPort = GPIOD // NRST port for servo 4
@@ -96,11 +101,27 @@ void servo_send_can_positions(void)
 
     uint8_t setPos[4] = {0};
     for (int i = 0; i < 4; i++) {
-        setPos[i] = servoByIndex[i]->targetPosition / 4;
+        uint8_t setposition;
+        bool setIsOpen = (servoByIndex[i]->targetPosition == servoByIndex[i]->openPosition);
+        bool setIsClose = (servoByIndex[i]->targetPosition == servoByIndex[i]->closePosition);
+        if (setIsOpen) {
+            setposition = 1; // Open position
+        } else if (setIsClose) {
+            setposition = 0; // Close position
+        } else {
+            setposition = 2; // Crack position (not implemented, default to 0)
+        }
+        setPos[i] = (setposition << 6) | (servoByIndex[i]->targetPosition / 50);
     }
     uint8_t currentPos[4] = {0};
     for (int i = 0; i < 4; i++) {
-        currentPos[i] = servoByIndex[i]->currentPosition / 4;
+        bool atPosition = false;
+        int16_t delta = (int16_t)servoByIndex[i]->targetPosition - servoByIndex[i]->currentPosition;
+        if (delta < 0) delta = -delta;
+        if (delta <= SERVO_POSITION_TOLERANCE) {
+            atPosition = true;
+        }
+        currentPos[i] = (servoByIndex[i]->state << 6) | (atPosition << 5) | (servoByIndex[i]->currentPosition / 50);
     }
     can_send_servo_position(CAN_NODE_TYPE_CENTRAL, CAN_NODE_ADDR_CENTRAL, 0b1111, setPos, currentPos); // Assume all are connected
 }
@@ -130,7 +151,7 @@ void servo_disarm_all(void) {
 
 // Sets the position of the servo, will queue if armed or moving
 // This can be done externally
-void servo_set_position(Servo *servo, ServoPosition position) {
+void servo_set_position(Servo *servo, uint16_t position) {
     if (servo->state == SERVO_STATE_ERROR) {
         dbg_printf("Error: Servo is in error state, cannot set position.\r\n");
         return;
@@ -143,7 +164,7 @@ void servo_set_position(Servo *servo, ServoPosition position) {
     }
 }
 
-// Poll the servo queue for the next item to process
+// Poll the servo queue for the next item to process. Done from FSM
 bool servo_queue_poll() 
 {
     // Process the servo queue
@@ -161,10 +182,11 @@ bool servo_queue_poll()
     return false; // No items to process
 }
 
+// Done in move mode in the FSM to check if current move completed.
 bool servo_queue_check_complete()
 {
-    servo_update_positions(); // Update current positions from ADC
     if (servoQueue.head != servoQueue.tail) {
+        servo_update_positions(); // Update current positions from ADC
         ServoQueueItem *item = &servoQueue.items[servoQueue.head];
         int16_t delta = (int16_t)item->position - item->servo->currentPosition;
         if (delta < 0) delta = -delta;
@@ -188,8 +210,9 @@ void servo_queue_complete(bool wasSuccess)
             item->servo->state = SERVO_STATE_ARMED; // Set back to armed state
         } else {
             item->servo->state = SERVO_STATE_ERROR; // Set to error state if failed
-            // TODO: Send a CAN error message
-            dbg_printf("Error: Servo number %d movement failed, setting to ERROR state.\r\n", item->servo->channel);
+            fsm_set_state(STATE_ERROR); // Set FSM to error state
+            can_send_error_warning(CAN_NODE_TYPE_CENTRAL, CAN_NODE_ADDR_CENTRAL, CAN_ERROR_ACTION_SHUTDOWN, (CAN_NODE_ADDR_SERVO << 6) | (CAN_ERROR_SERVO_MOVE_FAILED << 3) | servoQueue.head); // Send error warning over CAN
+            dbg_printf("Error: Servo number %d movement failed, setting to ERROR state.\r\n", servoQueue.head);
         }
         servoQueue.head = (servoQueue.head + 1) % SERVO_QUEUE_SIZE; // Move head forward
         // Delay for a period to allow the servo to reset
@@ -246,7 +269,7 @@ static void servo_set_angle(Servo *servo, uint16_t angle) {
 }
 
 // Add a position to the servo queue, will queue if armed or moving
-static void servo_queue_position(Servo *servo, ServoPosition position) 
+static void servo_queue_position(Servo *servo, uint16_t position) 
 {
     if (servo->state == SERVO_STATE_ERROR) {
         dbg_printf("Error: Servo is in error state, cannot queue position.\r\n");

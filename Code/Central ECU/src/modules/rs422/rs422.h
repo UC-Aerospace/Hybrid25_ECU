@@ -68,5 +68,6 @@ HAL_StatusTypeDef rs422_process_tx_queue(void);
 uint16_t rs422_get_rx_available(void);
 uint16_t rs422_read(RS422_RxFrame_t *frame);
 void rs422_process_rx_dma(uint16_t transferred);
+bool rs422_send_valve_position(uint8_t valve_pos);
 
 #endif // RS422_H

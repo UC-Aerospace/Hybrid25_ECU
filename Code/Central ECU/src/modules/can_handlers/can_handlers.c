@@ -2,6 +2,7 @@
 #include "debug_io.h"
 #include "can.h"
 #include "sd_log.h"
+#include "rs422.h"
 
 static void handle_cmd_set_servo_arm(CAN_CommandFrame* frame, CAN_ID id);
 static void handle_cmd_set_servo_pos(CAN_CommandFrame* frame, CAN_ID id);
@@ -144,7 +145,36 @@ void handle_command(CAN_CommandFrame* frame, CAN_ID id) {
 
 void handle_servo_pos(CAN_ServoPosFrame* frame, CAN_ID id) {
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
-    //TODO: Handle this
+    // Ignore connected servos, assume 4
+
+    bool servoSetOpen[4] = { false };
+    uint8_t servoSetPos[4] = { 0 };
+    uint8_t servoState[4] = { 0 };
+    bool atSetPos[4] = { false };
+    uint8_t servoCurrentPos[4] = { 0 };
+
+    for (int i = 0; i < 4; i++) {
+        servoSetOpen[i] = (frame->set_pos[i] >> 6) & 0x01; // Bit 6 for open/close
+        servoSetPos[i] = frame->set_pos[i] & 0x1F; // Bits 0-4 for position
+    }
+
+    for (int i = 0; i < 4; i++) {
+        servoState[i] = (frame->current_pos[i] >> 6);
+        atSetPos[i] = (frame->current_pos[i] & 0x20) != 0; // Bit 5 for at set position
+        servoCurrentPos[i] = (frame->current_pos[i] & 0x1F);
+    }
+
+    uint8_t valve_pos = 0;
+    bool any_servo_error = false;
+    bool any_servo_armed = false;
+    for (int i = 0; i < 4; i++) {
+        valve_pos |= servoSetPos[i] << (7 - i);
+        any_servo_armed |= (servoState[i] == 1);
+        any_servo_error |= (servoState[i] == 3);
+    }
+    valve_pos |= any_servo_armed << 3 | any_servo_error << 2;
+
+    rs422_send_valve_position(valve_pos);
 }
 
 static uint8_t can_dlc_to_bytes(uint8_t dlc_code) {

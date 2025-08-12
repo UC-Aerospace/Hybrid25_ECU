@@ -93,6 +93,11 @@ void spicy_close_ox(void)
     HAL_GPIO_WritePin(OX_FIRE_GPIO_Port, OX_FIRE_Pin, GPIO_PIN_RESET);
 }
 
+bool spicy_get_ox(void)
+{
+    return HAL_GPIO_ReadPin(OX_FIRE_GPIO_Port, OX_FIRE_Pin);
+}
+
 void spicy_fire_ematch1(void)
 {
     if (spicy_checks()) {

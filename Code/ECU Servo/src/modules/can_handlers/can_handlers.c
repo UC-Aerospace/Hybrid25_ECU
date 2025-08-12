@@ -3,6 +3,7 @@
 #include "can.h"
 #include "servo.h"
 #include "heartbeat.h"
+#include "fsm.h"
 
 static void handle_cmd_set_servo_arm(CAN_CommandFrame* frame, CAN_ID id);
 static void handle_cmd_set_servo_pos(CAN_CommandFrame* frame, CAN_ID id);
@@ -199,6 +200,10 @@ static void handle_cmd_set_servo_arm(CAN_CommandFrame* frame, CAN_ID id) {
             }
         }
     }
+    if (frame->options == 0b11110000) {
+        // Disarm all servo command
+        fsm_dispatch(FSM_EVENT_EXTERNAL_DISARM);
+    }
 }
 
 static void handle_cmd_set_servo_pos(CAN_CommandFrame* frame, CAN_ID id) {
@@ -228,22 +233,22 @@ static void handle_cmd_set_servo_pos(CAN_CommandFrame* frame, CAN_ID id) {
     uint8_t position = frame->options & 0x1F; // Bits 3-7 for position
     dbg_printf("Servo Move Command: servo=%d, set_type=%d, position=%d\r\n",
                servo_index+1, set_type, position);
-    
+
+    uint16_t servo_position;
     if (set_type == 0) {
         // Set by list
-        ServoPosition servo_position;
         switch (position) {
             case 0:
-                servo_position = CLOSE;
+                servo_position = servoByIndex[servo_index]->closePosition;
                 break;
             case 1:
-                servo_position = OPEN;
+                servo_position = servoByIndex[servo_index]->openPosition;
                 break;
             case 2:
-                servo_position = CRACK;
+                dbg_printf("Crack position not implemented yet\r\n");
                 break;
             case 3:
-                servo_position = servoByIndex[servo_index]->safePosition;
+                dbg_printf("Safe position not implemented yet\r\n");
                 break;
             default:
                 dbg_printf("Invalid position for servo %d: %d\r\n", servo_index, position);

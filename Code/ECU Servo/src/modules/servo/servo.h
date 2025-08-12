@@ -18,11 +18,11 @@
 // 1100 -> 180 degrees
 // 1250 -> Maximum pulse width (2.5 ms)
 
-typedef enum {
-    CLOSE = 500, // 750 ticks
-    OPEN = 150,  // 400 ticks
-    CRACK = 300  // 550 ticks
-} ServoPosition;
+// typedef enum {
+//     CLOSE = 500, // 750 ticks
+//     OPEN = 150,  // 400 ticks
+//     CRACK = 300  // 550 ticks
+// } ServoPosition;
 
 typedef enum {
     SERVO_STATE_DISARMED,
@@ -35,8 +35,9 @@ typedef struct {
     TIM_HandleTypeDef *tim;
     uint32_t channel;
     servo_state_t state;
-    ServoPosition safePosition;
-    ServoPosition targetPosition;
+    uint16_t closePosition;
+    uint16_t openPosition;
+    uint16_t targetPosition;
     int16_t currentPosition;
     GPIO_TypeDef *nrstPort; // GPIO port for NRST pin
     uint16_t nrstPin;       // GPIO pin for NRST
@@ -75,7 +76,7 @@ void servo_queue_clear(void);
 // Remove all queued items for a specific servo
 void servo_queue_clear_for_servo(Servo *servo);
 // Sets the position of the servo, will queue if armed or moving
-void servo_set_position(Servo *servo, ServoPosition position);
+void servo_set_position(Servo *servo, uint16_t position);
 // Updates the current positions of the servos from the ADC
 void servo_update_positions(void);
 // Sends the current servo positions over CAN

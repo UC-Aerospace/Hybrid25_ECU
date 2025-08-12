@@ -26,6 +26,7 @@ bool hss_get_PGOOD(void);
 // FIRE COMMANDS
 void spicy_open_ox(void);
 void spicy_close_ox(void);
+bool spicy_get_ox(void); // Check if OX is open
 
 void spicy_fire_ematch1(void);
 void spicy_off_ematch1(void);
