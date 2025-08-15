@@ -8,6 +8,23 @@
 
 static uint16_t adcValues[4];
 
+void setup_panic(uint8_t err_code)
+{
+    // Initialize panic mode
+    __disable_irq();
+    dbg_printf("Panic mode initialized\n");
+    while (1) {
+        for (uint8_t i = 0; i < err_code; i++) {
+            HAL_GPIO_WritePin(LED_IND_ERROR_GPIO_Port, LED_IND_ERROR_Pin, GPIO_PIN_SET); // Toggle error LED
+            HAL_Delay(200);
+            HAL_GPIO_WritePin(LED_IND_ERROR_GPIO_Port, LED_IND_ERROR_Pin, GPIO_PIN_RESET);
+            HAL_Delay(200);
+        }
+        //HAL_GPIO_WritePin(LED_IND_ERROR_GPIO_Port, LED_IND_ERROR_Pin, GPIO_PIN_RESET); // Set error LED
+        HAL_Delay(2000);
+    }
+}
+
 void app_init(void) 
 {
     uint32_t uid[3];
@@ -23,7 +40,7 @@ void app_init(void)
         // Unrecognized device, handle error
         dbg_printf("Unrecognized device UID: %08lX %08lX %08lX\r\n", uid[0], uid[1], uid[2]);
         HAL_GPIO_WritePin(LED_IND_ERROR_GPIO_Port, LED_IND_ERROR_Pin, GPIO_PIN_SET); // Set error LED
-        while (1); // Halt execution
+       setup_panic(1); // Enter panic mode
     }
 
     adc_init(); // Initialize ADC for servo position reading

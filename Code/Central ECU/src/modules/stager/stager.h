@@ -36,6 +36,8 @@ typedef struct {
 
 // Setup the state machine
 bool stager_init(void);
+// Tick state machine
+void stager_tick(void);
 // Get the current state
 stager_state_t stager_get_state(void);
 // Set the current state
@@ -55,6 +57,7 @@ void stager_request_error(void);
 
 // Optional accessors
 const stager_switch_state_t* stager_get_switch_state(void);
+void stager_set_servo_feedback_position(bool servoSetPosition[4]);
 
 
 #endif // STAGER_H

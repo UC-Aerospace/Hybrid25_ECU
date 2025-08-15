@@ -3,6 +3,8 @@
 #include "can.h"
 #include "sd_log.h"
 #include "rs422.h"
+#include "stager.h"
+#include "config.h"
 
 static void handle_cmd_set_servo_arm(CAN_CommandFrame* frame, CAN_ID id);
 static void handle_cmd_set_servo_pos(CAN_CommandFrame* frame, CAN_ID id);
@@ -147,16 +149,18 @@ void handle_servo_pos(CAN_ServoPosFrame* frame, CAN_ID id) {
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
     // Ignore connected servos, assume 4
 
-    bool servoSetOpen[4] = { false };
+    bool servoSetBinary[4] = { false };
     uint8_t servoSetPos[4] = { 0 };
     uint8_t servoState[4] = { 0 };
     bool atSetPos[4] = { false };
     uint8_t servoCurrentPos[4] = { 0 };
 
     for (int i = 0; i < 4; i++) {
-        servoSetOpen[i] = (frame->set_pos[i] >> 6) & 0x01; // Bit 6 for open/close
+        servoSetBinary[i] = (frame->set_pos[i] >> 6) & 0x01; // Bit 6 for open/close
         servoSetPos[i] = frame->set_pos[i] & 0x1F; // Bits 0-4 for position
     }
+
+    stager_set_servo_feedback_position(servoSetBinary);
 
     for (int i = 0; i < 4; i++) {
         servoState[i] = (frame->current_pos[i] >> 6);
@@ -211,10 +215,35 @@ void handle_adc_data(CAN_ADCFrame* frame, CAN_ID id, uint8_t dataLength) {
         if (payload_len > sizeof(frame->data)) payload_len = sizeof(frame->data);
     }
 
+    // Serial print some stuff
+    
+    if (sensorID < 2) {
+        uint16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
+        // output =>
+        // map first_sample such that 0.1 * reference is the zero output level and 0.9 * reference is 0xFFFF
+        uint16_t reference = (frame->data[56]) | (frame->data[57] << 8);
+        uint32_t in_min = reference / 10;         // 0.1 * reference
+        uint32_t in_max = (reference * 9) / 10;   // 0.9 * reference
+
+        if (first_sample <= in_min) first_sample = 0x0000;
+        else if (first_sample >= in_max) first_sample = 0xFFFF;
+        else {
+            uint32_t range = in_max - in_min;
+            uint32_t scaled = (first_sample - in_min) * 65535UL / range;
+            first_sample = (uint16_t)scaled;
+        }
+        dbg_printf_nolog("%d %d\n", sensorID, first_sample);
+    } else if (sensorID == 16 | sensorID == 17 | sensorID == 18) {
+        int16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
+        dbg_printf_nolog("%d %d\n", sensorID, first_sample);
+    }
+    
+
     // Write chunk to per-sensor file with delimiter header
     bool status = sd_log_write_sensor_chunk(sensorID, sampleRate, frame->data, payload_len, frame->timestamp);
     if (!status) {
         dbg_printf("SD Card failed write for sensor %d\n", sensorID);
+        HAL_GPIO_WritePin(LED_IND_ERROR_GPIO_Port, LED_IND_ERROR_Pin, GPIO_PIN_SET); // Set error LED
         // TODO: Issue a warning over RS422
         return;
     }

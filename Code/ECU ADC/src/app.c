@@ -24,9 +24,12 @@ void setup_panic(uint8_t err_code)
     dbg_printf("Panic mode initialized\n");
     while (1) {
         for (uint8_t i = 0; i < err_code; i++) {
-            HAL_GPIO_TogglePin(LED_IND_ERROR_GPIO_Port, LED_IND_ERROR_Pin); // Toggle error LED
-            HAL_Delay(100);
+            HAL_GPIO_WritePin(LED_IND_ERROR_GPIO_Port, LED_IND_ERROR_Pin, GPIO_PIN_SET); // Toggle error LED
+            HAL_Delay(200);
+            HAL_GPIO_WritePin(LED_IND_ERROR_GPIO_Port, LED_IND_ERROR_Pin, GPIO_PIN_RESET);
+            HAL_Delay(200);
         }
+        //HAL_GPIO_WritePin(LED_IND_ERROR_GPIO_Port, LED_IND_ERROR_Pin, GPIO_PIN_RESET); // Set error LED
         HAL_Delay(2000);
     }
 }
@@ -80,20 +83,20 @@ void app_init(void) {
         setup_panic(3);
     }
 
-    // Start conversions
-    if (!adc_start()) {
-        setup_panic(4);
-    }
+    // // Start conversions
+    // if (!adc_start()) {
+    //     setup_panic(4);
+    // }
 
     // TODO: Enable the PTE7300 Pressure Sensors
     // Initialise the PTE7300 Pressure Sensors
-    // bool stat_a = PTE7300_Init(&hpte7300_A, &hi2c1, SID_SENSOR_PT_A);
-    // bool stat_b = PTE7300_Init(&hpte7300_B, &hi2c2, SID_SENSOR_PT_B);
-    // bool stat_c = PTE7300_Init(&hpte7300_C, &hi2c3, SID_SENSOR_PT_C);
+    bool stat_a = PTE7300_Init(&hpte7300_A, &hi2c1, SID_SENSOR_PT_A);
+    bool stat_b = PTE7300_Init(&hpte7300_B, &hi2c2, SID_SENSOR_PT_B);
+    bool stat_c = PTE7300_Init(&hpte7300_C, &hi2c3, SID_SENSOR_PT_C);
 
-    // if (!stat_a || !stat_b || !stat_c) {
-    //     setup_panic(5);
-    // }
+    if (!stat_a || !stat_b || !stat_c) {
+        setup_panic(5);
+    }
 
     can_buffer_init(&cjt_buffer, SID_SENSOR_CJT, 2);
 }
@@ -140,7 +143,7 @@ void app_run(void) {
         //{0, 1000, task_update_battery_voltage},    // Battery voltage reading every 1000 ms
         {0, 500, task_update_NTC_temperature},         // Temperature reading every 500 ms
         {0, 500, task_toggle_status_led},         // LED toggle every 500 ms
-        //{0, 100, task_sample_pte7300},            // Sample PTE7300 sensors every 100 ms
+        {0, 100, task_sample_pte7300},            // Sample PTE7300 sensors every 100 ms
         {0, 500, task_send_heartbeat},              // Send heartbeat every 500 ms
         {0, 300, task_poll_can_handlers}            // Poll CAN handlers every 300 ms
     };

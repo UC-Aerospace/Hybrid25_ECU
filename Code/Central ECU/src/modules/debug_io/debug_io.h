@@ -7,6 +7,7 @@
 #define DEBUG_OUTPUT_USB
 
 void dbg_printf(const char *fmt, ...);
+void dbg_printf_nolog(const char *fmt, ...);
 // Non-blocking: returns length of next complete line (without CR/LF), 0 if none, -1 on error
 int dbg_recv(char *buffer, int max_length);
 

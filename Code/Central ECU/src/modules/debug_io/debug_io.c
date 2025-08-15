@@ -96,6 +96,26 @@ void dbg_printf(const char *fmt, ...)
 #endif
 }
 
+void dbg_printf_nolog(const char *fmt, ...)
+{
+
+    va_list args;
+    va_start(args, fmt);
+    vsnprintf(dbg_buf, DBG_BUF_SIZE, fmt, args);
+    va_end(args);
+
+#ifdef DEBUG_OUTPUT_UART
+    HAL_UART_Transmit(&huart2, (uint8_t *)dbg_buf, strlen(dbg_buf), HAL_MAX_DELAY);
+#endif
+
+#ifdef DEBUG_OUTPUT_USB
+    if (hUsbDeviceFS.dev_state == USBD_STATE_CONFIGURED) {
+        USBD_CDC_SetTxBuffer(&hUsbDeviceFS, (uint8_t*)dbg_buf, strlen(dbg_buf));
+        USBD_CDC_TransmitPacket(&hUsbDeviceFS);
+    }
+#endif
+}
+
 // Non-blocking receive: returns length of next complete line (without CR/LF), 0 if none, -1 on error
 int dbg_recv(char *buffer, int max_length)
 {
