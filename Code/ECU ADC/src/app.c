@@ -17,6 +17,9 @@ uint16_t voltage;
 int16_t cjt_temp;
 can_buffer_t cjt_buffer;
 
+// TEST ONLY
+can_buffer_t test_buffer;
+
 void setup_panic(uint8_t err_code)
 {
     // Initialize panic mode
@@ -79,9 +82,9 @@ void app_init(void) {
     HAL_ADCEx_Calibration_Start(&hadc1);
 
     // Initialize ADS124S08
-    if (ads124_init() != HAL_OK) {
-        setup_panic(3);
-    }
+    // if (ads124_init() != HAL_OK) {
+    //     setup_panic(3);
+    // }
 
     // // Start conversions
     // if (!adc_start()) {
@@ -90,15 +93,16 @@ void app_init(void) {
 
     // TODO: Enable the PTE7300 Pressure Sensors
     // Initialise the PTE7300 Pressure Sensors
-    bool stat_a = PTE7300_Init(&hpte7300_A, &hi2c1, SID_SENSOR_PT_A);
-    bool stat_b = PTE7300_Init(&hpte7300_B, &hi2c2, SID_SENSOR_PT_B);
-    bool stat_c = PTE7300_Init(&hpte7300_C, &hi2c3, SID_SENSOR_PT_C);
+    // bool stat_a = PTE7300_Init(&hpte7300_A, &hi2c1, SID_SENSOR_PT_A);
+    // bool stat_b = PTE7300_Init(&hpte7300_B, &hi2c2, SID_SENSOR_PT_B);
+    // bool stat_c = PTE7300_Init(&hpte7300_C, &hi2c3, SID_SENSOR_PT_C);
 
-    if (!stat_a || !stat_b || !stat_c) {
-        setup_panic(5);
-    }
+    // if (!stat_a || !stat_b || !stat_c) {
+    //     setup_panic(5);
+    // }
 
-    can_buffer_init(&cjt_buffer, SID_SENSOR_CJT, 2);
+    // can_buffer_init(&cjt_buffer, SID_SENSOR_CJT, 2);
+    can_buffer_init(&test_buffer, SID_SENSOR_TEST, 29); // Initialize the buffer with a length of 29
 }
 
 void task_toggle_status_led(void) {
@@ -137,15 +141,28 @@ void task_send_heartbeat(void) {
     can_send_heartbeat(CAN_NODE_TYPE_CENTRAL, CAN_NODE_ADDR_CENTRAL);
 }
 
+void test_spoof_sensor_read(void) {
+    // Test function to spoof sensor readings
+    int16_t test_value = 0x00FF; // Example test value
+    can_buffer_push(&test_buffer, test_value);
+    can_buffer_push(&test_buffer, test_value);
+    can_buffer_push(&test_buffer, test_value);
+    can_buffer_push(&test_buffer, test_value);
+    can_buffer_push(&test_buffer, test_value);
+    //dbg_printf("Test Sensor Value: %d\r\n", test_value);
+}
+
 void app_run(void) {
     // Define tasks
     Task tasks[] = {
         //{0, 1000, task_update_battery_voltage},    // Battery voltage reading every 1000 ms
-        {0, 500, task_update_NTC_temperature},         // Temperature reading every 500 ms
+        //{0, 500, task_update_NTC_temperature},         // Temperature reading every 500 ms
         {0, 500, task_toggle_status_led},         // LED toggle every 500 ms
-        {0, 100, task_sample_pte7300},            // Sample PTE7300 sensors every 100 ms
-        {0, 500, task_send_heartbeat},              // Send heartbeat every 500 ms
-        {0, 300, task_poll_can_handlers}            // Poll CAN handlers every 300 ms
+        //{0, 100, task_sample_pte7300},            // Sample PTE7300 sensors every 100 ms
+        //{0, 500, task_send_heartbeat},              // Send heartbeat every 500 ms
+        {0, 300, task_poll_can_handlers},            // Poll CAN handlers every 300 ms
+        {0, 2, test_spoof_sensor_read},
+        {0, 1, can_service_tx_queue}                // Service CAN TX queue every 1 ms
     };
 
     while (1) {
@@ -157,6 +174,5 @@ void app_run(void) {
                 tasks[i].task_function();
             }
         }
-        HAL_Delay(5);
     }
 }

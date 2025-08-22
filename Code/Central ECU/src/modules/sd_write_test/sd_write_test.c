@@ -188,7 +188,7 @@ uint32_t sd_write_test_benchmark(uint32_t num_tests) {
 
     uint32_t start_tick = HAL_GetTick();
     // Finalize the SD log to ensure all writes are flushed
-    sd_log_flush();
+    sd_log_service(10000);
     uint32_t end_tick = HAL_GetTick();
     uint32_t flush_time = end_tick - start_tick;
 

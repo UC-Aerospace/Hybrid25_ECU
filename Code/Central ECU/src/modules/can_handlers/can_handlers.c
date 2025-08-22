@@ -207,40 +207,32 @@ void handle_adc_data(CAN_ADCFrame* frame, CAN_ID id, uint8_t dataLength) {
     // Sample rate, 3 bits. (0-7) = 1, 10, 20, 50, 100, 200, 500, 1000Hz
     uint8_t sampleRate = frame->what & 0x07;
 
-    // Determine actual payload length in bytes from DLC and fixed header (what+timestamp)
-    uint8_t total_len = can_dlc_to_bytes(dataLength);
-    uint16_t payload_len = 0;
-    if (total_len >= 4) {
-        payload_len = (uint16_t)(total_len - 4); // subtract what(1) + timestamp(3)
-        if (payload_len > sizeof(frame->data)) payload_len = sizeof(frame->data);
-    }
-
     // Serial print some stuff
     
-    if (sensorID < 2) {
-        uint16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
-        // output =>
-        // map first_sample such that 0.1 * reference is the zero output level and 0.9 * reference is 0xFFFF
-        uint16_t reference = (frame->data[56]) | (frame->data[57] << 8);
-        uint32_t in_min = reference / 10;         // 0.1 * reference
-        uint32_t in_max = (reference * 9) / 10;   // 0.9 * reference
+    // if (sensorID < 2) {
+    //     uint16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
+    //     // output =>
+    //     // map first_sample such that 0.1 * reference is the zero output level and 0.9 * reference is 0xFFFF
+    //     uint16_t reference = (frame->data[56]) | (frame->data[57] << 8);
+    //     uint32_t in_min = reference / 10;         // 0.1 * reference
+    //     uint32_t in_max = (reference * 9) / 10;   // 0.9 * reference
 
-        if (first_sample <= in_min) first_sample = 0x0000;
-        else if (first_sample >= in_max) first_sample = 0xFFFF;
-        else {
-            uint32_t range = in_max - in_min;
-            uint32_t scaled = (first_sample - in_min) * 65535UL / range;
-            first_sample = (uint16_t)scaled;
-        }
-        dbg_printf_nolog("%d %d\n", sensorID, first_sample);
-    } else if (sensorID == 16 | sensorID == 17 | sensorID == 18) {
-        int16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
-        dbg_printf_nolog("%d %d\n", sensorID, first_sample);
-    }
+    //     if (first_sample <= in_min) first_sample = 0x0000;
+    //     else if (first_sample >= in_max) first_sample = 0xFFFF;
+    //     else {
+    //         uint32_t range = in_max - in_min;
+    //         uint32_t scaled = (first_sample - in_min) * 65535UL / range;
+    //         first_sample = (uint16_t)scaled;
+    //     }
+    //     dbg_printf_nolog("%d %d\n", sensorID, first_sample);
+    // } else if (sensorID == 16 | sensorID == 17 | sensorID == 18) {
+    //     int16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
+    //     dbg_printf_nolog("%d %d\n", sensorID, first_sample);
+    // }
     
 
     // Write chunk to per-sensor file with delimiter header
-    bool status = sd_log_write_sensor_chunk(sensorID, sampleRate, frame->data, payload_len, frame->timestamp);
+    bool status = sd_log_write_sensor_chunk(sensorID, sampleRate, frame->data, frame->length, frame->timestamp);
     if (!status) {
         dbg_printf("SD Card failed write for sensor %d\n", sensorID);
         HAL_GPIO_WritePin(LED_IND_ERROR_GPIO_Port, LED_IND_ERROR_Pin, GPIO_PIN_SET); // Set error LED
@@ -260,8 +252,8 @@ void handle_heatbeat(CAN_HeartbeatFrame* frame, CAN_ID id, uint32_t timestamp) {
     // Remote timestamp good upto ~4 hours
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
     uint32_t remote_timestamp = (frame->timestamp[0] << 16) | (frame->timestamp[1] << 8) | frame->timestamp[2];
-    uint32_t local_timestamp = SysTick->VAL;
-    dbg_printf("Heartbeat Frame: initiator=%d, remote timestamp=%lu, local timestamp=%lu\n", initiator, remote_timestamp, local_timestamp);
+    uint32_t local_timestamp = HAL_GetTick();
+    dbg_printf("Heartbeat Frame: initiator=%u, remote timestamp=%lu, local timestamp=%lu\n", initiator, remote_timestamp, local_timestamp);
     
 }
 

@@ -98,8 +98,9 @@ typedef struct __attribute__((packed)) {
 
 typedef struct __attribute__((packed)) {
     uint8_t what;
+    uint8_t length; // Length of the data
     uint8_t timestamp[3];
-    uint8_t data[60];     // 60 bytes of ADC data
+    uint8_t data[59];     // 59 bytes of ADC data
 } CAN_ADCFrame;
 
 // Pack to 11-bit CAN ID

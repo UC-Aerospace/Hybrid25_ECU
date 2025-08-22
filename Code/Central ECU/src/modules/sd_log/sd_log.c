@@ -8,67 +8,106 @@
 
 // File system objects
 static FATFS fs;
-static FIL log_file;
-static FIL crash_file;
-
-// Sensor files: up to 32 5-bit IDs
-static FIL sensor_files[SD_LOG_MAX_SENSORS];
-static bool sensor_file_open[SD_LOG_MAX_SENSORS];
-static bool sensor_configured[SD_LOG_MAX_SENSORS];
+static FIL log_file;        // log.txt (text)
+static FIL sensors_file;    // sensors.raw (binary multiplexed sensor packets)
 
 // Current directory name
 static char current_dir[10];
-static char sensors_dir[20];
 static bool is_initialized = false;
 static uint32_t dir_counter = 1;  // Counter for sequential directory numbering
 
 // Buffer for formatted messages
 static char msg_buffer[SD_LOG_MAX_MSG_LEN];
 
-// Debug text capture ring buffer
+// ---------------- Buffered architecture -----------------
+// We buffer textual log lines (including formatted messages) and binary
+// sensor packets into RAM rings. Flushing is performed incrementally via
+// sd_log_service(time_budget_ms) so that no single call blocks > ~time_budget.
+
+// Debug/text log ring
 static volatile uint16_t dbg_ring_head = 0;
 static volatile uint16_t dbg_ring_tail = 0;
-static char dbg_ring[SD_LOG_DEBUG_RING_SIZE];
+static char dbg_ring[SD_LOG_DEBUG_BUF_SIZE];
 
-static inline uint16_t dbg_ring_next(uint16_t idx) {
-    return (uint16_t)((idx + 1U) % SD_LOG_DEBUG_RING_SIZE);
-}
+// Sensor binary ring
+static uint8_t sens_ring[SD_LOG_SENS_BUF_SIZE];
+static volatile uint16_t sens_head = 0;
+static volatile uint16_t sens_tail = 0;
 
-static inline bool dbg_ring_empty(void) {
-    return dbg_ring_head == dbg_ring_tail;
-}
+// Flush control flags/state
+static volatile bool flush_logs_requested = false;
+static volatile bool flush_sensors_requested = false;
+static bool flush_logs_in_progress = false;
+static bool flush_sensors_in_progress = false;
 
-static inline void dbg_ring_push_char(char c) {
+#ifndef SD_LOG_WRITE_CHUNK
+#define SD_LOG_WRITE_CHUNK 256U
+#endif
+
+#ifndef MIN
+#define MIN(a,b) (( (a) < (b) ) ? (a) : (b))
+#endif
+
+// Ring helpers
+static inline uint16_t dbg_ring_next(uint16_t idx){return (uint16_t)((idx+1U)%SD_LOG_DEBUG_BUF_SIZE);}    
+static inline bool dbg_ring_empty(void){return dbg_ring_head==dbg_ring_tail;} 
+static inline void dbg_ring_push_char(char c){
     uint16_t next = dbg_ring_next(dbg_ring_head);
-    if (next == dbg_ring_tail) {
-        // overflow: drop oldest
+    if(next == dbg_ring_tail){ // overflow drop oldest
         dbg_ring_tail = dbg_ring_next(dbg_ring_tail);
     }
     dbg_ring[dbg_ring_head] = c;
     dbg_ring_head = next;
 }
-
-static inline uint16_t dbg_ring_pop_chunk(char *dst, uint16_t max_len) {
-    if (dbg_ring_empty()) return 0;
-    uint16_t count = 0;
-    // Pop up to the end of buffer or max_len
-    if (dbg_ring_head >= dbg_ring_tail) {
-        // contiguous region
+static inline uint16_t dbg_ring_pop_chunk(char *dst, uint16_t max_len){
+    if(dbg_ring_empty()) return 0;
+    if(dbg_ring_head >= dbg_ring_tail){
         uint16_t avail = (uint16_t)(dbg_ring_head - dbg_ring_tail);
-        if (avail > max_len) avail = max_len;
+        if(avail > max_len) avail = max_len;
         memcpy(dst, &dbg_ring[dbg_ring_tail], avail);
         dbg_ring_tail = (uint16_t)(dbg_ring_tail + avail);
-        count = avail;
+        return avail;
     } else {
-        // wrap-around; pop to end first
-        uint16_t to_end = (uint16_t)(SD_LOG_DEBUG_RING_SIZE - dbg_ring_tail);
-        if (to_end > max_len) to_end = max_len;
+        uint16_t to_end = (uint16_t)(SD_LOG_DEBUG_BUF_SIZE - dbg_ring_tail);
+        if(to_end > max_len) to_end = max_len;
         memcpy(dst, &dbg_ring[dbg_ring_tail], to_end);
-        dbg_ring_tail = (uint16_t)((dbg_ring_tail + to_end) % SD_LOG_DEBUG_RING_SIZE);
-        count = to_end;
+        dbg_ring_tail = (uint16_t)((dbg_ring_tail + to_end) % SD_LOG_DEBUG_BUF_SIZE);
+        return to_end;
     }
-    return count;
 }
+
+static inline bool sens_empty(void){return sens_head==sens_tail;}
+static inline uint16_t sens_used(void){
+    if(sens_head >= sens_tail) return (uint16_t)(sens_head - sens_tail);
+    return (uint16_t)(SD_LOG_SENS_BUF_SIZE - sens_tail + sens_head);
+}
+static inline uint16_t sens_space(void){return (uint16_t)(SD_LOG_SENS_BUF_SIZE - sens_used() - 1U);} 
+static void sens_push(const uint8_t *data, uint16_t len){
+    // Ensure space (drop oldest data if necessary to guarantee forward progress)
+    while(sens_space() < len){
+        sens_tail = (uint16_t)((sens_tail + 1U) % SD_LOG_SENS_BUF_SIZE);
+    }
+    uint16_t first = (uint16_t)MIN(len, (uint16_t)(SD_LOG_SENS_BUF_SIZE - sens_head));
+    memcpy(&sens_ring[sens_head], data, first);
+    uint16_t rem = (uint16_t)(len - first);
+    if(rem) memcpy(&sens_ring[0], data + first, rem);
+    sens_head = (uint16_t)((sens_head + len) % SD_LOG_SENS_BUF_SIZE);
+}
+static uint16_t sens_peek(uint8_t *dst, uint16_t max_len){
+    if(sens_empty()) return 0;
+    if(sens_head >= sens_tail){
+        uint16_t avail = (uint16_t)(sens_head - sens_tail);
+        if(avail > max_len) avail = max_len;
+        memcpy(dst, &sens_ring[sens_tail], avail);
+        return avail;
+    } else {
+        uint16_t to_end = (uint16_t)(SD_LOG_SENS_BUF_SIZE - sens_tail);
+        if(to_end > max_len) to_end = max_len;
+        memcpy(dst, &sens_ring[sens_tail], to_end);
+        return to_end;
+    }
+}
+static void sens_consume(uint16_t n){ sens_tail = (uint16_t)((sens_tail + n) % SD_LOG_SENS_BUF_SIZE); }
 
 // Function to find the highest existing log number
 static uint32_t find_highest_log_number(void) {
@@ -108,10 +147,6 @@ static void generate_dir_name(void) {
     snprintf(current_dir, sizeof(current_dir), "LOG_%04lu", dir_counter++);
 }
 
-static void build_sensors_dir_path(void) {
-    snprintf(sensors_dir, sizeof(sensors_dir), "%s/sensors", current_dir);
-}
-
 // Function to create and open a file with error checking
 static bool open_file(FIL* file, const char* filename, BYTE mode) {
     FRESULT res;
@@ -134,26 +169,6 @@ static bool open_file_path(FIL* file, const char* path, BYTE mode) {
     return res == FR_OK;
 }
 
-static void sensor_files_reset(void) {
-    for (uint8_t i = 0; i < SD_LOG_MAX_SENSORS; i++) {
-        sensor_file_open[i] = false;
-        sensor_configured[i] = false;
-    }
-}
-
-static bool open_sensor_file(uint8_t sid) {
-    if (sid >= SD_LOG_MAX_SENSORS) return false;
-    if (sensor_file_open[sid]) return true;
-    char path[64];
-    snprintf(path, sizeof(path), "%s/SID_%02X.raw", sensors_dir, sid & 0x3F);
-    // Create always in new LOG_xxxx dir
-    if (!open_file_path(&sensor_files[sid], path, FA_CREATE_ALWAYS | FA_WRITE)) {
-        return false;
-    }
-    sensor_file_open[sid] = true;
-    return true;
-}
-
 bool sd_log_init(void) {
     FRESULT res;
     
@@ -169,33 +184,22 @@ bool sd_log_init(void) {
     
     // Generate unique directory name
     generate_dir_name();
-    build_sensors_dir_path();
     
     // Create directory
     res = f_mkdir(current_dir);
     if (res != FR_OK && res != FR_EXIST) {
         return false;
     }
-
-    // Create sensors subdirectory
-    res = f_mkdir(sensors_dir);
-    if (res != FR_OK && res != FR_EXIST) {
-        return false;
-    }
     
-    // rename to log.txt per new structure
+    // Create log.txt and sensors.raw
     if (!open_file(&log_file, "log.txt", FA_CREATE_ALWAYS | FA_WRITE)) {
         return false;
     }
-    if (!open_file(&crash_file, "crash.txt", FA_CREATE_ALWAYS | FA_WRITE)) {
-        f_close(&log_file);
+    if (!open_file(&sensors_file, "sensors.raw", FA_CREATE_ALWAYS | FA_WRITE)) {
         return false;
     }
-    
-    is_initialized = true;
-    sensor_files_reset();
 
-    sd_log_flush(); // Ensure all files are synced to disk initially
+    is_initialized = true;
     return true;
 }
 
@@ -228,57 +232,76 @@ bool sd_log_write(SD_LogType_t type, const char* format, ...) {
     // Add newline
     strncat(msg_buffer, "\r\n", sizeof(msg_buffer) - strlen(msg_buffer) - 1);
     
-    // Select target file based on log type
-    switch (type) {
-        case SD_LOG_INFO:
-        case SD_LOG_ERROR:
-            target_file = &log_file;
-            break;
-        case SD_LOG_CRASH:
-            target_file = &crash_file;
-            break;
-        default:
-            return false;
-    }
-    
-    // Write to file
-    res = f_write(target_file, msg_buffer, strlen(msg_buffer), &bytes_written);
-    if (res != FR_OK || bytes_written != strlen(msg_buffer)) {
-        return false;
-    }
-    
-    // Sync to ensure data is written to disk
-    //f_sync(target_file);
-    
+    (void)res; (void)bytes_written; (void)target_file; (void)type;
+    // Enqueue into debug ring
+    const char *p = msg_buffer;
+    while (*p) dbg_ring_push_char(*p++);
+    flush_logs_requested = true;
     return true;
 }
+// ----- New non-blocking flush API -----
+void sd_log_request_flush_logs(void){ flush_logs_requested = true; }
+void sd_log_request_flush_sensors(void){ flush_sensors_requested = true; }
 
-void sd_log_flush(void) {
-    if (!is_initialized) {
-        return;
+static bool flush_logs_step(uint32_t *budget_ms){
+    if(!flush_logs_requested && !flush_logs_in_progress) return true;
+    flush_logs_in_progress = true;
+    uint32_t start = HAL_GetTick();
+    char chunk[SD_LOG_WRITE_CHUNK];
+    UINT written;
+    while(*budget_ms > 0 && !dbg_ring_empty()){
+        uint16_t n = dbg_ring_pop_chunk(chunk, sizeof(chunk));
+        if(n == 0) break;
+        (void)f_write(&log_file, chunk, n, &written); // ignore errors
+        if((HAL_GetTick() - start) >= *budget_ms) break;
     }
-
-    // Drain debug ring into log.txt in chunks to reduce write calls
-    if (!dbg_ring_empty()) {
-        char chunk[128];
-        UINT written;
-        while (!dbg_ring_empty()) {
-            uint16_t n = dbg_ring_pop_chunk(chunk, sizeof(chunk));
-            if (n == 0) break;
-            (void)f_write(&log_file, chunk, n, &written);
-            // If write fails, we just drop data to avoid blocking time-critical paths
-        }
+    if(dbg_ring_empty()){
+        (void)f_sync(&log_file);
+        flush_logs_requested = false;
+        flush_logs_in_progress = false;
     }
+    uint32_t elapsed = HAL_GetTick() - start;
+    if(elapsed >= *budget_ms) *budget_ms = 0; else *budget_ms -= elapsed;
+    return !flush_logs_in_progress;
+}
 
-    f_sync(&log_file);
-    f_sync(&crash_file);
-
-    // Also ensure any open sensor files are synced
-    for (uint8_t i = 0; i < SD_LOG_MAX_SENSORS; i++) {
-        if (sensor_file_open[i]) {
-            f_sync(&sensor_files[i]);
-        }
+static bool flush_sensors_step(uint32_t *budget_ms){
+    if(!flush_sensors_requested && !flush_sensors_in_progress) return true;
+    flush_sensors_in_progress = true;
+    uint32_t start = HAL_GetTick();
+    uint8_t chunk[SD_LOG_WRITE_CHUNK];
+    UINT written;
+    while(*budget_ms > 0 && !sens_empty()){
+        uint16_t n = sens_peek(chunk, sizeof(chunk));
+        if(n == 0) break;
+        (void)f_write(&sensors_file, chunk, n, &written); // ignore errors
+        sens_consume(n);
+        if((HAL_GetTick() - start) >= *budget_ms) break;
     }
+    if(sens_empty()){
+        (void)f_sync(&sensors_file);
+        flush_sensors_requested = false;
+        flush_sensors_in_progress = false;
+    }
+    uint32_t elapsed = HAL_GetTick() - start;
+    if(elapsed >= *budget_ms) *budget_ms = 0; else *budget_ms -= elapsed;
+    return !flush_sensors_in_progress;
+}
+
+bool sd_log_service(uint32_t time_budget_ms){
+    if(!is_initialized) return true;
+    // Simple ordering: logs then sensors
+    (void)flush_logs_step(&time_budget_ms);
+    if(time_budget_ms > 0) (void)flush_sensors_step(&time_budget_ms);
+    return !(flush_logs_in_progress || flush_sensors_in_progress);
+}
+
+bool sd_log_flush_blocking(uint32_t timeout_ms){
+    uint32_t start = HAL_GetTick();
+    while(!sd_log_service(10)){
+        if((HAL_GetTick() - start) > timeout_ms) return false;
+    }
+    return true;
 }
 
 bool sd_preallocate_extra(FIL *file, uint32_t size) {
@@ -327,55 +350,66 @@ const char* sd_log_get_dir_name(void) {
 }
 
 bool sd_log_configure_sensors(const uint8_t *sensor_ids, uint8_t count) {
-    if (!is_initialized) return false;
-    if (sensor_ids == NULL && count != 0) return false;
-    for (uint8_t i = 0; i < count; i++) {
-        uint8_t sid = (uint8_t)(sensor_ids[i] & 0x3F);
-        sensor_configured[sid] = true;
-        if (!open_sensor_file(sid)) {
-            return false;
-        }
-    }
+    (void)sensor_ids; (void)count; // now a no-op
     return true;
 }
 
 bool sd_log_write_sensor_chunk(uint8_t sensor_id6, uint8_t sample_rate_bits,
-                               const uint8_t *payload, uint8_t payload_len,
+                               const uint8_t *payload, uint16_t payload_len,
                                const uint8_t timestamp3[3]) {
     if (!is_initialized) return false;
     if (payload == NULL && payload_len != 0) return false;
-    uint8_t sid = (uint8_t)(sensor_id6 & 0x1F);
-    if (!sensor_file_open[sid]) {
-        // Open on first use or if pre-configured
-        if (!open_sensor_file(sid)) {
-            return false;
-        }
-    }
-    // Build record header: 0xA1, sampleRate(1), timestamp(3), len(2 LE)
+
+    // Packet header layout (7 bytes):
+    // [0] 0xA1 marker
+    // [1] bits 0-2 sample rate bits, bits 3-7 sensor id (5 bits)
+    // [2..4] timestamp (3 bytes, opaque caller supplied)
+    // [5..6] payload length little-endian
     uint8_t header[7];
+    uint8_t sid = (uint8_t)(sensor_id6 & 0x1F);
     header[0] = 0xA1;
-    header[1] = (uint8_t)(sample_rate_bits & 0x07);
+    header[1] = (uint8_t)((sample_rate_bits & 0x07) | (sid << 3));
     header[2] = timestamp3 ? timestamp3[0] : 0;
     header[3] = timestamp3 ? timestamp3[1] : 0;
     header[4] = timestamp3 ? timestamp3[2] : 0;
-    header[5] = payload_len;
-
-    UINT written;
-    FRESULT r1 = f_write(&sensor_files[sid], header, sizeof(header), &written);
-    if (r1 != FR_OK || written != sizeof(header)) return false;
-    if (payload_len > 0) {
-        r1 = f_write(&sensor_files[sid], payload, payload_len, &written);
-        if (r1 != FR_OK || written != payload_len) return false;
-    }
+    header[5] = (uint8_t)(payload_len & 0xFF);
+    header[6] = (uint8_t)((payload_len >> 8) & 0xFF);
+    sens_push(header, sizeof(header));
+    if (payload_len && payload) sens_push(payload, payload_len);
+    flush_sensors_requested = true;
     return true;
 }
 
 void sd_log_capture_debug(const char *text) {
     if (text == NULL) return;
-    // Fast path: push bytes into ring; ISR-safe with minimal critical section if needed
-    // We avoid using dbg_printf here to prevent recursion
     const char *p = text;
-    while (*p) {
-        dbg_ring_push_char(*p++);
+    while(*p) dbg_ring_push_char(*p++);
+    flush_logs_requested = true;
+}
+
+// Optional helper to preallocate extra space in sensors.raw
+bool sd_log_preallocate_raw(uint32_t size){
+    if(!is_initialized) return false;
+    return sd_preallocate_extra(&sensors_file, size);
+}
+
+// Raw binary write (legacy API). We just append bytes as-is preceded by a framing header
+// using sensor id = 0x1F (reserved max) and sample_rate_bits=0 to reuse packet format.
+bool sd_log_write_raw(const uint8_t* data, uint32_t len){
+    if(!is_initialized || (data==NULL && len!=0)) return false;
+    while(len){
+        uint16_t chunk = (len > 0x3FF) ? 0x3FF : (uint16_t)len; // limit single packet size
+        uint8_t header[7];
+        header[0] = 0xA1;
+        header[1] = (uint8_t)(0 | (0x1F << 3)); // sample_rate_bits=0, sensor id=31
+        header[2] = header[3] = header[4] = 0; // no timestamp
+        header[5] = (uint8_t)(chunk & 0xFF);
+        header[6] = (uint8_t)((chunk >> 8) & 0xFF);
+        sens_push(header, sizeof(header));
+        sens_push(data, chunk);
+        data += chunk;
+        len -= chunk;
     }
+    flush_sensors_requested = true;
+    return true;
 }
