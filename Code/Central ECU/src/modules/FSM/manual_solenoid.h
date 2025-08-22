@@ -1,0 +1,4 @@
+#ifndef MANUAL_SOLENOID_H
+#define MANUAL_SOLENOID_H
+
+#endif /* MANUAL_SOLENOID_H */

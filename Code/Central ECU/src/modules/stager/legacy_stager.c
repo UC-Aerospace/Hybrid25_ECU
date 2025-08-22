@@ -8,7 +8,7 @@
  * 
  * */
 
-#include "stager.h"
+#include "legacy_stager.h"
 #include "heartbeat.h"
 #include "spicy.h"
 #include "can.h"

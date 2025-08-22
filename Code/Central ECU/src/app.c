@@ -12,7 +12,7 @@
 #include "rs422.h"
 #include "crc.h"
 #include "test_servo.h"
-#include "stager.h"
+#include "legacy_stager.h"
 
 void setup_panic(uint8_t err_code)
 {
