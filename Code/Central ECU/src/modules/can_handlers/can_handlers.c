@@ -3,7 +3,7 @@
 #include "can.h"
 #include "sd_log.h"
 #include "rs422.h"
-#include "legacy_stager.h"
+// #include "legacy_stager.h"
 #include "config.h"
 
 static void handle_cmd_set_servo_arm(CAN_CommandFrame* frame, CAN_ID id);

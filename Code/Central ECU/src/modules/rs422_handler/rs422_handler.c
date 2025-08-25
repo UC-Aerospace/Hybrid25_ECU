@@ -2,6 +2,7 @@
 #include "debug_io.h"
 #include "heartbeat.h"
 #include "main_FSM.h"
+#include "sequencer.h"
 
 void rs422_handler_init(void) {
     // Initialize RS422 handler
@@ -68,6 +69,7 @@ void rs422_handler_rx_poll(void) {
             case RS422_FRAME_FIRE:
                 // Handle fire frame
                 dbg_printf("Received fire frame with size %d\r\n", frame.size);
+                fire = true;
                 break;
             default:
                 // Handle unknown frame type
