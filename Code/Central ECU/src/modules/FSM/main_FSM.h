@@ -31,6 +31,7 @@ extern switch_state_t switch_snapshot;
 void fsm_set_switch_states(uint16_t switches);
 void fsm_set_state(main_states_t new_state);
 void fsm_tick(void);
+bool both_armed(void);
 bool prefire_ok(void);
 void outputs_safe(void);
 

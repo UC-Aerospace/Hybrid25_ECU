@@ -8,8 +8,8 @@ pyro_states_t pyro_state = PYRO_SAFE;
 // Pyro/Solenoid helpers
 void manual_pyro_arm(void){ if(!spicy_get_arm()) spicy_arm(); }
 void manual_pyro_disarm(void){ if(spicy_get_arm()) spicy_disarm(); }
-void manual_solenoid_on(void){ if(!spicy_get_ox()) spicy_open_ox(); }
-void manual_solenoid_off(void){ if(spicy_get_ox()) spicy_close_ox(); }
+void manual_solenoid_on(void){ if(!spicy_get_solenoid()) spicy_open_solenoid(); }
+void manual_solenoid_off(void){ if(spicy_get_solenoid()) spicy_close_solenoid(); }
 
 void pyro_state_decoder(void)
 {

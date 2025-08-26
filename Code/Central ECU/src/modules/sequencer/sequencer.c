@@ -3,11 +3,34 @@
 #include "stm32g0xx_hal.h"
 #include "debug_io.h"
 #include "spicy.h"
+#include "can.h"
 
-#define COUNTDOWN_MS 3000u
-#define SEQUENCER_FIRE_MS 10000u
+#define DEFAULT_BURN_TIME 6000u
+
+//Countdown times
+#define COUNTDOWN_MS 10000u //Must be greater than or equal to 10000u (ten seconds). Change this to change the countdown time
+#define COUNTDOWN_TM10_MS COUNTDOWN_MS - 9999u //If COUNTDOWN_MS is 20000u -> 20000u - 10000u = 10000u from fire button pressed, or 10 seconds from ignition. 9999 used otherwise you get an always true error
+#define COUNTDOWN_TM6_MS COUNTDOWN_MS - 6000u
+#define COUNTDOWN_TM4_MS COUNTDOWN_MS - 4000u
+#define COUNTDOWN_TM1_MS COUNTDOWN_MS - 1000u
+
+//Countup times
+uint32_t burn_time = DEFAULT_BURN_TIME; //Default burn time of 6 seconds
+#define COUNTUP_T25_MS 19000u //25 seconds for 6 second burn
+#define COUNTUP_T16_MS 10000u //16 seconds for 6 second burn
+#define COUNTUP_T15_MS 9000u //15 seconds for 6 second burn
+#define COUNTUP_T10_MS 4000u //10 seconds for 6 second burn
+#define COUNTUP_T9_MS 9000u //9 seconds for 6 second burn
+#define COUNTUP_T8_MS 2000u //8 seconds for 6 second burn
+// uint32_t countup_t25_ms = 19000u; //Default post burn times 
+// uint32_t countup_t16_ms = 10000u;
+// uint32_t countup_t15_ms = 9000u;
+// uint32_t countup_t10_ms = 4000u;
+// uint32_t countup_t9_ms = 3000u;
+// uint32_t countup_t8_ms = 2000u;
 
 bool fire = false;
+static bool has_burn_time_been_set = false;
 
 typedef enum {
     SEQUENCER_READY = 0b0000,
@@ -19,6 +42,20 @@ typedef enum {
 
 static sequencer_states_t sequencer_state = SEQUENCER_UNINITIALISED;
 static uint32_t sequencer_start_tick = 0u;
+static uint32_t fire_in_one_start_tick = 0u;
+static uint32_t fire_start_tick = 0u;
+static bool first_time_flag = true;
+
+/*
+// Declerations
+*/
+static void countdown_valve_set(void);
+
+bool set_burn_time(uint32_t new_burn_time)
+{
+    burn_time = new_burn_time;
+    return true;
+}
 
 void uninitialise_sequencer(void)
 {
@@ -28,6 +65,22 @@ void uninitialise_sequencer(void)
 
 void set_sequencer_ready(void)
 {
+    sequencer_start_tick = 0u;
+    fire_in_one_start_tick = 0u;
+    fire_start_tick = 0u;
+    first_time_flag = true;
+
+    // Arm all servos
+    can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_ARM, 0xFF);
+
+    // Arm pyro
+    spicy_arm();
+
+    //If burn time has not been set externally, set burntime to avoid very large problems -> not shutting off burn
+    if (!has_burn_time_been_set) {
+        has_burn_time_been_set = set_burn_time(DEFAULT_BURN_TIME);
+    }
+
     sequencer_state = SEQUENCER_READY;
     dbg_printf("Sequencer ready\n");
 }
@@ -35,52 +88,164 @@ void set_sequencer_ready(void)
 void sequencer_tick(void)
 {
     switch(sequencer_state){
-        case SEQUENCER_READY:
-        fire = true; //For testing ----- remove!!!!!!!!!! -----
-            if(fire) {
+        case SEQUENCER_READY: // Ready and waiting for fire
+        fire = true; //#TODO: For testing ----- remove otherwise bad things will happen!!!!!!!!!! -----
+            if (!both_armed()) {
+                sequencer_state = SEQUENCER_FAILED_START;
+                dbg_printf("Both switches disarmed, moving to sequencer failed start\n");
+
+            } else if (fire) {
                 sequencer_state = SEQUENCER_COUNTDOWN;
                 sequencer_start_tick = HAL_GetTick();
                 dbg_printf("Fire button pushed, contdown begun\n");
             }
-
-            //If disarmed pyro or valves, go to ready and put in safe state
             break;
         
-        case SEQUENCER_COUNTDOWN:
+        case SEQUENCER_COUNTDOWN: // Fun things are about to happen, make sure we are ready
             if(!prefire_ok()) {
                 sequencer_state = SEQUENCER_FAILED_START;
                 dbg_printf("Sequencer not safe, failed start\n");
-            } else if (HAL_GetTick() - sequencer_start_tick >= COUNTDOWN_MS) {
-                spicy_open_ox();
-                spicy_arm();
+
+            } else if (HAL_GetTick() - fire_in_one_start_tick >= 1000u && first_time_flag == false) { //I know this is a magic number but fire in one should always be 1 second
+                spicy_open_solenoid(); // Start burn
+                fire_start_tick = HAL_GetTick();
                 sequencer_state = SEQUENCER_FIRE;
-                dbg_printf("Sequencer countdown, opened ox, armed spicy\n");
-            }
-            // Question for Brad -> Can I please have more sequencer states, I need additional states to implement the T-6 sections etc
-            break;
-        
-        case SEQUENCER_FIRE: // Keep fire length as a variable, we want to be able to change it from the RIU
-            if (HAL_GetTick() - sequencer_start_tick >= SEQUENCER_FIRE_MS) {
-                // TODO: IGNITE!!!!
                 dbg_printf("Sequencer fire, candle lit\n");
-                // TODO: POST FIRE THINGS
-                fsm_set_state(STATE_POST_FIRE); //Use comp get interlock to check estop state
+
+            } else if (HAL_GetTick() - sequencer_start_tick >= COUNTDOWN_TM1_MS) { //T-1
+                //#TODO:
+                //Heartbeats good
+                //Logging good
+                //ematch continuity?
+
+                //If any of the above are bad, go to STATE_ABORT
+
+                //If good
+                if (first_time_flag) {
+                    fire_in_one_start_tick = HAL_GetTick();
+                    first_time_flag = false;
+                    dbg_printf("T-1, fire in one tick set\n");
+                }
+                dbg_printf("T-1, all checks good\n");
+
+            } else if (HAL_GetTick() - sequencer_start_tick >= COUNTDOWN_TM4_MS) { //T-4
+                //Fire ematch 1
+                spicy_fire_ematch1();
+                dbg_printf("T-4, ematch 1 fired\n");
+
+            } else if (HAL_GetTick() - sequencer_start_tick >= COUNTDOWN_TM6_MS) { //T-6
+                //#TODO:
+                //Valve position
+                //Valve status good
+                //Pressures high enough and within range of each other
+                //Heartbeats good
+                //Logging good
+
+                //If any of the above are bad, go to STATE_ABORT
+                dbg_printf("T-6, all checks good\n");
+
+            } else if (HAL_GetTick() - sequencer_start_tick >= COUNTDOWN_TM10_MS) { //T-10
+                //Open the nitrous valves, close the vent and close the nitrogen
+                countdown_valve_set();
+                spicy_arm();
+                // sequencer_state = SEQUENCER_FIRE;
+                dbg_printf("T-10, opened nitrous valves, closed nitrogen and vent, armed spicy\n");
+
             }
             break;
         
-        case SEQUENCER_FAILED_START:
+        case SEQUENCER_FIRE: // We are cooking now!
+            if (HAL_GetTick() - fire_start_tick >= COUNTUP_T25_MS + burn_time) {
+                //Vent close
+                can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | 0);
+
+                //Pyro disarm
+                spicy_disarm();
+
+                // Disarm all servos
+                can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_ARM, 0xF0);
+
+                dbg_printf("T+25, vent closed, pyro disarmed, all servos disarmed, moving to post fire state\n");
+
+                fsm_set_state(STATE_POST_FIRE);
+
+            } else if (HAL_GetTick() - fire_start_tick >= COUNTUP_T16_MS + burn_time) {
+                //Vent open
+                can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | 1);
+
+                dbg_printf("T+16, vent opened\n");
+
+            } else if (HAL_GetTick() - fire_start_tick >= COUNTUP_T15_MS + burn_time) {
+                spicy_close_solenoid();
+                //Nitrogen closed
+                can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 1 << 6 | 0);
+
+                dbg_printf("T+15, nitrogen and solenoid closed\n");
+
+            } else if (HAL_GetTick() - fire_start_tick >= COUNTUP_T10_MS + burn_time) {
+                //Vent close
+                can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | 0);
+
+                dbg_printf("T+10, vent closed\n");
+
+            } else if (HAL_GetTick() - fire_start_tick >= COUNTUP_T9_MS + burn_time) {
+                //Nitrogen open
+                can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 1 << 6 | 1);
+
+                dbg_printf("T+9, nitrogen open\n");
+
+            } else if (HAL_GetTick() - fire_start_tick >= COUNTUP_T8_MS + burn_time) {
+                //Vent open
+                can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | 1);
+
+                dbg_printf("T+8, vent open\n");
+
+            } else if (HAL_GetTick() - fire_start_tick >= burn_time) {
+                //Close solenoid
+                spicy_close_solenoid();
+
+                //Close both nitrous bottles
+                can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 2 << 6 | 0);
+                can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 3 << 6 | 0);
+
+                dbg_printf("T+6, burn finished, closing solenoid and both nitrous bottles\n");
+            } else {
+                //#TODO: During burn checks
+
+                dbg_printf("Combustion is happening! Time since ignition: %d seconds\n", (HAL_GetTick() - fire_start_tick) / 1000);
+
+            }
+            break;
+        
+        case SEQUENCER_FAILED_START: // Something went wrong
             outputs_safe();
             fsm_set_state(STATE_ERROR);
             dbg_printf("Sequencer failed start, secured system and moved to error state\n");
             break;
 
-        case SEQUENCER_UNINITIALISED:
+        case SEQUENCER_UNINITIALISED: // Not ready to fire
             dbg_printf("Sequencer uninitialised\n");
             break;
 
-        default:
+        default: // How did we even get here???
             sequencer_state = SEQUENCER_READY;
             dbg_printf("Sequencer defaulted, moving to sequencer ready\n");
             break;
     }
+}
+
+static void countdown_valve_set(void)
+{
+    //Set the valve positions at the start of the countdown sequence
+    //Vent - Closed
+    can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | 0);
+
+    //Nitrogen - Closed
+    can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 1 << 6 | 0);
+
+    //Nitrous A - Open
+    can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 2 << 6 | 1);
+
+    //Nitrous B - Open
+    can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 3 << 6 | 1);
 }

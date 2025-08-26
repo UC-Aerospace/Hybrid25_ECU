@@ -79,7 +79,7 @@ bool hss_get_PGOOD(void)
 
 // FIRE COMMANDS
 
-void spicy_open_ox(void) 
+void spicy_open_solenoid(void) 
 {
     if (spicy_checks()) {
         HAL_GPIO_WritePin(OX_FIRE_GPIO_Port, OX_FIRE_Pin, GPIO_PIN_SET);
@@ -88,12 +88,12 @@ void spicy_open_ox(void)
     }
 }
 
-void spicy_close_ox(void)
+void spicy_close_solenoid(void)
 {
     HAL_GPIO_WritePin(OX_FIRE_GPIO_Port, OX_FIRE_Pin, GPIO_PIN_RESET);
 }
 
-bool spicy_get_ox(void)
+bool spicy_get_solenoid(void)
 {
     return HAL_GPIO_ReadPin(OX_FIRE_GPIO_Port, OX_FIRE_Pin);
 }

@@ -235,6 +235,6 @@ uint16_t rs422_read(RS422_RxFrame_t *frame)
 // Needs a uint8_t in the form [Servo A Pos, Servo B Pos, Servo C Pos, Servo D Pos, Servos Armed, Any Servos Error, 0 (Solenoid Position), 0 (Pyro Armed)]
 bool rs422_send_valve_position(uint8_t valve_pos)
 {
-    valve_pos = (valve_pos | spicy_get_ox() << 1 | spicy_get_arm()); // Add solenoid and pyro armed states
+    valve_pos = (valve_pos | spicy_get_solenoid() << 1 | spicy_get_arm()); // Add solenoid and pyro armed states
     return (rs422_send(&valve_pos, 1, RS422_FRAME_VALVE_UPDATE) == HAL_OK);
 }

@@ -60,13 +60,13 @@ void outputs_safe(void)
 {
     spicy_off_ematch1();
     spicy_off_ematch2();
-    spicy_close_ox();
+    spicy_close_solenoid();
     spicy_disarm();
     // Disarm all servos
     can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_ARM, 0xF0);
 }
 
-static inline bool both_armed(void) 
+bool both_armed(void) 
 { 
     return switch_snapshot.master_pyro && switch_snapshot.master_valve; 
 }
@@ -210,7 +210,7 @@ static void s_post_enter(void)
 
 static void s_post_tick(void)
 { 
-    if(!both_armed() /* Maybe also check ESTOP in here */) {
+    if(!both_armed() /* Maybe also check ESTOP in here */) {  //Use comp get interlock to check estop state
         fsm_set_state(STATE_READY);
         dbg_printf("Post fire, both arm switches disabled - moving to ready state\n");
     }
@@ -288,6 +288,7 @@ static void s_error_exit(void)
 static void s_abort_enter(void)
 {
     outputs_safe();
+    //TODO: Send CAN back to RIU to tell them we have aborted
     dbg_printf("Abort enter, outputs safe\n");
 }
 
