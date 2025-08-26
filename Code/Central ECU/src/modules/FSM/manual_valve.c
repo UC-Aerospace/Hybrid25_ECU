@@ -1,6 +1,7 @@
 #include "manual_valve.h"
 #include "can.h"
 #include "main_FSM.h"
+#include "debug_io.h"
 
 valve_states_t valve_state = VALVE_DISARMED;
 
@@ -23,6 +24,7 @@ void manual_valve_send_disarm(void)
 {
     can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_ARM, 0xF0);
 }
+
 static void manual_valve_send_positions(void){
     // Go through the servo_feedback and send a CAN command if different to switch position
     if(!servo_feedback.initialised) return;
@@ -40,6 +42,15 @@ static void manual_valve_send_positions(void){
     }
 }
 
+void valve_set_servo_feedback_position(bool servoSetPosition[4])
+{
+    servo_feedback.initialised = true;
+    servo_feedback.servoPosCommandedVent = servoSetPosition[0];
+    servo_feedback.servoPosCommandedNitrogen = servoSetPosition[1];
+    servo_feedback.servoPosCommandedNosA = servoSetPosition[2];
+    servo_feedback.servoPosCommandedNosB = servoSetPosition[3];
+}
+
 void valve_state_decoder(void)
 {
     bool override_on = switch_snapshot.sequencer_override;
@@ -49,6 +60,7 @@ void valve_state_decoder(void)
         // Global collapse
         if(valve_state != VALVE_DISARMED) { 
             manual_valve_send_disarm(); 
+            dbg_printf("Valve not disarmed, disarming\n");
         }
         valve_state = VALVE_DISARMED; 
         return;
@@ -58,23 +70,27 @@ void valve_state_decoder(void)
         case VALVE_DISARMED:
 
             if(valve_master) { 
-                manual_valve_send_arm(); 
+                manual_valve_send_arm();
+                dbg_printf("Valve master switch on, arming valves and moving to valve armed state\n");
                 valve_state = VALVE_ARMED;
             }
             break;
 
         case VALVE_ARMED:
             if(!valve_master) { 
-                manual_valve_send_disarm(); 
+                manual_valve_send_disarm();
+                dbg_printf("Valve master switch off, disarming valves and moving to valve disarmed state\n");
                 valve_state = VALVE_DISARMED;
             }
             else { 
-                manual_valve_send_positions(); 
+                manual_valve_send_positions();
+                dbg_printf("Sending valve positions\n");
             }
             break;
 
         default: 
-            valve_state = VALVE_DISARMED; 
+            valve_state = VALVE_DISARMED;
+            dbg_printf("Valve state decoder defaulted, moving to valve disarmed state\n");
             break;
     }
 }

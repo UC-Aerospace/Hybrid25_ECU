@@ -1,6 +1,7 @@
 #include "manual_solenoid.h"
 #include "spicy.h"
 #include "main_FSM.h"
+#include "debug_io.h"
 
 pyro_states_t pyro_state = PYRO_SAFE;
 
@@ -19,6 +20,7 @@ void pyro_state_decoder(void)
         // Global collapse
         if(pyro_state != PYRO_SAFE) manual_pyro_disarm();
         manual_solenoid_off();
+        dbg_printf("Pyro not safe, disarming pyro - moving to pyro safe\n");
         pyro_state = PYRO_SAFE; return;
     }
 
@@ -26,6 +28,7 @@ void pyro_state_decoder(void)
         case PYRO_SAFE:
             if(pyro_master){ 
                 manual_pyro_arm(); 
+                dbg_printf("Pyro master on, arming pyro\n");
                 pyro_state = PYRO_ARMED; 
             }
             break;
@@ -34,10 +37,12 @@ void pyro_state_decoder(void)
             if(!pyro_master){ 
                 manual_pyro_disarm(); 
                 manual_solenoid_off(); 
+                dbg_printf("Pyro master off, disarming pyro and solenoid\n");
                 pyro_state = PYRO_SAFE; 
             }
             else if(switch_snapshot.solenoid) { 
-                manual_solenoid_on(); 
+                manual_solenoid_on();
+                dbg_printf("Pyro armed, opening solenoid\n");
                 pyro_state = PYRO_SOLENOID; 
             }
             break;
@@ -45,17 +50,20 @@ void pyro_state_decoder(void)
         case PYRO_SOLENOID:
             if(!pyro_master) { 
                 manual_pyro_disarm(); 
-                manual_solenoid_off(); 
+                manual_solenoid_off();
+                dbg_printf("Pyro master off, disarming pyro and solenoid\n");
                 pyro_state = PYRO_SAFE; 
             }
             else if(!switch_snapshot.solenoid) { 
-                manual_solenoid_off(); 
+                manual_solenoid_off();
+                dbg_printf("Solenoid switch off, closing solenoid\n");
                 pyro_state = PYRO_ARMED; 
             }
             break;
 
         default: 
-            pyro_state = PYRO_SAFE; 
+            pyro_state = PYRO_SAFE;
+            dbg_printf("Pyro state decoder defaulted, moving to pyro safe state\n");
             break;
     }
 }

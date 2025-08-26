@@ -146,7 +146,7 @@ void fsm_set_switch_states(uint16_t switches)
 static void s_init_enter(void)
 {
     outputs_safe();
-    dbg_printf("Init enter, outputs safe");
+    dbg_printf("Init enter, outputs safe\n");
 }
 
 static void s_init_tick(void)
@@ -155,7 +155,7 @@ static void s_init_tick(void)
 
     // Temporary just go to ready
     fsm_set_state(STATE_READY);
-    dbg_printf("Init tick, move to ready");
+    dbg_printf("Init tick, move to ready\n");
 }
 
 //==============================
@@ -165,7 +165,7 @@ static void s_ready_enter(void)
 {
     // Uninitalise the sequencer
     uninitialise_sequencer();
-    dbg_printf("Ready enter, uninitalised sequencer");
+    dbg_printf("Ready enter, uninitalised sequencer\n");
 }
 
 static void s_ready_tick(void)
@@ -173,18 +173,19 @@ static void s_ready_tick(void)
     // Check state of switches
     if (switch_snapshot.sequencer_override) { // Switch to manual mode if override active
         fsm_set_state(STATE_MANUAL_MODE);
-        dbg_printf("Ready tick, manual override, set state to manual");
+        dbg_printf("Ready tick, manual override, set state to manual\n");
         // Exit the function
         return;
     }
 
     if (both_armed() && prefire_ok()) { // Switch to sequencer if both master switches are armed and prefire checks pass
         fsm_set_state(STATE_SEQUENCER);
-        dbg_printf("Ready tick, both master switches armed and prefire ok, set state to sequencer");
+        dbg_printf("Ready tick, both master switches armed and prefire ok, set state to sequencer\n");
         // Exit the function
         return;
     }
 }
+
 //==============================
 // SEQUENCER State
 //==============================
@@ -204,12 +205,14 @@ static void s_seq_tick(void)
 static void s_post_enter(void)
 { 
     /* TODO: logging / cool-down */ 
+    dbg_printf("Post fire enter\n");
 }
 
 static void s_post_tick(void)
 { 
     if(!both_armed() /* Maybe also check ESTOP in here */) {
         fsm_set_state(STATE_READY);
+        dbg_printf("Post fire, both arm switches disabled - moving to ready state\n");
     }
 }
 
@@ -232,6 +235,7 @@ static void s_manual_enter(void)
 {
     valve_state = VALVE_DISARMED;
     pyro_state  = PYRO_SAFE;
+    dbg_printf("Manual mode enter, valve and pyro safe\n");
     // Do not arm anything until operator asserts specific switches.
 }
 
@@ -240,16 +244,19 @@ static void s_manual_tick(void)
     // Check that the manual override is still active
     if (!switch_snapshot.sequencer_override) {// If not still overriding then return to ready
         fsm_set_state(STATE_READY);
+        dbg_printf("Manual tick, override no longer active - moving to ready state\n");
         return;
     }
 
     valve_state_decoder();
     pyro_state_decoder();
+    dbg_printf("Manual tick, override active - valve and pyro sub machines called\n");
 }
 
 static void s_manual_exit(void)
 {
     manual_all_safe();
+    dbg_printf("Manual exit, system in safe mode\n");
 }
 
 //==============================
@@ -258,18 +265,21 @@ static void s_manual_exit(void)
 static void s_error_enter(void)
 {
     outputs_safe();
+    dbg_printf("Error enter, outputs set to safe\n");
 }
 
 static void s_error_tick(void)
 {
     if(!both_armed()) {
         fsm_set_state(STATE_READY);
+        dbg_printf("Error tick, valves and pyro no longer armed, move to ready state\n");
     }
+    dbg_printf("Error tick, valves and pyro still armed - stay in error\n");
 }
 
 static void s_error_exit(void)
 {
-    
+    dbg_printf("Error exit\n");
 }
 
 //==============================
@@ -278,16 +288,19 @@ static void s_error_exit(void)
 static void s_abort_enter(void)
 {
     outputs_safe();
+    dbg_printf("Abort enter, outputs safe\n");
 }
 
 static void s_abort_tick(void)
 {
     if (!both_armed()) {
         fsm_set_state(STATE_READY);
+        dbg_printf("Abort tick, valves and pyro no longer armed, move to ready state\n");
     }
+    dbg_printf("Abort tick, valves and pyro still armed - stay in abort\n");
 }
 
 static void s_abort_exit(void)
 {
-
+    dbg_printf("Abort exit\n");
 }
