@@ -117,6 +117,10 @@ void task_update_NTC_temperature(void) {
     cjt_temp = adc_get_NTC_temp();
     dbg_printf("NTC Temperature: %d C\r\n", cjt_temp);
     can_buffer_push(&cjt_buffer, cjt_temp);
+
+    // TODO: cjt_temp to equi Type K mV
+    
+    
     // TODO: Rather than TX should convert to a thermocouple voltage and apply as a correction term.
 }
 
