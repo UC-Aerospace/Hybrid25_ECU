@@ -1,6 +1,8 @@
 #include "rs422_handler.h"
 #include "debug_io.h"
 #include "heartbeat.h"
+#include "main_FSM.h"
+#include "sequencer.h"
 
 void rs422_handler_init(void) {
     // Initialize RS422 handler
@@ -25,7 +27,8 @@ void rs422_handler_rx_poll(void) {
                 // Handle switch change frame
                 uint16_t switches = frame.data[0] << 8 | (frame.data[1]);
                 dbg_printf("Received switch change frame, data: %04X\r\n", switches);
-                stager_set_switches(switches);
+                // stager_set_switches(switches);
+                fsm_set_switch_states(switches);
                 break;
             case RS422_FRAME_VALVE_UPDATE:
                 // Handle valve update frame
@@ -66,6 +69,7 @@ void rs422_handler_rx_poll(void) {
             case RS422_FRAME_FIRE:
                 // Handle fire frame
                 dbg_printf("Received fire frame with size %d\r\n", frame.size);
+                fire = true;
                 break;
             default:
                 // Handle unknown frame type

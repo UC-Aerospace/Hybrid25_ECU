@@ -3,7 +3,7 @@
 #include "can.h"
 #include "sd_log.h"
 #include "rs422.h"
-#include "stager.h"
+#include "manual_valve.h"
 #include "config.h"
 
 static void handle_cmd_set_servo_arm(CAN_CommandFrame* frame, CAN_ID id);
@@ -160,7 +160,7 @@ void handle_servo_pos(CAN_ServoPosFrame* frame, CAN_ID id) {
         servoSetPos[i] = frame->set_pos[i] & 0x1F; // Bits 0-4 for position
     }
 
-    stager_set_servo_feedback_position(servoSetBinary);
+    valve_set_servo_feedback_position(servoSetBinary);
 
     for (int i = 0; i < 4; i++) {
         servoState[i] = (frame->current_pos[i] >> 6);
