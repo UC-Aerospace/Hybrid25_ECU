@@ -124,7 +124,7 @@ void app_run(void) {
         {0, 100, task_poll_rs422},            // Poll RS422 every 100 ms
         {0, 1000, task_poll_battery},         // Poll battery every 1000 ms
         {0, 100, test_servo_poll},            // Poll test servo interface
-        {0, 1000, task_flush_sd_card},        // Flush SD card every 1000 ms
+        {0, 500, task_flush_sd_card},        // Flush SD card every 500 ms
         {0, 100, stager_tick},
         {0, 1, can_service_tx_queue}                // Service CAN TX queue every 1 ms
         //{0, 500, task_send_heartbeat}         // Send heartbeat every 500 ms

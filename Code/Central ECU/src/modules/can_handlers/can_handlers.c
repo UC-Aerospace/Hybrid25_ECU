@@ -232,7 +232,7 @@ void handle_adc_data(CAN_ADCFrame* frame, CAN_ID id, uint8_t dataLength) {
     
 
     // Write chunk to per-sensor file with delimiter header
-    bool status = sd_log_write_sensor_chunk(sensorID, sampleRate, frame->data, frame->length, frame->timestamp);
+    bool status = sd_log_write_sensor_chunk(frame);
     if (!status) {
         dbg_printf("SD Card failed write for sensor %d\n", sensorID);
         HAL_GPIO_WritePin(LED_IND_ERROR_GPIO_Port, LED_IND_ERROR_Pin, GPIO_PIN_SET); // Set error LED
