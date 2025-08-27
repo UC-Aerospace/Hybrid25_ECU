@@ -104,7 +104,7 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+   HAL_Init();
 
   /* USER CODE BEGIN Init */
 
@@ -114,6 +114,20 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
+
+  /*****************
+   * Start TIM2 for timebase
+   *****************/
+
+  MX_TIM2_Init();
+
+  // Set counter to zero
+  __HAL_TIM_SET_COUNTER(&htim2, 0);
+  
+  // Start the timer
+  if (HAL_TIM_Base_Start(&htim2) != HAL_OK) {
+      Error_Handler();
+  }
 
   /* USER CODE END SysInit */
 

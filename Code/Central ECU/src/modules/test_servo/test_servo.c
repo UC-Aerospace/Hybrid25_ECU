@@ -28,7 +28,7 @@ static int hex_or_dec_to_int(const char *s, int *ok) {
 
 static void send_arm_state(void) {
     // commandType = CAN_CMD_SET_SERVO_ARM, command byte = mask (lower 4 bits)
-    if(!can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_SERVO, CAN_CMD_SET_SERVO_ARM, (0x7<<4) | (servo_armed_mask & 0x0F))) {
+    if(!can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_SERVO, CAN_CMD_SET_SERVO_ARM, (0x0F<<4) | (servo_armed_mask & 0x0F))) {
         dbg_printf("Failed to send ARM command\r\n");
     } else {
         dbg_printf("Sent ARM mask 0x%X\r\n", servo_armed_mask & 0x0F);

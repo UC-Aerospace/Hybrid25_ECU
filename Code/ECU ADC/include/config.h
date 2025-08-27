@@ -80,13 +80,14 @@ extern ADC_ChannelConfTypeDef ADC_2S_Config;
 // MIPA is fixed as part of ADC scheduling to 28
 
 #define BUFF_SIZE_LC_Thrust 29
-#define BUFF_SIZE_LC_N2O_A 29
-#define BUFF_SIZE_LC_N2O_B 29
+#define BUFF_SIZE_LC_N2O_A 20
+#define BUFF_SIZE_LC_N2O_B 20
 
-#define BUFF_SIZE_THERMO_A 29
-#define BUFF_SIZE_THERMO_B 29
-#define BUFF_SIZE_THERMO_C 29
+#define BUFF_SIZE_THERMO_A 20
+#define BUFF_SIZE_THERMO_B 20
+#define BUFF_SIZE_THERMO_C 20
+#define BUFF_SIZE_CJT      4
 
-#define BUFF_SIZE_PT 28
+#define BUFF_SIZE_PT 10
 
 #endif // CONFIG_H

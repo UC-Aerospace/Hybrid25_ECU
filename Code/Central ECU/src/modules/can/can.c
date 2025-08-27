@@ -135,6 +135,14 @@ void can_init(void) {
             CAN_Error_Handler();
         }
     }
+    if(HAL_FDCAN_ConfigGlobalFilter(&hfdcan1,
+        FDCAN_REJECT,   // Non-matching standard
+        FDCAN_REJECT,   // Non-matching extended
+        FDCAN_FILTER_REMOTE, // Reject remote std
+        FDCAN_FILTER_REMOTE  // Reject remote ext
+    )!= HAL_OK) {
+        CAN_Error_Handler();
+    }
     if(HAL_FDCAN_Start(&hfdcan1)!= HAL_OK) {
         CAN_Error_Handler();
     }
@@ -227,6 +235,7 @@ void can_service_tx_queue(void) {
             __enable_irq();
         } else {
             dbg_printf("Failed to send CAN frame, possible hardware error.\r\n");
+            HAL_GPIO_TogglePin(LED_IND_ERROR_GPIO_Port, LED_IND_ERROR_Pin); // Toggle LED2 on error
             return;
         }
     }

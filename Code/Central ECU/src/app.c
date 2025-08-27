@@ -14,16 +14,17 @@
 #include "test_servo.h"
 #include "stager.h"
 
+uint8_t BOARD_ID = 0;
+
 void setup_panic(uint8_t err_code)
 {
     // Initialize panic mode
-    __disable_irq();
     dbg_printf("Panic mode initialized\n");
     while (1) {
         for (uint8_t i = 0; i < err_code; i++) {
-            HAL_GPIO_WritePin(LED_IND_ERROR_GPIO_Port, LED_IND_ERROR_Pin, GPIO_PIN_SET); // Toggle error LED
+            HAL_GPIO_WritePin(LED_IND_STATUS_GPIO_Port, LED_IND_STATUS_Pin, GPIO_PIN_SET); // Toggle status LED
             HAL_Delay(200);
-            HAL_GPIO_WritePin(LED_IND_ERROR_GPIO_Port, LED_IND_ERROR_Pin, GPIO_PIN_RESET);
+            HAL_GPIO_WritePin(LED_IND_STATUS_GPIO_Port, LED_IND_STATUS_Pin, GPIO_PIN_RESET);
             HAL_Delay(200);
         }
         //HAL_GPIO_WritePin(LED_IND_ERROR_GPIO_Port, LED_IND_ERROR_Pin, GPIO_PIN_RESET); // Set error LED
@@ -32,6 +33,7 @@ void setup_panic(uint8_t err_code)
 }
 
 void app_init(void) {
+
     // Initialize the application
     uint32_t uid[3];
 
@@ -44,29 +46,30 @@ void app_init(void) {
     } else {
         // Unrecognized device, handle error
         dbg_printf("Unrecognized device UID: %08lX %08lX %08lX\r\n", uid[0], uid[1], uid[2]);
-        setup_panic(1);
+        setup_panic(2);
     }
 
     HAL_ADCEx_Calibration_Start(&hadc1);
     ssd1306_Init();
     batt_check();
+    HAL_Delay(100); // Wait for battery check to stabilize
     if (!sd_log_init()) {
         dbg_printf("Failed to initialize SD log\n");
-        setup_panic(2);
+        setup_panic(3);
     }
     can_init(); // Initialize CAN peripheral
     if (!sd_log_write(SD_LOG_INFO, "ECU initialized")) {
         dbg_printf("Failed to write SD log\n");
-        setup_panic(3);
+        setup_panic(4);
     }
     if (!rs422_init(&huart1)) { // Initialize RS422 with DMA
         dbg_printf("Failed to initialize RS422\n");
-        setup_panic(4);
+        setup_panic(5);
     }
     crc16_init(); // Initialize CRC peripheral
     if (HAL_ADC_Start(&hadc1) != HAL_OK) { // Start ADC peripheral
         dbg_printf("Failed to start ADC\n");
-        setup_panic(5);
+        setup_panic(6);
     }
     test_servo_init();
 }

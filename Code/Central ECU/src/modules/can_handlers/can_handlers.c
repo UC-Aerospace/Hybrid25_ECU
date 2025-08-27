@@ -209,26 +209,26 @@ void handle_adc_data(CAN_ADCFrame* frame, CAN_ID id, uint8_t dataLength) {
 
     // Serial print some stuff
     
-    // if (sensorID < 2) {
-    //     uint16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
-    //     // output =>
-    //     // map first_sample such that 0.1 * reference is the zero output level and 0.9 * reference is 0xFFFF
-    //     uint16_t reference = (frame->data[56]) | (frame->data[57] << 8);
-    //     uint32_t in_min = reference / 10;         // 0.1 * reference
-    //     uint32_t in_max = (reference * 9) / 10;   // 0.9 * reference
+    if (sensorID < 2) {
+        uint16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
+        // output =>
+        // map first_sample such that 0.1 * reference is the zero output level and 0.9 * reference is 0xFFFF
+        uint16_t reference = (frame->data[56]) | (frame->data[57] << 8);
+        uint32_t in_min = reference / 10;         // 0.1 * reference
+        uint32_t in_max = (reference * 9) / 10;   // 0.9 * reference
 
-    //     if (first_sample <= in_min) first_sample = 0x0000;
-    //     else if (first_sample >= in_max) first_sample = 0xFFFF;
-    //     else {
-    //         uint32_t range = in_max - in_min;
-    //         uint32_t scaled = (first_sample - in_min) * 65535UL / range;
-    //         first_sample = (uint16_t)scaled;
-    //     }
-    //     dbg_printf_nolog("%d %d\n", sensorID, first_sample);
-    // } else if (sensorID == 16 | sensorID == 17 | sensorID == 18) {
-    //     int16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
-    //     dbg_printf_nolog("%d %d\n", sensorID, first_sample);
-    // }
+        if (first_sample <= in_min) first_sample = 0x0000;
+        else if (first_sample >= in_max) first_sample = 0xFFFF;
+        else {
+            uint32_t range = in_max - in_min;
+            uint32_t scaled = (first_sample - in_min) * 65535UL / range;
+            first_sample = (uint16_t)scaled;
+        }
+        dbg_printf_nolog("%d %d\n", sensorID, first_sample);
+    } else if (sensorID == 16 | sensorID == 17 | sensorID == 18) {
+        int16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
+        dbg_printf_nolog("%d %d\n", sensorID, first_sample);
+    }
     
 
     // Write chunk to per-sensor file with delimiter header
@@ -253,7 +253,8 @@ void handle_heatbeat(CAN_HeartbeatFrame* frame, CAN_ID id, uint32_t timestamp) {
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
     uint32_t remote_timestamp = (frame->timestamp[0] << 16) | (frame->timestamp[1] << 8) | frame->timestamp[2];
     uint32_t local_timestamp = HAL_GetTick();
-    dbg_printf("Heartbeat Frame: initiator=%u, remote timestamp=%lu, local timestamp=%lu\n", initiator, remote_timestamp, local_timestamp);
+    // TODO: Reenable the prints here for synchronisation
+    //dbg_printf("Heartbeat Frame: initiator=%u, remote timestamp=%lu, local timestamp=%lu\n", initiator, remote_timestamp, local_timestamp);
     
 }
 
