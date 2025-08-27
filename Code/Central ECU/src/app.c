@@ -12,7 +12,7 @@
 #include "rs422.h"
 #include "crc.h"
 #include "test_servo.h"
-#include "stager.h"
+#include "main_FSM.h"
 
 uint8_t BOARD_ID = 0;
 
@@ -125,7 +125,7 @@ void app_run(void) {
         {0, 1000, task_poll_battery},         // Poll battery every 1000 ms
         {0, 100, test_servo_poll},            // Poll test servo interface
         {0, 500, task_flush_sd_card},        // Flush SD card every 500 ms
-        {0, 100, stager_tick},
+        {0, 100, fsm_tick},
         {0, 1, can_service_tx_queue}                // Service CAN TX queue every 1 ms
         //{0, 500, task_send_heartbeat}         // Send heartbeat every 500 ms
         //{0, 1000, task_rs422_test_send}       // Test RS422 send every 1000 ms
