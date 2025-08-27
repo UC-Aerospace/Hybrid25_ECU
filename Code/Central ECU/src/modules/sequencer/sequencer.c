@@ -50,6 +50,11 @@ static bool first_time_flag = true;
 // Declerations
 */
 static void countdown_valve_set(void);
+static void close_both_nitrous(void);
+static void open_nitrogen(void);
+static void close_nitrogen(void);
+static void open_vent(void);
+static void close_vent(void);
 
 bool set_burn_time(uint32_t new_burn_time)
 {
@@ -106,7 +111,7 @@ void sequencer_tick(void)
                 sequencer_state = SEQUENCER_FAILED_START;
                 dbg_printf("Sequencer not safe, failed start\n");
 
-            } else if (HAL_GetTick() - fire_in_one_start_tick >= 1000u && first_time_flag == false) { //I know this is a magic number but fire in one should always be 1 second
+            } else if (HAL_GetTick() - fire_in_one_start_tick >= 1000u && first_time_flag == false) { //I know this is a magic number but fire_in_one should always be 1 second
                 spicy_open_solenoid(); // Start burn
                 fire_start_tick = HAL_GetTick();
                 sequencer_state = SEQUENCER_FIRE;
@@ -148,16 +153,16 @@ void sequencer_tick(void)
                 //Open the nitrous valves, close the vent and close the nitrogen
                 countdown_valve_set();
                 spicy_arm();
-                // sequencer_state = SEQUENCER_FIRE;
+                
                 dbg_printf("T-10, opened nitrous valves, closed nitrogen and vent, armed spicy\n");
-
             }
             break;
         
         case SEQUENCER_FIRE: // We are cooking now!
-            if (HAL_GetTick() - fire_start_tick >= COUNTUP_T25_MS + burn_time) {
+            if (HAL_GetTick() - fire_start_tick >= COUNTUP_T25_MS + burn_time) { //T+25
                 //Vent close
-                can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | 0);
+                close_vent();
+                // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | 0);
 
                 //Pyro disarm
                 spicy_disarm();
@@ -169,44 +174,50 @@ void sequencer_tick(void)
 
                 fsm_set_state(STATE_POST_FIRE);
 
-            } else if (HAL_GetTick() - fire_start_tick >= COUNTUP_T16_MS + burn_time) {
+            } else if (HAL_GetTick() - fire_start_tick >= COUNTUP_T16_MS + burn_time) { //T+16
                 //Vent open
-                can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | 1);
+                open_vent();
+                // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | 1);
 
                 dbg_printf("T+16, vent opened\n");
 
-            } else if (HAL_GetTick() - fire_start_tick >= COUNTUP_T15_MS + burn_time) {
+            } else if (HAL_GetTick() - fire_start_tick >= COUNTUP_T15_MS + burn_time) { //T+15
                 spicy_close_solenoid();
                 //Nitrogen closed
-                can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 1 << 6 | 0);
+                close_nitrogen();
+                // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 1 << 6 | 0);
 
                 dbg_printf("T+15, nitrogen and solenoid closed\n");
 
-            } else if (HAL_GetTick() - fire_start_tick >= COUNTUP_T10_MS + burn_time) {
+            } else if (HAL_GetTick() - fire_start_tick >= COUNTUP_T10_MS + burn_time) { //T+10
                 //Vent close
-                can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | 0);
+                close_vent();
+                // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | 0);
 
                 dbg_printf("T+10, vent closed\n");
 
-            } else if (HAL_GetTick() - fire_start_tick >= COUNTUP_T9_MS + burn_time) {
+            } else if (HAL_GetTick() - fire_start_tick >= COUNTUP_T9_MS + burn_time) { //T+9
                 //Nitrogen open
-                can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 1 << 6 | 1);
+                open_nitrogen();
+                // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 1 << 6 | 1);
 
                 dbg_printf("T+9, nitrogen open\n");
 
-            } else if (HAL_GetTick() - fire_start_tick >= COUNTUP_T8_MS + burn_time) {
+            } else if (HAL_GetTick() - fire_start_tick >= COUNTUP_T8_MS + burn_time) { //T+8
                 //Vent open
-                can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | 1);
+                open_vent();
+                // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | 1);
 
                 dbg_printf("T+8, vent open\n");
 
-            } else if (HAL_GetTick() - fire_start_tick >= burn_time) {
+            } else if (HAL_GetTick() - fire_start_tick >= burn_time) { //T+6
                 //Close solenoid
                 spicy_close_solenoid();
 
                 //Close both nitrous bottles
-                can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 2 << 6 | 0);
-                can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 3 << 6 | 0);
+                close_both_nitrous();
+                // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 2 << 6 | 0);
+                // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 3 << 6 | 0);
 
                 dbg_printf("T+6, burn finished, closing solenoid and both nitrous bottles\n");
             } else {
@@ -248,4 +259,30 @@ static void countdown_valve_set(void)
 
     //Nitrous B - Open
     can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 3 << 6 | 1);
+}
+
+static void close_both_nitrous(void)
+{
+    can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 2 << 6 | 0);
+    can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 3 << 6 | 0);
+}
+
+static void open_nitrogen(void)
+{
+    can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 1 << 6 | 1);
+}
+
+static void close_nitrogen(void)
+{
+    can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 1 << 6 | 0);
+}
+
+static void open_vent(void)
+{
+    can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | 1);
+}
+
+static void close_vent(void)
+{
+    can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | 0);
 }
