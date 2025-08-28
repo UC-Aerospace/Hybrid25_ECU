@@ -196,25 +196,27 @@ void sequencer_tick(void)
                 }
 
                 dbg_printf("Valves: %d %d %d %d\n", servo_feedback.servoPosCommandedVent, servo_feedback.servoPosCommandedNitrogen, servo_feedback.servoPosCommandedNosA, servo_feedback.servoPosCommandedNosB);
-                sequencer_state = SEQUENCER_UNINITIALISED;
+                // sequencer_state = SEQUENCER_UNINITIALISED;
 
             } else if (HAL_GetTick() - sequencer_start_tick >= COUNTDOWN_TM10_MS) { //T-10
                 //Open the nitrous valves, close the vent and close the nitrogen
-                // if (first_time_set) {
-                countdown_valve_set();
-                spicy_arm();
-            
-                dbg_printf("T-10, opened nitrous valves, closed nitrogen and vent, armed spicy\n");
-                // first_time_set = false;
-                // }
+                if (first_time_set) {
+                    countdown_valve_set();
+                    spicy_arm();
                 
+                    dbg_printf("T-10, opened nitrous valves, closed nitrogen and vent, armed spicy\n");
+                    first_time_set = false;
+                }
             }
             break;
         
         case SEQUENCER_FIRE: // We are cooking now!
             if (HAL_GetTick() - fire_start_tick >= COUNTUP_T25_MS + burn_time) { //T+25
                 //Vent close
-                close_vent();
+                if (servo_feedback.servoPosCommandedVent != 0) {
+                    close_vent();
+                }
+                // close_vent();
                 // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | 0);
 
                 //Pyro disarm
@@ -229,7 +231,10 @@ void sequencer_tick(void)
 
             } else if (HAL_GetTick() - fire_start_tick >= COUNTUP_T16_MS + burn_time) { //T+16
                 //Vent open
-                open_vent();
+                if (servo_feedback.servoPosCommandedVent != 1) {
+                    open_vent();
+                }
+                // open_vent();
                 // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | 1);
 
                 dbg_printf("T+16, vent opened\n");
@@ -237,28 +242,39 @@ void sequencer_tick(void)
             } else if (HAL_GetTick() - fire_start_tick >= COUNTUP_T15_MS + burn_time) { //T+15
                 spicy_close_solenoid();
                 //Nitrogen closed
-                close_nitrogen();
+                if (servo_feedback.servoPosCommandedNitrogen != 0) {
+                    close_nitrogen();
+                }
+                // close_nitrogen();
                 // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 1 << 6 | 0);
 
                 dbg_printf("T+15, nitrogen and solenoid closed\n");
 
             } else if (HAL_GetTick() - fire_start_tick >= COUNTUP_T10_MS + burn_time) { //T+10
                 //Vent close
-                close_vent();
+                if (servo_feedback.servoPosCommandedVent != 0) {
+                    close_vent();
+                }
+                // close_vent();
                 // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | 0);
 
                 dbg_printf("T+10, vent closed\n");
 
             } else if (HAL_GetTick() - fire_start_tick >= COUNTUP_T9_MS + burn_time) { //T+9
                 //Nitrogen open
-                open_nitrogen();
+                if (servo_feedback.servoPosCommandedNitrogen != 1) {
+                    open_nitrogen();
+                }
+                // open_nitrogen();
                 // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 1 << 6 | 1);
 
                 dbg_printf("T+9, nitrogen open\n");
 
             } else if (HAL_GetTick() - fire_start_tick >= COUNTUP_T8_MS + burn_time) { //T+8
                 //Vent open
-                open_vent();
+                if (servo_feedback.servoPosCommandedVent != 1) {
+                    open_vent();
+                }
                 // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | 1);
 
                 dbg_printf("T+8, vent open\n");
@@ -268,7 +284,9 @@ void sequencer_tick(void)
                 spicy_close_solenoid();
 
                 //Close both nitrous bottles
-                close_both_nitrous();
+                if (servo_feedback.servoPosCommandedNosA != 0 || servo_feedback.servoPosCommandedNosB != 0) {
+                    close_both_nitrous();
+                }
                 // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 2 << 6 | 0);
                 // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 3 << 6 | 0);
 
