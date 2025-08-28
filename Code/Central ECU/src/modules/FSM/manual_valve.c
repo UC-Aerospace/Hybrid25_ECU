@@ -4,15 +4,7 @@
 #include "debug_io.h"
 
 valve_states_t valve_state = VALVE_DISARMED;
-
-// Lastest set position from servo feedback
-struct {
-    bool servoPosCommandedVent;
-    bool servoPosCommandedNitrogen;
-    bool servoPosCommandedNosA;
-    bool servoPosCommandedNosB;
-    bool initialised;
-} servo_feedback = {false};
+struct ServoFeedback servo_feedback = {false};
 
 // Helpers
 void manual_valve_send_arm(void)
@@ -50,6 +42,19 @@ void valve_set_servo_feedback_position(bool servoSetPosition[4])
     servo_feedback.servoPosCommandedNosA = servoSetPosition[2];
     servo_feedback.servoPosCommandedNosB = servoSetPosition[3];
 }
+
+// bool valve_get_servo_position(void)
+// {
+//     //Array with servo posiotions (1 is open, 0 is closed). Order is vent, nitrogen, nos A and nos B
+//     bool servoCurrentPos[4] = { 0 };
+
+//     servoCurrentPos[0] = servo_feedback.servoPosCommandedVent;
+//     servoCurrentPos[1] = servo_feedback.servoPosCommandedNitrogen;
+//     servoCurrentPos[2] = servo_feedback.servoPosCommandedNosA;
+//     servoCurrentPos[3] = servo_feedback.servoPosCommandedNosB;
+
+//     return servoCurrentPos;
+// }
 
 void valve_state_decoder(void)
 {

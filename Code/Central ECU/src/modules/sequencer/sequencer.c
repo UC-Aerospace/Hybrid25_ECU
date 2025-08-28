@@ -4,6 +4,8 @@
 #include "debug_io.h"
 #include "spicy.h"
 #include "can.h"
+#include "heartbeat.h"
+#include "manual_valve.h"
 
 #define DEFAULT_BURN_TIME 6000u
 
@@ -31,6 +33,7 @@ uint32_t burn_time = DEFAULT_BURN_TIME; //Default burn time of 6 seconds
 
 bool fire = false;
 static bool has_burn_time_been_set = false;
+static bool checks_good = true;
 
 typedef enum {
     SEQUENCER_READY = 0b0000,
@@ -45,6 +48,7 @@ static uint32_t sequencer_start_tick = 0u;
 static uint32_t fire_in_one_start_tick = 0u;
 static uint32_t fire_start_tick = 0u;
 static bool first_time_flag = true;
+static bool first_time_set = true;
 
 /*
 // Declerations
@@ -74,6 +78,8 @@ void set_sequencer_ready(void)
     fire_in_one_start_tick = 0u;
     fire_start_tick = 0u;
     first_time_flag = true;
+    checks_good = true;
+    first_time_set = true;
 
     // Arm all servos
     can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_ARM, 0xFF);
@@ -118,20 +124,22 @@ void sequencer_tick(void)
                 dbg_printf("Sequencer fire, candle lit\n");
 
             } else if (HAL_GetTick() - sequencer_start_tick >= COUNTDOWN_TM1_MS) { //T-1
-                //#TODO:
-                //Heartbeats good
-                //Logging good
-                //ematch continuity?
+                //If heartbeat good #TODO: check logging and ematch continuity
+                // if (!heartbeat_all_started()) {
+                //     checks_good = false;
+                //     dbg_printf("T-1, aborted due to bad heartbeat\n");
+                //     fsm_set_state(STATE_ABORT);
+                // }
 
-                //If any of the above are bad, go to STATE_ABORT
-
-                //If good
                 if (first_time_flag) {
                     fire_in_one_start_tick = HAL_GetTick();
                     first_time_flag = false;
                     dbg_printf("T-1, fire in one tick set\n");
                 }
-                dbg_printf("T-1, all checks good\n");
+
+                if (checks_good) {
+                    dbg_printf("T-1, all checks good\n");
+                }
 
             } else if (HAL_GetTick() - sequencer_start_tick >= COUNTDOWN_TM4_MS) { //T-4
                 //Fire ematch 1
@@ -139,22 +147,67 @@ void sequencer_tick(void)
                 dbg_printf("T-4, ematch 1 fired\n");
 
             } else if (HAL_GetTick() - sequencer_start_tick >= COUNTDOWN_TM6_MS) { //T-6
-                //#TODO:
-                //Valve position
-                //Valve status good
-                //Pressures high enough and within range of each other
-                //Heartbeats good
-                //Logging good
+                //Check system states good (sorry for the immense amount of if statements, will clean into functions once working)
+                //Heartbeat
+                // if (!heartbeat_all_started()) {
+                //     checks_good = false;
+                //     dbg_printf("T-6, aborted due to bad heartbeat\n");
+                //     fsm_set_state(STATE_ABORT);
+                // }
 
-                //If any of the above are bad, go to STATE_ABORT
-                dbg_printf("T-6, all checks good\n");
+                // //Solenoid position - should be closed at this point
+                // if (spicy_get_solenoid()) {
+                //     checks_good = false;
+                //     dbg_printf("T-6, aborted due to open solenoid\n");
+                //     fsm_set_state(STATE_ABORT);
+                // }
+
+                // //Valve positions - should be vent closed, nitrogen closed, nos A open, nos B open
+                // if (servo_feedback.servoPosCommandedVent != 0) {
+                //     checks_good = false;
+                //     dbg_printf("T-6, aborted due to open vent\n");
+                //     fsm_set_state(STATE_ABORT);
+                // }
+
+                // if (servo_feedback.servoPosCommandedNitrogen != 0) {
+                //     checks_good = false;
+                //     dbg_printf("T-6, aborted due to open nitrogen\n");
+                //     fsm_set_state(STATE_ABORT);
+                // }
+
+                // if (servo_feedback.servoPosCommandedNosA != 1) {
+                //     checks_good = false;
+                //     dbg_printf("T-6, aborted due to closed nos A\n");
+                //     fsm_set_state(STATE_ABORT);
+                // }
+
+                // if (servo_feedback.servoPosCommandedNosB != 1) {
+                //     checks_good = false;
+                //     dbg_printf("T-6, aborted due to closed nos B\n");
+                //     fsm_set_state(STATE_ABORT);
+                // }
+
+                //#TODO: Pressures high enough and within range of each other
+
+                //#TODO: SD card logging good
+
+                if (checks_good) {
+                    dbg_printf("T-6, all checks good\n");
+                }
+
+                dbg_printf("Valves: %d %d %d %d\n", servo_feedback.servoPosCommandedVent, servo_feedback.servoPosCommandedNitrogen, servo_feedback.servoPosCommandedNosA, servo_feedback.servoPosCommandedNosB);
+                sequencer_state = SEQUENCER_UNINITIALISED;
 
             } else if (HAL_GetTick() - sequencer_start_tick >= COUNTDOWN_TM10_MS) { //T-10
                 //Open the nitrous valves, close the vent and close the nitrogen
+                // if (first_time_set) {
                 countdown_valve_set();
                 spicy_arm();
-                
+            
                 dbg_printf("T-10, opened nitrous valves, closed nitrogen and vent, armed spicy\n");
+                // first_time_set = false;
+                // }
+                
             }
             break;
         
@@ -221,10 +274,18 @@ void sequencer_tick(void)
 
                 dbg_printf("T+6, burn finished, closing solenoid and both nitrous bottles\n");
             } else {
-                //#TODO: During burn checks
+                //Check heartbeat
+                // if (!heartbeat_all_started()) {
+                //     checks_good = false;
+                //     dbg_printf("Aborted burn due to bad heartbeat\n");
+                //     fsm_set_state(STATE_ABORT);
+                // }
 
-                dbg_printf("Combustion is happening! Time since ignition: %d seconds\n", (HAL_GetTick() - fire_start_tick) / 1000);
+                //#TODO: Check chamber pressures
 
+                if (checks_good) {
+                    dbg_printf("Combustion is happening! Time since ignition: %d seconds\n", (HAL_GetTick() - fire_start_tick) / 1000);
+                }
             }
             break;
         
