@@ -8,7 +8,7 @@
 
 #define SERVO_QUEUE_SIZE 4
 // Tolerance (in 0-1000 units) when checking if a servo has reached its target
-#define SERVO_POSITION_TOLERANCE 1000
+#define SERVO_POSITION_TOLERANCE 15
 
 // Actual tick values for servo positions. Full rotation is larger than 180 degrees.
 // Based on 10000 ticks per 20ms period (50 Hz PWM frequency).

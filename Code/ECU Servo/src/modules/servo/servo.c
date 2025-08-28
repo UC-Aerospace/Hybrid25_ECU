@@ -45,9 +45,9 @@ Servo servoNitrogen = {
     .tim = &htim3,
     .channel = TIM_CHANNEL_2,
     .state = SERVO_STATE_DISARMED,
-    .closePosition = 600,
-    .openPosition = 250,
-    .targetPosition = 600,
+    .closePosition = 450,
+    .openPosition = 0,
+    .targetPosition = 450,
     .currentPosition = 0,
     .nrstPin = GPIO_PIN_2, // NRST pin for servo 2
     .nrstPort = GPIOD // NRST port for servo 2
@@ -240,11 +240,11 @@ void servo_update_positions() {
     // Convert from 12 bit ADC values to 0-1000 servo positions and set current positions
     servoVent.currentPosition = (int16_t)(-5.0/16.0*(servoPositions[0] - 3620));
     servoPositions[0] = servoVent.currentPosition; // Update servoPositions array
-    servoNitrogen.currentPosition = (int16_t)(-5.0/16.0*(servoPositions[1] - 3620));
+    servoNitrogen.currentPosition = (int16_t)((-1.0/3.0)*servoPositions[1] + 1168);
     servoPositions[1] = servoNitrogen.currentPosition; // Update servoPositions array
-    servoNitrousA.currentPosition = (int16_t)(-5.0/16.0*(servoPositions[2] - 3620));
+    servoNitrousA.currentPosition = (int16_t)((5.0/16.0)*servoPositions[2] - 180);
     servoPositions[2] = servoNitrousA.currentPosition; // Update servoPositions array
-    servoNitrousB.currentPosition = (int16_t)(-5.0/16.0*(servoPositions[3] - 3620));
+    servoNitrousB.currentPosition = (int16_t)((5.0/16.0)*servoPositions[3] - 180);
     servoPositions[3] = servoNitrousB.currentPosition; // Update servoPositions array
 }
 
