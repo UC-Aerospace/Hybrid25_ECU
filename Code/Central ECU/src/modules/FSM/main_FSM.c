@@ -288,7 +288,7 @@ static void s_error_exit(void)
 static void s_abort_enter(void)
 {
     outputs_safe();
-    //TODO: Send CAN back to RIU to tell them we have aborted
+    //#TODO: Send CAN back to RIU to tell them we have aborted
     dbg_printf("Abort enter, outputs safe\n");
 }
 

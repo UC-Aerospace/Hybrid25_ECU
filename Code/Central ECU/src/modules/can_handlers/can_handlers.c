@@ -208,6 +208,7 @@ void handle_adc_data(CAN_ADCFrame* frame, CAN_ID id, uint8_t dataLength) {
     uint8_t sampleRate = frame->what & 0x07;
 
     // Serial print some stuff
+    /*
     
     if (sensorID < 2) {
         uint16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
@@ -232,6 +233,8 @@ void handle_adc_data(CAN_ADCFrame* frame, CAN_ID id, uint8_t dataLength) {
         int16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
         dbg_printf_nolog("%d %d\n", sensorID, first_sample);
     }
+
+    */
     
 
     // Write chunk to per-sensor file with delimiter header
@@ -239,7 +242,7 @@ void handle_adc_data(CAN_ADCFrame* frame, CAN_ID id, uint8_t dataLength) {
     if (!status) {
         dbg_printf("SD Card failed write for sensor %d\n", sensorID);
         HAL_GPIO_WritePin(LED_IND_ERROR_GPIO_Port, LED_IND_ERROR_Pin, GPIO_PIN_SET); // Set error LED
-        // TODO: Issue a warning over RS422
+        // #TODO: Issue a warning over RS422
         return;
     }
 
