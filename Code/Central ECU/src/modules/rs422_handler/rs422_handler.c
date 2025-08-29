@@ -42,21 +42,9 @@ void rs422_handler_rx_poll(void) {
                 // Handle battery voltage frame
                 dbg_printf("Received battery voltage frame with size %d\r\n", frame.size);
                 break;
-            case RS422_FRAME_PRESSURE:
-                // Handle pressure frame
-                dbg_printf("Received pressure frame with size %d\r\n", frame.size);
-                break;
-            case RS422_FRAME_PRESSURE_TEMPERATURE:
-                // Handle pressure and temperature frame
-                dbg_printf("Received pressure and temperature frame with size %d\r\n", frame.size);
-                break;
-            case RS422_FRAME_TEMPERATURE:
-                // Handle temperature frame
-                dbg_printf("Received temperature frame with size %d\r\n", frame.size);
-                break;
-            case RS422_FRAME_LOAD_CELL:
-                // Handle load cell frame
-                dbg_printf("Received load cell frame with size %d\r\n", frame.size);
+            case RS422_FRAME_SENSOR:
+                // Handle sensor frame
+                dbg_printf("Received sensor frame with size %d\r\n", frame.size);
                 break;
             case RS422_FRAME_COUNTDOWN:
                 // Handle countdown frame

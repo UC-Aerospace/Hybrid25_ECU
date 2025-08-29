@@ -83,10 +83,14 @@ bool rs422_init(UART_HandleTypeDef *huart)
     rx_buffer.write_pos = 0;
     rx_buffer.read_pos = 0;
 
+    // Clear all RS422 errors before starting
+    __HAL_UART_CLEAR_FLAG(huart, UART_CLEAR_OREF | UART_CLEAR_NEF | 
+                         UART_CLEAR_PEF | UART_CLEAR_FEF);
+
     // Start continuous DMA reception
-    HAL_StatusTypeDef status = HAL_UARTEx_ReceiveToIdle_DMA(huart, rx_buffer.buffer, RS422_RX_BUFFER_SIZE);
     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_TC);
+    HAL_StatusTypeDef status = HAL_UARTEx_ReceiveToIdle_DMA(huart, rx_buffer.buffer, RS422_RX_BUFFER_SIZE);
 
     // Debug output
     if (status == HAL_OK) {
@@ -237,4 +241,9 @@ bool rs422_send_valve_position(uint8_t valve_pos)
 {
     valve_pos = (valve_pos | spicy_get_solenoid() << 1 | spicy_get_arm()); // Add solenoid and pyro armed states
     return (rs422_send(&valve_pos, 1, RS422_FRAME_VALVE_UPDATE) == HAL_OK);
+}
+
+bool rs422_send_data(const uint8_t *data, uint8_t size, RS422_FrameType_t frame_type)
+{
+    return (rs422_send((uint8_t*)data, size, frame_type) == HAL_OK);
 }

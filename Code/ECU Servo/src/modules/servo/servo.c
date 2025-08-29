@@ -244,7 +244,7 @@ void servo_update_positions() {
     servoPositions[1] = servoNitrogen.currentPosition; // Update servoPositions array
     servoNitrousA.currentPosition = (int16_t)((5.0/16.0)*servoPositions[2] - 180);
     servoPositions[2] = servoNitrousA.currentPosition; // Update servoPositions array
-    servoNitrousB.currentPosition = (int16_t)((5.0/16.0)*servoPositions[3] - 180);
+    servoNitrousB.currentPosition = (int16_t)((125.0/364.0)*servoPositions[3] - 235);
     servoPositions[3] = servoNitrousB.currentPosition; // Update servoPositions array
 }
 

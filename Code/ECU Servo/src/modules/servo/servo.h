@@ -6,9 +6,9 @@
 #include "config.h"
 #include <stdbool.h>
 
-#define SERVO_QUEUE_SIZE 4
+#define SERVO_QUEUE_SIZE 20
 // Tolerance (in 0-1000 units) when checking if a servo has reached its target
-#define SERVO_POSITION_TOLERANCE 15
+#define SERVO_POSITION_TOLERANCE 20
 
 // Actual tick values for servo positions. Full rotation is larger than 180 degrees.
 // Based on 10000 ticks per 20ms period (50 Hz PWM frequency).

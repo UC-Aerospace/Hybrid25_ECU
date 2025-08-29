@@ -48,11 +48,6 @@ bool sd_log_service(uint32_t time_budget_ms);
 // intervals short < ~10ms). Returns true on success.
 bool sd_log_flush_blocking(uint32_t timeout_ms);
 
-// Preallocate space for the raw log file
-// size: Number of bytes to preallocate
-// Returns true if successful, false otherwise
-bool sd_log_preallocate_raw(uint32_t size); // legacy (maps to sensors file)
-
 // Get the current log directory name
 // Returns the directory name as a string
 const char* sd_log_get_dir_name(void);
@@ -65,10 +60,16 @@ bool sd_log_configure_sensors(const uint8_t *sensor_ids, uint8_t count);
 // Append a binary sensor chunk to the per-sensor file with a simple delimited record:
 // [0xA1][sampleRate(1)][timestamp(3)][len(2 LE)][payload(len)]
 // Returns true on success. File is created on first write if not already opened.
-bool sd_log_write_sensor_chunk(CAN_ADCFrame* frame);
+bool sd_log_write_sensor_chunk(CAN_ADCFrame* frame, uint8_t length);
 
 // Non-blocking capture of debug text. Safe to call from ISRs; it enqueues into an internal ring.
 // The ring is drained and written to log.txt on sd_log_flush() or via sd_log_write().
 void sd_log_capture_debug(const char *text);
+
+// Add allocated space to sensors file
+bool sd_log_preallocate_sensors(uint32_t size);
+
+// Add allocated space to log file
+bool sd_log_preallocate_log(uint32_t size);
 
 #endif // SD_LOG_H

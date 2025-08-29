@@ -228,16 +228,39 @@ void handle_adc_data(CAN_ADCFrame* frame, CAN_ID id, uint8_t dataLength) {
     } else if (sensorID == 16 | sensorID == 17 | sensorID == 18) {
         int16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
         dbg_printf_nolog("%d %d\n", sensorID, first_sample);
+    } else if (sensorID == 24 | sensorID == 25 | sensorID == 26) {
+        int16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
+        dbg_printf_nolog("%d %d\n", sensorID, first_sample);
     }
     
 
     // Write chunk to per-sensor file with delimiter header
-    bool status = sd_log_write_sensor_chunk(frame);
+    bool status = sd_log_write_sensor_chunk(frame, frame->length + 5);
     if (!status) {
         dbg_printf("SD Card failed write for sensor %d\n", sensorID);
         HAL_GPIO_WritePin(LED_IND_ERROR_GPIO_Port, LED_IND_ERROR_Pin, GPIO_PIN_SET); // Set error LED
         // TODO: Issue a warning over RS422
         return;
+    }
+
+    // Send to the RIU
+    uint8_t sensorType = (frame->what >> 6);
+    switch (sensorType) {
+        case 0: // Pressure
+            rs422_send_data((uint8_t*)frame, frame->length+5, RS422_FRAME_SENSOR);
+            break;
+        case 1: // Temperature
+            rs422_send_data((uint8_t*)frame, frame->length+5, RS422_FRAME_SENSOR);
+            break;
+        case 2: // Pressure + Temperature
+            rs422_send_data((uint8_t*)frame, frame->length+5, RS422_FRAME_SENSOR);
+            break;
+        case 3: // Load cell
+            rs422_send_data((uint8_t*)frame, frame->length+5, RS422_FRAME_SENSOR);
+            break;
+        default:
+            // Unknown sensor type
+            break;
     }
 }
 

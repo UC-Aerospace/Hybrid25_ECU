@@ -19,10 +19,10 @@ typedef enum {
     RS422_FRAME_LED_UPDATE = 0b0011,
     RS422_BATTERY_VOLTAGE_FRAME = 0b0100,
     // 0b0101
-    RS422_FRAME_PRESSURE = 0b0110,
-    RS422_FRAME_PRESSURE_TEMPERATURE = 0b0111,
-    RS422_FRAME_TEMPERATURE = 0b1000,
-    RS422_FRAME_LOAD_CELL = 0b1001,
+    RS422_FRAME_SENSOR = 0b0110,
+    // 0b0111
+    // 0b1000
+    // 0b1001
     // 0b1010
     // 0b1011
     RS422_FRAME_COUNTDOWN = 0b1100,
@@ -69,5 +69,6 @@ uint16_t rs422_get_rx_available(void);
 uint16_t rs422_read(RS422_RxFrame_t *frame);
 void rs422_process_rx_dma(uint16_t transferred);
 bool rs422_send_valve_position(uint8_t valve_pos);
+bool rs422_send_data(const uint8_t *data, uint8_t size, RS422_FrameType_t frame_type);
 
 #endif // RS422_H

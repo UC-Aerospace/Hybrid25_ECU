@@ -48,6 +48,8 @@ static bool flush_sensors_in_progress = false;
 #define MIN(a,b) (( (a) < (b) ) ? (a) : (b))
 #endif
 
+bool sd_preallocate_extra(FIL *file, uint32_t size);
+
 // Ring helpers
 static inline uint16_t dbg_ring_next(uint16_t idx)
 {
@@ -236,6 +238,11 @@ bool sd_log_init(void) {
         return false;
     }
 
+    // Preallocate 2Mb to log.txt and 10Mb to sensors.raw using sd_preallocate_extra
+    sd_preallocate_extra(&log_file, 2 * 1024 * 1024);
+    sd_preallocate_extra(&sensors_file, 10 * 1024 * 1024);
+    // TODO: During write check extra space remaining and allocate more if neccessary. At 5kB/s, 10Mb should be good for 33 minutes.
+
     is_initialized = true;
     return true;
 }
@@ -291,23 +298,28 @@ void sd_log_request_flush_sensors(void)
 static bool flush_logs_step(uint32_t *budget_ms)
 {
     if (!flush_logs_requested && !flush_logs_in_progress) return true;
+
     flush_logs_in_progress = true;
     uint32_t start = HAL_GetTick();
     char chunk[SD_LOG_WRITE_CHUNK];
     UINT written;
+
     while (*budget_ms > 0 && !dbg_ring_empty()) {
         uint16_t n = dbg_ring_pop_chunk(chunk, sizeof(chunk));
         if(n == 0) break;
         (void)f_write(&log_file, chunk, n, &written); // ignore errors
         if((HAL_GetTick() - start) >= *budget_ms) break;
     }
-    if(dbg_ring_empty()){
+
+    if(dbg_ring_empty()) {
         (void)f_sync(&log_file);
         flush_logs_requested = false;
         flush_logs_in_progress = false;
     }
+
     uint32_t elapsed = HAL_GetTick() - start;
     if(elapsed >= *budget_ms) *budget_ms = 0; else *budget_ms -= elapsed;
+
     return !flush_logs_in_progress;
 }
 
@@ -397,14 +409,15 @@ const char* sd_log_get_dir_name(void) {
 
 bool sd_log_configure_sensors(const uint8_t *sensor_ids, uint8_t count) {
     (void)sensor_ids; (void)count; // now a no-op
-    return true;
+    return true;    
 }
 
-bool sd_log_write_sensor_chunk(CAN_ADCFrame* frame) {
+bool sd_log_write_sensor_chunk(CAN_ADCFrame* frame, uint8_t length) {
     if (!is_initialized) return false;
     if (frame == NULL) return false;
-    sens_push((uint8_t*) 0xA1, sizeof(uint8_t));
-    sens_push((uint8_t*)frame, sizeof(CAN_ADCFrame));
+    uint8_t marker[5] = {0x00, 0x00, 0x00, 0x00, 0xA1};
+    sens_push(marker, sizeof(marker));
+    sens_push((uint8_t*)frame, length);
     flush_sensors_requested = true;
     return true;
 }
@@ -417,7 +430,13 @@ void sd_log_capture_debug(const char *text) {
 }
 
 // Optional helper to preallocate extra space in sensors.raw
-bool sd_log_preallocate_raw(uint32_t size){
+bool sd_log_preallocate_sensors(uint32_t size) {
     if(!is_initialized) return false;
     return sd_preallocate_extra(&sensors_file, size);
+}
+
+// Optional helper to preallocate extra space in log.txt
+bool sd_log_preallocate_log(uint32_t size) {
+    if(!is_initialized) return false;
+    return sd_preallocate_extra(&log_file, size);
 }

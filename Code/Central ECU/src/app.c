@@ -91,7 +91,7 @@ void task_toggle_status_led(void) {
 
 void task_flush_sd_card(void) {
     // Flush SD card to ensure all data is written
-    sd_log_service(10000);
+    sd_log_service(50); // Allow upto 50ms to service SD card, else will get it on next tick.
 }
 
 void task_poll_battery(void) {
