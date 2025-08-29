@@ -202,6 +202,8 @@ void sequencer_tick(void)
                 //Open the nitrous valves, close the vent and close the nitrogen
                 if (first_time_set) {
                     countdown_valve_set();
+                    // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 2 << 6 | 1);
+                    // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 3 << 6 | 1);
                     spicy_arm();
                 
                     dbg_printf("T-10, opened nitrous valves, closed nitrogen and vent, armed spicy\n");
