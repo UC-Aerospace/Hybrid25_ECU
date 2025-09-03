@@ -5,6 +5,7 @@
 #include "rs422.h"
 #include "manual_valve.h"
 #include "config.h"
+#include "servo.h"
 
 static void handle_cmd_set_servo_arm(CAN_CommandFrame* frame, CAN_ID id);
 static void handle_cmd_set_servo_pos(CAN_CommandFrame* frame, CAN_ID id);
@@ -149,30 +150,38 @@ void handle_servo_pos(CAN_ServoPosFrame* frame, CAN_ID id) {
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
     // Ignore connected servos, assume 4
 
-    bool servoSetBinary[4] = { false };
+    servo_feedback_t servo_feedback[4];
+
+    servo_positions_t servoSetList[4];
     uint8_t servoSetPos[4] = { 0 };
     uint8_t servoState[4] = { 0 };
     bool atSetPos[4] = { false };
     uint8_t servoCurrentPos[4] = { 0 };
 
     for (int i = 0; i < 4; i++) {
-        servoSetBinary[i] = (frame->set_pos[i] >> 6) & 0x01; // Bit 6 for open/close
-        servoSetPos[i] = frame->set_pos[i] & 0x1F; // Bits 0-4 for position
-    }
+        servoSetList[i] = ((frame->set_pos[i] >> 6) & 0x03); // Bit 6-7 for pos
+        servoSetPos[i] = frame->set_pos[i] & 0x1F; // Bits 0-4 for fine set position
 
-    valve_set_servo_feedback_position(servoSetBinary);
+        servo_feedback[i].setPos = servoSetList[i];
+    }
 
     for (int i = 0; i < 4; i++) {
         servoState[i] = (frame->current_pos[i] >> 6);
         atSetPos[i] = (frame->current_pos[i] & 0x20) != 0; // Bit 5 for at set position
         servoCurrentPos[i] = (frame->current_pos[i] & 0x1F);
+
+        servo_feedback[i].state = servoState[i];
+        servo_feedback[i].currentPos = servoCurrentPos[i];
+        servo_feedback[i].atSetPos = atSetPos[i];
     }
+
+    servo_update(servo_feedback);
 
     uint8_t valve_pos = 0;
     bool any_servo_error = false;
     bool any_servo_armed = false;
     for (int i = 0; i < 4; i++) {
-        valve_pos |= servoSetPos[i] << (7 - i);
+        valve_pos |= (uint8_t)(servoSetList[i] != 0 ? 1 : 0) << (7 - i);
         any_servo_armed |= (servoState[i] == 1);
         any_servo_error |= (servoState[i] == 3);
     }
@@ -208,7 +217,6 @@ void handle_adc_data(CAN_ADCFrame* frame, CAN_ID id, uint8_t dataLength) {
     uint8_t sampleRate = frame->what & 0x07;
 
     // Serial print some stuff
-    /*
     
     if (sensorID < 2) {
         uint16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
@@ -233,15 +241,12 @@ void handle_adc_data(CAN_ADCFrame* frame, CAN_ID id, uint8_t dataLength) {
         int16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
         dbg_printf_nolog("%d %d\n", sensorID, first_sample);
     }
-
-    */
     
 
     // Write chunk to per-sensor file with delimiter header
     bool status = sd_log_write_sensor_chunk(frame, frame->length + 5);
     if (!status) {
         dbg_printf("SD Card failed write for sensor %d\n", sensorID);
-        HAL_GPIO_WritePin(LED_IND_ERROR_GPIO_Port, LED_IND_ERROR_Pin, GPIO_PIN_SET); // Set error LED
         // #TODO: Issue a warning over RS422
         return;
     }
@@ -280,8 +285,22 @@ void handle_heatbeat(CAN_HeartbeatFrame* frame, CAN_ID id, uint32_t timestamp) {
     uint32_t remote_timestamp = (frame->timestamp[0] << 16) | (frame->timestamp[1] << 8) | frame->timestamp[2];
     uint32_t local_timestamp = HAL_GetTick();
     // TODO: Reenable the prints here for synchronisation
-    //dbg_printf("Heartbeat Frame: initiator=%u, remote timestamp=%lu, local timestamp=%lu\n", initiator, remote_timestamp, local_timestamp);
-    
+    if (initiator == BOARD_ID_ADC_A) {
+        static uint32_t last_adc_a_heartbeat = 0;
+        if (HAL_GetTick() - last_adc_a_heartbeat > 10000) {
+            dbg_printf("Heartbeat Frame: initiator=ADC_A, remote timestamp=%lu, local timestamp=%lu\n", remote_timestamp, local_timestamp);
+            last_adc_a_heartbeat = HAL_GetTick();
+        }
+    } else if (initiator == BOARD_ID_SERVO) {
+        static uint32_t last_servo_heartbeat_print = 0;
+        if (HAL_GetTick() - last_servo_heartbeat_print > 10000) {
+            dbg_printf("Heartbeat Frame: initiator=SERVO, remote timestamp=%lu, local timestamp=%lu\n", remote_timestamp, local_timestamp);
+            last_servo_heartbeat_print = HAL_GetTick();
+        }
+    } else {
+        dbg_printf("Heartbeat Frame: initiator=%u, remote timestamp=%lu, local timestamp=%lu\n", initiator, remote_timestamp, local_timestamp);
+    }
+
 }
 
 // ==========================================================

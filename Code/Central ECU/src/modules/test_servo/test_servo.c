@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include "rtc_helper.h"
 
 // Simple serial command interface over debug_io
 // Commands:
@@ -52,6 +53,7 @@ static void cmd_help(void) {
     dbg_printf("  ARM <mask>          Arm servos bit mask (hex or dec)\r\n");
     dbg_printf("  DISARM              Disarm all servos\r\n");
     dbg_printf("  POS <servoID(0-3)> <howSet(0-1)> <pos (0-3 if howSet=0, else 0-20)>\r\n");
+    dbg_printf("  TIM <DAYS> <MILLIS> Set the RTC with the number of days and milliseconds since 2K25\r\n");
     dbg_printf("  HELP                This help\r\n");
 }
 
@@ -89,6 +91,11 @@ void test_servo_poll(void) {
         send_positions();
     } else if(strcasecmp(tok, "HELP") == 0) {
         cmd_help();
+    } else if(strcasecmp(tok, "TIM") == 0) {
+        char *timeStr = strtok(NULL, "");
+        if(!timeStr) { dbg_printf("Need time string\r\n"); return; }
+        rtc_helper_set_from_string(timeStr);
+        dbg_printf("RTC set\r\n");
     } else {
         dbg_printf("Unknown command. Type HELP.\r\n");
     }

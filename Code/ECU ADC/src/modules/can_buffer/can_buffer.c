@@ -30,7 +30,7 @@ bool can_buffer_push(can_buffer_t *buffer, int16_t value)
 
 static inline void can_buffer_tx(can_buffer_t *buffer, uint8_t SID)
 {
-    can_send_data(SID, (uint8_t *)buffer->data, buffer->length*2, buffer->first_sample_timestamp);
+    can_send_data(buffer->SID, (uint8_t *)buffer->data, buffer->length*2, buffer->first_sample_timestamp);
 }
 
 //bool can_send_data(CAN_NodeType nodeType, CAN_NodeAddr nodeAddr, uint8_t *data, uint8_t length)

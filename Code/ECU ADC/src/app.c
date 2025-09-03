@@ -90,9 +90,9 @@ void app_init(void) {
     }
 
     can_buffer_init(&cjt_buffer, SID_SENSOR_CJT, BUFF_SIZE_CJT); // Initialize the buffer with a length of 4
-    can_buffer_init(&test_buffer_A, SID_SENSOR_PT_A, BUFF_SIZE_PT); // Initialize the buffer with a length of 10
-    can_buffer_init(&test_buffer_B, SID_SENSOR_PT_B, BUFF_SIZE_PT); // Initialize the buffer with a length of 10
-    can_buffer_init(&test_buffer_C, SID_SENSOR_PT_C, BUFF_SIZE_PT); // Initialize the buffer with a length of 10
+    // can_buffer_init(&test_buffer_A, SID_SENSOR_PT_A, BUFF_SIZE_PT); // Initialize the buffer with a length of 10
+    // can_buffer_init(&test_buffer_B, SID_SENSOR_PT_B, BUFF_SIZE_PT); // Initialize the buffer with a length of 10
+    // can_buffer_init(&test_buffer_C, SID_SENSOR_PT_C, BUFF_SIZE_PT); // Initialize the buffer with a length of 10
 }
 
 void task_toggle_status_led(void) {

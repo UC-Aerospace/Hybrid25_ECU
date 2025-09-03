@@ -11,7 +11,7 @@ uint8_t TxData[64];
 // ---------------- TX SOFTWARE QUEUE ----------------
 // Up to 2 pending CAN FD frames buffered in software.
 // Each entry stores the full FDCAN_TxHeaderTypeDef and up to 64 bytes of data.
-#define CAN_TX_QUEUE_SIZE 2
+#define CAN_TX_QUEUE_SIZE 10
 
 typedef struct {
     FDCAN_TxHeaderTypeDef header;   // Header with DLC already encoded

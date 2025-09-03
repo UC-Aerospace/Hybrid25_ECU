@@ -1,6 +1,7 @@
 #ifndef MAIN_FSM_H
 #define MAIN_FSM_H
 
+#include "stm32g0xx_hal.h"
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -24,9 +25,8 @@ typedef struct {
     bool valve_nitrogen;
     bool valve_discharge;
     bool solenoid;
+    bool changed;
 } switch_state_t;
-
-extern switch_state_t switch_snapshot;
 
 void fsm_set_switch_states(uint16_t switches);
 void fsm_set_state(main_states_t new_state);

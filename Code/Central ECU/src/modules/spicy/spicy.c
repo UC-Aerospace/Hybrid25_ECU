@@ -83,6 +83,7 @@ void spicy_open_solenoid(void)
 {
     if (spicy_checks()) {
         HAL_GPIO_WritePin(OX_FIRE_GPIO_Port, OX_FIRE_Pin, GPIO_PIN_SET);
+        dbg_printf("Opened ox\n");
     } else {
         dbg_printf("Spicy checks failed, not opening ox\n");
     }
@@ -91,6 +92,7 @@ void spicy_open_solenoid(void)
 void spicy_close_solenoid(void)
 {
     HAL_GPIO_WritePin(OX_FIRE_GPIO_Port, OX_FIRE_Pin, GPIO_PIN_RESET);
+    dbg_printf("Closed ox\n");
 }
 
 bool spicy_get_solenoid(void)

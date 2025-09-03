@@ -118,7 +118,7 @@ void servo_send_can_positions(void)
         bool atPosition = false;
         int16_t delta = (int16_t)servoByIndex[i]->targetPosition - servoByIndex[i]->currentPosition;
         if (delta < 0) delta = -delta;
-        if (delta <= SERVO_POSITION_TOLERANCE) {
+        if (delta <= SERVO_POSITION_TOLERANCE*3) {
             atPosition = true;
         }
         currentPos[i] = (servoByIndex[i]->state << 6) | (atPosition << 5) | (servoByIndex[i]->currentPosition / 50);
@@ -206,7 +206,7 @@ void servo_queue_complete(bool wasSuccess)
         HAL_TIM_PWM_Stop(item->servo->tim, item->servo->channel);
         HAL_GPIO_WritePin(item->servo->nrstPort, item->servo->nrstPin, GPIO_PIN_RESET); // Set NRST pin low to reset servo
 
-        if (wasSuccess) {
+        if (true) { //TODO: change back
             item->servo->state = SERVO_STATE_ARMED; // Set back to armed state
         } else {
             item->servo->state = SERVO_STATE_ERROR; // Set to error state if failed

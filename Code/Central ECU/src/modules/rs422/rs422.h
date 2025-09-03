@@ -70,5 +70,6 @@ uint16_t rs422_read(RS422_RxFrame_t *frame);
 void rs422_process_rx_dma(uint16_t transferred);
 bool rs422_send_valve_position(uint8_t valve_pos);
 bool rs422_send_data(const uint8_t *data, uint8_t size, RS422_FrameType_t frame_type);
+bool rs422_send_countdown(int8_t countdown);
 
 #endif // RS422_H

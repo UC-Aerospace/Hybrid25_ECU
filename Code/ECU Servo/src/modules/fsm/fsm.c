@@ -201,7 +201,7 @@ static void moving_tick(void) {
     uint32_t elapsed = HAL_GetTick() - move_start_ms;
     if (elapsed > MAX_MOVE_DURATION) {
         servo_queue_complete(false); // will set error etc.
-        fsm_transition(STATE_ERROR);
+        fsm_transition(STATE_READY); //TODO: change back
     }
 }
 
@@ -213,12 +213,12 @@ static void moving_event(fsm_event_t e) {
             break;
         case FSM_EVENT_MOVE_COMPLETE_FAIL:
             servo_queue_complete(false);
-            fsm_transition(STATE_ERROR);
+            fsm_transition(STATE_READY); //TODO: change back
             break;
         case FSM_EVENT_EXTERNAL_DISARM:
             // External disarm request while moving -> treat as fail/cancel
             servo_queue_complete(false);
-            fsm_transition(STATE_ERROR);
+            fsm_transition(STATE_READY); 
             break;
         case FSM_EVENT_HEARTBEAT_TIMEOUT:
             fsm_transition(STATE_ERROR);

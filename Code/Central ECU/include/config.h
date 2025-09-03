@@ -9,6 +9,8 @@
 #define BOARD_TYPE_CENTRAL
 extern uint8_t BOARD_ID;
 
+#define COLDFLOW_MODE //TODO: Remove before hot-fire
+
 #define BOARD_ID_RIU 0
 #define BOARD_ID_SERVO 2
 #define BOARD_ID_ADC_A 3

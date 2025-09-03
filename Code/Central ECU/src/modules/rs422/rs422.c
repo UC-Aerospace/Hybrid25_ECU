@@ -247,3 +247,8 @@ bool rs422_send_data(const uint8_t *data, uint8_t size, RS422_FrameType_t frame_
 {
     return (rs422_send((uint8_t*)data, size, frame_type) == HAL_OK);
 }
+
+bool rs422_send_countdown(int8_t countdown)
+{
+    return (rs422_send((uint8_t*)&countdown, 1, RS422_FRAME_COUNTDOWN) == HAL_OK);
+}

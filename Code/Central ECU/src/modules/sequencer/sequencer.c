@@ -1,369 +1,236 @@
 #include "sequencer.h"
 #include "main_FSM.h"
-#include "stm32g0xx_hal.h"
 #include "debug_io.h"
 #include "spicy.h"
 #include "can.h"
 #include "heartbeat.h"
 #include "manual_valve.h"
+#include "rs422.h"
+#include "servo.h"
 
-#define DEFAULT_BURN_TIME 6000u
-
-//Countdown times
-#define COUNTDOWN_MS 10000u //Must be greater than or equal to 10000u (ten seconds). Change this to change the countdown time
-#define COUNTDOWN_TM10_MS COUNTDOWN_MS - 9999u //If COUNTDOWN_MS is 20000u -> 20000u - 10000u = 10000u from fire button pressed, or 10 seconds from ignition. 9999 used otherwise you get an always true error
-#define COUNTDOWN_TM6_MS COUNTDOWN_MS - 6000u
-#define COUNTDOWN_TM4_MS COUNTDOWN_MS - 4000u
-#define COUNTDOWN_TM1_MS COUNTDOWN_MS - 1000u
-
-//Countup times
-uint32_t burn_time = DEFAULT_BURN_TIME; //Default burn time of 6 seconds
-#define COUNTUP_T25_MS 19000u //25 seconds for 6 second burn
-#define COUNTUP_T16_MS 10000u //16 seconds for 6 second burn
-#define COUNTUP_T15_MS 9000u //15 seconds for 6 second burn
-#define COUNTUP_T10_MS 4000u //10 seconds for 6 second burn
-#define COUNTUP_T9_MS 9000u //9 seconds for 6 second burn
-#define COUNTUP_T8_MS 2000u //8 seconds for 6 second burn
-// uint32_t countup_t25_ms = 19000u; //Default post burn times 
-// uint32_t countup_t16_ms = 10000u;
-// uint32_t countup_t15_ms = 9000u;
-// uint32_t countup_t10_ms = 4000u;
-// uint32_t countup_t9_ms = 3000u;
-// uint32_t countup_t8_ms = 2000u;
-
-bool fire = false;
-static bool has_burn_time_been_set = false;
-static bool checks_good = true;
-
-typedef enum {
-    SEQUENCER_READY = 0b0000,
-    SEQUENCER_COUNTDOWN = 0b0001,
-    SEQUENCER_FIRE = 0b0010,
-    SEQUENCER_FAILED_START = 0b1111,
-    SEQUENCER_UNINITIALISED = 0b1110
-} sequencer_states_t;
+#define COUNTDOWN_START_MS 10000
 
 static sequencer_states_t sequencer_state = SEQUENCER_UNINITIALISED;
 static uint32_t sequencer_start_tick = 0u;
-static uint32_t fire_in_one_start_tick = 0u;
-static uint32_t fire_start_tick = 0u;
-static bool first_time_flag = true;
-static bool first_time_set = true;
+static uint8_t task_list_index = 0;
+static uint16_t burn_time = 6000; // Default burn time if not set by RS422 command
 
-/*
-// Declerations
-*/
-static void countdown_valve_set(void);
-static void close_both_nitrous(void);
-static void open_nitrogen(void);
-static void close_nitrogen(void);
-static void open_vent(void);
-static void close_vent(void);
+// Static declarations
+static void countdown_tasks(void);
+static void fire_tasks(void);
 
-bool set_burn_time(uint32_t new_burn_time)
+static int32_t get_countdown(void)
 {
-    burn_time = new_burn_time;
-    return true;
+    return HAL_GetTick() - (sequencer_start_tick + COUNTDOWN_START_MS);
 }
 
-void uninitialise_sequencer(void)
+void sequencer_set_state(sequencer_states_t new_state)
 {
-    fire = false;
-    sequencer_state = SEQUENCER_UNINITIALISED;
-}
-
-void set_sequencer_ready(void)
-{
-    sequencer_start_tick = 0u;
-    fire_in_one_start_tick = 0u;
-    fire_start_tick = 0u;
-    first_time_flag = true;
-    checks_good = true;
-    first_time_set = true;
-
-    // Arm all servos
-    can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_ARM, 0xFF);
-
-    // Arm pyro
-    spicy_arm();
-
-    //If burn time has not been set externally, set burntime to avoid very large problems -> not shutting off burn
-    if (!has_burn_time_been_set) {
-        has_burn_time_been_set = set_burn_time(DEFAULT_BURN_TIME);
+    dbg_printf("SEQ: State change %d -> %d\n", sequencer_state, new_state);
+    sequencer_state = new_state;
+    task_list_index = 0;
+    if (new_state == SEQUENCER_COUNTDOWN) {
+        sequencer_start_tick = HAL_GetTick();
     }
+}
 
-    sequencer_state = SEQUENCER_READY;
-    dbg_printf("Sequencer ready\n");
+sequencer_states_t sequencer_get_state(void)
+{
+    return sequencer_state;
+}
+
+void sequencer_fire(uint8_t length)
+{
+    if (length == 0) length = 6;
+    if (sequencer_state == SEQUENCER_READY && length <= 10) {
+        dbg_printf("SEQ: Fire button pushed, countdown begun (burn len = %ds)\n", length);
+        sequencer_set_state(SEQUENCER_COUNTDOWN);
+        burn_time = length * 1000; // Convert to ms
+    }
 }
 
 void sequencer_tick(void)
 {
     switch(sequencer_state){
+
         case SEQUENCER_READY: // Ready and waiting for fire
-        fire = true; //#TODO: For testing ----- remove otherwise bad things will happen!!!!!!!!!! -----
-            if (!both_armed()) {
-                sequencer_state = SEQUENCER_FAILED_START;
-                dbg_printf("Both switches disarmed, moving to sequencer failed start\n");
-
-            } else if (fire) {
-                sequencer_state = SEQUENCER_COUNTDOWN;
-                sequencer_start_tick = HAL_GetTick();
-                dbg_printf("Fire button pushed, contdown begun\n");
-            }
+            // Currently do nothing
             break;
-        
         case SEQUENCER_COUNTDOWN: // Fun things are about to happen, make sure we are ready
-            if(!prefire_ok()) {
-                sequencer_state = SEQUENCER_FAILED_START;
-                dbg_printf("Sequencer not safe, failed start\n");
-
-            } else if (HAL_GetTick() - fire_in_one_start_tick >= 1000u && first_time_flag == false) { //I know this is a magic number but fire_in_one should always be 1 second
-                spicy_open_solenoid(); // Start burn
-                fire_start_tick = HAL_GetTick();
-                sequencer_state = SEQUENCER_FIRE;
-                dbg_printf("Sequencer fire, candle lit\n");
-
-            } else if (HAL_GetTick() - sequencer_start_tick >= COUNTDOWN_TM1_MS) { //T-1
-                //If heartbeat good #TODO: check logging and ematch continuity
-                // if (!heartbeat_all_started()) {
-                //     checks_good = false;
-                //     dbg_printf("T-1, aborted due to bad heartbeat\n");
-                //     fsm_set_state(STATE_ABORT);
-                // }
-
-                if (first_time_flag) {
-                    fire_in_one_start_tick = HAL_GetTick();
-                    first_time_flag = false;
-                    dbg_printf("T-1, fire in one tick set\n");
-                }
-
-                if (checks_good) {
-                    dbg_printf("T-1, all checks good\n");
-                }
-
-            } else if (HAL_GetTick() - sequencer_start_tick >= COUNTDOWN_TM4_MS) { //T-4
-                //Fire ematch 1
-                spicy_fire_ematch1();
-                dbg_printf("T-4, ematch 1 fired\n");
-
-            } else if (HAL_GetTick() - sequencer_start_tick >= COUNTDOWN_TM6_MS) { //T-6
-                //Check system states good (sorry for the immense amount of if statements, will clean into functions once working)
-                //Heartbeat
-                // if (!heartbeat_all_started()) {
-                //     checks_good = false;
-                //     dbg_printf("T-6, aborted due to bad heartbeat\n");
-                //     fsm_set_state(STATE_ABORT);
-                // }
-
-                // //Solenoid position - should be closed at this point
-                // if (spicy_get_solenoid()) {
-                //     checks_good = false;
-                //     dbg_printf("T-6, aborted due to open solenoid\n");
-                //     fsm_set_state(STATE_ABORT);
-                // }
-
-                // //Valve positions - should be vent closed, nitrogen closed, nos A open, nos B open
-                // if (servo_feedback.servoPosCommandedVent != 0) {
-                //     checks_good = false;
-                //     dbg_printf("T-6, aborted due to open vent\n");
-                //     fsm_set_state(STATE_ABORT);
-                // }
-
-                // if (servo_feedback.servoPosCommandedNitrogen != 0) {
-                //     checks_good = false;
-                //     dbg_printf("T-6, aborted due to open nitrogen\n");
-                //     fsm_set_state(STATE_ABORT);
-                // }
-
-                // if (servo_feedback.servoPosCommandedNosA != 1) {
-                //     checks_good = false;
-                //     dbg_printf("T-6, aborted due to closed nos A\n");
-                //     fsm_set_state(STATE_ABORT);
-                // }
-
-                // if (servo_feedback.servoPosCommandedNosB != 1) {
-                //     checks_good = false;
-                //     dbg_printf("T-6, aborted due to closed nos B\n");
-                //     fsm_set_state(STATE_ABORT);
-                // }
-
-                //#TODO: Pressures high enough and within range of each other
-
-                //#TODO: SD card logging good
-
-                if (checks_good) {
-                    dbg_printf("T-6, all checks good\n");
-                }
-
-                dbg_printf("Valves: %d %d %d %d\n", servo_feedback.servoPosCommandedVent, servo_feedback.servoPosCommandedNitrogen, servo_feedback.servoPosCommandedNosA, servo_feedback.servoPosCommandedNosB);
-                // sequencer_state = SEQUENCER_UNINITIALISED;
-
-            } else if (HAL_GetTick() - sequencer_start_tick >= COUNTDOWN_TM10_MS) { //T-10
-                //Open the nitrous valves, close the vent and close the nitrogen
-                if (first_time_set) {
-                    countdown_valve_set();
-                    // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 2 << 6 | 1);
-                    // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 3 << 6 | 1);
-                    spicy_arm();
-                
-                    dbg_printf("T-10, opened nitrous valves, closed nitrogen and vent, armed spicy\n");
-                    first_time_set = false;
-                }
-            }
+            rs422_send_countdown(get_countdown()/1000);
+            countdown_tasks();
             break;
-        
         case SEQUENCER_FIRE: // We are cooking now!
-            if (HAL_GetTick() - fire_start_tick >= COUNTUP_T25_MS + burn_time) { //T+25
-                //Vent close
-                if (servo_feedback.servoPosCommandedVent != 0) {
-                    close_vent();
-                }
-                // close_vent();
-                // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | 0);
-
-                //Pyro disarm
-                spicy_disarm();
-
-                // Disarm all servos
-                can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_ARM, 0xF0);
-
-                dbg_printf("T+25, vent closed, pyro disarmed, all servos disarmed, moving to post fire state\n");
-
-                fsm_set_state(STATE_POST_FIRE);
-
-            } else if (HAL_GetTick() - fire_start_tick >= COUNTUP_T16_MS + burn_time) { //T+16
-                //Vent open
-                if (servo_feedback.servoPosCommandedVent != 1) {
-                    open_vent();
-                }
-                // open_vent();
-                // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | 1);
-
-                dbg_printf("T+16, vent opened\n");
-
-            } else if (HAL_GetTick() - fire_start_tick >= COUNTUP_T15_MS + burn_time) { //T+15
-                spicy_close_solenoid();
-                //Nitrogen closed
-                if (servo_feedback.servoPosCommandedNitrogen != 0) {
-                    close_nitrogen();
-                }
-                // close_nitrogen();
-                // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 1 << 6 | 0);
-
-                dbg_printf("T+15, nitrogen and solenoid closed\n");
-
-            } else if (HAL_GetTick() - fire_start_tick >= COUNTUP_T10_MS + burn_time) { //T+10
-                //Vent close
-                if (servo_feedback.servoPosCommandedVent != 0) {
-                    close_vent();
-                }
-                // close_vent();
-                // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | 0);
-
-                dbg_printf("T+10, vent closed\n");
-
-            } else if (HAL_GetTick() - fire_start_tick >= COUNTUP_T9_MS + burn_time) { //T+9
-                //Nitrogen open
-                if (servo_feedback.servoPosCommandedNitrogen != 1) {
-                    open_nitrogen();
-                }
-                // open_nitrogen();
-                // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 1 << 6 | 1);
-
-                dbg_printf("T+9, nitrogen open\n");
-
-            } else if (HAL_GetTick() - fire_start_tick >= COUNTUP_T8_MS + burn_time) { //T+8
-                //Vent open
-                if (servo_feedback.servoPosCommandedVent != 1) {
-                    open_vent();
-                }
-                // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | 1);
-
-                dbg_printf("T+8, vent open\n");
-
-            } else if (HAL_GetTick() - fire_start_tick >= burn_time) { //T+6
-                //Close solenoid
-                spicy_close_solenoid();
-
-                //Close both nitrous bottles
-                if (servo_feedback.servoPosCommandedNosA != 0 || servo_feedback.servoPosCommandedNosB != 0) {
-                    close_both_nitrous();
-                }
-                // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 2 << 6 | 0);
-                // can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 3 << 6 | 0);
-
-                dbg_printf("T+6, burn finished, closing solenoid and both nitrous bottles\n");
-            } else {
-                //Check heartbeat
-                // if (!heartbeat_all_started()) {
-                //     checks_good = false;
-                //     dbg_printf("Aborted burn due to bad heartbeat\n");
-                //     fsm_set_state(STATE_ABORT);
-                // }
-
-                //#TODO: Check chamber pressures
-
-                if (checks_good) {
-                    dbg_printf("Combustion is happening! Time since ignition: %d seconds\n", (HAL_GetTick() - fire_start_tick) / 1000);
-                }
-            }
+            rs422_send_countdown(get_countdown()/1000);
+            fire_tasks();
             break;
-        
         case SEQUENCER_FAILED_START: // Something went wrong
-            outputs_safe();
-            fsm_set_state(STATE_ERROR);
-            dbg_printf("Sequencer failed start, secured system and moved to error state\n");
+            // Also do nothing here, just waiting for a switch change to pull us back to ready in main FSM
             break;
-
         case SEQUENCER_UNINITIALISED: // Not ready to fire
-            dbg_printf("Sequencer uninitialised\n");
+            // Again, whole lot of nothing. Shouldn't get here now
             break;
-
         default: // How did we even get here???
-            sequencer_state = SEQUENCER_READY;
-            dbg_printf("Sequencer defaulted, moving to sequencer ready\n");
+            sequencer_state = SEQUENCER_FAILED_START;
+            dbg_printf("Sequencer defaulted, moving to failed start\n");
             break;
     }
 }
 
-static void countdown_valve_set(void)
+typedef void (*sequencer_task_fn)(void);
+
+typedef struct sequencer_task {
+    sequencer_task_fn task;
+    int32_t execution_ms;
+} sequencer_task_t;
+
+static void seq_task_tm10_arm(void);
+static void seq_task_tm9_nos_a_b(void);
+static void seq_task_tm6_checks(void);
+static void seq_task_tm5_softarm(void);
+static void seq_task_tm3_ignition(void);
+static void seq_task_tm2_ign_off(void);
+static void seq_task_tm0_solenoid(void);
+
+// Tasks must be in order they will be executed in
+static const sequencer_task_t countdown_task_list[] = {
+    { seq_task_tm10_arm, -10000 },
+    { seq_task_tm9_nos_a_b, -9000 },
+    { seq_task_tm6_checks, -6000 },
+    { seq_task_tm5_softarm, -5000 },
+    { seq_task_tm3_ignition, -3000 },
+    { seq_task_tm2_ign_off, -2000 },
+    { seq_task_tm0_solenoid, 0 },
+};
+
+static void countdown_tasks(void) 
 {
-    //Set the valve positions at the start of the countdown sequence
-    //Vent - Closed
-    can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | 0);
-
-    //Nitrogen - Closed
-    can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 1 << 6 | 0);
-
-    //Nitrous A - Open
-    can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 2 << 6 | 1);
-
-    //Nitrous B - Open
-    can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 3 << 6 | 1);
+    if (get_countdown() >= countdown_task_list[task_list_index].execution_ms) {
+        countdown_task_list[task_list_index++].task();
+    }
 }
 
-static void close_both_nitrous(void)
+static void seq_task_tm10_arm(void)
 {
-    can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 2 << 6 | 0);
-    can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 3 << 6 | 0);
+    dbg_printf("SEQ: T-10 Arming all systems\n");
+    servo_arm_all();
 }
 
-static void open_nitrogen(void)
+static void seq_task_tm9_nos_a_b(void)
 {
-    can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 1 << 6 | 1);
+    servo_set_position(VALVE_NOS_A, SERVO_POSITION_OPEN);
+    servo_set_position(VALVE_NOS_B, SERVO_POSITION_OPEN);
 }
 
-static void close_nitrogen(void)
+static void seq_task_tm6_checks(void)
 {
-    can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 1 << 6 | 0);
+    bool checks_good = true;
+
+    // PLACEHOLDER
+
+    if (checks_good) {
+        dbg_printf("SEQ: T-6 Pre-ignition checks good, go for flamey stuff\n");
+    }
 }
 
-static void open_vent(void)
+static void seq_task_tm5_softarm(void)
 {
-    can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | 1);
+    spicy_arm();
 }
 
-static void close_vent(void)
+static void seq_task_tm3_ignition(void)
 {
-    can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | 0);
+    spicy_fire_ematch1();
+    dbg_printf("SEQ: T-3, ignition sequence started\n");
+}
+
+static void seq_task_tm2_ign_off(void)
+{
+    spicy_off_ematch1();
+    dbg_printf("SEQ: T-2, ignition sequence started\n");
+}
+
+static void seq_task_tm0_solenoid(void)
+{
+    spicy_open_solenoid();
+    sequencer_set_state(SEQUENCER_FIRE);
+}
+
+static void seq_task_tp0_solenoid_nos_close(void);
+static void seq_task_tp1_open_vent(void);
+static void seq_task_tp3_open_nitrogen(void);
+static void seq_task_tp5_close_vent_open_solenoid(void);
+static void seq_task_tp10_close_solenoid_nitrogen(void);
+static void seq_task_tp12_open_vent(void);
+static void seq_task_tp20_close_vent(void);
+
+// Tasks must be in order they will be executed in. Note that the times DO NOT include the burn time, times are after burn completion
+static const sequencer_task_t fire_task_list[] = {
+    { seq_task_tp0_solenoid_nos_close, 0 },
+    { seq_task_tp1_open_vent, 1000 },
+    { seq_task_tp3_open_nitrogen, 3000 },
+    { seq_task_tp5_close_vent_open_solenoid, 5000 },
+    { seq_task_tp10_close_solenoid_nitrogen, 10000 },
+    { seq_task_tp12_open_vent, 12000 },
+    { seq_task_tp20_close_vent, 20000 }
+};
+
+static void fire_tasks(void)
+{
+    if (get_countdown() <= burn_time) {
+        // Can do mid-burn checks here
+    }
+
+    if (get_countdown() >= fire_task_list[task_list_index].execution_ms + burn_time) {
+        fire_task_list[task_list_index++].task();
+    }
+}
+
+static void seq_task_tp0_solenoid_nos_close(void)
+{
+    spicy_close_solenoid();
+    servo_set_position(VALVE_NOS_A, SERVO_POSITION_CLOSE);
+    servo_set_position(VALVE_NOS_B, SERVO_POSITION_CLOSE);
+    dbg_printf("SEQ: T+%d Burn complete, NOS closed\n", burn_time/1000);
+}
+
+static void seq_task_tp1_open_vent(void)
+{
+    servo_set_position(VALVE_VENT, SERVO_POSITION_OPEN);
+    dbg_printf("SEQ: T+%d Vent opened\n", (burn_time + 2000)/1000);
+}
+
+static void seq_task_tp3_open_nitrogen(void)
+{
+    servo_set_position(VALVE_NITROGEN, SERVO_POSITION_OPEN);
+    dbg_printf("SEQ: T+%d Nitrogen opened\n", (burn_time + 3000)/1000);
+}
+
+static void seq_task_tp5_close_vent_open_solenoid(void)
+{
+    servo_set_position(VALVE_VENT, SERVO_POSITION_CLOSE);
+    spicy_open_solenoid();
+    dbg_printf("SEQ: T+%d Vent closed, Solenoid opened\n", (burn_time + 4000)/1000);
+}
+
+static void seq_task_tp10_close_solenoid_nitrogen(void)
+{
+    spicy_close_solenoid();
+    spicy_disarm();
+    servo_set_position(VALVE_NITROGEN, SERVO_POSITION_CLOSE);
+    dbg_printf("SEQ: T+%d Nitrogen and Solenoid closed\n", (burn_time + 10000)/1000);
+}
+
+static void seq_task_tp12_open_vent(void)
+{
+    servo_set_position(VALVE_VENT, SERVO_POSITION_OPEN);
+    dbg_printf("SEQ: T+%d Vent opened\n", (burn_time + 12000)/1000);
+}
+
+static void seq_task_tp20_close_vent(void)
+{
+    servo_set_position(VALVE_VENT, SERVO_POSITION_CLOSE);
+    dbg_printf("SEQ: T+%d Vent closed, sequencer complete\n", (burn_time + 20000)/1000);
+    dbg_printf("SEQ: Time for the pub?\n");
+    sequencer_set_state(SEQUENCER_FAILED_START); // TODO: Probably a more elegant way to handle this
 }
