@@ -103,7 +103,7 @@ void batt_check(void) {
         }
     }
 
-    
+    rs422_send_battery_state(percentage_2s, percentage_6s);
 
     ssd1306_UpdateScreen();
 }

@@ -30,9 +30,12 @@ typedef struct {
 
 void fsm_set_switch_states(uint16_t switches);
 void fsm_set_state(main_states_t new_state);
+main_states_t fsm_get_state(void);
 void fsm_tick(void);
 bool both_armed(void);
 bool prefire_ok(void);
 void outputs_safe(void);
+void fsm_set_error(uint8_t code);
+uint8_t fsm_get_error_code(void);
 
 #endif /* MAIN_FSM_H */

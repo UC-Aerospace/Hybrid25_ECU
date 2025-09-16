@@ -122,7 +122,6 @@ void HAL_FDCAN_RxFifo1Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo1ITs)
 
 void HAL_FDCAN_ErrorCallback(FDCAN_HandleTypeDef *hfdcan)
 {
-    HAL_GPIO_TogglePin(LED_IND_ERROR_GPIO_Port, LED_IND_ERROR_Pin); // Toggle LED2 on error
     uint32_t errorCode = HAL_FDCAN_GetError(hfdcan);
     dbg_printf("FDCAN Error: %08lX\r\n", errorCode);
 }
@@ -235,7 +234,6 @@ void can_service_tx_queue(void) {
             __enable_irq();
         } else {
             dbg_printf("Failed to send CAN frame, possible hardware error.\r\n");
-            HAL_GPIO_TogglePin(LED_IND_ERROR_GPIO_Port, LED_IND_ERROR_Pin); // Toggle LED2 on error
             return;
         }
     }

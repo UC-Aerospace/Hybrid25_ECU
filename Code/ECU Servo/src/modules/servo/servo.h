@@ -81,5 +81,7 @@ void servo_set_position(Servo *servo, uint16_t position);
 void servo_update_positions(void);
 // Sends the current servo positions over CAN
 void servo_send_can_positions(void);
+// Sends the current FSM and servo status over CAN
+void servo_send_status(void);
 
 #endif

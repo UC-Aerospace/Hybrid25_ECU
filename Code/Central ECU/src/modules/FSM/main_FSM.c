@@ -12,6 +12,7 @@
 //==============================
 static volatile main_states_t current_state = STATE_INIT;
 static switch_state_t switch_snapshot = {0};
+static uint8_t error_code = 0; // Last error code
 
 //Functions to write: ------ TODO ------
     //Set state
@@ -163,6 +164,22 @@ void fsm_set_switch_states(uint16_t switches)
     if (ns.changed) {
         switch_snapshot = ns;
     }
+}
+
+main_states_t fsm_get_state(void)
+{
+    return current_state;
+}
+
+void fsm_set_error(uint8_t code)
+{
+    error_code = code;
+    fsm_set_state(STATE_ERROR);
+}
+
+uint8_t fsm_get_error_code(void)
+{
+    return error_code;
 }
 
 //==============================

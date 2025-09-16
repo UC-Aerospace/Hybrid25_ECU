@@ -62,8 +62,8 @@ extern ADC_ChannelConfTypeDef ADC_2S_Config;
 #define SID_SENSOR_MIPA_B (0b00 << 6) | (0b001) << 3 | (0b111) // MIPA B ID at 1000Hz
 
 #define SID_SENSOR_LC_Thrust (0b11 << 6) | (0b000) << 3 | (0b100) // LC Thrust ID at 100Hz
-#define SID_SENSOR_LC_N2O_A (0b11 << 6) | (0b001) << 3 | (0b001) // LC N2O A ID at 10Hz
-#define SID_SENSOR_LC_N2O_B (0b11 << 6) | (0b010) << 3 | (0b001) // LC N2O B ID at 10Hz
+#define SID_SENSOR_LC_N2O_A (0b11 << 6) | (0b001) << 3 | (0b010) // LC N2O A ID at 20Hz
+#define SID_SENSOR_LC_N2O_B (0b11 << 6) | (0b010) << 3 | (0b010) // LC N2O B ID at 20Hz
 
 #define SID_SENSOR_PT_A (0b10 << 6) | (0b000) << 3 | (0b001) // PT A ID at 10Hz
 #define SID_SENSOR_PT_B (0b10 << 6) | (0b001) << 3 | (0b001) // PT B ID at 10Hz

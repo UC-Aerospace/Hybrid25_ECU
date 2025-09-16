@@ -83,7 +83,7 @@ void handle_error_warning(CAN_ErrorWarningFrame* frame, CAN_ID id) {
     switch (actionType) {
         case 0b00: // Immediate shutdown
             dbg_printf("Immediate Shutdown: initiator=%d, why=%d\n", initiator, frame->why);
-            // Handle immediate shutdown
+            fsm_set_error(frame->why); // Set FSM to error state with code
             break;
         case 0b01: // Error Notification
             dbg_printf("Error Notification: initiator=%d, why=%d\n", initiator, frame->why);
@@ -274,7 +274,17 @@ void handle_adc_data(CAN_ADCFrame* frame, CAN_ID id, uint8_t dataLength) {
 
 void handle_status(CAN_StatusFrame* frame, CAN_ID id) {
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
-    //TODO: Handle this
+    if (initiator == BOARD_ID_SERVO) {
+        // Update servo status
+        servo_status_update(frame->state, frame->substate);
+        dbg_printf("Status Frame: initiator=SERVO, main_state=%d, substate=%d, remote_timestamp=%lu\n",
+                   frame->state, frame->substate, frame->timestamp[0] << 16 | frame->timestamp[1] << 8 | frame->timestamp[2]);
+    } else if (initiator == BOARD_ID_ADC_A) {
+        // Could update ADC board status here if needed
+    } else {
+        dbg_printf("Status Frame: initiator=%d, main_state=%d, substate=%d\n",
+                   initiator, frame->state, frame->substate);
+    }
 }
 
 void handle_heatbeat(CAN_HeartbeatFrame* frame, CAN_ID id, uint32_t timestamp) {

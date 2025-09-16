@@ -57,7 +57,6 @@ void app_init(void) {
     } else {
         // Unrecognized device, handle error
         dbg_printf("Unrecognized device UID: %08lX %08lX %08lX\r\n", uid[0], uid[1], uid[2]);
-        HAL_GPIO_WritePin(LED_IND_ERROR_GPIO_Port, LED_IND_ERROR_Pin, GPIO_PIN_SET); // Set error LED
         setup_panic(2);
     }
 
@@ -70,29 +69,33 @@ void app_init(void) {
     // Initialise the ADC functionality
     HAL_ADCEx_Calibration_Start(&hadc1);
 
-    // Initialize ADS124S08
-    if (ads124_init() != HAL_OK) {
+    // Start the ADC
+    if (!adc_start()) {
         setup_panic(3);
     }
 
-    // // Start conversions
-    if (!adc_start()) {
+    delay_ms(30); // Wait for ADC to stabilize
+
+    adc_get_NTC_temp(); // Force an update of the CJT temperature for thermocouple correction
+
+    // Initialize ADS124S08
+    if (ads124_init() != HAL_OK) {
         setup_panic(4);
     }
 
     // Initialise the PTE7300 Pressure Sensors
-    bool stat_a = PTE7300_Init(&hpte7300_A, &hi2c1, SID_SENSOR_PT_A);
-    bool stat_b = PTE7300_Init(&hpte7300_B, &hi2c2, SID_SENSOR_PT_B);
-    bool stat_c = PTE7300_Init(&hpte7300_C, &hi2c3, SID_SENSOR_PT_C);
+    // bool stat_a = PTE7300_Init(&hpte7300_A, &hi2c1, SID_SENSOR_PT_A);
+    // bool stat_b = PTE7300_Init(&hpte7300_B, &hi2c2, SID_SENSOR_PT_B);
+    // bool stat_c = PTE7300_Init(&hpte7300_C, &hi2c3, SID_SENSOR_PT_C);
 
-    if (!stat_a || !stat_b || !stat_c) {
-        setup_panic(5);
-    }
+    // if (!stat_a || !stat_b || !stat_c) {
+    //     setup_panic(5);
+    // }
 
     can_buffer_init(&cjt_buffer, SID_SENSOR_CJT, BUFF_SIZE_CJT); // Initialize the buffer with a length of 4
-    // can_buffer_init(&test_buffer_A, SID_SENSOR_PT_A, BUFF_SIZE_PT); // Initialize the buffer with a length of 10
-    // can_buffer_init(&test_buffer_B, SID_SENSOR_PT_B, BUFF_SIZE_PT); // Initialize the buffer with a length of 10
-    // can_buffer_init(&test_buffer_C, SID_SENSOR_PT_C, BUFF_SIZE_PT); // Initialize the buffer with a length of 10
+    can_buffer_init(&test_buffer_A, SID_SENSOR_PT_A, BUFF_SIZE_PT); // Initialize the buffer with a length of 10
+    can_buffer_init(&test_buffer_B, SID_SENSOR_PT_B, BUFF_SIZE_PT); // Initialize the buffer with a length of 10
+    can_buffer_init(&test_buffer_C, SID_SENSOR_PT_C, BUFF_SIZE_PT); // Initialize the buffer with a length of 10
 }
 
 void task_toggle_status_led(void) {
@@ -146,8 +149,8 @@ void app_run(void) {
         //{0, 1000, task_update_battery_voltage},    // Battery voltage reading every 1000 ms
         {0, 500, task_update_NTC_temperature},         // Temperature reading every 500 ms
         {0, 500, task_toggle_status_led},         // LED toggle every 500 ms
-        {0, 100, task_sample_pte7300},            // Sample PTE7300 sensors every 100 ms
-        //{0, 100, test_spoof_pte7300_read},
+        // {0, 100, task_sample_pte7300},            // Sample PTE7300 sensors every 100 ms
+        {0, 100, test_spoof_pte7300_read},
         {0, 500, task_send_heartbeat},              // Send heartbeat every 500 ms
         {0, 300, task_poll_can_handlers},            // Poll CAN handlers every 300 ms
         {0, 1, can_service_tx_queue}                // Service CAN TX queue every 1 ms

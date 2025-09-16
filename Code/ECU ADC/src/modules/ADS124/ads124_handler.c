@@ -11,6 +11,7 @@ can_buffer_t thermo_a_buffer;
 can_buffer_t thermo_b_buffer;
 can_buffer_t thermo_c_buffer;
 
+static int16_t cjt_correction = 0; // Cold Junction Temperature correction in adc counts
 
 // Setup the scanning sequence
 ads124_channel_conf_t scan_seq[10] = {
@@ -102,6 +103,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
     }
 }
 
+void ads124_set_cjt_correction(int16_t correction)
+{
+    cjt_correction = correction;
+}
+
 static void ads124_conversion_tick(void)
 {
     static uint8_t current_conv_index = 0;
@@ -116,6 +122,11 @@ static void ads124_conversion_tick(void)
 
     // Concatenate the result to 16 bits
     conversion_result = (conversion_result >> 8) & 0xFFFF; // Keep only the 16 MSBits
+
+    // If thermocouple (determined by internal reference usage), apply cjt correction
+    if (scan_seq[current_conv_index].use_internal_ref) {
+        conversion_result += cjt_correction;
+    }
 
     // Put result onto the buffer based on the current channel
     can_buffer_push(scan_seq[current_conv_index].buffer, (int16_t)conversion_result);

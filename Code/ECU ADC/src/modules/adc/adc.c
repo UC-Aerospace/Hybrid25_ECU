@@ -1,6 +1,7 @@
 #include "adc.h"
 #include "debug_io.h"
 #include "can.h"
+#include "ads124_handler.h"
 
 static uint16_t adc_buffer[ADC_DOUBLE_BUFFER_SIZE][ADC_NUMBER_CHANNELS];
 static bool buffer_write_first_half = true;
@@ -51,8 +52,27 @@ int16_t adc_get_NTC_temp()
         miliVolts = adc_buffer[0][ADC_CHANNEL_CJT] * ADC_mV_FACTOR;
     }
     // Convert mV to temperature in 100*Celsius
-    return (int16_t)(5604.29 - 1.8764 * miliVolts); // FIXME: Magic numbers
+    int16_t temp = (int16_t)(5604.29 - 1.8764 * miliVolts);
+    adc_update_cj_correction(temp); // Update the CJT correction for thermocouples
+    return temp;
+}
 
+#define A5 -1.53240117e-19
+#define A4  1.52238305e-14
+#define A3 -5.09008467e-10
+#define A2  6.43706573e-06
+#define A1  6.61009312e-01
+#define A0 -9.21373426e+00
+
+static inline float poly5_eval(int16_t T) {
+    // Use Horners method to evaluate polynomial
+    return (((((A5 * T + A4) * T + A3) * T + A2) * T + A1) * T + A0);
+}
+
+void adc_update_cj_correction(int16_t cj_temp)
+{    
+    float cj_adc_count = poly5_eval(cj_temp);
+    ads124_set_cjt_correction((int16_t)cj_adc_count);
 }
 
 void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef* hadc)

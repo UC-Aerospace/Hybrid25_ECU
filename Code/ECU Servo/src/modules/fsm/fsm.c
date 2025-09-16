@@ -98,6 +98,7 @@ static void fsm_transition(fsm_state_t next) {
     dbg_printf("FSM: %s -> %s\r\n", cur->name, dst->name);
     currentState = next;
     if (dst->on_enter) dst->on_enter();
+    servo_send_status(); // Update status on any state change
 }
 
 //------------------------------
@@ -201,7 +202,7 @@ static void moving_tick(void) {
     uint32_t elapsed = HAL_GetTick() - move_start_ms;
     if (elapsed > MAX_MOVE_DURATION) {
         servo_queue_complete(false); // will set error etc.
-        fsm_transition(STATE_READY); //TODO: change back
+        fsm_transition(STATE_ERROR);
     }
 }
 
@@ -213,7 +214,7 @@ static void moving_event(fsm_event_t e) {
             break;
         case FSM_EVENT_MOVE_COMPLETE_FAIL:
             servo_queue_complete(false);
-            fsm_transition(STATE_READY); //TODO: change back
+            fsm_transition(STATE_ERROR);
             break;
         case FSM_EVENT_EXTERNAL_DISARM:
             // External disarm request while moving -> treat as fail/cancel

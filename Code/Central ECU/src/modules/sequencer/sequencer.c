@@ -8,7 +8,7 @@
 #include "rs422.h"
 #include "servo.h"
 
-#define COUNTDOWN_START_MS 10000
+#define COUNTDOWN_START_MS 20000
 
 static sequencer_states_t sequencer_state = SEQUENCER_UNINITIALISED;
 static uint32_t sequencer_start_tick = 0u;

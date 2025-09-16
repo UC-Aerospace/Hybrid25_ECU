@@ -30,5 +30,6 @@ HAL_StatusTypeDef ads124_set_pga_gain(uint8_t gain);
 HAL_StatusTypeDef ads124_set_conversion_mode(uint8_t mode);
 HAL_StatusTypeDef ads124_set_data_rate(uint8_t data_rate);
 HAL_StatusTypeDef ads124_set_low_latency_filter(bool useLowLat);
+void ads124_set_cjt_correction(int16_t correction);
 
 #endif // ADS124_HANDLER_H

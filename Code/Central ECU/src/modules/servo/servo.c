@@ -3,6 +3,7 @@
 #include "debug_io.h"
 
 static servo_feedback_t states[4];
+static servo_status_u servo_status;
 
 void servo_update(servo_feedback_t feedback[4])
 {
@@ -59,4 +60,14 @@ bool servo_helper_check_all_closed(void)
         }
     }
     return true;
+}
+
+void servo_status_update(uint8_t main_state, uint8_t substates)
+{
+    servo_status.raw = (servo_state_t) (main_state << 8 | substates);
+}
+
+void servo_status_get(servo_status_u* status)
+{
+    *status = servo_status;
 }

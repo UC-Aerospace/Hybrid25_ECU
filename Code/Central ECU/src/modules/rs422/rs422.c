@@ -3,6 +3,9 @@
 #include "config.h"
 #include "debug_io.h"
 #include "spicy.h"
+#include "sequencer.h"
+#include "main_FSM.h"
+#include "servo.h"
 
 // Global buffers for DMA operations
 RS422_TxBuffer_t tx_buffer = {0}; // Initialize circular buffer for transmission
@@ -251,4 +254,29 @@ bool rs422_send_data(const uint8_t *data, uint8_t size, RS422_FrameType_t frame_
 bool rs422_send_countdown(int8_t countdown)
 {
     return (rs422_send((uint8_t*)&countdown, 1, RS422_FRAME_COUNTDOWN) == HAL_OK);
+}
+
+bool rs422_send_heartbeat(void)
+{
+    uint8_t heartbeat_msb = 0;
+    uint8_t fsm_state = fsm_get_state();
+    if (fsm_state == STATE_SEQUENCER) {
+        heartbeat_msb = fsm_state << 4 | (uint8_t)sequencer_get_state();
+    } else if (fsm_state == STATE_ERROR) {
+        heartbeat_msb = fsm_state << 4 | fsm_get_error_code(); // Send last error code in lower nibble
+    } else {
+        heartbeat_msb = fsm_state << 4; // Other states have no sub-state
+    }
+    servo_status_u servo_status;
+    servo_status_get(&servo_status);
+    uint8_t heartbeat_lsb = (servo_status.status.mainState & 0x03) << 6;
+    uint8_t heartbeat [2] = {heartbeat_msb, heartbeat_lsb};
+    bool result = (rs422_send(heartbeat, 2, RS422_FRAME_HEARTBEAT) == HAL_OK);
+    return result;
+}
+
+bool rs422_send_battery_state(uint8_t percent_2s, uint8_t percent_6s)
+{
+    uint8_t battery_state [2] = {percent_2s, percent_6s};
+    return (rs422_send(battery_state, 2, RS422_BATTERY_VOLTAGE_FRAME) == HAL_OK);
 }
