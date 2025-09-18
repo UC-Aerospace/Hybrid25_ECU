@@ -1,6 +1,7 @@
 #include "can.h"
 #include "debug_io.h"
 #include "can_handlers.h"
+#include "error_def.h"
 
 // Hardware TX header (used transiently when dequeuing)
 FDCAN_TxHeaderTypeDef TxHeader;
@@ -47,9 +48,13 @@ static inline uint8_t bytesToDLC(uint8_t bytes) {
 
 void CAN_Error_Handler(void)
 {
-    // TODO: Handle this properly
-    dbg_printf("CAN Error occurred!\r\n");
-    while (1);
+    static uint32_t last_notify = 0;
+    uint32_t now = HAL_GetTick();
+    dbg_printf("CAN: Error occurred!\n");
+    if (now - last_notify > 2000) { // Notify at most once every 2 seconds, prevent flooding bus
+        last_notify = now;
+        can_send_error_warning(CAN_NODE_TYPE_BROADCAST, CAN_NODE_ADDR_BROADCAST, CAN_ERROR_ACTION_ERROR, GENERIC_CAN_ERROR);
+    }
 }
 
 // RX FIFO0 is reserved for high priority messages
@@ -88,7 +93,7 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
             handle_command((CAN_CommandFrame*)frame.data, id);
             break;
         default:
-            dbg_printf("Frame type can't be parsed with high priority: %d\r\n", id.frameType);
+            dbg_printf("CAN: Frame type can't be parsed with high priority: %d\r\n", id.frameType);
             enqueue_can_frame(&frame);
             break;
     }

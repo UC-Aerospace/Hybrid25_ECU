@@ -14,6 +14,9 @@ extern USBD_HandleTypeDef hUsbDeviceFS;
 
 void dbg_printf(const char *fmt, ...)
 {
+    #ifndef TEST_MODE
+    return; // Disable debug output in non-test modes
+    #endif
     va_list args;
     va_start(args, fmt);
     vsnprintf(dbg_buf, sizeof(dbg_buf), fmt, args);

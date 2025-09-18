@@ -18,7 +18,7 @@ bool PTE7300_Init(PTE7300_HandleTypeDef *hpte7300, I2C_HandleTypeDef *hi2c, uint
     return true;
 }
 
-void PTE7300_sample_to_buffer(PTE7300_HandleTypeDef *hpte7300) {
+bool PTE7300_sample_to_buffer(PTE7300_HandleTypeDef *hpte7300) {
 
     // Read the pressure sample from the PTE7300 at register 0x30
     // PTE7300 uses 16-bit registers and sends low byte first, then high byte
@@ -27,7 +27,7 @@ void PTE7300_sample_to_buffer(PTE7300_HandleTypeDef *hpte7300) {
     HAL_StatusTypeDef status = HAL_I2C_Mem_Read(&hpte7300->hi2c, PTE7300_I2C_ADDR << 1, reg, I2C_MEMADD_SIZE_8BIT, pressure_bytes, sizeof(pressure_bytes), HAL_MAX_DELAY);
     if (status != HAL_OK) {
         dbg_printf("PTE7300: Failed to read pressure sample\r\n");
-        return;
+        return false;
     }
 
     // Read the temperature sample from the PTE7300
@@ -36,7 +36,7 @@ void PTE7300_sample_to_buffer(PTE7300_HandleTypeDef *hpte7300) {
     status = HAL_I2C_Mem_Read(&hpte7300->hi2c, PTE7300_I2C_ADDR << 1, reg, I2C_MEMADD_SIZE_8BIT, temperature_bytes, sizeof(temperature_bytes), HAL_MAX_DELAY);
     if (status != HAL_OK) {
         dbg_printf("PTE7300: Failed to read temperature sample\r\n");
-        return;
+        return false;
     }
 
     // Combine bytes: PTE7300 sends low byte first, then high byte (little-endian)
@@ -45,4 +45,5 @@ void PTE7300_sample_to_buffer(PTE7300_HandleTypeDef *hpte7300) {
     
     can_buffer_push(&hpte7300->buffer, pressure);
     can_buffer_push(&hpte7300->buffer, temperature);
+    return true;
 }

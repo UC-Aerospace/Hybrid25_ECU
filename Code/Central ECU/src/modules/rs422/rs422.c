@@ -57,19 +57,49 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
     }
 }
 
+// Robustly restart the RX path using the same Rx-to-IDLE DMA mode as init
+static void rs422_restart_rx(UART_HandleTypeDef *huart)
+{
+    // Stop any ongoing RX and associated DMA to reset HAL state machine
+    HAL_UART_AbortReceive(huart);
+    HAL_UART_DMAStop(huart);
+
+    // Clear UART error flags
+    __HAL_UART_CLEAR_FLAG(huart, UART_CLEAR_OREF | UART_CLEAR_NEF |
+                                 UART_CLEAR_PEF  | UART_CLEAR_FEF);
+
+    // Reset software buffer indices to avoid misaligned parsing
+    rx_buffer.read_pos = 0;
+    rx_buffer.write_pos = 0;
+
+    // Re-arm Rx-to-IDLE reception (use same mode as rs422_init)
+    HAL_StatusTypeDef st = HAL_UARTEx_ReceiveToIdle_DMA(
+        huart,
+        (uint8_t*)rx_buffer.buffer, // cast away volatile for HAL API
+        RS422_RX_BUFFER_SIZE
+    );
+
+    // We rely on IDLE events, not DMA HT/TC
+    if (huart->hdmarx) {
+        __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
+        __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_TC);
+    }
+
+    if (st != HAL_OK) {
+        dbg_printf("RS422: RX restart failed (status %d)\r\n", st);
+    } else {
+        dbg_printf("RS422: RX restarted after error\r\n");
+    }
+}
+
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
 {
     // TODO: Test if this actually correctly restart the RS422 link. Also could abort on RS422 error.
     if (huart->Instance == USART1) {
-        extern void dbg_printf(const char* format, ...);
         dbg_printf("RS422 UART Error: 0x%08lX\r\n", huart->ErrorCode);
-        
-        // Clear error flags and restart DMA
-        __HAL_UART_CLEAR_FLAG(huart, UART_CLEAR_OREF | UART_CLEAR_NEF | 
-                             UART_CLEAR_PEF | UART_CLEAR_FEF);
-        
-        // Restart RX DMA
-        HAL_UART_Receive_DMA(huart, rx_buffer.buffer, RS422_RX_BUFFER_SIZE);
+
+        // Fully reset and re-arm the RX path in the same mode as init
+        rs422_restart_rx(huart);
     }
 }
 
@@ -94,7 +124,7 @@ bool rs422_init(UART_HandleTypeDef *huart)
     // Start continuous DMA reception
     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_TC);
-    HAL_StatusTypeDef status = HAL_UARTEx_ReceiveToIdle_DMA(huart, rx_buffer.buffer, RS422_RX_BUFFER_SIZE);
+    HAL_StatusTypeDef status = HAL_UARTEx_ReceiveToIdle_DMA(huart, (uint8_t*)rx_buffer.buffer, RS422_RX_BUFFER_SIZE);
 
     // Debug output
     if (status == HAL_OK) {

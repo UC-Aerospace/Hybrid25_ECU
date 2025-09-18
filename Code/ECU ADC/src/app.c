@@ -7,6 +7,7 @@
 #include "pte7300.h"
 #include "can_handlers.h"
 #include "can_buffer.h"
+#include "error_def.h"
 
 uint8_t BOARD_ID = 0;
 PTE7300_HandleTypeDef hpte7300_A;
@@ -84,18 +85,23 @@ void app_init(void) {
     }
 
     // Initialise the PTE7300 Pressure Sensors
-    // bool stat_a = PTE7300_Init(&hpte7300_A, &hi2c1, SID_SENSOR_PT_A);
-    // bool stat_b = PTE7300_Init(&hpte7300_B, &hi2c2, SID_SENSOR_PT_B);
-    // bool stat_c = PTE7300_Init(&hpte7300_C, &hi2c3, SID_SENSOR_PT_C);
+    #ifndef TEST_MODE
+    bool stat_a = PTE7300_Init(&hpte7300_A, &hi2c1, SID_SENSOR_PT_A);
+    bool stat_b = PTE7300_Init(&hpte7300_B, &hi2c2, SID_SENSOR_PT_B);
+    bool stat_c = PTE7300_Init(&hpte7300_C, &hi2c3, SID_SENSOR_PT_C);
 
-    // if (!stat_a || !stat_b || !stat_c) {
-    //     setup_panic(5);
-    // }
+    if (!stat_a || !stat_b || !stat_c) {
+        setup_panic(5);
+    }
+    #endif
 
     can_buffer_init(&cjt_buffer, SID_SENSOR_CJT, BUFF_SIZE_CJT); // Initialize the buffer with a length of 4
+
+    #ifdef TEST_MODE // Test buffers only for when spoofing data
     can_buffer_init(&test_buffer_A, SID_SENSOR_PT_A, BUFF_SIZE_PT); // Initialize the buffer with a length of 10
     can_buffer_init(&test_buffer_B, SID_SENSOR_PT_B, BUFF_SIZE_PT); // Initialize the buffer with a length of 10
     can_buffer_init(&test_buffer_C, SID_SENSOR_PT_C, BUFF_SIZE_PT); // Initialize the buffer with a length of 10
+    #endif
 }
 
 void task_toggle_status_led(void) {
@@ -103,25 +109,23 @@ void task_toggle_status_led(void) {
     HAL_GPIO_TogglePin(LED_IND_STATUS_GPIO_Port, LED_IND_STATUS_Pin);
 }
 
-void task_update_battery_voltage(void) {
-    // Read and update the battery voltage
-    voltage = adc_get_batt_voltage();
-    dbg_printf("Battery Voltage: %d mV\r\n", voltage);
-}
-
 void task_update_NTC_temperature(void) {
     // Read and update the NTC temperature
     cjt_temp = adc_get_NTC_temp();
     dbg_printf("NTC Temperature: %d C\r\n", cjt_temp);
     can_buffer_push(&cjt_buffer, cjt_temp);
-    // TODO: Rather than TX should convert to a thermocouple voltage and apply as a correction term.
 }
 
 void task_sample_pte7300(void) {
     // Sample the PTE7300 pressure sensors
-    PTE7300_sample_to_buffer(&hpte7300_A);
-    PTE7300_sample_to_buffer(&hpte7300_B);
-    PTE7300_sample_to_buffer(&hpte7300_C);
+    bool success = true;
+    success &= PTE7300_sample_to_buffer(&hpte7300_A);
+    success &= PTE7300_sample_to_buffer(&hpte7300_B);
+    success &= PTE7300_sample_to_buffer(&hpte7300_C);
+    if (!success) {
+        dbg_printf("Error sampling PTE7300 sensors\r\n");
+        can_send_error_warning(CAN_NODE_TYPE_CENTRAL, CAN_NODE_ADDR_CENTRAL, CAN_ERROR_ACTION_ERROR, ADC_ERROR_FAIL_READ_PTE7300);
+    }
 }
 
 void task_poll_can_handlers(void) {
@@ -146,10 +150,13 @@ void test_spoof_pte7300_read(void) {
 void app_run(void) {
     // Define tasks
     Task tasks[] = {
-        //{0, 1000, task_update_battery_voltage},    // Battery voltage reading every 1000 ms
         {0, 500, task_update_NTC_temperature},         // Temperature reading every 500 ms
         {0, 500, task_toggle_status_led},         // LED toggle every 500 ms
-        // {0, 100, task_sample_pte7300},            // Sample PTE7300 sensors every 100 ms
+        #ifndef TEST_MODE
+        {0, 100, task_sample_pte7300},            // Sample PTE7300 sensors every 100 ms
+        #else
+        {0, 100, test_spoof_pte7300_read},            // Sample PTE7300 sensors every 100 ms
+        #endif
         {0, 100, test_spoof_pte7300_read},
         {0, 500, task_send_heartbeat},              // Send heartbeat every 500 ms
         {0, 300, task_poll_can_handlers},            // Poll CAN handlers every 300 ms

@@ -9,6 +9,13 @@
 #define BOARD_TYPE_ADC
 extern uint8_t BOARD_ID;
 
+#define TEST_MODE // TODO: Remove before production
+
+#define BOARD_ID_RIU 0
+#define BOARD_ID_ECU 1
+#define BOARD_ID_SERVO 2
+#define BOARD_ID_ADC_A 3
+
 // Pinout configuration
 
 #define CJT_A0_Pin GPIO_PIN_0
