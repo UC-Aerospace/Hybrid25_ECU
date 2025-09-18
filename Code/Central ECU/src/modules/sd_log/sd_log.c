@@ -208,7 +208,7 @@ static bool open_file_path(FIL* file, const char* path, BYTE mode) {
     return res == FR_OK;
 }
 
-bool sd_log_init(void) {
+bool sd_log_init(uint8_t log_mb, uint8_t sens_mb) {
     FRESULT res;
     
     // Mount the file system
@@ -238,9 +238,9 @@ bool sd_log_init(void) {
         return false;
     }
 
-    // Preallocate 2Mb to log.txt and 10Mb to sensors.raw using sd_preallocate_extra
-    sd_preallocate_extra(&log_file, 2 * 1024 * 1024);
-    sd_preallocate_extra(&sensors_file, 10 * 1024 * 1024);
+    // Preallocate log_mb to log.txt and sens_mb to sensors.raw using sd_preallocate_extra
+    sd_preallocate_extra(&log_file, log_mb * 1024 * 1024);
+    sd_preallocate_extra(&sensors_file, sens_mb * 1024 * 1024);
     // TODO: During write check extra space remaining and allocate more if neccessary. At 5kB/s, 10Mb should be good for 33 minutes.
 
     is_initialized = true;

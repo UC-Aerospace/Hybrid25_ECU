@@ -36,6 +36,7 @@ bool both_armed(void);
 bool prefire_ok(void);
 void outputs_safe(void);
 void fsm_set_error(uint8_t code);
+void fsm_set_abort(uint8_t code);
 uint8_t fsm_get_error_code(void);
 
 #endif /* MAIN_FSM_H */

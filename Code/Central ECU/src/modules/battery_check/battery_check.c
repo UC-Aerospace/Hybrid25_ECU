@@ -2,6 +2,7 @@
 #include "debug_io.h"
 #include "ssd1306.h"
 #include "ssd1306_fonts.h"
+#include "rs422_handler.h"
 
 ADC_ChannelConfTypeDef ADC_6S_Config = {
     .Channel = ADC_CHANNEL_0,

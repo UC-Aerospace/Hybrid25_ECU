@@ -14,24 +14,35 @@ void spicy_init(void)
 
 bool spicy_checks(void)
 {
-    // Placeholder for now, will check all the conditions for firing
+    // TODO: Just do basic checks here, states and such should be confirmed before getting here
+
+    // Check if ESTOP (interlock) is not pressed
+    if (!comp_get_interlock()) {
+        dbg_printf("SPICY: Interlock not engaged\n");
+        return false;
+    }
     return true;
 }
 
 // SOFT ARM COMMANDS
 
-void spicy_arm(void)
+bool spicy_arm(void)
 {
     if (spicy_checks()) {
         HAL_GPIO_WritePin(ARM_HS_GPIO_Port, ARM_HS_Pin, GPIO_PIN_SET);
+        dbg_printf("SPICY: Arm Set\n");
+        return true;
     } else {
-        dbg_printf("Spicy checks failed, not arming\n");
+        dbg_printf("SPICY: Arm Fail\n");
+        return false;
     }
 }
 
-void spicy_disarm(void)
+bool spicy_disarm(void)
 {
     HAL_GPIO_WritePin(ARM_HS_GPIO_Port, ARM_HS_Pin, GPIO_PIN_RESET);
+    dbg_printf("SPICY: Arm Cleared\n");
+    return true;
 }
 
 bool spicy_get_arm(void)
@@ -79,20 +90,23 @@ bool hss_get_PGOOD(void)
 
 // FIRE COMMANDS
 
-void spicy_open_solenoid(void) 
+bool spicy_open_solenoid(void) 
 {
     if (spicy_checks()) {
         HAL_GPIO_WritePin(OX_FIRE_GPIO_Port, OX_FIRE_Pin, GPIO_PIN_SET);
-        dbg_printf("Opened ox\n");
+        dbg_printf("SPICY: Opened Solenoid\n");
+        return true;
     } else {
-        dbg_printf("Spicy checks failed, not opening ox\n");
+        dbg_printf("SPICY: Open Solenoid Check Fail\n");
+        return false;
     }
 }
 
-void spicy_close_solenoid(void)
+bool spicy_close_solenoid(void)
 {
     HAL_GPIO_WritePin(OX_FIRE_GPIO_Port, OX_FIRE_Pin, GPIO_PIN_RESET);
-    dbg_printf("Closed ox\n");
+    dbg_printf("SPICY: Closed Solenoid\n");
+    return true;
 }
 
 bool spicy_get_solenoid(void)
@@ -100,30 +114,40 @@ bool spicy_get_solenoid(void)
     return HAL_GPIO_ReadPin(OX_FIRE_GPIO_Port, OX_FIRE_Pin);
 }
 
-void spicy_fire_ematch1(void)
+bool spicy_fire_ematch1(void)
 {
     if (spicy_checks()) {
         HAL_GPIO_WritePin(EMATCH1_FIRE_GPIO_Port, EMATCH1_FIRE_Pin, GPIO_PIN_SET);
+        dbg_printf("SPICY: Fired Ematch1\n");
+        return true;
     } else {
-        dbg_printf("Spicy checks failed, not firing ematch1\n");
+        dbg_printf("SPICY: Fire Ematch1 Checks Fail\n");
+        return false;
     }
 }
 
-void spicy_off_ematch1(void)
+bool spicy_off_ematch1(void)
 {
     HAL_GPIO_WritePin(EMATCH1_FIRE_GPIO_Port, EMATCH1_FIRE_Pin, GPIO_PIN_RESET);
+    dbg_printf("SPICY: Ematch1 Off\n");
+    return true;
 }
 
-void spicy_fire_ematch2(void)
+bool spicy_fire_ematch2(void)
 {
     if (spicy_checks()) {
         HAL_GPIO_WritePin(EMATCH2_FIRE_GPIO_Port, EMATCH2_FIRE_Pin, GPIO_PIN_SET);
+        dbg_printf("SPICY: Fired Ematch2\n");
+        return true;
     } else {
-        dbg_printf("Spicy checks failed, not firing ematch2\n");
+        dbg_printf("SPICY: Fire Ematch2 Checks Fail\n");
+        return false;
     }
 }
 
-void spicy_off_ematch2(void)
+bool spicy_off_ematch2(void)
 {
     HAL_GPIO_WritePin(EMATCH2_FIRE_GPIO_Port, EMATCH2_FIRE_Pin, GPIO_PIN_RESET);
+    dbg_printf("SPICY: Ematch2 Off\n");
+    return true;
 }

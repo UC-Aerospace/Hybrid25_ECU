@@ -6,6 +6,7 @@
 #include "manual_solenoid.h"
 #include "manual_valve.h"
 #include "servo.h"
+#include "heartbeat.h"
 
 //==============================
 // Internal state variables
@@ -177,6 +178,12 @@ void fsm_set_error(uint8_t code)
     fsm_set_state(STATE_ERROR);
 }
 
+void fsm_set_abort(uint8_t code)
+{
+    error_code = code;
+    fsm_set_state(STATE_ABORT);
+}
+
 uint8_t fsm_get_error_code(void)
 {
     return error_code;
@@ -200,9 +207,17 @@ static void s_init_exit(void)
 static void s_init_tick(void)
 {
     // TODO: Wait for RIU heartbeat
-
+    if (heartbeat_all_started()) {
+        dbg_printf("MAINFSM INIT: All heartbeats good, moving to ready state\n");
+    } else {
+        // Still waiting for heartbeats
+        return;
+    }
+    
     // Temporary just go to ready
+    #ifdef TEST_MODE
     fsm_set_state(STATE_READY);
+    #endif
 }
 
 //==============================

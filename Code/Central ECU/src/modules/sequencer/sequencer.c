@@ -7,6 +7,8 @@
 #include "manual_valve.h"
 #include "rs422.h"
 #include "servo.h"
+#include "rs422.h"
+#include "error_def.h"
 
 #define COUNTDOWN_START_MS 20000
 
@@ -43,6 +45,9 @@ void sequencer_fire(uint8_t length)
 {
     if (length == 0) length = 6;
     if (sequencer_state == SEQUENCER_READY && length <= 10) {
+        char msg[6];
+        snprintf(msg, sizeof(msg), "CFL:%d", length);
+        rs422_send_string_message(msg, strlen(msg));
         dbg_printf("SEQ: Fire button pushed, countdown begun (burn len = %ds)\n", length);
         sequencer_set_state(SEQUENCER_COUNTDOWN);
         burn_time = length * 1000; // Convert to ms
@@ -126,16 +131,29 @@ static void seq_task_tm6_checks(void)
 {
     bool checks_good = true;
 
-    // PLACEHOLDER
+    // TODO: Actually populate these checks
+    // Should check:
+    // 1) Reported valve positions are as expected
+    // 2) ESTOP is released
+    // 3) Continuity on ignitor 1
+    // 4) Mainline pressure > 30 bar
+    // 5) Status good on all peripherals
+    // 6) Logging good
 
     if (checks_good) {
         dbg_printf("SEQ: T-6 Pre-ignition checks good, go for flamey stuff\n");
+    } else {
+        dbg_printf("SEQ: T-6 Pre-ignition checks failed, aborting\n");
+        fsm_set_abort(ECU_ERROR_PREFIRE_CHECKS_FAIL);
     }
 }
 
 static void seq_task_tm5_softarm(void)
 {
-    spicy_arm();
+    bool stat = spicy_arm();
+    if (!stat) {
+        fsm_set_abort(ECU_ERROR_ARM_FAIL);
+    }
 }
 
 static void seq_task_tm3_ignition(void)

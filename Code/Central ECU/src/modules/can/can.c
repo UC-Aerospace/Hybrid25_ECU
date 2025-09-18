@@ -28,7 +28,6 @@ static volatile uint32_t can_tx_dropped = 0; // Diagnostic: messages dropped due
 // Forward declaration
 static bool can_tx_queue_push(const FDCAN_TxHeaderTypeDef *hdr, const uint8_t *data, uint8_t raw_len);
 void can_service_tx_queue(void);
-uint16_t test_counter = 0;
 
 // Convert FDCAN Data Length Code (DLC) to byte count
 static const uint8_t DLCtoBytes[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 12, 16, 20, 24, 32, 48, 64};
@@ -60,6 +59,7 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
   if((RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) != RESET)
   {
     CAN_Frame_t frame;
+    uint32_t timestamp = HAL_GetTick();
     /* Retreive Rx messages from RX FIFO0 */
     if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &RxHeader, frame.data) != HAL_OK) {
         /* Reception Error */
@@ -73,9 +73,10 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
     CAN_ID id = unpack_can_id(RxHeader.Identifier);
     frame.id = id;
     frame.length = RxHeader.DataLength;
+    frame.timestamp = timestamp;
 
     if (id.priority == CAN_PRIORITY_HEARTBEAT) {
-        handle_heatbeat((CAN_HeartbeatFrame*)frame.data, id, RxHeader.RxTimestamp);
+        handle_heartbeat((CAN_HeartbeatFrame*)frame.data, id, timestamp);
         return; // No further processing needed for heartbeat messages
     }
 
@@ -99,8 +100,8 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 void HAL_FDCAN_RxFifo1Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo1ITs)
 {
   if((RxFifo1ITs & FDCAN_IT_RX_FIFO1_NEW_MESSAGE) != RESET) {
-    test_counter++;
     CAN_Frame_t frame;
+    uint32_t timestamp = HAL_GetTick();
 
     /* Retreive Rx messages from RX FIFO1 */
     if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO1, &RxHeader, frame.data) != HAL_OK) {
@@ -115,6 +116,7 @@ void HAL_FDCAN_RxFifo1Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo1ITs)
     CAN_ID id = unpack_can_id(RxHeader.Identifier);
     frame.id = id;
     frame.length = RxHeader.DataLength;
+    frame.timestamp = timestamp;
 
     enqueue_can_frame(&frame);
     }

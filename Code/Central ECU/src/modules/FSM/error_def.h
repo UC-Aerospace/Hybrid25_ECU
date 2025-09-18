@@ -1,0 +1,12 @@
+#ifndef ERROR_DEF_H
+#define ERROR_DEF_H
+
+typedef enum {
+    ECU_ERROR_NONE = 0,
+    ECU_ERROR_HEARTBEAT_LOST,
+    ECU_ERROR_INVALID_STATE,
+    ECU_ERROR_ARM_FAIL,
+    ECU_ERROR_PREFIRE_CHECKS_FAIL
+} ecu_error_t;
+
+#endif // ERROR_DEF_H

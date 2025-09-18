@@ -59,6 +59,7 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
 {
+    // TODO: Test if this actually correctly restart the RS422 link. Also could abort on RS422 error.
     if (huart->Instance == USART1) {
         extern void dbg_printf(const char* format, ...);
         dbg_printf("RS422 UART Error: 0x%08lX\r\n", huart->ErrorCode);
@@ -109,11 +110,13 @@ HAL_StatusTypeDef rs422_send(uint8_t *data, uint8_t size, RS422_FrameType_t fram
 {
     //HAL_GPIO_TogglePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin); // Toggle status LED for debugging
     if (size > RS422_TX_MESSAGE_SIZE - 3) {
+        dbg_printf("RS422 TX: data size %d too large\r\n", size);
         return HAL_ERROR; // Data too large for packet
     }
     
     // Check if there's space in the buffer
     if (rs422_get_tx_buffer_space() == 0) {
+        dbg_printf("RS422 TX: buffer full, cannot send frame\r\n");
         return HAL_BUSY; // Buffer full
     }
 
@@ -279,4 +282,12 @@ bool rs422_send_battery_state(uint8_t percent_2s, uint8_t percent_6s)
 {
     uint8_t battery_state [2] = {percent_2s, percent_6s};
     return (rs422_send(battery_state, 2, RS422_BATTERY_VOLTAGE_FRAME) == HAL_OK);
+}
+
+bool rs422_send_string_message(const char *str, uint8_t length)
+{
+    if (length > RS422_TX_MESSAGE_SIZE - 3) {
+        return false; // String too long for packet
+    }
+    return (rs422_send((uint8_t*)str, length, RS422_STRING_MESSAGE) == HAL_OK);
 }

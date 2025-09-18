@@ -20,8 +20,12 @@ void rs422_handler_rx_poll(void) {
         switch (frame.frame_type) {
             case RS422_FRAME_HEARTBEAT:
                 // Handle heartbeat frame
+                static uint32_t last_heartbeat_time = 0;
                 uint16_t heartbeat_data = frame.data[0] << 8 | (frame.data[1]);
-                dbg_printf("RS422: RECV HEARTBEAT (%04X)\r\n", heartbeat_data);
+                if (HAL_GetTick() - last_heartbeat_time > 10000) {
+                    dbg_printf("RS422: RECV HEARTBEAT (%04X)\r\n", heartbeat_data);
+                    last_heartbeat_time = HAL_GetTick();
+                }
                 heartbeat_reload(BOARD_ID_RIU);
                 break;
             case RS422_FRAME_SWITCH_CHANGE:
@@ -33,10 +37,6 @@ void rs422_handler_rx_poll(void) {
             case RS422_FRAME_VALVE_UPDATE:
                 // Handle valve update frame
                 dbg_printf("RS422: RECV VALVE UPDATE (%d)\r\n", frame.data[0]);
-                break;
-            case RS422_FRAME_LED_UPDATE:
-                // Handle LED update frame
-                dbg_printf("RS422: RECV LED UPDATE (%d)\r\n", frame.data[0]);
                 break;
             case RS422_BATTERY_VOLTAGE_FRAME:
                 // Handle battery voltage frame
@@ -53,6 +53,7 @@ void rs422_handler_rx_poll(void) {
             case RS422_FRAME_ABORT:
                 // Handle abort frame
                 dbg_printf("RS422: RECV ABORT (%d)\r\n", frame.data[0]);
+                // TODO: Abort logic here
                 break;
             case RS422_FRAME_FIRE:
                 // Handle fire frame

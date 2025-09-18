@@ -27,7 +27,7 @@ typedef enum {
 
 // Initialize the SD logging system
 // Returns true if successful, false otherwise
-bool sd_log_init(void);
+bool sd_log_init(uint8_t log_mb, uint8_t sens_mb);
 
 // Write a formatted log message
 // Returns true if successful, false otherwise

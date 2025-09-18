@@ -62,6 +62,7 @@ typedef struct {
 typedef struct {
     CAN_ID id;
     uint8_t length;
+    uint32_t timestamp; // Timestamp when received
     uint8_t data[64]; // 64 bytes per message
 } CAN_Frame_t;
 

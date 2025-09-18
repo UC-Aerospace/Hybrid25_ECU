@@ -6,6 +6,7 @@
 #include "manual_valve.h"
 #include "config.h"
 #include "servo.h"
+#include "heartbeat.h"
 
 static void handle_cmd_set_servo_arm(CAN_CommandFrame* frame, CAN_ID id);
 static void handle_cmd_set_servo_pos(CAN_CommandFrame* frame, CAN_ID id);
@@ -217,37 +218,40 @@ void handle_adc_data(CAN_ADCFrame* frame, CAN_ID id, uint8_t dataLength) {
     uint8_t sampleRate = frame->what & 0x07;
 
     // Serial print some stuff
-    
-    if (sensorID < 2) {
-        uint16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
-        // output =>
-        // map first_sample such that 0.1 * reference is the zero output level and 0.9 * reference is 0xFFFF
-        uint16_t reference = (frame->data[56]) | (frame->data[57] << 8);
-        uint32_t in_min = reference / 10;         // 0.1 * reference
-        uint32_t in_max = (reference * 9) / 10;   // 0.9 * reference
 
-        if (first_sample <= in_min) first_sample = 0x0000;
-        else if (first_sample >= in_max) first_sample = 0xFFFF;
-        else {
-            uint32_t range = in_max - in_min;
-            uint32_t scaled = (first_sample - in_min) * 65535UL / range;
-            first_sample = (uint16_t)scaled;
-        }
-        dbg_printf_nolog("%d %d\n", sensorID, first_sample);
-    } else if (sensorID == 16 | sensorID == 17 | sensorID == 18) {
-        int16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
-        dbg_printf_nolog("%d %d\n", sensorID, first_sample);
-    } else if (sensorID == 24 | sensorID == 25 | sensorID == 26) {
-        int16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
-        dbg_printf_nolog("%d %d\n", sensorID, first_sample);
-    }
+    // TODO: Send this to some sort of decoder module for auto checks.
+    
+    // if (sensorID < 2) {
+    //     uint16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
+    //     // output =>
+    //     // map first_sample such that 0.1 * reference is the zero output level and 0.9 * reference is 0xFFFF
+    //     uint16_t reference = (frame->data[56]) | (frame->data[57] << 8);
+    //     uint32_t in_min = reference / 10;         // 0.1 * reference
+    //     uint32_t in_max = (reference * 9) / 10;   // 0.9 * reference
+
+    //     if (first_sample <= in_min) first_sample = 0x0000;
+    //     else if (first_sample >= in_max) first_sample = 0xFFFF;
+    //     else {
+    //         uint32_t range = in_max - in_min;
+    //         uint32_t scaled = (first_sample - in_min) * 65535UL / range;
+    //         first_sample = (uint16_t)scaled;
+    //     }
+    //     dbg_printf_nolog("%d %d\n", sensorID, first_sample);
+    // } else if (sensorID == 16 | sensorID == 17 | sensorID == 18) {
+    //     int16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
+    //     dbg_printf_nolog("%d %d\n", sensorID, first_sample);
+    // } else if (sensorID == 24 | sensorID == 25 | sensorID == 26) {
+    //     int16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
+    //     dbg_printf_nolog("%d %d\n", sensorID, first_sample);
+    // }
     
 
     // Write chunk to per-sensor file with delimiter header
     bool status = sd_log_write_sensor_chunk(frame, frame->length + 5);
     if (!status) {
         dbg_printf("SD Card failed write for sensor %d\n", sensorID);
-        // #TODO: Issue a warning over RS422
+        // TODO: Issue a warning over RS422
+        // TODO: Raise some sort of a error, don't want to if currently firing as it would be better to get something rather than nothing, but prevent fire otherwise
         return;
     }
 
@@ -287,14 +291,13 @@ void handle_status(CAN_StatusFrame* frame, CAN_ID id) {
     }
 }
 
-void handle_heatbeat(CAN_HeartbeatFrame* frame, CAN_ID id, uint32_t timestamp) {
+void handle_heartbeat(CAN_HeartbeatFrame* frame, CAN_ID id, uint32_t local_timestamp) {
     // Handle heartbeat messages
     // RxTimestamp not used at this stage as far more accurate than SysTick and rolls over often
     // Remote timestamp good upto ~4 hours
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
     uint32_t remote_timestamp = (frame->timestamp[0] << 16) | (frame->timestamp[1] << 8) | frame->timestamp[2];
-    uint32_t local_timestamp = HAL_GetTick();
-    // TODO: Reenable the prints here for synchronisation
+
     if (initiator == BOARD_ID_ADC_A) {
         static uint32_t last_adc_a_heartbeat = 0;
         if (HAL_GetTick() - last_adc_a_heartbeat > 10000) {
@@ -310,6 +313,8 @@ void handle_heatbeat(CAN_HeartbeatFrame* frame, CAN_ID id, uint32_t timestamp) {
     } else {
         dbg_printf("Heartbeat Frame: initiator=%u, remote timestamp=%lu, local timestamp=%lu\n", initiator, remote_timestamp, local_timestamp);
     }
+
+    heartbeat_reload(initiator);
 
 }
 
