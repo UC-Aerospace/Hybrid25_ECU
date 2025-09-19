@@ -5,6 +5,8 @@
 #include "rs422.h"
 #include "manual_valve.h"
 #include "config.h"
+#include "servo.h"
+#include "heartbeat.h"
 
 static void handle_cmd_set_servo_arm(CAN_CommandFrame* frame, CAN_ID id);
 static void handle_cmd_set_servo_pos(CAN_CommandFrame* frame, CAN_ID id);
@@ -82,7 +84,7 @@ void handle_error_warning(CAN_ErrorWarningFrame* frame, CAN_ID id) {
     switch (actionType) {
         case 0b00: // Immediate shutdown
             dbg_printf("Immediate Shutdown: initiator=%d, why=%d\n", initiator, frame->why);
-            // Handle immediate shutdown
+            fsm_set_error(frame->why); // Set FSM to error state with code
             break;
         case 0b01: // Error Notification
             dbg_printf("Error Notification: initiator=%d, why=%d\n", initiator, frame->why);
@@ -149,30 +151,38 @@ void handle_servo_pos(CAN_ServoPosFrame* frame, CAN_ID id) {
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
     // Ignore connected servos, assume 4
 
-    bool servoSetBinary[4] = { false };
+    servo_feedback_t servo_feedback[4];
+
+    servo_positions_t servoSetList[4];
     uint8_t servoSetPos[4] = { 0 };
     uint8_t servoState[4] = { 0 };
     bool atSetPos[4] = { false };
     uint8_t servoCurrentPos[4] = { 0 };
 
     for (int i = 0; i < 4; i++) {
-        servoSetBinary[i] = (frame->set_pos[i] >> 6) & 0x01; // Bit 6 for open/close
-        servoSetPos[i] = frame->set_pos[i] & 0x1F; // Bits 0-4 for position
-    }
+        servoSetList[i] = ((frame->set_pos[i] >> 6) & 0x03); // Bit 6-7 for pos
+        servoSetPos[i] = frame->set_pos[i] & 0x1F; // Bits 0-4 for fine set position
 
-    valve_set_servo_feedback_position(servoSetBinary);
+        servo_feedback[i].setPos = servoSetList[i];
+    }
 
     for (int i = 0; i < 4; i++) {
         servoState[i] = (frame->current_pos[i] >> 6);
         atSetPos[i] = (frame->current_pos[i] & 0x20) != 0; // Bit 5 for at set position
         servoCurrentPos[i] = (frame->current_pos[i] & 0x1F);
+
+        servo_feedback[i].state = servoState[i];
+        servo_feedback[i].currentPos = servoCurrentPos[i];
+        servo_feedback[i].atSetPos = atSetPos[i];
     }
+
+    servo_update(servo_feedback);
 
     uint8_t valve_pos = 0;
     bool any_servo_error = false;
     bool any_servo_armed = false;
     for (int i = 0; i < 4; i++) {
-        valve_pos |= servoSetPos[i] << (7 - i);
+        valve_pos |= (uint8_t)(servoSetList[i] != 0 ? 1 : 0) << (7 - i);
         any_servo_armed |= (servoState[i] == 1);
         any_servo_error |= (servoState[i] == 3);
     }
@@ -207,62 +217,105 @@ void handle_adc_data(CAN_ADCFrame* frame, CAN_ID id, uint8_t dataLength) {
     // Sample rate, 3 bits. (0-7) = 1, 10, 20, 50, 100, 200, 500, 1000Hz
     uint8_t sampleRate = frame->what & 0x07;
 
-    // Determine actual payload length in bytes from DLC and fixed header (what+timestamp)
-    uint8_t total_len = can_dlc_to_bytes(dataLength);
-    uint16_t payload_len = 0;
-    if (total_len >= 4) {
-        payload_len = (uint16_t)(total_len - 4); // subtract what(1) + timestamp(3)
-        if (payload_len > sizeof(frame->data)) payload_len = sizeof(frame->data);
-    }
-
     // Serial print some stuff
-    
-    if (sensorID < 2) {
-        uint16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
-        // output =>
-        // map first_sample such that 0.1 * reference is the zero output level and 0.9 * reference is 0xFFFF
-        uint16_t reference = (frame->data[56]) | (frame->data[57] << 8);
-        uint32_t in_min = reference / 10;         // 0.1 * reference
-        uint32_t in_max = (reference * 9) / 10;   // 0.9 * reference
 
-        if (first_sample <= in_min) first_sample = 0x0000;
-        else if (first_sample >= in_max) first_sample = 0xFFFF;
-        else {
-            uint32_t range = in_max - in_min;
-            uint32_t scaled = (first_sample - in_min) * 65535UL / range;
-            first_sample = (uint16_t)scaled;
-        }
-        dbg_printf_nolog("%d %d\n", sensorID, first_sample);
-    } else if (sensorID == 16 | sensorID == 17 | sensorID == 18) {
-        int16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
-        dbg_printf_nolog("%d %d\n", sensorID, first_sample);
-    }
+    // TODO: Send this to some sort of decoder module for auto checks.
+    
+    // if (sensorID < 2) {
+    //     uint16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
+    //     // output =>
+    //     // map first_sample such that 0.1 * reference is the zero output level and 0.9 * reference is 0xFFFF
+    //     uint16_t reference = (frame->data[56]) | (frame->data[57] << 8);
+    //     uint32_t in_min = reference / 10;         // 0.1 * reference
+    //     uint32_t in_max = (reference * 9) / 10;   // 0.9 * reference
+
+    //     if (first_sample <= in_min) first_sample = 0x0000;
+    //     else if (first_sample >= in_max) first_sample = 0xFFFF;
+    //     else {
+    //         uint32_t range = in_max - in_min;
+    //         uint32_t scaled = (first_sample - in_min) * 65535UL / range;
+    //         first_sample = (uint16_t)scaled;
+    //     }
+    //     dbg_printf_nolog("%d %d\n", sensorID, first_sample);
+    // } else if (sensorID == 16 | sensorID == 17 | sensorID == 18) {
+    //     int16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
+    //     dbg_printf_nolog("%d %d\n", sensorID, first_sample);
+    // } else if (sensorID == 24 | sensorID == 25 | sensorID == 26) {
+    //     int16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
+    //     dbg_printf_nolog("%d %d\n", sensorID, first_sample);
+    // }
     
 
     // Write chunk to per-sensor file with delimiter header
-    bool status = sd_log_write_sensor_chunk(sensorID, sampleRate, frame->data, payload_len, frame->timestamp);
+    bool status = sd_log_write_sensor_chunk(frame, frame->length + 5);
     if (!status) {
         dbg_printf("SD Card failed write for sensor %d\n", sensorID);
-        HAL_GPIO_WritePin(LED_IND_ERROR_GPIO_Port, LED_IND_ERROR_Pin, GPIO_PIN_SET); // Set error LED
         // TODO: Issue a warning over RS422
+        // TODO: Raise some sort of a error, don't want to if currently firing as it would be better to get something rather than nothing, but prevent fire otherwise
         return;
+    }
+
+    // Send to the RIU
+    uint8_t sensorType = (frame->what >> 6);
+    switch (sensorType) {
+        case 0: // Pressure
+            rs422_send_data((uint8_t*)frame, frame->length+5, RS422_FRAME_SENSOR);
+            break;
+        case 1: // Temperature
+            rs422_send_data((uint8_t*)frame, frame->length+5, RS422_FRAME_SENSOR);
+            break;
+        case 2: // Pressure + Temperature
+            rs422_send_data((uint8_t*)frame, frame->length+5, RS422_FRAME_SENSOR);
+            break;
+        case 3: // Load cell
+            rs422_send_data((uint8_t*)frame, frame->length+5, RS422_FRAME_SENSOR);
+            break;
+        default:
+            // Unknown sensor type
+            break;
     }
 }
 
 void handle_status(CAN_StatusFrame* frame, CAN_ID id) {
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
-    //TODO: Handle this
+    if (initiator == BOARD_ID_SERVO) {
+        // Update servo status
+        servo_status_update(frame->state, frame->substate);
+        dbg_printf("Status Frame: initiator=SERVO, main_state=%d, substate=%d, remote_timestamp=%lu\n",
+                   frame->state, frame->substate, frame->timestamp[0] << 16 | frame->timestamp[1] << 8 | frame->timestamp[2]);
+    } else if (initiator == BOARD_ID_ADC_A) {
+        // Could update ADC board status here if needed
+    } else {
+        dbg_printf("Status Frame: initiator=%d, main_state=%d, substate=%d\n",
+                   initiator, frame->state, frame->substate);
+    }
 }
 
-void handle_heatbeat(CAN_HeartbeatFrame* frame, CAN_ID id, uint32_t timestamp) {
+void handle_heartbeat(CAN_HeartbeatFrame* frame, CAN_ID id, uint32_t local_timestamp) {
     // Handle heartbeat messages
     // RxTimestamp not used at this stage as far more accurate than SysTick and rolls over often
     // Remote timestamp good upto ~4 hours
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
     uint32_t remote_timestamp = (frame->timestamp[0] << 16) | (frame->timestamp[1] << 8) | frame->timestamp[2];
-    uint32_t local_timestamp = SysTick->VAL;
-    dbg_printf("Heartbeat Frame: initiator=%d, remote timestamp=%lu, local timestamp=%lu\n", initiator, remote_timestamp, local_timestamp);
-    
+
+    if (initiator == BOARD_ID_ADC_A) {
+        static uint32_t last_adc_a_heartbeat = 0;
+        if (HAL_GetTick() - last_adc_a_heartbeat > 10000) {
+            dbg_printf("Heartbeat Frame: initiator=ADC_A, remote timestamp=%lu, local timestamp=%lu\n", remote_timestamp, local_timestamp);
+            last_adc_a_heartbeat = HAL_GetTick();
+        }
+    } else if (initiator == BOARD_ID_SERVO) {
+        static uint32_t last_servo_heartbeat_print = 0;
+        if (HAL_GetTick() - last_servo_heartbeat_print > 10000) {
+            dbg_printf("Heartbeat Frame: initiator=SERVO, remote timestamp=%lu, local timestamp=%lu\n", remote_timestamp, local_timestamp);
+            last_servo_heartbeat_print = HAL_GetTick();
+        }
+    } else {
+        dbg_printf("Heartbeat Frame: initiator=%u, remote timestamp=%lu, local timestamp=%lu\n", initiator, remote_timestamp, local_timestamp);
+    }
+
+    heartbeat_reload(initiator);
+
 }
 
 // ==========================================================

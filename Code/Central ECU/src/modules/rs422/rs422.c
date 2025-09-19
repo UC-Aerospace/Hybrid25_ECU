@@ -3,6 +3,9 @@
 #include "config.h"
 #include "debug_io.h"
 #include "spicy.h"
+#include "sequencer.h"
+#include "main_FSM.h"
+#include "servo.h"
 
 // Global buffers for DMA operations
 RS422_TxBuffer_t tx_buffer = {0}; // Initialize circular buffer for transmission
@@ -54,18 +57,49 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
     }
 }
 
+// Robustly restart the RX path using the same Rx-to-IDLE DMA mode as init
+static void rs422_restart_rx(UART_HandleTypeDef *huart)
+{
+    // Stop any ongoing RX and associated DMA to reset HAL state machine
+    HAL_UART_AbortReceive(huart);
+    HAL_UART_DMAStop(huart);
+
+    // Clear UART error flags
+    __HAL_UART_CLEAR_FLAG(huart, UART_CLEAR_OREF | UART_CLEAR_NEF |
+                                 UART_CLEAR_PEF  | UART_CLEAR_FEF);
+
+    // Reset software buffer indices to avoid misaligned parsing
+    rx_buffer.read_pos = 0;
+    rx_buffer.write_pos = 0;
+
+    // Re-arm Rx-to-IDLE reception (use same mode as rs422_init)
+    HAL_StatusTypeDef st = HAL_UARTEx_ReceiveToIdle_DMA(
+        huart,
+        (uint8_t*)rx_buffer.buffer, // cast away volatile for HAL API
+        RS422_RX_BUFFER_SIZE
+    );
+
+    // We rely on IDLE events, not DMA HT/TC
+    if (huart->hdmarx) {
+        __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
+        __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_TC);
+    }
+
+    if (st != HAL_OK) {
+        dbg_printf("RS422: RX restart failed (status %d)\r\n", st);
+    } else {
+        dbg_printf("RS422: RX restarted after error\r\n");
+    }
+}
+
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
 {
+    // TODO: Test if this actually correctly restart the RS422 link. Also could abort on RS422 error.
     if (huart->Instance == USART1) {
-        extern void dbg_printf(const char* format, ...);
         dbg_printf("RS422 UART Error: 0x%08lX\r\n", huart->ErrorCode);
-        
-        // Clear error flags and restart DMA
-        __HAL_UART_CLEAR_FLAG(huart, UART_CLEAR_OREF | UART_CLEAR_NEF | 
-                             UART_CLEAR_PEF | UART_CLEAR_FEF);
-        
-        // Restart RX DMA
-        HAL_UART_Receive_DMA(huart, rx_buffer.buffer, RS422_RX_BUFFER_SIZE);
+
+        // Fully reset and re-arm the RX path in the same mode as init
+        rs422_restart_rx(huart);
     }
 }
 
@@ -83,10 +117,14 @@ bool rs422_init(UART_HandleTypeDef *huart)
     rx_buffer.write_pos = 0;
     rx_buffer.read_pos = 0;
 
+    // Clear all RS422 errors before starting
+    __HAL_UART_CLEAR_FLAG(huart, UART_CLEAR_OREF | UART_CLEAR_NEF | 
+                         UART_CLEAR_PEF | UART_CLEAR_FEF);
+
     // Start continuous DMA reception
-    HAL_StatusTypeDef status = HAL_UARTEx_ReceiveToIdle_DMA(huart, rx_buffer.buffer, RS422_RX_BUFFER_SIZE);
     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_TC);
+    HAL_StatusTypeDef status = HAL_UARTEx_ReceiveToIdle_DMA(huart, (uint8_t*)rx_buffer.buffer, RS422_RX_BUFFER_SIZE);
 
     // Debug output
     if (status == HAL_OK) {
@@ -102,11 +140,13 @@ HAL_StatusTypeDef rs422_send(uint8_t *data, uint8_t size, RS422_FrameType_t fram
 {
     //HAL_GPIO_TogglePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin); // Toggle status LED for debugging
     if (size > RS422_TX_MESSAGE_SIZE - 3) {
+        dbg_printf("RS422 TX: data size %d too large\r\n", size);
         return HAL_ERROR; // Data too large for packet
     }
     
     // Check if there's space in the buffer
     if (rs422_get_tx_buffer_space() == 0) {
+        dbg_printf("RS422 TX: buffer full, cannot send frame\r\n");
         return HAL_BUSY; // Buffer full
     }
 
@@ -235,6 +275,49 @@ uint16_t rs422_read(RS422_RxFrame_t *frame)
 // Needs a uint8_t in the form [Servo A Pos, Servo B Pos, Servo C Pos, Servo D Pos, Servos Armed, Any Servos Error, 0 (Solenoid Position), 0 (Pyro Armed)]
 bool rs422_send_valve_position(uint8_t valve_pos)
 {
-    valve_pos = (valve_pos | spicy_get_ox() << 1 | spicy_get_arm()); // Add solenoid and pyro armed states
+    valve_pos = (valve_pos | spicy_get_solenoid() << 1 | spicy_get_arm()); // Add solenoid and pyro armed states
     return (rs422_send(&valve_pos, 1, RS422_FRAME_VALVE_UPDATE) == HAL_OK);
+}
+
+bool rs422_send_data(const uint8_t *data, uint8_t size, RS422_FrameType_t frame_type)
+{
+    return (rs422_send((uint8_t*)data, size, frame_type) == HAL_OK);
+}
+
+bool rs422_send_countdown(int8_t countdown)
+{
+    return (rs422_send((uint8_t*)&countdown, 1, RS422_FRAME_COUNTDOWN) == HAL_OK);
+}
+
+bool rs422_send_heartbeat(void)
+{
+    uint8_t heartbeat_msb = 0;
+    uint8_t fsm_state = fsm_get_state();
+    if (fsm_state == STATE_SEQUENCER) {
+        heartbeat_msb = fsm_state << 4 | (uint8_t)sequencer_get_state();
+    } else if (fsm_state == STATE_ERROR) {
+        heartbeat_msb = fsm_state << 4 | fsm_get_error_code(); // Send last error code in lower nibble
+    } else {
+        heartbeat_msb = fsm_state << 4; // Other states have no sub-state
+    }
+    servo_status_u servo_status;
+    servo_status_get(&servo_status);
+    uint8_t heartbeat_lsb = (servo_status.status.mainState & 0x03) << 6;
+    uint8_t heartbeat [2] = {heartbeat_msb, heartbeat_lsb};
+    bool result = (rs422_send(heartbeat, 2, RS422_FRAME_HEARTBEAT) == HAL_OK);
+    return result;
+}
+
+bool rs422_send_battery_state(uint8_t percent_2s, uint8_t percent_6s)
+{
+    uint8_t battery_state [2] = {percent_2s, percent_6s};
+    return (rs422_send(battery_state, 2, RS422_BATTERY_VOLTAGE_FRAME) == HAL_OK);
+}
+
+bool rs422_send_string_message(const char *str, uint8_t length)
+{
+    if (length > RS422_TX_MESSAGE_SIZE - 3) {
+        return false; // String too long for packet
+    }
+    return (rs422_send((uint8_t*)str, length, RS422_STRING_MESSAGE) == HAL_OK);
 }

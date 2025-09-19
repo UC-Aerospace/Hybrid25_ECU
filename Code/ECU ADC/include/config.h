@@ -9,6 +9,13 @@
 #define BOARD_TYPE_ADC
 extern uint8_t BOARD_ID;
 
+#define TEST_MODE // TODO: Remove before production
+
+#define BOARD_ID_RIU 0
+#define BOARD_ID_ECU 1
+#define BOARD_ID_SERVO 2
+#define BOARD_ID_ADC_A 3
+
 // Pinout configuration
 
 #define CJT_A0_Pin GPIO_PIN_0
@@ -62,29 +69,32 @@ extern ADC_ChannelConfTypeDef ADC_2S_Config;
 #define SID_SENSOR_MIPA_B (0b00 << 6) | (0b001) << 3 | (0b111) // MIPA B ID at 1000Hz
 
 #define SID_SENSOR_LC_Thrust (0b11 << 6) | (0b000) << 3 | (0b100) // LC Thrust ID at 100Hz
-#define SID_SENSOR_LC_N2O_A (0b11 << 6) | (0b001) << 3 | (0b001) // LC N2O A ID at 10Hz
-#define SID_SENSOR_LC_N2O_B (0b11 << 6) | (0b010) << 3 | (0b001) // LC N2O B ID at 10Hz
+#define SID_SENSOR_LC_N2O_A (0b11 << 6) | (0b001) << 3 | (0b010) // LC N2O A ID at 20Hz
+#define SID_SENSOR_LC_N2O_B (0b11 << 6) | (0b010) << 3 | (0b010) // LC N2O B ID at 20Hz
 
-#define SID_SENSOR_PT_A (0b10 << 6) | (0b000) << 3 | (0b100) // PT A ID at 100Hz
-#define SID_SENSOR_PT_B (0b10 << 6) | (0b001) << 3 | (0b100) // PT B ID at 100Hz
-#define SID_SENSOR_PT_C (0b10 << 6) | (0b010) << 3 | (0b100) // PT C ID at 100Hz
+#define SID_SENSOR_PT_A (0b10 << 6) | (0b000) << 3 | (0b001) // PT A ID at 10Hz
+#define SID_SENSOR_PT_B (0b10 << 6) | (0b001) << 3 | (0b001) // PT B ID at 10Hz
+#define SID_SENSOR_PT_C (0b10 << 6) | (0b010) << 3 | (0b001) // PT C ID at 10Hz
 
 #define SID_SENSOR_THERMO_A (0b01 << 6) | (0b000) << 3 | (0b001) // Thermo A ID at 10Hz
 #define SID_SENSOR_THERMO_B (0b01 << 6) | (0b001) << 3 | (0b001) // Thermo B ID at 10Hz
 #define SID_SENSOR_THERMO_C (0b01 << 6) | (0b010) << 3 | (0b001) // Thermo C ID at 10Hz
 #define SID_SENSOR_CJT      (0b01 << 6) | (0b011) << 3 | (0b000) // CJT ID at 2Hz
 
+#define SID_SENSOR_TEST     (0b00 << 6) | (0b111) << 3 | (0b111) // Test Sensor ID at 2Hz (7)
+
 // Sensor Buffer Size Config
 // MIPA is fixed as part of ADC scheduling to 28
 
 #define BUFF_SIZE_LC_Thrust 29
-#define BUFF_SIZE_LC_N2O_A 29
-#define BUFF_SIZE_LC_N2O_B 29
+#define BUFF_SIZE_LC_N2O_A 20
+#define BUFF_SIZE_LC_N2O_B 20
 
-#define BUFF_SIZE_THERMO_A 29
-#define BUFF_SIZE_THERMO_B 29
-#define BUFF_SIZE_THERMO_C 29
+#define BUFF_SIZE_THERMO_A 20
+#define BUFF_SIZE_THERMO_B 20
+#define BUFF_SIZE_THERMO_C 20
+#define BUFF_SIZE_CJT      4
 
-#define BUFF_SIZE_PT 28
+#define BUFF_SIZE_PT 10
 
 #endif // CONFIG_H

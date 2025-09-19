@@ -1,12 +1,34 @@
 #include "can.h"
 #include "debug_io.h"
 #include "can_handlers.h"
+#include "error_def.h"
 
+// Hardware TX header (used transiently when dequeuing)
 FDCAN_TxHeaderTypeDef TxHeader;
 FDCAN_RxHeaderTypeDef RxHeader;
 
 uint8_t TxData[64];
-uint16_t test_counter = 0;
+
+// ---------------- TX SOFTWARE QUEUE ----------------
+// Up to 2 pending CAN FD frames buffered in software.
+// Each entry stores the full FDCAN_TxHeaderTypeDef and up to 64 bytes of data.
+#define CAN_TX_QUEUE_SIZE 10
+
+typedef struct {
+    FDCAN_TxHeaderTypeDef header;   // Header with DLC already encoded
+    uint8_t data[64];               // Payload (zero padded to DLC length)
+    uint8_t used;                   // 0 = free, 1 = occupied
+} CAN_TxQueueEntry;
+
+static CAN_TxQueueEntry can_tx_queue[CAN_TX_QUEUE_SIZE];
+static volatile uint8_t can_tx_head = 0; // Index of next entry to send
+static volatile uint8_t can_tx_tail = 0; // Index where next new entry will be placed
+static volatile uint8_t can_tx_count = 0; // Number of occupied slots
+static volatile uint32_t can_tx_dropped = 0; // Diagnostic: messages dropped due to full queue
+
+// Forward declaration
+static bool can_tx_queue_push(const FDCAN_TxHeaderTypeDef *hdr, const uint8_t *data, uint8_t raw_len);
+void can_service_tx_queue(void);
 
 // Convert FDCAN Data Length Code (DLC) to byte count
 static const uint8_t DLCtoBytes[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 12, 16, 20, 24, 32, 48, 64};
@@ -26,7 +48,13 @@ static inline uint8_t bytesToDLC(uint8_t bytes) {
 
 void CAN_Error_Handler(void)
 {
-  dbg_printf("CAN Error occurred!\r\n");
+    static uint32_t last_notify = 0;
+    uint32_t now = HAL_GetTick();
+    dbg_printf("CAN: Error occurred!\n");
+    if (now - last_notify > 2000) { // Notify at most once every 2 seconds, prevent flooding bus
+        last_notify = now;
+        can_send_error_warning(CAN_NODE_TYPE_BROADCAST, CAN_NODE_ADDR_BROADCAST, CAN_ERROR_ACTION_ERROR, GENERIC_CAN_ERROR);
+    }
 }
 
 // RX FIFO0 is reserved for high priority messages
@@ -36,6 +64,7 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
   if((RxFifo0ITs & FDCAN_IT_RX_FIFO0_NEW_MESSAGE) != RESET)
   {
     CAN_Frame_t frame;
+    uint32_t timestamp = HAL_GetTick();
     /* Retreive Rx messages from RX FIFO0 */
     if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &RxHeader, frame.data) != HAL_OK) {
         /* Reception Error */
@@ -49,9 +78,10 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
     CAN_ID id = unpack_can_id(RxHeader.Identifier);
     frame.id = id;
     frame.length = RxHeader.DataLength;
+    frame.timestamp = timestamp;
 
     if (id.priority == CAN_PRIORITY_HEARTBEAT) {
-        handle_heatbeat((CAN_HeartbeatFrame*)frame.data, id, RxHeader.RxTimestamp);
+        handle_heartbeat((CAN_HeartbeatFrame*)frame.data, id, timestamp);
         return; // No further processing needed for heartbeat messages
     }
 
@@ -63,7 +93,7 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
             handle_command((CAN_CommandFrame*)frame.data, id);
             break;
         default:
-            dbg_printf("Frame type can't be parsed with high priority: %d\r\n", id.frameType);
+            dbg_printf("CAN: Frame type can't be parsed with high priority: %d\r\n", id.frameType);
             enqueue_can_frame(&frame);
             break;
     }
@@ -75,8 +105,8 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 void HAL_FDCAN_RxFifo1Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo1ITs)
 {
   if((RxFifo1ITs & FDCAN_IT_RX_FIFO1_NEW_MESSAGE) != RESET) {
-    test_counter++;
     CAN_Frame_t frame;
+    uint32_t timestamp = HAL_GetTick();
 
     /* Retreive Rx messages from RX FIFO1 */
     if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO1, &RxHeader, frame.data) != HAL_OK) {
@@ -91,6 +121,7 @@ void HAL_FDCAN_RxFifo1Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo1ITs)
     CAN_ID id = unpack_can_id(RxHeader.Identifier);
     frame.id = id;
     frame.length = RxHeader.DataLength;
+    frame.timestamp = timestamp;
 
     enqueue_can_frame(&frame);
     }
@@ -98,7 +129,6 @@ void HAL_FDCAN_RxFifo1Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo1ITs)
 
 void HAL_FDCAN_ErrorCallback(FDCAN_HandleTypeDef *hfdcan)
 {
-    HAL_GPIO_TogglePin(LED_IND_ERROR_GPIO_Port, LED_IND_ERROR_Pin); // Toggle LED2 on error
     uint32_t errorCode = HAL_FDCAN_GetError(hfdcan);
     dbg_printf("FDCAN Error: %08lX\r\n", errorCode);
 }
@@ -111,6 +141,14 @@ void can_init(void) {
             CAN_Error_Handler();
         }
     }
+    if(HAL_FDCAN_ConfigGlobalFilter(&hfdcan1,
+        FDCAN_REJECT,   // Non-matching standard
+        FDCAN_REJECT,   // Non-matching extended
+        FDCAN_FILTER_REMOTE, // Reject remote std
+        FDCAN_FILTER_REMOTE  // Reject remote ext
+    )!= HAL_OK) {
+        CAN_Error_Handler();
+    }
     if(HAL_FDCAN_Start(&hfdcan1)!= HAL_OK) {
         CAN_Error_Handler();
     }
@@ -121,25 +159,91 @@ void can_init(void) {
 
 }
 
+// Queue-aware send: build header + enqueue. Returns false if queue full.
 static bool can_send(CAN_ID id, uint8_t *data, uint8_t length) {
-    length = bytesToDLC(length);
-    // Prepare and send a CAN command message
-    TxHeader.Identifier = pack_can_id(id);
-    TxHeader.IdType = FDCAN_STANDARD_ID;
-    TxHeader.TxFrameType = FDCAN_DATA_FRAME;
-    TxHeader.DataLength = length; // Set data length
-    TxHeader.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
-    TxHeader.BitRateSwitch = FDCAN_BRS_ON;
-    TxHeader.FDFormat = FDCAN_FD_CAN;
-    TxHeader.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
-    TxHeader.MessageMarker = 0;
+    uint8_t raw_len = length; // Preserve original byte count
+    uint8_t dlc = bytesToDLC(length);
 
-    //dbg_printf("Sending CAN command with ID: %08lX, length: %d\r\n", TxHeader.Identifier, length);
+    FDCAN_TxHeaderTypeDef hdr;
+    hdr.Identifier = pack_can_id(id);
+    hdr.IdType = FDCAN_STANDARD_ID;
+    hdr.TxFrameType = FDCAN_DATA_FRAME;
+    hdr.DataLength = dlc; // DLC encoded length
+    hdr.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
+    hdr.BitRateSwitch = FDCAN_BRS_ON;
+    hdr.FDFormat = FDCAN_FD_CAN;
+    hdr.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
+    hdr.MessageMarker = 0;
 
-    if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &TxHeader, data) != HAL_OK) {
-        return false; // Transmission Error
+    return can_tx_queue_push(&hdr, data, raw_len);
+}
+
+// Push a frame into the software TX queue. Returns false if full.
+static bool can_tx_queue_push(const FDCAN_TxHeaderTypeDef *hdr, const uint8_t *data, uint8_t raw_len) {
+    __disable_irq();
+    if (can_tx_count >= CAN_TX_QUEUE_SIZE) {
+        can_tx_dropped++;
+        __enable_irq();
+        return false;
     }
-    return true; // Transmission Successful
+    CAN_TxQueueEntry *entry = &can_tx_queue[can_tx_tail];
+    entry->header = *hdr; // Copy header (includes DLC)
+
+    // Determine actual bytes to transmit from DLC
+    uint8_t dlc_index = hdr->DataLength & 0x0F;
+    uint8_t tx_bytes = (dlc_index < sizeof(DLCtoBytes)) ? DLCtoBytes[dlc_index] : 0;
+    if (tx_bytes > 64) tx_bytes = 64; // Safety clamp
+    if (raw_len > tx_bytes) raw_len = tx_bytes; // Don't overflow the implied DLC length
+
+    // Copy payload and zero-pad remainder up to DLC length
+    if (raw_len) {
+        memcpy(entry->data, data, raw_len);
+    }
+    if (raw_len < tx_bytes) {
+        memset(entry->data + raw_len, 0, tx_bytes - raw_len);
+    }
+    entry->used = 1;
+
+    can_tx_tail = (can_tx_tail + 1) % CAN_TX_QUEUE_SIZE;
+    can_tx_count++;
+    __enable_irq();
+    return true;
+}
+
+// Service routine to be called roughly every 1ms to flush queued frames to hardware.
+// Attempts to send all queued frames until HW FIFO is full or queue emptied.
+void can_service_tx_queue(void) {
+    // Loop while entries pending
+    if (can_tx_count > 0) {
+        // Peek at head
+        CAN_TxQueueEntry *entry = &can_tx_queue[can_tx_head];
+        if (!entry->used) {
+            // Should not happen; recover by dropping entry
+            __disable_irq();
+            can_tx_head = (can_tx_head + 1) % CAN_TX_QUEUE_SIZE;
+            can_tx_count--;
+            __enable_irq();
+            dbg_printf("CAN TX entry was not used, skipping.\r\n");
+            return;
+        }
+
+        // if (HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) == 0) {
+        //     dbg_printf("CAN TX FIFO full, cannot send more frames right now.\r\n");
+        //     return; // No space right now
+        // }
+
+        if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &entry->header, entry->data) == HAL_OK) {
+            // Successfully queued to hardware; remove from SW queue
+            __disable_irq();
+            entry->used = 0;
+            can_tx_head = (can_tx_head + 1) % CAN_TX_QUEUE_SIZE;
+            can_tx_count--;
+            __enable_irq();
+        } else {
+            dbg_printf("Failed to send CAN frame, possible hardware error.\r\n");
+            return;
+        }
+    }
 }
 
 bool can_send_error_warning(CAN_NodeType nodeType, CAN_NodeAddr nodeAddr, CAN_ErrorAction action, uint8_t errorCode) {
@@ -257,6 +361,7 @@ bool can_send_data(uint8_t sensorID, uint8_t *data, uint8_t length, uint32_t tim
 
     CAN_ADCFrame frame = {
         .what = sensorID,
+        .length = length, // Set the length of the data
         .timestamp = {
             (uint8_t)((timestamp >> 16) & 0xFF),
             (uint8_t)((timestamp >> 8) & 0xFF),

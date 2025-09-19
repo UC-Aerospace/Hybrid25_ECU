@@ -13,7 +13,7 @@ void handle_command(CAN_CommandFrame* frame, CAN_ID id);
 void handle_servo_pos(CAN_ServoPosFrame* frame, CAN_ID id);
 void handle_adc_data(CAN_ADCFrame* frame, CAN_ID id, uint8_t dataLength);
 void handle_status(CAN_StatusFrame* frame, CAN_ID id);
-void handle_heatbeat(CAN_HeartbeatFrame* frame, CAN_ID id, uint32_t timestamp);
+void handle_heartbeat(CAN_HeartbeatFrame* frame, CAN_ID id, uint32_t timestamp);
 void enqueue_can_frame(CAN_Frame_t* frame);
 void can_handler_poll(void);
 

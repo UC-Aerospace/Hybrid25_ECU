@@ -45,9 +45,9 @@ Servo servoNitrogen = {
     .tim = &htim3,
     .channel = TIM_CHANNEL_2,
     .state = SERVO_STATE_DISARMED,
-    .closePosition = 600,
-    .openPosition = 250,
-    .targetPosition = 600,
+    .closePosition = 450,
+    .openPosition = 0,
+    .targetPosition = 450,
     .currentPosition = 0,
     .nrstPin = GPIO_PIN_2, // NRST pin for servo 2
     .nrstPort = GPIOD // NRST port for servo 2
@@ -58,9 +58,9 @@ Servo servoNitrousA = {
     .tim = &htim1,
     .channel = TIM_CHANNEL_1,
     .state = SERVO_STATE_DISARMED,
-    .closePosition = 450,
-    .openPosition = 0,
-    .targetPosition = 450,
+    .closePosition = 550,
+    .openPosition = 50,
+    .targetPosition = 550,
     .currentPosition = 0,
     .nrstPin = GPIO_PIN_3, // NRST pin for servo 3
     .nrstPort = GPIOD // NRST port for servo 3
@@ -71,9 +71,9 @@ Servo servoNitrousB = {
     .tim = &htim15,
     .channel = TIM_CHANNEL_1,
     .state = SERVO_STATE_DISARMED,
-    .closePosition = 500,
-    .openPosition = 0,
-    .targetPosition = 500,
+    .closePosition = 700,
+    .openPosition = 200,
+    .targetPosition = 700,
     .currentPosition = 0,
     .nrstPin = GPIO_PIN_4, // NRST pin for servo 4
     .nrstPort = GPIOD // NRST port for servo 4
@@ -93,6 +93,15 @@ Servo* servoByIndex[4] = {
 void servo_init(void) {
     servo_update_positions(); // Initialize servo positions from ADC
     servo_queue_clear();
+}
+
+void servo_send_status(void) {
+    uint8_t fsm_status = (uint8_t)fsm_get_state();
+    uint8_t servo_status = 0;
+    for (int i = 3; i >= 0; i--) {
+        servo_status |= (servoByIndex[i]->state & 0x03) << (i * 2);
+    }
+    can_send_status(CAN_NODE_TYPE_CENTRAL, CAN_NODE_ADDR_CENTRAL, fsm_status, servo_status);
 }
 
 void servo_send_can_positions(void) 
@@ -118,7 +127,7 @@ void servo_send_can_positions(void)
         bool atPosition = false;
         int16_t delta = (int16_t)servoByIndex[i]->targetPosition - servoByIndex[i]->currentPosition;
         if (delta < 0) delta = -delta;
-        if (delta <= SERVO_POSITION_TOLERANCE) {
+        if (delta <= SERVO_POSITION_TOLERANCE*3) {
             atPosition = true;
         }
         currentPos[i] = (servoByIndex[i]->state << 6) | (atPosition << 5) | (servoByIndex[i]->currentPosition / 50);
@@ -130,12 +139,14 @@ void servo_arm(Servo *servo)
 {
     // Enable the servo
     servo->state = SERVO_STATE_ARMED;
+    servo_send_status();
     HAL_GPIO_WritePin(servo->nrstPort, servo->nrstPin, GPIO_PIN_SET); // Set NRST pin high to enable servo
 }
 
 void servo_disarm(Servo *servo) {
     // Disable the servo and stop PWM
     servo->state = SERVO_STATE_DISARMED;
+    servo_send_status();
     HAL_TIM_PWM_Stop(servo->tim, servo->channel);
     HAL_GPIO_WritePin(servo->nrstPort, servo->nrstPin, GPIO_PIN_RESET); // Set NRST pin low to reset servo
     // Return to safe target and clear any queued moves for this servo
@@ -176,6 +187,7 @@ bool servo_queue_poll()
         // Set state to moving and start the PWM
         item.servo->state = SERVO_STATE_MOVING; 
         HAL_TIM_PWM_Start(item.servo->tim, item.servo->channel);
+        servo_send_status();
 
         return true; // Successfully processed an item
     }
@@ -210,10 +222,10 @@ void servo_queue_complete(bool wasSuccess)
             item->servo->state = SERVO_STATE_ARMED; // Set back to armed state
         } else {
             item->servo->state = SERVO_STATE_ERROR; // Set to error state if failed
-            fsm_set_state(STATE_ERROR); // Set FSM to error state
             can_send_error_warning(CAN_NODE_TYPE_CENTRAL, CAN_NODE_ADDR_CENTRAL, CAN_ERROR_ACTION_SHUTDOWN, (CAN_NODE_ADDR_SERVO << 6) | (CAN_ERROR_SERVO_MOVE_FAILED << 3) | servoQueue.head); // Send error warning over CAN
             dbg_printf("Error: Servo number %d movement failed, setting to ERROR state.\r\n", servoQueue.head);
         }
+        servo_send_status();
         servoQueue.head = (servoQueue.head + 1) % SERVO_QUEUE_SIZE; // Move head forward
         // Delay for a period to allow the servo to reset
         for (volatile int i = 0; i < 500; i++) {
@@ -238,13 +250,13 @@ void servo_update_positions() {
     adc_get_servo_positions(servoPositions);
 
     // Convert from 12 bit ADC values to 0-1000 servo positions and set current positions
-    servoVent.currentPosition = (int16_t)(-5.0/16.0*(servoPositions[0] - 3620));
+    servoVent.currentPosition = (int16_t)(-0.305944*servoPositions[0] + 1128);
     servoPositions[0] = servoVent.currentPosition; // Update servoPositions array
-    servoNitrogen.currentPosition = (int16_t)(-5.0/16.0*(servoPositions[1] - 3620));
+    servoNitrogen.currentPosition = (int16_t)(-0.299401*servoPositions[1] + 1120);
     servoPositions[1] = servoNitrogen.currentPosition; // Update servoPositions array
-    servoNitrousA.currentPosition = (int16_t)(-5.0/16.0*(servoPositions[2] - 3620));
+    servoNitrousA.currentPosition = (int16_t)(0.286369*servoPositions[2] - 138);
     servoPositions[2] = servoNitrousA.currentPosition; // Update servoPositions array
-    servoNitrousB.currentPosition = (int16_t)(-5.0/16.0*(servoPositions[3] - 3620));
+    servoNitrousB.currentPosition = (int16_t)(0.291206*servoPositions[3] - 136);
     servoPositions[3] = servoNitrousB.currentPosition; // Update servoPositions array
 }
 

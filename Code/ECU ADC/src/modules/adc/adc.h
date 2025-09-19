@@ -26,6 +26,7 @@ bool adc_start();
 void adc_stop();
 uint16_t adc_get_batt_voltage();
 int16_t adc_get_NTC_temp();
+void adc_update_cj_correction(int16_t cj_temp);
 
 
 #endif

@@ -29,6 +29,9 @@ bool can_send_servo_position(CAN_NodeType nodeType, CAN_NodeAddr nodeAddr, uint8
 bool can_send_heartbeat(CAN_NodeType nodeType, CAN_NodeAddr nodeAddr);
 bool can_send_data(uint8_t sensorID, uint8_t *data, uint8_t length, uint32_t timestamp);
 
+// Service routine to flush software TX queue (call ~ every 1ms)
+void can_service_tx_queue(void);
+
 
 
 

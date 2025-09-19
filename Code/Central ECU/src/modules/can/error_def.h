@@ -1,0 +1,20 @@
+#ifndef ERROR_DEF_H
+#define ERROR_DEF_H
+
+#include "config.h"
+
+typedef enum {
+    ERROR_NONE = 0,
+    GENERIC_CAN_ERROR,
+    ECU_ERROR_HEARTBEAT_LOST = (BOARD_ID_ECU << 4) + 1,
+    ECU_ERROR_INVALID_STATE,
+    ECU_ERROR_ARM_FAIL,
+    ECU_ERROR_PREFIRE_CHECKS_FAIL,
+
+    SERVO_ERROR_HEARTBEAT_LOST = (BOARD_ID_SERVO << 4) + 1,
+    
+    ADC_ERROR_HEARTBEAT_LOST = (BOARD_ID_ADC_A << 4) + 1,
+    ADC_ERROR_FAIL_READ_PTE7300,
+} error_t;
+
+#endif // ERROR_DEF_H

@@ -7,9 +7,13 @@
 
 // Board types: _SERVO, _CENTRAL, _ECU
 #define BOARD_TYPE_CENTRAL
-static uint8_t BOARD_ID;
+extern uint8_t BOARD_ID;
+
+#define COLDFLOW_MODE //TODO: Remove before hot-fire
+#define TEST_MODE //TODO: Remove before hot-fire
 
 #define BOARD_ID_RIU 0
+#define BOARD_ID_ECU 1
 #define BOARD_ID_SERVO 2
 #define BOARD_ID_ADC_A 3
 // Pinout configuration

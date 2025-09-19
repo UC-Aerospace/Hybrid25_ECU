@@ -5,7 +5,7 @@
 #include "frames.h"
 #include "can.h"
 
-#define CAN_RX_QUEUE_LENGTH 5
+#define CAN_RX_QUEUE_LENGTH 100
 
 void handle_error_warning(CAN_ErrorWarningFrame* frame, CAN_ID id);
 void handle_command(CAN_CommandFrame* frame, CAN_ID id);

@@ -1,96 +1,65 @@
 #include "manual_valve.h"
-#include "can.h"
-#include "main_FSM.h"
+
 #include "debug_io.h"
+#include "servo.h"
 
-valve_states_t valve_state = VALVE_DISARMED;
+manual_valve_state_t valve_state = VALVE_DISARMED;
 
-// Lastest set position from servo feedback
-struct {
-    bool servoPosCommandedVent;
-    bool servoPosCommandedNitrogen;
-    bool servoPosCommandedNosA;
-    bool servoPosCommandedNosB;
-    bool initialised;
-} servo_feedback = {false};
+static servo_feedback_t servo_feedback[4];
 
-// Helpers
-void manual_valve_send_arm(void)
-{
-    can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_ARM, 0xFF); // FIXME: confirm format
-}
-
-void manual_valve_send_disarm(void)
-{
-    can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_ARM, 0xF0);
-}
-
-static void manual_valve_send_positions(void){
+static void manual_valve_send_positions(switch_state_t *switch_snapshot){
     // Go through the servo_feedback and send a CAN command if different to switch position
-    if(!servo_feedback.initialised) return;
-    if(servo_feedback.servoPosCommandedVent != switch_snapshot.valve_discharge){
-        can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 0 << 6 | switch_snapshot.valve_discharge);
+    servo_get_states(servo_feedback);
+    if(servo_feedback[VALVE_VENT].setPos != (switch_snapshot->valve_discharge ? SERVO_POSITION_OPEN : SERVO_POSITION_CLOSE)){
+        servo_set_position(VALVE_VENT, switch_snapshot->valve_discharge ? SERVO_POSITION_OPEN : SERVO_POSITION_CLOSE);
     }
-    if(servo_feedback.servoPosCommandedNitrogen != switch_snapshot.valve_nitrogen){
-        can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 1 << 6 | switch_snapshot.valve_nitrogen);
+    if(servo_feedback[VALVE_NITROGEN].setPos != (switch_snapshot->valve_nitrogen ? SERVO_POSITION_OPEN : SERVO_POSITION_CLOSE)){
+        servo_set_position(VALVE_NITROGEN, switch_snapshot->valve_nitrogen ? SERVO_POSITION_OPEN : SERVO_POSITION_CLOSE);
     }
-    if(servo_feedback.servoPosCommandedNosA != switch_snapshot.valve_nitrous_a){
-        can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 2 << 6 | switch_snapshot.valve_nitrous_a);
+    if(servo_feedback[VALVE_NOS_A].setPos != (switch_snapshot->valve_nitrous_a ? SERVO_POSITION_OPEN : SERVO_POSITION_CLOSE)){
+        servo_set_position(VALVE_NOS_A, switch_snapshot->valve_nitrous_a ? SERVO_POSITION_OPEN : SERVO_POSITION_CLOSE);
     }
-    if(servo_feedback.servoPosCommandedNosB != switch_snapshot.valve_nitrous_b){
-        can_send_command(CAN_NODE_TYPE_SERVO, CAN_NODE_ADDR_BROADCAST, CAN_CMD_SET_SERVO_POS, 3 << 6 | switch_snapshot.valve_nitrous_b);
+    if(servo_feedback[VALVE_NOS_B].setPos != (switch_snapshot->valve_nitrous_b ? SERVO_POSITION_OPEN : SERVO_POSITION_CLOSE)){
+        servo_set_position(VALVE_NOS_B, switch_snapshot->valve_nitrous_b ? SERVO_POSITION_OPEN : SERVO_POSITION_CLOSE);
     }
 }
 
-void valve_set_servo_feedback_position(bool servoSetPosition[4])
+void manual_valve_tick(switch_state_t *switch_snapshot)
 {
-    servo_feedback.initialised = true;
-    servo_feedback.servoPosCommandedVent = servoSetPosition[0];
-    servo_feedback.servoPosCommandedNitrogen = servoSetPosition[1];
-    servo_feedback.servoPosCommandedNosA = servoSetPosition[2];
-    servo_feedback.servoPosCommandedNosB = servoSetPosition[3];
-}
-
-void valve_state_decoder(void)
-{
-    bool override_on = switch_snapshot.sequencer_override;
-    bool valve_master = switch_snapshot.master_valve && override_on; // require override
-
-    if(!override_on){
-        // Global collapse
-        if(valve_state != VALVE_DISARMED) { 
-            manual_valve_send_disarm(); 
-            dbg_printf("Valve not disarmed, disarming\n");
-        }
-        valve_state = VALVE_DISARMED; 
-        return;
-    }
+    bool override_on = switch_snapshot->sequencer_override;
+    bool valve_master = switch_snapshot->master_valve && override_on; // require override
 
     switch(valve_state){
         case VALVE_DISARMED:
 
             if(valve_master) { 
-                manual_valve_send_arm();
-                dbg_printf("Valve master switch on, arming valves and moving to valve armed state\n");
+                servo_arm_all();
+                dbg_printf("MANUAL VALVE: ARM\n");
                 valve_state = VALVE_ARMED;
             }
             break;
 
         case VALVE_ARMED:
             if(!valve_master) { 
-                manual_valve_send_disarm();
-                dbg_printf("Valve master switch off, disarming valves and moving to valve disarmed state\n");
+                servo_disarm_all();
+                dbg_printf("MANUAL VALVE: DISARM\n");
                 valve_state = VALVE_DISARMED;
             }
             else { 
-                manual_valve_send_positions();
-                dbg_printf("Sending valve positions\n");
+                manual_valve_send_positions(switch_snapshot);
             }
             break;
 
         default: 
             valve_state = VALVE_DISARMED;
-            dbg_printf("Valve state decoder defaulted, moving to valve disarmed state\n");
+            dbg_printf("MANUAL VALVE: ERROR, DEFAULT\n");
             break;
     }
+}
+
+void manual_valve_set_safe(void)
+{
+    valve_state = VALVE_DISARMED;
+    servo_disarm_all();
+    dbg_printf("MANUAL VALVE: SET SAFE\n");
 }

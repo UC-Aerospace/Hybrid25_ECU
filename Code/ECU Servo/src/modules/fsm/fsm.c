@@ -98,6 +98,7 @@ static void fsm_transition(fsm_state_t next) {
     dbg_printf("FSM: %s -> %s\r\n", cur->name, dst->name);
     currentState = next;
     if (dst->on_enter) dst->on_enter();
+    servo_send_status(); // Update status on any state change
 }
 
 //------------------------------
@@ -218,7 +219,7 @@ static void moving_event(fsm_event_t e) {
         case FSM_EVENT_EXTERNAL_DISARM:
             // External disarm request while moving -> treat as fail/cancel
             servo_queue_complete(false);
-            fsm_transition(STATE_ERROR);
+            fsm_transition(STATE_READY); 
             break;
         case FSM_EVENT_HEARTBEAT_TIMEOUT:
             fsm_transition(STATE_ERROR);

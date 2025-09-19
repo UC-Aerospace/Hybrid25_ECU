@@ -1,6 +1,8 @@
 #ifndef DEBUG_IO_H
 #define DEBUG_IO_H
 
+#include "config.h"
+
 // Define one of these:
 // #define DEBUG_OUTPUT_UART
 #define DEBUG_OUTPUT_USB

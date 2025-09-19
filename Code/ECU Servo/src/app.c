@@ -7,6 +7,7 @@
 #include "servo.h"
 
 static uint16_t adcValues[4];
+uint8_t BOARD_ID = 0;
 
 void setup_panic(uint8_t err_code)
 {
@@ -40,7 +41,7 @@ void app_init(void)
         // Unrecognized device, handle error
         dbg_printf("Unrecognized device UID: %08lX %08lX %08lX\r\n", uid[0], uid[1], uid[2]);
         HAL_GPIO_WritePin(LED_IND_ERROR_GPIO_Port, LED_IND_ERROR_Pin, GPIO_PIN_SET); // Set error LED
-       setup_panic(1); // Enter panic mode
+        setup_panic(1); // Enter panic mode
     }
 
     adc_init(); // Initialize ADC for servo position reading
@@ -64,6 +65,7 @@ void task_poll_can_handlers(void)
 void task_toggle_status_led(void) 
 {
     // Toggle the status LED
+    //dbg_printf("Toggling status LED\r\n");
     HAL_GPIO_TogglePin(LED_IND_STATUS_GPIO_Port, LED_IND_STATUS_Pin);
 }
 
@@ -83,7 +85,8 @@ void app_run(void)
         {0, 100, task_poll_servo_fsm},              // Poll servo FSM every 100 ms
         {0, 1000, servo_update_positions},
         {0, 500, servo_send_can_positions},         // Send servo positions every 500 ms
-        {0, 500, task_send_heartbeat}               // Send heartbeat every 500 ms
+        {0, 500, task_send_heartbeat},               // Send heartbeat every 500 ms
+        {0, 1, can_service_tx_queue}                // Service CAN TX queue every 1 ms
     };
 
     while (1) {
@@ -95,6 +98,5 @@ void app_run(void)
                 tasks[i].task_function();
             }
         }
-        HAL_Delay(5); // 5ms delay to avoid busy-waiting
     }
 }

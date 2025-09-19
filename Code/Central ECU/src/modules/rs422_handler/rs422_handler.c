@@ -20,68 +20,62 @@ void rs422_handler_rx_poll(void) {
         switch (frame.frame_type) {
             case RS422_FRAME_HEARTBEAT:
                 // Handle heartbeat frame
-                dbg_printf("Heartbeat from RUI, contents %d\r\n", frame.data[0]);
+                static uint32_t last_heartbeat_time = 0;
+                uint16_t heartbeat_data = frame.data[0] << 8 | (frame.data[1]);
+                if (HAL_GetTick() - last_heartbeat_time > 10000) {
+                    dbg_printf("RS422: RECV HEARTBEAT (%04X)\r\n", heartbeat_data);
+                    last_heartbeat_time = HAL_GetTick();
+                }
                 heartbeat_reload(BOARD_ID_RIU);
                 break;
             case RS422_FRAME_SWITCH_CHANGE:
                 // Handle switch change frame
                 uint16_t switches = frame.data[0] << 8 | (frame.data[1]);
-                dbg_printf("Received switch change frame, data: %04X\r\n", switches);
-                // stager_set_switches(switches);
+                dbg_printf("RS422: RECV SWITCH CHANGE (%04X)\r\n", switches);
                 fsm_set_switch_states(switches);
                 break;
             case RS422_FRAME_VALVE_UPDATE:
                 // Handle valve update frame
-                dbg_printf("Received valve update frame with size %d\r\n", frame.size);
-                break;
-            case RS422_FRAME_LED_UPDATE:
-                // Handle LED update frame
-                dbg_printf("Received LED update frame with size %d\r\n", frame.size);
+                dbg_printf("RS422: RECV VALVE UPDATE (%d)\r\n", frame.data[0]);
                 break;
             case RS422_BATTERY_VOLTAGE_FRAME:
                 // Handle battery voltage frame
-                dbg_printf("Received battery voltage frame with size %d\r\n", frame.size);
+                dbg_printf("RS422: RECV BATTERY VOLTAGE (%d)\r\n", frame.data[0]);
                 break;
-            case RS422_FRAME_PRESSURE:
-                // Handle pressure frame
-                dbg_printf("Received pressure frame with size %d\r\n", frame.size);
-                break;
-            case RS422_FRAME_PRESSURE_TEMPERATURE:
-                // Handle pressure and temperature frame
-                dbg_printf("Received pressure and temperature frame with size %d\r\n", frame.size);
-                break;
-            case RS422_FRAME_TEMPERATURE:
-                // Handle temperature frame
-                dbg_printf("Received temperature frame with size %d\r\n", frame.size);
-                break;
-            case RS422_FRAME_LOAD_CELL:
-                // Handle load cell frame
-                dbg_printf("Received load cell frame with size %d\r\n", frame.size);
+            case RS422_FRAME_SENSOR:
+                // Handle sensor frame
+                dbg_printf("RS422: RECV SENSOR (%d)\r\n", frame.data[0]);
                 break;
             case RS422_FRAME_COUNTDOWN:
                 // Handle countdown frame
-                dbg_printf("Received countdown frame with size %d\r\n", frame.size);
+                dbg_printf("RS422: RECV COUNTDOWN\r\n");
                 break;
             case RS422_FRAME_ABORT:
                 // Handle abort frame
-                dbg_printf("Received abort frame with size %d\r\n", frame.size);
+                dbg_printf("RS422: RECV ABORT (%d)\r\n", frame.data[0]);
+                // TODO: Abort logic here
                 break;
             case RS422_FRAME_FIRE:
                 // Handle fire frame
-                dbg_printf("Received fire frame with size %d\r\n", frame.size);
-                fire = true;
+                static uint32_t last_fire_time = 0;
+                if (HAL_GetTick() - last_fire_time < 5000) {
+                    dbg_printf("RS422: RECV FIRE - TOO SOON\r\n");
+                    break;
+                }
+                dbg_printf("RS422: RECV FIRE (%d)\r\n", frame.data[0]);
+                // Check that packet is correctly formed.
+                uint8_t fire_command = frame.data[0];
+                if ((fire_command >> 4) == 0b1100) {
+                    sequencer_fire(fire_command & 0x0F);
+                    last_fire_time = HAL_GetTick();
+                } else {
+                    dbg_printf("RS422: RECV FIRE - INVALID FIRE COMMAND (%d)\r\n", fire_command);
+                }
                 break;
             default:
                 // Handle unknown frame type
                 dbg_printf("Received unknown frame type %d with size %d\r\n", frame.frame_type, frame.size);
                 break;
         }
-    } 
-}
-
-void rx422_handler_parse_heartbeat(RS422_RxFrame_t *frame) {
-    // Parse heartbeat frame
-    // This function can be used to extract specific data from the heartbeat frame
-    // For example, you might want to extract a timestamp or status information
-    dbg_printf("Parsing heartbeat frame with size %d\r\n", frame->size);
+    }
 }
