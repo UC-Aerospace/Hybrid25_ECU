@@ -93,7 +93,7 @@ int tc_k_temp_to_voltage(int temp_c, float *voltage_mv) {
     }
     
     // Find the surrounding table entries
-    int idx = find_temp_index(temp_c);
+    uint32_t idx = find_temp_index(temp_c);
     
     // Handle exact matches
     if (tc_k_table[idx].temp == temp_c) {
@@ -127,7 +127,7 @@ int tc_k_voltage_to_temp(float voltage_mv, int *temp_c) {
     }
     
     // Find the surrounding table entries
-    int idx = find_voltage_index(voltage_mv);
+    uint32_t idx = find_voltage_index(voltage_mv);
     
     // Handle boundary cases
     if (idx >= TC_K_TABLE_SIZE - 1) {

@@ -31,7 +31,7 @@ typedef enum {
  * @param voltage_uv Pointer to store the voltage result in microvolts
  * @return TC_K_OK on success, error code on failure
  */
-int tc_k_temp_to_voltage(int16_t temp_c, int32_t *voltage_uv);
+int tc_k_temp_to_voltage(int temp_c, float *voltage_mv);
 
 /**
  * Convert thermoelectric voltage to temperature
@@ -39,7 +39,7 @@ int tc_k_temp_to_voltage(int16_t temp_c, int32_t *voltage_uv);
  * @param temp_c Pointer to store the temperature result in degrees Celsius
  * @return TC_K_OK on success, error code on failure
  */
-int tc_k_voltage_to_temp(int32_t voltage_uv, int16_t *temp_c);
+int tc_k_voltage_to_temp(float voltage_mv, int *temp_c);
 
 /**
  * Get human-readable error message
