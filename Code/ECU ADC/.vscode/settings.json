@@ -3,6 +3,7 @@
     "files.associations": {
         "lps22hh_reg.h": "c",
         "can_buffer.h": "c",
-        "debug_io.h": "c"
+        "debug_io.h": "c",
+        "thermocouple_k.h": "c"
     }
 }

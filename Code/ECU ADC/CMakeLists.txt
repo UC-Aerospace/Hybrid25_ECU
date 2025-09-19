@@ -68,3 +68,9 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user library paths if needed
 )
+
+# === Optionally build demos ===
+option(BUILD_DEMOS "Build demo applications" ON)
+if(BUILD_DEMOS)
+    add_subdirectory(demo)
+endif()
