@@ -173,6 +173,7 @@ uint8_t fsm_get_error_code(void)
 // TODO: Add all possible commands from CAN
 void fsm_raise_error(uint8_t raise_code)
 {
+    rs422_send_error_warning(CAN_ERROR_ACTION_ERROR << 6 | BOARD_ID_ECU, raise_code);
     switch (raise_code) {
         case ECU_ERROR_HEARTBEAT_LOST:
             uint8_t hb_status = get_heartbeat_status();

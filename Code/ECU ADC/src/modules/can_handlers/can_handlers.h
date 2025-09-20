@@ -7,14 +7,17 @@
 
 #define CAN_RX_QUEUE_LENGTH 10
 
+void CAN_Error_Handler(void);
 void handle_error_warning(CAN_ErrorWarningFrame* frame, CAN_ID id);
 void handle_command(CAN_CommandFrame* frame, CAN_ID id);
 void handle_servo_pos(CAN_ServoPosFrame* frame, CAN_ID id);
 void handle_adc_data(CAN_ADCFrame* frame, CAN_ID id, uint8_t dataLength);
 void handle_status(CAN_StatusFrame* frame, CAN_ID id);
-void handle_heatbeat(CAN_HeartbeatFrame* frame, CAN_ID id, uint32_t timestamp);
+void handle_heartbeat(CAN_HeartbeatFrame* frame, CAN_ID id, uint32_t timestamp);
 void enqueue_can_frame(CAN_Frame_t* frame);
 void can_handler_poll(void);
+void handle_tx_error(uint32_t error);
+
 
 typedef struct {
     CAN_Frame_t frames[CAN_RX_QUEUE_LENGTH];

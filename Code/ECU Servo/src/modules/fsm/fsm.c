@@ -249,9 +249,6 @@ static void error_event(fsm_event_t e) {
         case FSM_EVENT_EXTERNAL_DISARM: // CAN disarm command can clear error
             fsm_transition(STATE_READY);
             break;
-        case FSM_EVENT_HEARTBEAT_TIMEOUT:
-            fsm_transition(STATE_ERROR);
-            break;
         default: break; // ignore other events
     }
 }

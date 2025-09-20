@@ -3,12 +3,13 @@
 
 static inline void can_buffer_tx(can_buffer_t *buffer, uint8_t SID);
 
-void can_buffer_init(can_buffer_t *buffer, uint8_t SID, uint8_t length) 
+void can_buffer_init(can_buffer_t *buffer, uint8_t SID, uint8_t length, bool enableTX) 
 {
     buffer->head = 0;
     memset(buffer->data, 0, sizeof(buffer->data));
     buffer->SID = SID; // Set the Sensor ID for CAN transmission
     buffer->length = length;
+    buffer->enableTX = enableTX; // Set the TX enable flag
 }
 
 bool can_buffer_push(can_buffer_t *buffer, int16_t value) 
@@ -20,8 +21,10 @@ bool can_buffer_push(can_buffer_t *buffer, int16_t value)
         buffer->data[buffer->head++] = value;
 
         if (buffer->head >= buffer->length) {
-            can_buffer_tx(buffer, buffer->SID); // Send buffer via CAN when full
-            buffer->head = 0; // Reset head 
+            if (buffer->enableTX) {
+                can_buffer_tx(buffer, buffer->SID); // Send buffer via CAN when full
+            }
+            buffer->head = 0; // Reset head
         }
         return true; // Success
     }
@@ -32,5 +35,3 @@ static inline void can_buffer_tx(can_buffer_t *buffer, uint8_t SID)
 {
     can_send_data(buffer->SID, (uint8_t *)buffer->data, buffer->length*2, buffer->first_sample_timestamp);
 }
-
-//bool can_send_data(CAN_NodeType nodeType, CAN_NodeAddr nodeAddr, uint8_t *data, uint8_t length)

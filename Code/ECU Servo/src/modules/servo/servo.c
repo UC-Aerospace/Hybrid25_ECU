@@ -3,6 +3,7 @@
 #include "debug_io.h"
 #include "can.h"
 #include "fsm.h"
+#include "error_def.h"
 
 static ServoQueue servoQueue = {
     .items = {0},
@@ -222,7 +223,7 @@ void servo_queue_complete(bool wasSuccess)
             item->servo->state = SERVO_STATE_ARMED; // Set back to armed state
         } else {
             item->servo->state = SERVO_STATE_ERROR; // Set to error state if failed
-            can_send_error_warning(CAN_NODE_TYPE_CENTRAL, CAN_NODE_ADDR_CENTRAL, CAN_ERROR_ACTION_SHUTDOWN, (CAN_NODE_ADDR_SERVO << 6) | (CAN_ERROR_SERVO_MOVE_FAILED << 3) | servoQueue.head); // Send error warning over CAN
+            can_send_error_warning(CAN_NODE_TYPE_CENTRAL, CAN_NODE_ADDR_CENTRAL, CAN_ERROR_ACTION_SHUTDOWN, SERVO_SHUTDOWN_MOVEMENT_FAIL); // Send error warning over CAN
             dbg_printf("Error: Servo number %d movement failed, setting to ERROR state.\r\n", servoQueue.head);
         }
         servo_send_status();

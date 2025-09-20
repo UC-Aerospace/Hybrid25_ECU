@@ -2,7 +2,6 @@
 #include "debug_io.h"
 #include "can_handlers.h"
 #include "error_def.h"
-#include "rs422.h"
 
 // Hardware TX header (used transiently when dequeuing)
 FDCAN_TxHeaderTypeDef TxHeader;
@@ -47,19 +46,7 @@ static inline uint8_t bytesToDLC(uint8_t bytes) {
 }
 
 
-void CAN_Error_Handler(void)
-{
-    static uint32_t last_notify = 0;
-    uint32_t now = HAL_GetTick();
-    dbg_printf("CAN: Error occurred!\n");
-    if (now - last_notify > 2000) { // Notify at most once every 2 seconds, prevent flooding bus
-        last_notify = now;
-        can_send_error_warning(CAN_NODE_TYPE_BROADCAST, CAN_NODE_ADDR_BROADCAST, CAN_ERROR_ACTION_ERROR, GENERIC_CAN_ERROR);
-        // Also notify over RS422
-        uint8_t action = CAN_ERROR_ACTION_ERROR << 6 | BOARD_ID_ECU;
-        rs422_send_error_warning(action, GENERIC_CAN_ERROR);
-    }
-}
+
 
 // RX FIFO0 is reserved for high priority messages
 // Handle messages in ISR context
@@ -69,7 +56,7 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
   {
     CAN_Frame_t frame;
     uint32_t timestamp = HAL_GetTick();
-    /* Retreive Rx messages from RX FIFO0 */
+    /* Retrieve Rx messages from RX FIFO0 */
     if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &RxHeader, frame.data) != HAL_OK) {
         /* Reception Error */
         CAN_Error_Handler();
@@ -112,7 +99,7 @@ void HAL_FDCAN_RxFifo1Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo1ITs)
     CAN_Frame_t frame;
     uint32_t timestamp = HAL_GetTick();
 
-    /* Retreive Rx messages from RX FIFO1 */
+    /* Retrieve Rx messages from RX FIFO1 */
     if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO1, &RxHeader, frame.data) != HAL_OK) {
         /* Reception Error */
         CAN_Error_Handler();
@@ -245,10 +232,7 @@ void can_service_tx_queue(void) {
             uint32_t now = HAL_GetTick();
             if (now - last_error_notify > 2000) { // Notify at most once every 2 seconds, prevent flooding bus
                 last_error_notify = now;
-                dbg_printf("CAN: TX Error %d\r\n", status);
-                // Also notify over RS422
-                uint8_t action = CAN_ERROR_ACTION_ERROR << 6 | BOARD_ID_ECU;
-                rs422_send_error_warning(action, ECU_ERROR_CAN_TX_FAIL);
+                handle_tx_error(status);
             }
             return;
         }

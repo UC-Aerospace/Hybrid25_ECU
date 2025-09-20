@@ -35,7 +35,6 @@ void setup_panic(uint8_t err_code)
             HAL_GPIO_WritePin(LED_IND_ERROR_GPIO_Port, LED_IND_ERROR_Pin, GPIO_PIN_RESET);
             HAL_Delay(200);
         }
-        //HAL_GPIO_WritePin(LED_IND_ERROR_GPIO_Port, LED_IND_ERROR_Pin, GPIO_PIN_RESET); // Set error LED
         HAL_Delay(2000);
     }
 }
@@ -58,7 +57,7 @@ void app_init(void) {
     } else {
         // Unrecognized device, handle error
         dbg_printf("Unrecognized device UID: %08lX %08lX %08lX\r\n", uid[0], uid[1], uid[2]);
-        setup_panic(2);
+        setup_panic(1);
     }
 
     /****************
@@ -66,13 +65,15 @@ void app_init(void) {
      ****************/
     
     can_init();
+    can_send_error_warning(CAN_NODE_TYPE_CENTRAL, CAN_NODE_ADDR_CENTRAL, CAN_ERROR_ACTION_WARNING, ADC_WARNING_STARTUP);
 
     // Initialise the ADC functionality
     HAL_ADCEx_Calibration_Start(&hadc1);
 
     // Start the ADC
     if (!adc_start()) {
-        setup_panic(3);
+        can_send_error_warning(CAN_NODE_TYPE_CENTRAL, CAN_NODE_ADDR_CENTRAL, CAN_ERROR_ACTION_ERROR, ADC_ERROR_FAIL_INIT_ADC);
+        setup_panic(2);
     }
 
     delay_ms(30); // Wait for ADC to stabilize
@@ -81,7 +82,8 @@ void app_init(void) {
 
     // Initialize ADS124S08
     if (ads124_init() != HAL_OK) {
-        setup_panic(4);
+        can_send_error_warning(CAN_NODE_TYPE_CENTRAL, CAN_NODE_ADDR_CENTRAL, CAN_ERROR_ACTION_ERROR, ADC_ERROR_FAIL_INIT_ADS124);
+        setup_panic(3);
     }
 
     // Initialise the PTE7300 Pressure Sensors
@@ -91,16 +93,17 @@ void app_init(void) {
     bool stat_c = PTE7300_Init(&hpte7300_C, &hi2c3, SID_SENSOR_PT_C);
 
     if (!stat_a || !stat_b || !stat_c) {
-        setup_panic(5);
+        can_send_error_warning(CAN_NODE_TYPE_CENTRAL, CAN_NODE_ADDR_CENTRAL, CAN_ERROR_ACTION_ERROR, ADC_ERROR_FAIL_INIT_PTE7300);
+        setup_panic(4);
     }
     #endif
 
-    can_buffer_init(&cjt_buffer, SID_SENSOR_CJT, BUFF_SIZE_CJT); // Initialize the buffer with a length of 4
+    can_buffer_init(&cjt_buffer, SID_SENSOR_CJT, BUFF_SIZE_CJT, true); // Initialize the buffer with a length of 4
 
     #ifdef TEST_MODE // Test buffers only for when spoofing data
-    can_buffer_init(&test_buffer_A, SID_SENSOR_PT_A, BUFF_SIZE_PT); // Initialize the buffer with a length of 10
-    can_buffer_init(&test_buffer_B, SID_SENSOR_PT_B, BUFF_SIZE_PT); // Initialize the buffer with a length of 10
-    can_buffer_init(&test_buffer_C, SID_SENSOR_PT_C, BUFF_SIZE_PT); // Initialize the buffer with a length of 10
+    can_buffer_init(&test_buffer_A, SID_SENSOR_PT_A, BUFF_SIZE_PT, true); // Initialize the buffer with a length of 10
+    can_buffer_init(&test_buffer_B, SID_SENSOR_PT_B, BUFF_SIZE_PT, true); // Initialize the buffer with a length of 10
+    can_buffer_init(&test_buffer_C, SID_SENSOR_PT_C, BUFF_SIZE_PT, true); // Initialize the buffer with a length of 10
     #endif
 }
 

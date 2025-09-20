@@ -16,6 +16,8 @@ void handle_status(CAN_StatusFrame* frame, CAN_ID id);
 void handle_heartbeat(CAN_HeartbeatFrame* frame, CAN_ID id, uint32_t timestamp);
 void enqueue_can_frame(CAN_Frame_t* frame);
 void can_handler_poll(void);
+void handle_tx_error(uint32_t error_code);
+void CAN_Error_Handler(void);
 
 typedef struct {
     CAN_Frame_t frames[CAN_RX_QUEUE_LENGTH];

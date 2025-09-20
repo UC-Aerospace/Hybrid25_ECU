@@ -27,6 +27,35 @@ CAN_RxQueue can_rx_queue = {
 // Helper functions
 // =========================================================
 
+void CAN_Error_Handler(void)
+{
+    static uint32_t last_notify = 0;
+    uint32_t now = HAL_GetTick();
+    dbg_printf("CAN: Error occurred!\n");
+    if (now - last_notify > 2000) { // Notify at most once every 2 seconds, prevent flooding bus
+        last_notify = now;
+        can_send_error_warning(CAN_NODE_TYPE_BROADCAST, CAN_NODE_ADDR_BROADCAST, CAN_ERROR_ACTION_ERROR, GENERIC_CAN_ERROR);
+        // Also notify over RS422
+        uint8_t action = CAN_ERROR_ACTION_ERROR << 6 | BOARD_ID_ECU;
+        rs422_send_error_warning(action, GENERIC_CAN_ERROR);
+    }
+}
+
+void handle_tx_error(uint32_t error_code) {
+    static uint32_t last_notify = 0;
+    uint32_t now = HAL_GetTick();
+    if (now - last_notify > 2000) { // Notify at most once every 2 seconds, prevent flooding bus
+        last_notify = now;
+        can_send_error_warning(CAN_NODE_TYPE_BROADCAST, CAN_NODE_ADDR_BROADCAST, CAN_ERROR_ACTION_ERROR, GENERIC_CAN_ERROR);
+    }
+    // Log the error
+    dbg_printf("CAN TX Error: 0x%08lX\n", error_code);
+
+    // Also notify over RS422
+    uint8_t action = CAN_ERROR_ACTION_ERROR << 6 | BOARD_ID_ECU;
+    rs422_send_error_warning(action, ECU_ERROR_CAN_TX_FAIL);
+}
+
 void enqueue_can_frame(CAN_Frame_t* frame) {
     if (can_rx_queue.count >= CAN_RX_QUEUE_LENGTH) {
         dbg_printf("CAN RX Queue is full, dropping frame\n");
@@ -97,6 +126,12 @@ void handle_error_warning(CAN_ErrorWarningFrame* frame, CAN_ID id) {
             break;
         case 0b10: // Warning Notification
             dbg_printf("Warning Notification: initiator=%d, why=%d\n", initiator, frame->why);
+            rs422_send_error_warning(frame->what, frame->why); // Just forward warning
+            // Just log, unless it is the servo board restarting while we are in sequence, and then scrub
+            if (initiator == BOARD_ID_SERVO && fsm_get_state() == STATE_SEQUENCER && frame->why == SERVO_WARNING_STARTUP) {
+                dbg_printf("Scrubbing servo state due to power cycle on servo board\n");
+                fsm_set_abort(frame->why);
+            }
             break;
     }
     

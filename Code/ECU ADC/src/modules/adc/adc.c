@@ -79,7 +79,7 @@ void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef* hadc)
 {
     if (hadc->Instance == ADC1) {
         // First half of buffer is ready: adc_buffer[0] to adc_buffer[5]
-        second_half_timestamp = HAL_GetTick()+1; // Store timestamp for first half
+        second_half_timestamp = HAL_GetTick()+1;
         process_adc_data(adc_buffer, first_half_timestamp);
         buffer_write_first_half = false;
     }
@@ -89,7 +89,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 {
     if (hadc->Instance == ADC1) {
         // Second half of buffer is ready: adc_buffer[6] to adc_buffer[11]
-        first_half_timestamp = HAL_GetTick()+1; // FIXME: Adding 1 here to approximate the start time of the next conversion
+        first_half_timestamp = HAL_GetTick()+1;
         process_adc_data(&adc_buffer[ADC_DOUBLE_BUFFER_SIZE / 2], second_half_timestamp);
         buffer_write_first_half = true;
     }

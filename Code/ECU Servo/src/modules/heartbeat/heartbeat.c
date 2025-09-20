@@ -1,6 +1,8 @@
 #include "heartbeat.h"
 #include "debug_io.h"
 #include "fsm.h"
+#include "can.h"
+#include "error_def.h"
 
 void heartbeat_reload(void) {
     // Check if timer is running, else start it
@@ -18,9 +20,8 @@ void heartbeat_reload(void) {
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
     if (htim->Instance == TIM14) {
-        // This callback is called every second
-        // Here you can handle the heartbeat timeout logic
         dbg_printf("Heartbeat timeout occurred, no heartbeat received in the last second.\n");
+        can_send_error_warning(CAN_NODE_TYPE_CENTRAL, CAN_NODE_ADDR_CENTRAL, CAN_ERROR_ACTION_SHUTDOWN, SERVO_SHUTDOWN_HEARTBEAT_LOST); // Send heartbeat lost error
         fsm_dispatch(FSM_EVENT_HEARTBEAT_TIMEOUT);
     }
 }

@@ -4,6 +4,7 @@
 #include "servo.h"
 #include "heartbeat.h"
 #include "fsm.h"
+#include "error_def.h"
 
 static void handle_cmd_set_servo_arm(CAN_CommandFrame* frame, CAN_ID id);
 static void handle_cmd_set_servo_pos(CAN_CommandFrame* frame, CAN_ID id);
@@ -21,6 +22,21 @@ CAN_RxQueue can_rx_queue = {
 // =========================================================
 // Helper functions
 // =========================================================
+
+void CAN_Error_Handler(void)
+{
+    static uint32_t last_notify = 0;
+    uint32_t now = HAL_GetTick();
+    dbg_printf("CAN: Error occurred!\n");
+    if (now - last_notify > 2000) { // Notify at most once every 2 seconds, prevent flooding bus
+        last_notify = now;
+        can_send_error_warning(CAN_NODE_TYPE_BROADCAST, CAN_NODE_ADDR_BROADCAST, CAN_ERROR_ACTION_ERROR, GENERIC_CAN_ERROR);
+    }
+}
+
+void handle_tx_error(uint32_t error) {
+    // Placeholder, can't really do much about TX errors here
+}
 
 void enqueue_can_frame(CAN_Frame_t* frame) {
     if (can_rx_queue.count >= CAN_RX_QUEUE_LENGTH) {
@@ -158,7 +174,7 @@ void handle_status(CAN_StatusFrame* frame, CAN_ID id) {
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
 }
 
-void handle_heatbeat(CAN_HeartbeatFrame* frame, CAN_ID id, uint32_t timestamp) {
+void handle_heartbeat(CAN_HeartbeatFrame* frame, CAN_ID id, uint32_t timestamp) {
     // Handle heartbeat messages
     // RxTimestamp not used at this stage as far more accurate than SysTick and rolls over often
     // Remote timestamp good upto ~4 hours
