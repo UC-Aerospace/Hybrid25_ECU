@@ -6,6 +6,7 @@
 
 void rs422_handler_init(void) {
     // Initialize RS422 handler
+    return;
 }
 
 void rs422_handler_rx_poll(void) {
@@ -53,7 +54,7 @@ void rs422_handler_rx_poll(void) {
             case RS422_FRAME_ABORT:
                 // Handle abort frame
                 dbg_printf("RS422: RECV ABORT (%d)\r\n", frame.data[0]);
-                // TODO: Abort logic here
+                fsm_set_abort(frame.data[0]);
                 break;
             case RS422_FRAME_FIRE:
                 // Handle fire frame
@@ -74,7 +75,7 @@ void rs422_handler_rx_poll(void) {
                 break;
             default:
                 // Handle unknown frame type
-                dbg_printf("Received unknown frame type %d with size %d\r\n", frame.frame_type, frame.size);
+                dbg_printf("RS422: Received unknown frame type %d with size %d\r\n", frame.frame_type, frame.size);
                 break;
         }
     }

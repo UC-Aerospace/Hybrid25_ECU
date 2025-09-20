@@ -21,6 +21,7 @@ typedef struct {
     uint8_t soc;   // corresponding SoC in percent
 } OCVPoint;
 
+// Also worth noting the cells we have are LiHV, so 4.35V max charge. This should be close enough though.
 static const OCVPoint ocv_table[] = {
     {4.20, 100}, {4.14, 95}, {4.09, 90}, {4.05, 85}, {4.01, 80},
     {3.98, 75},  {3.95, 70}, {3.92, 65}, {3.89, 60}, {3.87, 55},

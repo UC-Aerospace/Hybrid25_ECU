@@ -2,6 +2,7 @@
 #include "debug_io.h"
 #include "can_handlers.h"
 #include "error_def.h"
+#include "rs422.h"
 
 // Hardware TX header (used transiently when dequeuing)
 FDCAN_TxHeaderTypeDef TxHeader;
@@ -10,7 +11,7 @@ FDCAN_RxHeaderTypeDef RxHeader;
 uint8_t TxData[64];
 
 // ---------------- TX SOFTWARE QUEUE ----------------
-// Up to 2 pending CAN FD frames buffered in software.
+// Up to 10 pending CAN FD frames buffered in software.
 // Each entry stores the full FDCAN_TxHeaderTypeDef and up to 64 bytes of data.
 #define CAN_TX_QUEUE_SIZE 10
 
@@ -54,6 +55,9 @@ void CAN_Error_Handler(void)
     if (now - last_notify > 2000) { // Notify at most once every 2 seconds, prevent flooding bus
         last_notify = now;
         can_send_error_warning(CAN_NODE_TYPE_BROADCAST, CAN_NODE_ADDR_BROADCAST, CAN_ERROR_ACTION_ERROR, GENERIC_CAN_ERROR);
+        // Also notify over RS422
+        uint8_t action = CAN_ERROR_ACTION_ERROR << 6 | BOARD_ID_ECU;
+        rs422_send_error_warning(action, GENERIC_CAN_ERROR);
     }
 }
 
@@ -131,6 +135,7 @@ void HAL_FDCAN_ErrorCallback(FDCAN_HandleTypeDef *hfdcan)
 {
     uint32_t errorCode = HAL_FDCAN_GetError(hfdcan);
     dbg_printf("FDCAN Error: %08lX\r\n", errorCode);
+    CAN_Error_Handler();
 }
 
 void can_init(void) {
@@ -223,16 +228,12 @@ void can_service_tx_queue(void) {
             can_tx_head = (can_tx_head + 1) % CAN_TX_QUEUE_SIZE;
             can_tx_count--;
             __enable_irq();
-            dbg_printf("CAN TX entry was not used, skipping.\r\n");
+            dbg_printf("CAN: TX entry not used, skipping.\r\n");
             return;
         }
 
-        // if (HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan1) == 0) {
-        //     dbg_printf("CAN TX FIFO full, cannot send more frames right now.\r\n");
-        //     return; // No space right now
-        // }
-
-        if (HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &entry->header, entry->data) == HAL_OK) {
+        HAL_StatusTypeDef status = HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &entry->header, entry->data);
+        if (status == HAL_OK) {
             // Successfully queued to hardware; remove from SW queue
             __disable_irq();
             entry->used = 0;
@@ -240,7 +241,15 @@ void can_service_tx_queue(void) {
             can_tx_count--;
             __enable_irq();
         } else {
-            dbg_printf("Failed to send CAN frame, possible hardware error.\r\n");
+            static uint32_t last_error_notify = 0;
+            uint32_t now = HAL_GetTick();
+            if (now - last_error_notify > 2000) { // Notify at most once every 2 seconds, prevent flooding bus
+                last_error_notify = now;
+                dbg_printf("CAN: TX Error %d\r\n", status);
+                // Also notify over RS422
+                uint8_t action = CAN_ERROR_ACTION_ERROR << 6 | BOARD_ID_ECU;
+                rs422_send_error_warning(action, ECU_ERROR_CAN_TX_FAIL);
+            }
             return;
         }
     }

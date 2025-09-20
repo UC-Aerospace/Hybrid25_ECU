@@ -11,7 +11,6 @@ typedef enum {
     STATE_SEQUENCER = 0b0010,
     STATE_POST_FIRE = 0b0011,
     STATE_MANUAL_MODE = 0b1000,
-    STATE_ERROR = 0b1110,
     STATE_ABORT = 0b1111
 } main_states_t;
 
@@ -35,7 +34,7 @@ void fsm_tick(void);
 bool both_armed(void);
 bool prefire_ok(void);
 void outputs_safe(void);
-void fsm_set_error(uint8_t code);
+void fsm_raise_error(uint8_t code);
 void fsm_set_abort(uint8_t code);
 uint8_t fsm_get_error_code(void);
 

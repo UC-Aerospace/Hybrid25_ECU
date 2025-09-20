@@ -7,6 +7,7 @@
 #include <stdbool.h>
 
 void spicy_init(void);
+void spicy_send_status_update(void);
 
 // SOFT ARM COMMANDS
 bool spicy_arm(void);

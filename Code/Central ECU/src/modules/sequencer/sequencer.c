@@ -9,6 +9,7 @@
 #include "servo.h"
 #include "rs422.h"
 #include "error_def.h"
+#include "sensors.h"
 
 #define COUNTDOWN_START_MS 20000
 
@@ -123,6 +124,7 @@ static void seq_task_tm10_arm(void)
 
 static void seq_task_tm9_nos_a_b(void)
 {
+    dbg_printf("SEQ: T-9 Opening NOS A and B\n");
     servo_set_position(VALVE_NOS_A, SERVO_POSITION_OPEN);
     servo_set_position(VALVE_NOS_B, SERVO_POSITION_OPEN);
 }
@@ -131,15 +133,48 @@ static void seq_task_tm6_checks(void)
 {
     bool checks_good = true;
 
-    // TODO: Actually populate these checks
     // Should check:
     // 1) Reported valve positions are as expected
+    //    NOS A and B open
+    //    Nitrogen closed
+    //    Vent closed
+    //    Discharge closed
+    servo_feedback_t servos[4];
+    servo_get_states(servos);
+    if (servos[VALVE_NOS_A].setPos != SERVO_POSITION_OPEN || !servos[VALVE_NOS_A].atSetPos) {
+        dbg_printf("SEQ: T-6 Pre-ignition check failed, NOS A not open\n");
+        checks_good = false;
+    }
+    if (servos[VALVE_NOS_B].setPos != SERVO_POSITION_OPEN || !servos[VALVE_NOS_B].atSetPos) {
+        dbg_printf("SEQ: T-6 Pre-ignition check failed, NOS B not open\n");
+        checks_good = false;
+    }
+    if (servos[VALVE_NITROGEN].setPos != SERVO_POSITION_CLOSE || !servos[VALVE_NITROGEN].atSetPos) {
+        dbg_printf("SEQ: T-6 Pre-ignition check failed, Nitrogen not closed\n");
+        checks_good = false;
+    }
+    if (servos[VALVE_VENT].setPos != SERVO_POSITION_CLOSE || !servos[VALVE_VENT].atSetPos) {
+        dbg_printf("SEQ: T-6 Pre-ignition check failed, Vent not closed\n");
+        checks_good = false;
+    }
     // 2) ESTOP is released
+    if (comp_get_interlock() == false) {
+        dbg_printf("SEQ: T-6 Pre-ignition check failed, ESTOP pressed\n");
+        checks_good = false;
+    }
     // 3) Continuity on ignitor 1
+    if (comp_get_ematch1() == false) {
+        dbg_printf("SEQ: T-6 Pre-ignition check failed, Ignitor 1 continuity bad\n");
+        checks_good = false;
+    }
     // 4) Mainline pressure > 30 bar
-    // 5) Status good on all peripherals
-    // 6) Logging good
+    int32_t mainline_pressure = sensors_get_data(SENSOR_PT_MAINLINE);
+    if (mainline_pressure < 300) {
+        dbg_printf("SEQ: T-6 Pre-ignition check failed, Mainline pressure low (%ld mbar)\n", mainline_pressure);
+        checks_good = false;
+    }
 
+    // If successful, move on, otherwise abort
     if (checks_good) {
         dbg_printf("SEQ: T-6 Pre-ignition checks good, go for flamey stuff\n");
     } else {
@@ -154,6 +189,7 @@ static void seq_task_tm5_softarm(void)
     if (!stat) {
         fsm_set_abort(ECU_ERROR_ARM_FAIL);
     }
+    dbg_printf("SEQ: T-5, Armed\n");
 }
 
 static void seq_task_tm3_ignition(void)
@@ -165,12 +201,13 @@ static void seq_task_tm3_ignition(void)
 static void seq_task_tm2_ign_off(void)
 {
     spicy_off_ematch1();
-    dbg_printf("SEQ: T-2, ignition sequence started\n");
+    dbg_printf("SEQ: T-2, ignition end\n");
 }
 
 static void seq_task_tm0_solenoid(void)
 {
     spicy_open_solenoid();
+    dbg_printf("SEQ: T-0, Solenoid opened, we are go!\n");
     sequencer_set_state(SEQUENCER_FIRE);
 }
 
@@ -196,7 +233,13 @@ static const sequencer_task_t fire_task_list[] = {
 static void fire_tasks(void)
 {
     if (get_countdown() <= burn_time) {
-        // Can do mid-burn checks here
+        // While burning perform checks to ensure nominal conditions.
+        // 1) Check combustion chamber stays below 50 bar
+        int32_t cc_pressure = sensors_get_data(SENSOR_P_CHAMBER);
+        if (cc_pressure > 500) {
+            dbg_printf("SEQ: During burn, combustion chamber overpressure (%ld.%02ld bar), aborting\n", cc_pressure / 10, cc_pressure % 10);
+            fsm_set_abort(ECU_ERROR_CHAMBER_OVERPRESSURE);
+        }
     }
 
     if (get_countdown() >= fire_task_list[task_list_index].execution_ms + burn_time) {
@@ -209,26 +252,26 @@ static void seq_task_tp0_solenoid_nos_close(void)
     spicy_close_solenoid();
     servo_set_position(VALVE_NOS_A, SERVO_POSITION_CLOSE);
     servo_set_position(VALVE_NOS_B, SERVO_POSITION_CLOSE);
-    dbg_printf("SEQ: T+%d Burn complete, NOS closed\n", burn_time/1000);
+    dbg_printf("SEQ: T+%d(0) Burn complete, NOS closed\n", burn_time/1000);
 }
 
 static void seq_task_tp1_open_vent(void)
 {
     servo_set_position(VALVE_VENT, SERVO_POSITION_OPEN);
-    dbg_printf("SEQ: T+%d Vent opened\n", (burn_time + 2000)/1000);
+    dbg_printf("SEQ: T+%d(2) Vent opened\n", (burn_time + 2000)/1000);
 }
 
 static void seq_task_tp3_open_nitrogen(void)
 {
     servo_set_position(VALVE_NITROGEN, SERVO_POSITION_OPEN);
-    dbg_printf("SEQ: T+%d Nitrogen opened\n", (burn_time + 3000)/1000);
+    dbg_printf("SEQ: T+%d(3) Nitrogen opened\n", (burn_time + 3000)/1000);
 }
 
 static void seq_task_tp5_close_vent_open_solenoid(void)
 {
     servo_set_position(VALVE_VENT, SERVO_POSITION_CLOSE);
     spicy_open_solenoid();
-    dbg_printf("SEQ: T+%d Vent closed, Solenoid opened\n", (burn_time + 4000)/1000);
+    dbg_printf("SEQ: T+%d(4) Vent closed, Solenoid opened\n", (burn_time + 4000)/1000);
 }
 
 static void seq_task_tp10_close_solenoid_nitrogen(void)
@@ -236,19 +279,19 @@ static void seq_task_tp10_close_solenoid_nitrogen(void)
     spicy_close_solenoid();
     spicy_disarm();
     servo_set_position(VALVE_NITROGEN, SERVO_POSITION_CLOSE);
-    dbg_printf("SEQ: T+%d Nitrogen and Solenoid closed\n", (burn_time + 10000)/1000);
+    dbg_printf("SEQ: T+%d(10) Nitrogen and Solenoid closed\n", (burn_time + 10000)/1000);
 }
 
 static void seq_task_tp12_open_vent(void)
 {
     servo_set_position(VALVE_VENT, SERVO_POSITION_OPEN);
-    dbg_printf("SEQ: T+%d Vent opened\n", (burn_time + 12000)/1000);
+    dbg_printf("SEQ: T+%d(12) Vent opened\n", (burn_time + 12000)/1000);
 }
 
 static void seq_task_tp20_close_vent(void)
 {
     servo_set_position(VALVE_VENT, SERVO_POSITION_CLOSE);
-    dbg_printf("SEQ: T+%d Vent closed, sequencer complete\n", (burn_time + 20000)/1000);
+    dbg_printf("SEQ: T+%d(20) Vent closed, sequencer complete\n", (burn_time + 20000)/1000);
     dbg_printf("SEQ: Time for the pub?\n");
-    sequencer_set_state(SEQUENCER_FAILED_START); // TODO: Probably a more elegant way to handle this
+    fsm_set_state(STATE_POST_FIRE);
 }

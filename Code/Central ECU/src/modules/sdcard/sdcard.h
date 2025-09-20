@@ -31,6 +31,4 @@ int SDCARD_WriteBegin(uint32_t blockNum);
 int SDCARD_WriteData(const uint8_t* buff); // sizeof(buff) == 512!
 int SDCARD_WriteEnd();
 
-// TODO: read lock flag? CMD13, SEND_STATUS
-
 #endif // __SDCARD_H__

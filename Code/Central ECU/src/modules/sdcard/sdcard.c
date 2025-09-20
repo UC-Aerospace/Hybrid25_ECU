@@ -1,5 +1,3 @@
-/* vim: set ai et ts=4 sw=4: */
-
 #include "sdcard.h"
 
 volatile bool spi_tx_done = false;

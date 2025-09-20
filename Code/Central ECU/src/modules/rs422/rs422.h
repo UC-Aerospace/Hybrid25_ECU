@@ -16,7 +16,7 @@ typedef enum {
     RS422_FRAME_HEARTBEAT = 0b0000,
     RS422_FRAME_SWITCH_CHANGE = 0b0001,
     RS422_FRAME_VALVE_UPDATE = 0b0010,
-    // 0b0011
+    RS422_SPICY_STATUS_UPDATE = 0b0011,
     RS422_BATTERY_VOLTAGE_FRAME = 0b0100,
     // 0b0101
     RS422_FRAME_SENSOR = 0b0110,
@@ -26,7 +26,7 @@ typedef enum {
     // 0b1010
     // 0b1011
     RS422_FRAME_COUNTDOWN = 0b1100,
-    // 0b1101
+    RS422_FRAME_ERROR_WARNING = 0b1101,
     RS422_FRAME_ABORT = 0b1110,
     RS422_FRAME_FIRE = 0b1111
 } RS422_FrameType_t;
@@ -74,5 +74,8 @@ bool rs422_send_countdown(int8_t countdown);
 bool rs422_send_heartbeat(void);
 bool rs422_send_battery_state(uint8_t percent_2s, uint8_t percent_6s);
 bool rs422_send_string_message(const char *str, uint8_t length);
+bool rs422_send_error_warning(uint8_t can_who_what, uint8_t error_code);
+bool rs422_send_spicy_state(uint8_t spicy_state);
+bool rs422_send_abort(uint8_t error_code);
 
 #endif // RS422_H

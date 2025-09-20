@@ -6,6 +6,9 @@
 #include "sequencer.h"
 #include "main_FSM.h"
 #include "servo.h"
+#include "error_def.h"
+#include "heartbeat.h"
+#include "can.h"
 
 // Global buffers for DMA operations
 RS422_TxBuffer_t tx_buffer = {0}; // Initialize circular buffer for transmission
@@ -87,6 +90,9 @@ static void rs422_restart_rx(UART_HandleTypeDef *huart)
 
     if (st != HAL_OK) {
         dbg_printf("RS422: RX restart failed (status %d)\r\n", st);
+        fsm_raise_error(ECU_ERROR_RS422_RX_RESTART_FAIL);
+        uint8_t who_what = CAN_ERROR_ACTION_ERROR << 6 | BOARD_ID_ECU;
+        rs422_send_error_warning(who_what, ECU_ERROR_RS422_RX_RESTART_FAIL);
     } else {
         dbg_printf("RS422: RX restarted after error\r\n");
     }
@@ -94,7 +100,7 @@ static void rs422_restart_rx(UART_HandleTypeDef *huart)
 
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
 {
-    // TODO: Test if this actually correctly restart the RS422 link. Also could abort on RS422 error.
+    // VERIFY: Stress test this some more. Might be able to recover without full reset?
     if (huart->Instance == USART1) {
         dbg_printf("RS422 UART Error: 0x%08lX\r\n", huart->ErrorCode);
 
@@ -138,7 +144,6 @@ bool rs422_init(UART_HandleTypeDef *huart)
 
 HAL_StatusTypeDef rs422_send(uint8_t *data, uint8_t size, RS422_FrameType_t frame_type)
 {
-    //HAL_GPIO_TogglePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin); // Toggle status LED for debugging
     if (size > RS422_TX_MESSAGE_SIZE - 3) {
         dbg_printf("RS422 TX: data size %d too large\r\n", size);
         return HAL_ERROR; // Data too large for packet
@@ -169,8 +174,6 @@ HAL_StatusTypeDef rs422_send(uint8_t *data, uint8_t size, RS422_FrameType_t fram
 
     tx_buffer.buffer[tx_buffer.tail].size = size + 3; // Store total size (header + data + CRC)
     tx_buffer.tail = (tx_buffer.tail + 1) % RS422_TX_BUFFER_SIZE;
-
-    //HAL_GPIO_TogglePin(LED_STATUS_GPIO_Port, LED_STATUS_Pin); // Toggle status LED for debugging
     
     // Start DMA transfer if not already in progress
     if (!tx_buffer.is_busy) {
@@ -295,11 +298,13 @@ bool rs422_send_heartbeat(void)
     uint8_t fsm_state = fsm_get_state();
     if (fsm_state == STATE_SEQUENCER) {
         heartbeat_msb = fsm_state << 4 | (uint8_t)sequencer_get_state();
-    } else if (fsm_state == STATE_ERROR) {
+    } else if (fsm_state == STATE_ABORT) {
         heartbeat_msb = fsm_state << 4 | fsm_get_error_code(); // Send last error code in lower nibble
+    } else if (fsm_state == STATE_INIT) {
+        heartbeat_msb = fsm_state << 4 | get_heartbeat_status() & 0x0F; 
     } else {
         heartbeat_msb = fsm_state << 4; // Other states have no sub-state
-    }
+    } 
     servo_status_u servo_status;
     servo_status_get(&servo_status);
     uint8_t heartbeat_lsb = (servo_status.status.mainState & 0x03) << 6;
@@ -314,10 +319,27 @@ bool rs422_send_battery_state(uint8_t percent_2s, uint8_t percent_6s)
     return (rs422_send(battery_state, 2, RS422_BATTERY_VOLTAGE_FRAME) == HAL_OK);
 }
 
+// VERIFY: Test this
 bool rs422_send_string_message(const char *str, uint8_t length)
 {
     if (length > RS422_TX_MESSAGE_SIZE - 3) {
         return false; // String too long for packet
     }
     return (rs422_send((uint8_t*)str, length, RS422_STRING_MESSAGE) == HAL_OK);
+}
+
+bool rs422_send_error_warning(uint8_t can_who_what, uint8_t error_code)
+{
+    uint8_t data[2] = {can_who_what, error_code};
+    return (rs422_send(data, 2, RS422_FRAME_ERROR_WARNING) == HAL_OK);
+}
+
+bool rs422_send_spicy_state(uint8_t spicy_state)
+{
+    return (rs422_send(&spicy_state, 1, RS422_SPICY_STATUS_UPDATE) == HAL_OK);
+}
+
+bool rs422_send_abort(uint8_t error_code)
+{
+    return (rs422_send(&error_code, 1, RS422_FRAME_ABORT) == HAL_OK);
 }

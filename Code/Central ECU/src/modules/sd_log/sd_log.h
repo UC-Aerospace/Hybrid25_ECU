@@ -8,6 +8,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "frames.h"
+#include "config.h"
 
 // Maximum length for log messages
 #define SD_LOG_MAX_MSG_LEN 256
@@ -51,11 +52,6 @@ bool sd_log_flush_blocking(uint32_t timeout_ms);
 // Get the current log directory name
 // Returns the directory name as a string
 const char* sd_log_get_dir_name(void);
-
-// Configure which sensors should have dedicated files created under sensors/.
-// Provide an array of 6-bit sensor IDs. Returns true on success.
-// Legacy no-op retained for compatibility (now all sensors go to a single file); returns true.
-bool sd_log_configure_sensors(const uint8_t *sensor_ids, uint8_t count);
 
 // Append a binary sensor chunk to the per-sensor file with a simple delimited record:
 // [0xA1][sampleRate(1)][timestamp(3)][len(2 LE)][payload(len)]

@@ -1,5 +1,7 @@
 #include "spicy.h"
 #include "debug_io.h"
+#include "rs422.h"
+#include "main_FSM.h"
 
 ADC_ChannelConfTypeDef ADC_IMON_Config = {
     .Channel = ADC_CHANNEL_15, // PB15
@@ -7,18 +9,37 @@ ADC_ChannelConfTypeDef ADC_IMON_Config = {
     .SamplingTime = ADC_SAMPLETIME_3CYCLES_5
 };
 
+static bool spicy_checks(void);
+
 void spicy_init(void)
 {
     return;
 }
 
-bool spicy_checks(void)
+void spicy_send_status_update(void)
 {
-    // TODO: Just do basic checks here, states and such should be confirmed before getting here
+    uint8_t status = 0;
+    if (comp_get_interlock())        status |= (1 << 7);
+    if (spicy_get_arm())             status |= (1 << 6);
+    if (spicy_get_solenoid())        status |= (1 << 5);
+    if (comp_get_ematch1())          status |= (1 << 4);
+    if (comp_get_ematch2())          status |= (1 << 3);
+    if (comp_get_oxlow())            status |= (1 << 2);
+    if (spicy_checks())              status |= (1 << 1);
 
-    // Check if ESTOP (interlock) is not pressed
+    rs422_send_spicy_state(status);
+}
+
+static bool spicy_checks(void)
+{
+    // Check ESTOP (interlock) is not pressed
     if (!comp_get_interlock()) {
-        dbg_printf("SPICY: Interlock not engaged\n");
+        dbg_printf("SPICY_CHK: Interlock not engaged\n");
+        return false;
+    }
+    // Check not in error state
+    if (fsm_get_state() == STATE_ABORT) {
+        dbg_printf("SPICY_CHK: In abort state\n");
         return false;
     }
     return true;

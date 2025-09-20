@@ -4,6 +4,8 @@
 
 RemoteHeartbeat_t heartbeat[MAX_COUNT] = {0};
 
+// VERIFY: All of this
+
 void heartbeat_reload(uint8_t BOARD_ID) 
 {
     // Check if BOARD_ID is valid
@@ -29,6 +31,16 @@ bool heartbeat_all_started(void) {
     return (heartbeat[BOARD_ID_RIU].is_active && heartbeat[BOARD_ID_SERVO].is_active && heartbeat[BOARD_ID_ADC_A].is_active);
 }
 
+uint8_t get_heartbeat_status(void) {
+    uint8_t status = 0;
+    for (uint8_t i = 0; i < MAX_COUNT; i++) {
+        if (heartbeat[i].is_active) {
+            status |= (1 << i);
+        }
+    }
+    return status;
+}
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
     if (htim->Instance == TIM14) {
         for (uint8_t i = 0; i < MAX_COUNT; i++) {
@@ -39,9 +51,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
                     // If not cleared, mark as inactive
                     heartbeat[i].is_active = false;
                     dbg_printf("HRT_BT: Heartbeat for board %d is inactive\n", i);
-                    // TODO: Abort in state machine once done
+
                     #ifndef TEST_MODE
-                    fsm_set_error(ECU_ERROR_HEARTBEAT_LOST);
+                    fsm_raise_error(ECU_ERROR_HEARTBEAT_LOST);
                     #endif
                 }
             }

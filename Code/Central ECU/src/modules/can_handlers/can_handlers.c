@@ -7,6 +7,8 @@
 #include "config.h"
 #include "servo.h"
 #include "heartbeat.h"
+#include "error_def.h"
+#include "sensors.h"
 
 static void handle_cmd_set_servo_arm(CAN_CommandFrame* frame, CAN_ID id);
 static void handle_cmd_set_servo_pos(CAN_CommandFrame* frame, CAN_ID id);
@@ -80,23 +82,21 @@ void handle_error_warning(CAN_ErrorWarningFrame* frame, CAN_ID id) {
 
     uint8_t actionType = frame->what >> 6; // Bits 6-7 for action type
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for initiator
+
+    // Send through RS422 as well
+    rs422_send_error_warning(frame->what, frame->why);
     
     switch (actionType) {
         case 0b00: // Immediate shutdown
             dbg_printf("Immediate Shutdown: initiator=%d, why=%d\n", initiator, frame->why);
-            fsm_set_error(frame->why); // Set FSM to error state with code
+            fsm_set_abort(frame->why); // Set FSM to error state with code
             break;
         case 0b01: // Error Notification
             dbg_printf("Error Notification: initiator=%d, why=%d\n", initiator, frame->why);
-            // Handle error notification
+            fsm_raise_error(frame->why); // Raise error in FSM
             break;
         case 0b10: // Warning Notification
             dbg_printf("Warning Notification: initiator=%d, why=%d\n", initiator, frame->why);
-            // Handle warning notification
-            break;
-        case 0b11: // Reserved
-            dbg_printf("Error Warning 0b11: initiator=%d, why=%d\n", initiator, frame->why);
-            // Handle reserved message
             break;
     }
     
@@ -217,63 +217,33 @@ void handle_adc_data(CAN_ADCFrame* frame, CAN_ID id, uint8_t dataLength) {
     // Sample rate, 3 bits. (0-7) = 1, 10, 20, 50, 100, 200, 500, 1000Hz
     uint8_t sampleRate = frame->what & 0x07;
 
-    // Serial print some stuff
-
-    // TODO: Send this to some sort of decoder module for auto checks.
     
-    // if (sensorID < 2) {
-    //     uint16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
-    //     // output =>
-    //     // map first_sample such that 0.1 * reference is the zero output level and 0.9 * reference is 0xFFFF
-    //     uint16_t reference = (frame->data[56]) | (frame->data[57] << 8);
-    //     uint32_t in_min = reference / 10;         // 0.1 * reference
-    //     uint32_t in_max = (reference * 9) / 10;   // 0.9 * reference
-
-    //     if (first_sample <= in_min) first_sample = 0x0000;
-    //     else if (first_sample >= in_max) first_sample = 0xFFFF;
-    //     else {
-    //         uint32_t range = in_max - in_min;
-    //         uint32_t scaled = (first_sample - in_min) * 65535UL / range;
-    //         first_sample = (uint16_t)scaled;
-    //     }
-    //     dbg_printf_nolog("%d %d\n", sensorID, first_sample);
-    // } else if (sensorID == 16 | sensorID == 17 | sensorID == 18) {
-    //     int16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
-    //     dbg_printf_nolog("%d %d\n", sensorID, first_sample);
-    // } else if (sensorID == 24 | sensorID == 25 | sensorID == 26) {
-    //     int16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
-    //     dbg_printf_nolog("%d %d\n", sensorID, first_sample);
-    // }
+    if (sensorID <= SENSOR_P_MANIFOLD) { // Pressure sensor
+        uint16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
+        uint16_t reference = (frame->data[56]) | (frame->data[57] << 8);
+        sensors_add_pressure(sensorID, first_sample, reference);
+    } else if ((sensorID >= SENSOR_THERMO_A) && (sensorID <= SENSOR_THERMO_C)) { // Thermocouples
+        int16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
+        sensors_add_temperature(sensorID, first_sample);
+    } else if ((sensorID >= SENSOR_PT_MAINLINE) && (sensorID <= SENSOR_PT_BRANCH_B)) { // PT sensors
+        int16_t first_sample = (frame->data[0]) | (frame->data[1] << 8);
+        sensors_add_pt(sensorID, first_sample);
+    }
     
 
     // Write chunk to per-sensor file with delimiter header
     bool status = sd_log_write_sensor_chunk(frame, frame->length + 5);
     if (!status) {
         dbg_printf("SD Card failed write for sensor %d\n", sensorID);
-        // TODO: Issue a warning over RS422
-        // TODO: Raise some sort of a error, don't want to if currently firing as it would be better to get something rather than nothing, but prevent fire otherwise
+        uint8_t action = CAN_ERROR_ACTION_ERROR << 6 | BOARD_ID_ECU;
+        rs422_send_error_warning(action, ECU_ERROR_SD_DATA_WRITE_FAIL);
+        fsm_raise_error(ECU_ERROR_SD_DATA_WRITE_FAIL);
         return;
     }
 
     // Send to the RIU
-    uint8_t sensorType = (frame->what >> 6);
-    switch (sensorType) {
-        case 0: // Pressure
-            rs422_send_data((uint8_t*)frame, frame->length+5, RS422_FRAME_SENSOR);
-            break;
-        case 1: // Temperature
-            rs422_send_data((uint8_t*)frame, frame->length+5, RS422_FRAME_SENSOR);
-            break;
-        case 2: // Pressure + Temperature
-            rs422_send_data((uint8_t*)frame, frame->length+5, RS422_FRAME_SENSOR);
-            break;
-        case 3: // Load cell
-            rs422_send_data((uint8_t*)frame, frame->length+5, RS422_FRAME_SENSOR);
-            break;
-        default:
-            // Unknown sensor type
-            break;
-    }
+    rs422_send_data((uint8_t*)frame, frame->length+5, RS422_FRAME_SENSOR);
+
 }
 
 void handle_status(CAN_StatusFrame* frame, CAN_ID id) {
@@ -325,35 +295,28 @@ void handle_heartbeat(CAN_HeartbeatFrame* frame, CAN_ID id, uint32_t local_times
 static void handle_cmd_set_servo_arm(CAN_CommandFrame* frame, CAN_ID id) {
     // ECU has no reason to handle this
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
-    dbg_printf("Set Servo Arm Command: initiator=%d, options=%d\n", initiator, frame->options);
+    dbg_printf("CAN: Set Servo Arm Command, initiator=%d, options=%d\n", initiator, frame->options);
 }
 
 static void handle_cmd_set_servo_pos(CAN_CommandFrame* frame, CAN_ID id) {
     // Also no reason to handle this
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
-    dbg_printf("Set Servo Position Command: initiator=%d, options=%d\n", initiator, frame->options);
+    dbg_printf("CAN: Set Servo Position Command, initiator=%d, options=%d\n", initiator, frame->options);
 }
 
 static void handle_cmd_get_servo_pos(CAN_CommandFrame* frame, CAN_ID id) {
     // Likewise
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
-    dbg_printf("Get Servo Position Command: initiator=%d\n", initiator);
+    dbg_printf("CAN: Get Servo Position Command, initiator=%d\n", initiator);
 }
 
 static void handle_cmd_get_voltage(CAN_CommandFrame* frame, CAN_ID id) {
     // For now this will be unused on all boards
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
-    dbg_printf("Get Voltage Command: initiator=%d\n", initiator);
+    dbg_printf("CAN: Get Voltage Command, initiator=%d\n", initiator);
 }
 
 static void handle_cmd_restart_mcu(CAN_CommandFrame* frame, CAN_ID id) {
     uint8_t initiator = frame->what & 0x07; // Bits 0-2 for who
-    dbg_printf("Restart MCU Command: initiator=%d\n", initiator);
-    
-    // Perform a software reset
-    // TODO: To implement this must tie in with state machine
-    // Should flush the SD card and issue an abort to peripheral boards
-    // Also really the central ECU shouldn't be being reset by peripheral boards
-    // Should implement on RS422 though
-    //NVIC_SystemReset();
+    dbg_printf("CAN: Restart MCU Command, initiator=%d\n", initiator);
 }

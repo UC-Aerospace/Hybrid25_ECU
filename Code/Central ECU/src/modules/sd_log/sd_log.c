@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include "debug_io.h"
 #include "sdcard.h"
+#include "rs422.h"
+#include "error_def.h"
 
 // File system objects
 static FATFS fs;
@@ -113,6 +115,8 @@ static void sens_push(const uint8_t *data, uint16_t len)
     if (sens_space() < len) {
         uint16_t to_free = (uint16_t)(len - sens_space());
         dbg_printf("!!WARN!! - Dropping %u bytes from sensor ring buffer\n", to_free);
+        uint8_t who = CAN_ERROR_ACTION_WARNING << 6 | BOARD_ID_ECU;
+        rs422_send_error_warning(who, ECU_ERROR_SD_DATA_WRITE_FAIL);
         sens_tail = (uint16_t)((sens_tail + to_free) % SD_LOG_SENS_BUF_SIZE);
     }
 
@@ -241,7 +245,6 @@ bool sd_log_init(uint8_t log_mb, uint8_t sens_mb) {
     // Preallocate log_mb to log.txt and sens_mb to sensors.raw using sd_preallocate_extra
     sd_preallocate_extra(&log_file, log_mb * 1024 * 1024);
     sd_preallocate_extra(&sensors_file, sens_mb * 1024 * 1024);
-    // TODO: During write check extra space remaining and allocate more if neccessary. At 5kB/s, 10Mb should be good for 33 minutes.
 
     is_initialized = true;
     return true;
@@ -405,11 +408,6 @@ bool sd_preallocate_extra(FIL *file, uint32_t size) {
 
 const char* sd_log_get_dir_name(void) {
     return current_dir;
-}
-
-bool sd_log_configure_sensors(const uint8_t *sensor_ids, uint8_t count) {
-    (void)sensor_ids; (void)count; // now a no-op
-    return true;    
 }
 
 bool sd_log_write_sensor_chunk(CAN_ADCFrame* frame, uint8_t length) {
