@@ -1,6 +1,7 @@
 #include "heartbeat.h"
 #include "debug_io.h"
 #include "main_FSM.h"
+#include "error_def.h"
 
 RemoteHeartbeat_t heartbeat[MAX_COUNT] = {0};
 
@@ -18,8 +19,9 @@ void heartbeat_reload(uint8_t BOARD_ID)
     heartbeat[BOARD_ID].is_active = true;
     heartbeat[BOARD_ID].cleared = true;
 
-    // Check if timer is running, else start it
-    if (HAL_TIM_Base_GetState(&htim14) != HAL_TIM_STATE_READY) {
+    // Ensure TIM14 is started in interrupt mode
+    // After HAL_TIM_Base_Init, the state is READY. Start it if so.
+    if (HAL_TIM_Base_GetState(&htim14) == HAL_TIM_STATE_READY) {
         if (HAL_TIM_Base_Start_IT(&htim14) != HAL_OK) {
             dbg_printf("HRT_BT: Failed to start heartbeat timer for board %d\n", BOARD_ID);
             return;

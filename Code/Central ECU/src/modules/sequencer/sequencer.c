@@ -163,16 +163,20 @@ static void seq_task_tm6_checks(void)
         checks_good = false;
     }
     // 3) Continuity on ignitor 1
+    #ifndef COLDFLOW_MODE
     if (comp_get_ematch1() == false) {
         dbg_printf("SEQ: T-6 Pre-ignition check failed, Ignitor 1 continuity bad\n");
         checks_good = false;
     }
+    #endif
     // 4) Mainline pressure > 30 bar
+    #ifndef TEST_MODE
     int32_t mainline_pressure = sensors_get_data(SENSOR_PT_MAINLINE);
     if (mainline_pressure < 300) {
         dbg_printf("SEQ: T-6 Pre-ignition check failed, Mainline pressure low (%ld mbar)\n", mainline_pressure);
         checks_good = false;
     }
+    #endif
 
     // If successful, move on, otherwise abort
     if (checks_good) {

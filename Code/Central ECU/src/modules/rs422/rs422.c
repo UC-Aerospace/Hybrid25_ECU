@@ -105,6 +105,7 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
         dbg_printf("RS422 UART Error: 0x%08lX\r\n", huart->ErrorCode);
 
         // Fully reset and re-arm the RX path in the same mode as init
+        tx_buffer.is_busy = false; // Clear TX busy flag to allow new sends
         rs422_restart_rx(huart);
     }
 }

@@ -9,7 +9,7 @@
 #define BOARD_TYPE_ADC
 extern uint8_t BOARD_ID;
 
-#define TEST_MODE // TODO: Remove before production
+//#define TEST_MODE // TODO: Remove before production
 
 #define BOARD_ID_RIU 0
 #define BOARD_ID_ECU 1

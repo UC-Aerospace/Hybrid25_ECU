@@ -24,6 +24,7 @@ typedef enum {
     ADC_ERROR_FAIL_INIT_ADC,                                // 50
     ADC_ERROR_FAIL_INIT_ADS124,                             // 51
     ADC_ERROR_FAIL_READ_PTE7300,                            // 52
+    ADC_ERROR_FAIL_INIT_PTE7300,                            // 53
 } error_t;
 
 #endif // ERROR_DEF_H

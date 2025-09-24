@@ -31,6 +31,7 @@ bool spicy_get_solenoid(void); // Check if OX is open
 
 bool spicy_fire_ematch1(void);
 bool spicy_off_ematch1(void);
+bool spicy_get_ematch1(void);
 
 bool spicy_fire_ematch2(void);
 bool spicy_off_ematch2(void);

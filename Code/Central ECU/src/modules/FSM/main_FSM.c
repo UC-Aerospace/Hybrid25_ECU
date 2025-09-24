@@ -249,6 +249,7 @@ static void s_init_tick(void)
     // VERIFY: Verify this
     if (heartbeat_all_started()) {
         dbg_printf("MAINFSM INIT: All heartbeats good, moving to ready state\n");
+        fsm_set_state(STATE_READY);
     } else {
         // Still waiting for heartbeats
         return;

@@ -26,6 +26,7 @@ void spicy_send_status_update(void)
     if (comp_get_ematch2())          status |= (1 << 3);
     if (comp_get_oxlow())            status |= (1 << 2);
     if (spicy_checks())              status |= (1 << 1);
+    if (spicy_get_ematch1())         status |= (1 << 0);
 
     rs422_send_spicy_state(status);
 }
@@ -34,12 +35,10 @@ static bool spicy_checks(void)
 {
     // Check ESTOP (interlock) is not pressed
     if (!comp_get_interlock()) {
-        dbg_printf("SPICY_CHK: Interlock not engaged\n");
         return false;
     }
     // Check not in error state
     if (fsm_get_state() == STATE_ABORT) {
-        dbg_printf("SPICY_CHK: In abort state\n");
         return false;
     }
     return true;
@@ -152,6 +151,11 @@ bool spicy_off_ematch1(void)
     HAL_GPIO_WritePin(EMATCH1_FIRE_GPIO_Port, EMATCH1_FIRE_Pin, GPIO_PIN_RESET);
     dbg_printf("SPICY: Ematch1 Off\n");
     return true;
+}
+
+bool spicy_get_ematch1(void)
+{
+    return HAL_GPIO_ReadPin(EMATCH1_FIRE_GPIO_Port, EMATCH1_FIRE_Pin);
 }
 
 bool spicy_fire_ematch2(void)
