@@ -138,7 +138,7 @@ static void init_enter(void) {
     // Placeholder: could validate hardware, wait for sync, etc.
     dbg_printf("FSM: Enter INIT\r\n");
 
-    #ifdef DEBUG // Auto progress to READY when in debug mode
+    #ifdef DEBUG_MODE // Auto progress to READY when in debug mode
     fsm_dispatch(FSM_EVENT_INIT_DONE);
     #endif
 }

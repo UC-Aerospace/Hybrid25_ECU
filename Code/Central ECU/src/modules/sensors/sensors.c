@@ -41,12 +41,12 @@ void sensors_add_pressure(uint8_t id, uint16_t first_sample, uint16_t reference)
         first_sample = (uint16_t)scaled;
     }
     // Convert to 10*bar, reading correspond to 0-50bar with PTE7100
-    int32_t pressure_mbar = (first_sample * 200UL) / 13107UL;
+    int32_t pressure_cbar = (first_sample * 100UL) / 13107UL;
 
     uint8_t type = (id >> 3) & 0x03; // Bits 3-4 for type
     uint8_t sub_id = id & 0x07;      // Bits 0
     if (type <= 2 && sub_id <= 2) {
-        sensor_data[type][sub_id].value = pressure_mbar;
+        sensor_data[type][sub_id].value = pressure_cbar;
         sensor_data[type][sub_id].rx_time = HAL_GetTick();
     }
 }

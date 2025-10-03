@@ -54,7 +54,7 @@ void app_init(void) {
     batt_check();
     HAL_Delay(100); // Wait for battery check to stabilize
     #ifndef TEST_MODE
-    uint8_t log_size = 20; // Default log size 20MB, sensor file to 100MB
+    uint8_t log_size = 100; // Default log size 20MB, sensor file to 100MB
     #else
     uint8_t log_size = 2; // Test mode, smaller log size
     #endif

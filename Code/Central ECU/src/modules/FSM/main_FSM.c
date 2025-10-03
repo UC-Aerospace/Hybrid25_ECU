@@ -124,10 +124,12 @@ bool prefire_ok(void)
         dbg_printf("MAINFSM SEQ: Failed as not all valves closed\n");
     }
     // Check #5 - >30 bar on mainline
+    #ifndef TEST_MODE
     if (sensors_get_data(SENSOR_PT_MAINLINE) < 300) { // 10*bar, so 300 = 30.0 bar
         checks_good = false;
         dbg_printf("MAINFSM SEQ: Failed as mainline pressure < 30 bar\n");
     }
+    #endif
 
     return checks_good;
 }

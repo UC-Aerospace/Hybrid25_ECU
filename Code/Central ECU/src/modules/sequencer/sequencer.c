@@ -100,8 +100,8 @@ static void seq_task_tm0_solenoid(void);
 
 // Tasks must be in order they will be executed in
 static const sequencer_task_t countdown_task_list[] = {
-    { seq_task_tm10_arm, -10000 },
-    { seq_task_tm9_nos_a_b, -9000 },
+    { seq_task_tm10_arm, -16000 },
+    { seq_task_tm9_nos_a_b, -15000 },
     { seq_task_tm6_checks, -6000 },
     { seq_task_tm5_softarm, -5000 },
     { seq_task_tm3_ignition, -3000 },
@@ -238,9 +238,9 @@ static void fire_tasks(void)
 {
     if (get_countdown() <= burn_time) {
         // While burning perform checks to ensure nominal conditions.
-        // 1) Check combustion chamber stays below 50 bar
-        int32_t cc_pressure = sensors_get_data(SENSOR_P_CHAMBER);
-        if (cc_pressure > 500) {
+        // 1) Check combustion chamber stays below 60 bar
+        int32_t cc_pressure = sensors_get_data(SENSOR_P_CHAMBER); // Note returns in 10*bar
+        if (cc_pressure > 600) { // CHANGE AFTER 3rd OCT TESTING - INCREASE TO 60 BAR
             dbg_printf("SEQ: During burn, combustion chamber overpressure (%ld.%02ld bar), aborting\n", cc_pressure / 10, cc_pressure % 10);
             fsm_set_abort(ECU_ERROR_CHAMBER_OVERPRESSURE);
         }
