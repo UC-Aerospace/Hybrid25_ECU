@@ -14,6 +14,7 @@ typedef enum {
     ECU_ERROR_SD_DATA_WRITE_FAIL,                       // 22
     ECU_ERROR_RS422_RX_RESTART_FAIL,                    // 23
     ECU_ERROR_CHAMBER_OVERPRESSURE,                     // 24
+    ECU_ERROR_CHAMBER_UNDERPRESSURE,                    // 25
 
     SERVO_WARNING_STARTUP = (BOARD_ID_SERVO << 4) + 0,   // 32
     SERVO_SHUTDOWN_HEARTBEAT_LOST,                       // 33

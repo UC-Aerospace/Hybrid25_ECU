@@ -244,6 +244,11 @@ static void fire_tasks(void)
             dbg_printf("SEQ: During burn, combustion chamber overpressure (%ld.%02ld bar), aborting\n", cc_pressure / 10, cc_pressure % 10);
             fsm_set_abort(ECU_ERROR_CHAMBER_OVERPRESSURE);
         }
+        // 2) If more than 300ms into burn, abort if chamber pressure drops below 5 bar
+        if (get_countdown() >= 300 && cc_pressure < 50) {
+            dbg_printf("SEQ: During burn, combustion chamber pressure low (%ld.%02ld bar), aborting\n", cc_pressure / 10, cc_pressure % 10);
+            fsm_set_abort(ECU_ERROR_CHAMBER_UNDERPRESSURE);
+        }
     }
 
     if (get_countdown() >= fire_task_list[task_list_index].execution_ms + burn_time) {
