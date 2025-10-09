@@ -227,10 +227,10 @@ static void seq_task_tp20_close_vent(void);
 static const sequencer_task_t fire_task_list[] = {
     { seq_task_tp0_solenoid_nos_close, 0 },
     { seq_task_tp1_open_vent, 1000 },
-    { seq_task_tp3_open_nitrogen, 3000 },
-    { seq_task_tp5_close_vent_open_solenoid, 5000 },
-    { seq_task_tp10_close_solenoid_nitrogen, 10000 },
-    { seq_task_tp12_open_vent, 12000 },
+    { seq_task_tp3_open_nitrogen, 6000 },
+    { seq_task_tp5_close_vent_open_solenoid, 8000 },
+    { seq_task_tp10_close_solenoid_nitrogen, 13000 },
+    { seq_task_tp12_open_vent, 14000 },
     { seq_task_tp20_close_vent, 20000 }
 };
 
