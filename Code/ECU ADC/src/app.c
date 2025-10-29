@@ -160,7 +160,6 @@ void app_run(void) {
         #else
         {0, 100, test_spoof_pte7300_read},            // Sample PTE7300 sensors every 100 ms
         #endif
-        {0, 100, test_spoof_pte7300_read},
         {0, 500, task_send_heartbeat},              // Send heartbeat every 500 ms
         {0, 300, task_poll_can_handlers},            // Poll CAN handlers every 300 ms
         {0, 1, can_service_tx_queue}                // Service CAN TX queue every 1 ms

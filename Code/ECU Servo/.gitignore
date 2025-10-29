@@ -6,6 +6,7 @@
 !.vscode/settings.json
 !.vscode/c_cpp_properties.json
 .idea/
+.cache/
 *.user
 *.project
 *.cproject
