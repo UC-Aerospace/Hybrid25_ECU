@@ -8,7 +8,18 @@ For more information on the RIU it can be found [here](https://github.com/UC-Aer
 
 <img width="882" alt="image" src="https://github.com/user-attachments/assets/0b086ce3-42a3-48b5-a7de-66e9607cbf3b" />
 
+<img width="300" src="https://github.com/user-attachments/assets/c9186404-064c-464e-af78-75c3a6b4d8b1" />
+<img width="300" src="https://github.com/user-attachments/assets/cef47ce6-662b-40f6-8056-12d7367314a3" />
+<img width="300" src="https://github.com/user-attachments/assets/f58a780b-ff3e-45d4-954a-3c8383550991" />
+
+<img width="900" alt="Hotfire" src="https://github.com/user-attachments/assets/00e49bff-133c-4680-9e74-af2937d0e3df" />
+
+
 ## Hardware
+
+First thing to note, make sure you read the [issue!](https://github.com/UC-Aerospace/Hybrid25_ECU/issues/1).
+
+There are issues with these designs, keep them in mind for any future development.
 
 ### MCU
 
@@ -33,28 +44,54 @@ scheduling, this will save some headaches and add a bunch more.
 
 ### Layout
 
-<img width="882" alt="image" src="https://github.com/user-attachments/assets/86e384f3-1a66-4b6a-aac1-fbbb014cdd8d" />
+Theres a bit of an explaination for the actual hardware design ethos to get you started in the Central ECU board directory. Otherwise between the
+boards the main thing to talk about is connectors, comms and power.
 
-The central ECU is pretty simple and carries out a couple of tasks. Firstly is comms which is easy to see with CAN on the left and RS422 on the right
-of the schematic. The SD card occupies the top right, with pull up resistors on the main data lines. The top right has a display over I2C and a
-pressure and temp sensor. On the status LED front the other boards had two controlled from GPIOs while the central ECU only has one. Two is much
-better as you can have a status and error LED, don't discount just how useful a few LEDs are. And finally the interesting bit is probably the spicy stuff.
+The connectors we used on the peripheral boards were a compromise. JST's should never really be used where they might see forces on the wires,
+but they are also cheap and the budget was getting out of hand. We mitigated this when testing by externally strain relieving all wires connecting
+to both peripheral boards. Also when thinking about connectors try to keep in mind that if something can be plugged into the wrong place, it will
+be plugged into the wrong place. Try to keep connectors dissimilar where you can, at least where damage would occur if they went the other way.
 
-<img width="882" alt="image" src="https://github.com/user-attachments/assets/4dd37550-c5a0-44e8-8218-9285e8c88f6f" />
+Comms is over CAN-FD for the peripheral to central communication and RS422 for central to RIU communication. The descision for this came because
+CAN sounded cool to play with and RS422 seemed like the easiest way to get comms upto a couple hundred meters away. Both of these descisions played
+out pretty well, with software headaches for both but nothing too serious. The CAN just uses premade serial DB9 cables, as these are cheap and easy
+to get hold of. DB9 connectors are really solid and lock well, plus are rated to about 3A per pin. For the link to the RIU we just used generic CAT5
+cable, two of the pairs are used for RS422 with another used for the ESTOP signal lines. The plastic connectors on either end are a weakspot, it would
+have been nice to use something like etherCON connectors but again, expensive.
 
-This is for the control of the single solenoid and two ignitor channels. The layout is very similar for both, except the ignitors have continuity detection
-as well. First off theres a connector populated to allow for an external regulator if the voltage requirements of the solenoid changes. This occured as we
-made this board before selecting a solenoid. A comparator then is used on the input so we know when the RIU and external ESTOP are released.
-
-For the actual switching there is both a high and low side switch. The high side switch is common to both ignitors and solenoid, and comes in the form of a
-EFuse. Theres some big advantages to doing it this way, for one it limits the current spike that occurs when switching the outputs, and also will protect the
-circuit in the case of a shorted output. A GPIO toggles this, allowing for a hardware "Arm" controlled by software. A 2K resistor bypasses the highside switch,
-this allows for continuity detection. Nominally no current will flow through this as the low side switches will be off, but even if one of the low side switches
-is on the current is limited to 15mA, too low to ignite one of the ignitors or open the solenoid.
+Power is something that got changed up a few times. We use lipo batteries as the power source, the ECU has two and theres an extra for the servos. The
+ECU has a 2S for general functions, which is also passed to the peripherals which they use. The servo board uses this for the 2 7.4V servos remaining also.
+The other battery in the ECU, the 6S, is used for the solenoids and ignitors. This is the power that the ESTOP is inline with, cutting that will abort the
+test due to the normally closed solenoid. Finally as we had to add 24V servos there is a seperate 6S battery dedicated to them during the test. This is suboptimal
+as we have no insight into the level of it remotely during a test and the standby draw is quite high. If done again just plug this directly into the servo board
+and move all servos to 24V. 
 
 ## Software
 
-...
+I have yet to find a way to make code sound interesting, and I don't think I'm going to manage it here either. I guess the main thing to point out is there is
+a lot of code. Certainly more than I expected going into this, and it took significantly longer than I expected as well. Main word of advice with the software,
+it is very easy to get yourself stuck in a trap of rushing rubbish code out.
+
+<img width="622" height="343" alt="image" src="https://github.com/user-attachments/assets/14591506-8dcb-4b1f-93ca-f814919fe7ff" />
+
+There was an extended period this year when we were perpetually two weeks away from testing, and it probably shows in the code. In the end the hold up was with
+another system, but the code was still blasted out dangerously fast regardless. Give yourself time in the beginning and temper the goals, its easy to add more
+later but hard to strip them away with testing looming.
+
+For some more specifics on the actual code I'll leave a quick README for the specifics under each boards code. Heres a quick rant from the EOY report though.
+
+*All code and hardware design has been done in a single git repository. This was poor practice, in future break the code up into separate repositories, 
+the only reason we could make a single repository work is because only one person was working on it. One of the main motivators for doing it this way was to enable
+code reuse between the boards, for example the CAN module is common between all three and uses a symbolic linked folder. In future it would be worth investigating
+using git submodules for the same thing. VS Code was used as the IDE for the ECU and peripherals, while STM32CubeIDE was used for the RIU. It is **strongly** recommended
+that future teams do not use CubeIDE, while IDE’s are a preference eclipse is objectively terrible. The ST support for VS Code is good enough now that after installing
+the extensions and CubeMX the development experience is much better.*
+
+*The general layout for each board is given below:*
+
+<img width="345" height="206" alt="image" src="https://github.com/user-attachments/assets/326ed695-d3f7-4e9c-9d04-b41a27f27702" />
+
+
 
 ### Finite State Machine Diagrams
 
@@ -66,6 +103,9 @@ is on the current is limited to 15mA, too low to ignite one of the ignitors or o
 
 <img width="882" alt="image" src="https://github.com/user-attachments/assets/f395c7c0-076e-4b11-afe0-9f1687392bde" />
 
+### ADC Module
+
+The ADC module has no inherent state machine, it just reads sensors and sends these.
 
 ## Operational
 
